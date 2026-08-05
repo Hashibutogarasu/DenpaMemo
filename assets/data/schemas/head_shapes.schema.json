@@ -1,26 +1,28 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "HeadShapes",
-  "description": "Head shape master data, parsed into HeadShape (lib/domain/master_data/head_shape.dart).",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "additionalProperties": false,
-    "required": ["id", "displayName"],
-    "properties": {
-      "id": {
-        "type": "string",
-        "description": "Stable identifier referenced by other data and code."
-      },
-      "displayName": {
-        "type": "string",
-        "description": "Name shown to the user."
-      },
-      "abnormalityResistanceBonuses": {
-        "type": "object",
-        "description": "Maps an abnormality id (see abnormality_types.json) to the resistance bonus this head shape grants.",
-        "additionalProperties": { "type": "integer" }
-      }
+  "title": "HeadShape",
+  "description": "A single head shape master data entry, parsed into HeadShape (lib/domain/master_data/head_shape.dart). One file per head shape, under assets/data/head_shapes/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "displayName"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable identifier referenced by other data and code."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Translation key looked up in the app's localization resources; not literal display text."
+    },
+    "abnormalityResistanceBonuses": {
+      "type": "object",
+      "description": "Maps an abnormality id (see abnormality_types.json) to the resistance bonus this head shape grants.",
+      "additionalProperties": { "type": "integer" }
+    },
+    "attributeResistanceBonuses": {
+      "type": "object",
+      "description": "Maps an attribute id (see attributes.json) to the resistance bonus this head shape grants.",
+      "additionalProperties": { "type": "integer" }
     }
   }
 }

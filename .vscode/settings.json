@@ -1,7 +1,7 @@
 {
   "json.schemas": [
     {
-      "fileMatch": ["/assets/data/head_shapes.json"],
+      "fileMatch": ["/assets/data/head_shapes/*.json"],
       "url": "./assets/data/schemas/head_shapes.schema.json"
     },
     {

@@ -62,16 +62,31 @@ extension AttributeResistanceCalculation on BodyColorSelection {
   }
 }
 
-/// Derives [DenpaMen.attributeResistance] from [DenpaMen.bodyColors] /
-/// [DenpaMen.isSpColor] and [masterData]'s body color resistance rules.
+/// Derives [DenpaMen.attributeResistance] by merging [DenpaMen.headShape]'s
+/// own bonuses with the bonuses [DenpaMen.bodyColors] / [DenpaMen.isSpColor]
+/// grant.
 extension DenpaMenAttributeResistanceCalculation on DenpaMen {
   List<AttributeResistance> calculateAttributeResistance(
     MasterData masterData,
   ) {
-    return (
+    final colorBased = (
       bodyColors: bodyColors,
       isSpColor: isSpColor,
     ).calculateAttributeResistance(masterData);
+
+    final totals = <String, int>{
+      for (final resistance in colorBased)
+        resistance.attributeId: resistance.value,
+    };
+    headShape.attributeResistanceBonuses.forEach((attributeId, bonus) {
+      totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
+    });
+
+    return [
+      for (final entry in totals.entries)
+        if (entry.value != 0)
+          AttributeResistance(attributeId: entry.key, value: entry.value),
+    ];
   }
 }
 
