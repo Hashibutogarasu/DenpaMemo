@@ -1,0 +1,34 @@
+{
+  "denpaMenStatus": {
+    "level": "レベル",
+    "happiness": "幸福度",
+    "untilNextLevel": "次のLvまで"
+  },
+  "attribute": {
+    "fire": "火",
+    "water": "水",
+    "thunder": "雷",
+    "earth": "土",
+    "ice": "氷",
+    "wind": "風",
+    "light": "光",
+    "dark": "闇"
+  },
+  "abnormality": {
+    "poison": "どく",
+    "burn": "やけど",
+    "frostbite": "しもやけ",
+    "cold": "かぜっぴき",
+    "mud": "どろだらけ",
+    "electrocution": "かんでん",
+    "soaked": "みずびだし",
+    "blind": "ブラインド",
+    "curse": "のろい",
+    "suddenDeath": "とつぜんし",
+    "paralysis": "マヒ",
+    "sleep": "ねむり",
+    "charm": "みりょう",
+    "fear": "きょうふ",
+    "jack": "ジャック"
+  }
+}

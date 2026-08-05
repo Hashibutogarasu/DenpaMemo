@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/abnormality_resistance.dart';
 import '../domain/denpa_men/attribute_resistance.dart';
+import '../i18n/gen/strings.g.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
 import 'icon/attribute.dart' as attribute_icon;
 import 'label/attribute.dart';
+import 'label/happiness.dart';
+import 'label/level.dart';
 import 'label/status.dart';
 
 class DenpaMenStatus extends StatelessWidget {
@@ -32,6 +35,8 @@ class DenpaMenStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.t;
+
     return StatusContainer(
       padding: const EdgeInsets.all(8),
       child: Column(
@@ -40,14 +45,14 @@ class DenpaMenStatus extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              StatusLabel(text: 'レベル $level'),
-              StatusLabel(text: '幸福度 $happiness'),
+              LevelLabel(level: level),
+              HappinessLabel(happiness: happiness),
             ],
           ),
           Text(name, style: Theme.of(context).textTheme.titleLarge),
           Row(
             children: [
-              const StatusLabel(text: '次のLvまで'),
+              StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
               Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(999),
@@ -71,7 +76,8 @@ class DenpaMenStatus extends StatelessWidget {
               entries: [
                 for (final resistance in attributeResistances)
                   _ResistanceData(
-                    label: resistance.attributeId,
+                    label: t.attribute[resistance.attributeId] ??
+                        resistance.attributeId,
                     value: resistance.value,
                   ),
               ],
@@ -84,7 +90,8 @@ class DenpaMenStatus extends StatelessWidget {
               entries: [
                 for (final resistance in abnormalityResistances)
                   _ResistanceData(
-                    label: resistance.abnormalityId,
+                    label: t.abnormality[resistance.abnormalityId] ??
+                        resistance.abnormalityId,
                     value: resistance.value,
                   ),
               ],

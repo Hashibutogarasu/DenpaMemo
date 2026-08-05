@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class StatusLabel extends StatelessWidget {
-  const StatusLabel({super.key, required this.text, this.height = 30});
+  const StatusLabel({super.key, required this.child, this.height = 30});
 
-  final String text;
+  final Widget child;
   final double height;
 
   @override
@@ -17,7 +17,10 @@ class StatusLabel extends StatelessWidget {
         color: const Color(0xFF90E2FF),
         alignment: Alignment.center,
         padding: const EdgeInsets.only(left: 14, right: 20),
-        child: Text(text, style: const TextStyle(color: Color(0xFF056193))),
+        child: DefaultTextStyle.merge(
+          style: const TextStyle(color: Color(0xFF056193)),
+          child: child,
+        ),
       ),
     );
   }
