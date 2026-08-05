@@ -109,12 +109,14 @@ void main() {
 
     final attribute = attributeByAttribute(denpaMen);
     expect(attribute.containsKey('water'), isFalse);
+    expect(attribute.containsKey('light'), isFalse);
     expect(attribute['fire'], 2);
     expect(attribute['dark'], 2);
     for (final entry in attribute.entries) {
       if (entry.key == 'fire' || entry.key == 'dark') continue;
       expect(entry.value, 1);
     }
+    expect(attribute, hasLength(6));
 
     final abnormality = abnormalityByAttribute(denpaMen);
     expect(abnormality['jack'], 1);
