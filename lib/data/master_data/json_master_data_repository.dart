@@ -11,9 +11,10 @@ import '../../domain/master_data/master_data.dart';
 import '../../domain/master_data/pattern.dart';
 import '../../domain/master_data/personality.dart';
 import '../../domain/master_data/physique.dart';
+import 'asset_directory_loader.dart';
 
 const _headShapesAssetPath = 'assets/data/head_shapes.json';
-const _antennasAssetPath = 'assets/data/antennas.json';
+const _antennasDirectoryPath = 'assets/data/antennas/';
 const _attributesAssetPath = 'assets/data/attributes.json';
 const _abnormalityTypesAssetPath = 'assets/data/abnormality_types.json';
 const _bodyColorResistanceAssetPath =
@@ -24,7 +25,9 @@ const _patternsAssetPath = 'assets/data/patterns.json';
 const _colorIdJsonKey = 'colorId';
 
 /// [MasterDataRepository] implementation backed by JSON files bundled as
-/// Flutter assets under `assets/data/`.
+/// Flutter assets under `assets/data/`. Each antenna is its own file under
+/// `assets/data/antennas/`, loaded via [loadJsonEntitiesFromDirectory]
+/// instead of a single combined list.
 class JsonMasterDataRepository implements MasterDataRepository {
   JsonMasterDataRepository({AssetBundle? bundle})
     : _bundle = bundle ?? rootBundle;
@@ -37,7 +40,11 @@ class JsonMasterDataRepository implements MasterDataRepository {
       _headShapesAssetPath,
       HeadShape.fromJson,
     );
-    final anntenas = await _loadList(_antennasAssetPath, Anntena.fromJson);
+    final anntenas = await loadJsonEntitiesFromDirectory(
+      bundle: _bundle,
+      directoryPath: _antennasDirectoryPath,
+      fromJson: Anntena.fromJson,
+    );
     final attributes = await _loadList(
       _attributesAssetPath,
       Attribute.fromJson,
