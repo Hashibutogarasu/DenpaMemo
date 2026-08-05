@@ -1,0 +1,280 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'attribute_resistance.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$AttributeResistance {
+
+ String get attributeId; int get value;
+/// Create a copy of AttributeResistance
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AttributeResistanceCopyWith<AttributeResistance> get copyWith => _$AttributeResistanceCopyWithImpl<AttributeResistance>(this as AttributeResistance, _$identity);
+
+  /// Serializes this AttributeResistance to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttributeResistance&&(identical(other.attributeId, attributeId) || other.attributeId == attributeId)&&(identical(other.value, value) || other.value == value));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,attributeId,value);
+
+@override
+String toString() {
+  return 'AttributeResistance(attributeId: $attributeId, value: $value)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AttributeResistanceCopyWith<$Res>  {
+  factory $AttributeResistanceCopyWith(AttributeResistance value, $Res Function(AttributeResistance) _then) = _$AttributeResistanceCopyWithImpl;
+@useResult
+$Res call({
+ String attributeId, int value
+});
+
+
+
+
+}
+/// @nodoc
+class _$AttributeResistanceCopyWithImpl<$Res>
+    implements $AttributeResistanceCopyWith<$Res> {
+  _$AttributeResistanceCopyWithImpl(this._self, this._then);
+
+  final AttributeResistance _self;
+  final $Res Function(AttributeResistance) _then;
+
+/// Create a copy of AttributeResistance
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? attributeId = null,Object? value = null,}) {
+  return _then(_self.copyWith(
+attributeId: null == attributeId ? _self.attributeId : attributeId // ignore: cast_nullable_to_non_nullable
+as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AttributeResistance].
+extension AttributeResistancePatterns on AttributeResistance {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AttributeResistance value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AttributeResistance() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AttributeResistance value)  $default,){
+final _that = this;
+switch (_that) {
+case _AttributeResistance():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AttributeResistance value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AttributeResistance() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String attributeId,  int value)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AttributeResistance() when $default != null:
+return $default(_that.attributeId,_that.value);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String attributeId,  int value)  $default,) {final _that = this;
+switch (_that) {
+case _AttributeResistance():
+return $default(_that.attributeId,_that.value);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String attributeId,  int value)?  $default,) {final _that = this;
+switch (_that) {
+case _AttributeResistance() when $default != null:
+return $default(_that.attributeId,_that.value);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AttributeResistance implements AttributeResistance {
+  const _AttributeResistance({required this.attributeId, required this.value});
+  factory _AttributeResistance.fromJson(Map<String, dynamic> json) => _$AttributeResistanceFromJson(json);
+
+@override final  String attributeId;
+@override final  int value;
+
+/// Create a copy of AttributeResistance
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AttributeResistanceCopyWith<_AttributeResistance> get copyWith => __$AttributeResistanceCopyWithImpl<_AttributeResistance>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AttributeResistanceToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttributeResistance&&(identical(other.attributeId, attributeId) || other.attributeId == attributeId)&&(identical(other.value, value) || other.value == value));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,attributeId,value);
+
+@override
+String toString() {
+  return 'AttributeResistance(attributeId: $attributeId, value: $value)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AttributeResistanceCopyWith<$Res> implements $AttributeResistanceCopyWith<$Res> {
+  factory _$AttributeResistanceCopyWith(_AttributeResistance value, $Res Function(_AttributeResistance) _then) = __$AttributeResistanceCopyWithImpl;
+@override @useResult
+$Res call({
+ String attributeId, int value
+});
+
+
+
+
+}
+/// @nodoc
+class __$AttributeResistanceCopyWithImpl<$Res>
+    implements _$AttributeResistanceCopyWith<$Res> {
+  __$AttributeResistanceCopyWithImpl(this._self, this._then);
+
+  final _AttributeResistance _self;
+  final $Res Function(_AttributeResistance) _then;
+
+/// Create a copy of AttributeResistance
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? attributeId = null,Object? value = null,}) {
+  return _then(_AttributeResistance(
+attributeId: null == attributeId ? _self.attributeId : attributeId // ignore: cast_nullable_to_non_nullable
+as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+// dart format on

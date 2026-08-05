@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Attributes",
+  "description": "Attribute master data, parsed into Attribute (lib/domain/master_data/attribute.dart).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "displayName"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Stable identifier referenced by other data and code."
+      },
+      "displayName": {
+        "type": "string",
+        "description": "Name shown to the user."
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Antennas",
+  "description": "Antenna master data, parsed into Anntena (lib/domain/master_data/anntena.dart).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "displayName"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Stable identifier referenced by other data and code."
+      },
+      "displayName": {
+        "type": "string",
+        "description": "Name shown to the user."
+      }
+    }
+  }
+}
