@@ -53,8 +53,7 @@ void main() {
       ),
       BodyColorResistanceRule(
         colorId: soloAllBonusColorId,
-        attributeResistanceBonuses: {attributeIdA: 1},
-        grantsAllAttributeResistanceBonusWhenSolo: true,
+        attributeResistanceBonuses: const {},
       ),
     ],
   );
@@ -126,7 +125,7 @@ void main() {
     expect(denpaMen.abnormalityResistances.single.value, 3);
   });
 
-  test('solo color with grantsAllAttributeResistanceBonusWhenSolo adds +1', () {
+  test('solo color with no attribute resistance bonuses of its own adds +1 to all', () {
     final denpaMen = createDenpaMen(
       bodyColors: [soloAllBonusColorId],
       isSpColor: false,
@@ -138,10 +137,14 @@ void main() {
       masterData: masterData,
     );
 
-    final resistance = denpaMen.attributeResistance.firstWhere(
+    final resistanceA = denpaMen.attributeResistance.firstWhere(
       (r) => r.attributeId == attributeIdA,
     );
-    expect(resistance.value, 2);
+    final resistanceB = denpaMen.attributeResistance.firstWhere(
+      (r) => r.attributeId == attributeIdB,
+    );
+    expect(resistanceA.value, 1);
+    expect(resistanceB.value, 1);
   });
 
   test('SP color negates the weakness attribute', () {

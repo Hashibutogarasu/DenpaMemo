@@ -1,1 +1,10 @@
-[]
+[
+  { "id": "fire", "displayName": "fire" },
+  { "id": "water", "displayName": "water" },
+  { "id": "thunder", "displayName": "thunder" },
+  { "id": "earth", "displayName": "earth" },
+  { "id": "ice", "displayName": "ice" },
+  { "id": "wind", "displayName": "wind" },
+  { "id": "light", "displayName": "light" },
+  { "id": "dark", "displayName": "dark" }
+]

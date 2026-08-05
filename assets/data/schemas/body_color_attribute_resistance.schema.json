@@ -15,10 +15,6 @@
       "weaknessAttributeId": {
         "type": ["string", "null"],
         "description": "Attribute id (see attributes.json) that is negated when this color becomes an SP color."
-      },
-      "grantsAllAttributeResistanceBonusWhenSolo": {
-        "type": "boolean",
-        "description": "When this color is the only body color, adds +1 to every attribute resistance (the 'black' rule)."
       }
     }
   }

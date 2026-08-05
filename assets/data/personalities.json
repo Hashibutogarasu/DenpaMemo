@@ -1,9 +1,9 @@
 [
-  { "id": "ichigo", "displayName": "イチゴ" },
-  { "id": "nigauri", "displayName": "にがうり" },
-  { "id": "tougarashi", "displayName": "トウガラシ" },
-  { "id": "banana", "displayName": "バナナ" },
-  { "id": "remon", "displayName": "レモン" },
-  { "id": "budou", "displayName": "ブドウ" },
-  { "id": "kaki", "displayName": "かき" }
+  { "id": "ichigo", "displayName": "ichigo" },
+  { "id": "nigauri", "displayName": "nigauri" },
+  { "id": "tougarashi", "displayName": "tougarashi" },
+  { "id": "banana", "displayName": "banana" },
+  { "id": "remon", "displayName": "remon" },
+  { "id": "budou", "displayName": "budou" },
+  { "id": "kaki", "displayName": "kaki" }
 ]

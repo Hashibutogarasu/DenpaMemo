@@ -16,8 +16,6 @@ _BodyColorResistanceRule _$BodyColorResistanceRuleFromJson(
       ) ??
       const {},
   weaknessAttributeId: json['weaknessAttributeId'] as String?,
-  grantsAllAttributeResistanceBonusWhenSolo:
-      json['grantsAllAttributeResistanceBonusWhenSolo'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$BodyColorResistanceRuleToJson(
@@ -26,6 +24,4 @@ Map<String, dynamic> _$BodyColorResistanceRuleToJson(
   'colorId': instance.colorId,
   'attributeResistanceBonuses': instance.attributeResistanceBonuses,
   'weaknessAttributeId': instance.weaknessAttributeId,
-  'grantsAllAttributeResistanceBonusWhenSolo':
-      instance.grantsAllAttributeResistanceBonusWhenSolo,
 };

@@ -95,7 +95,7 @@ List<AttributeResistance> _attributeResistances({
 
   final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
   final grantsAllAttributeBonus =
-      isSpColor || (soloRule?.grantsAllAttributeResistanceBonusWhenSolo ?? false);
+      isSpColor || (soloRule?.attributeResistanceBonuses.isEmpty ?? false);
   if (grantsAllAttributeBonus) {
     for (final attributeId in attributeIds) {
       totals[attributeId] = (totals[attributeId] ?? 0) + 1;

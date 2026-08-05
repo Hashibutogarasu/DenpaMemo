@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BodyColorResistanceRule {
 
- String get colorId; Map<String, int> get attributeResistanceBonuses; String? get weaknessAttributeId; bool get grantsAllAttributeResistanceBonusWhenSolo;
+ String get colorId; Map<String, int> get attributeResistanceBonuses; String? get weaknessAttributeId;
 /// Create a copy of BodyColorResistanceRule
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BodyColorResistanceRuleCopyWith<BodyColorResistanceRule> get copyWith => _$Body
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BodyColorResistanceRule&&(identical(other.colorId, colorId) || other.colorId == colorId)&&const DeepCollectionEquality().equals(other.attributeResistanceBonuses, attributeResistanceBonuses)&&(identical(other.weaknessAttributeId, weaknessAttributeId) || other.weaknessAttributeId == weaknessAttributeId)&&(identical(other.grantsAllAttributeResistanceBonusWhenSolo, grantsAllAttributeResistanceBonusWhenSolo) || other.grantsAllAttributeResistanceBonusWhenSolo == grantsAllAttributeResistanceBonusWhenSolo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BodyColorResistanceRule&&(identical(other.colorId, colorId) || other.colorId == colorId)&&const DeepCollectionEquality().equals(other.attributeResistanceBonuses, attributeResistanceBonuses)&&(identical(other.weaknessAttributeId, weaknessAttributeId) || other.weaknessAttributeId == weaknessAttributeId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,colorId,const DeepCollectionEquality().hash(attributeResistanceBonuses),weaknessAttributeId,grantsAllAttributeResistanceBonusWhenSolo);
+int get hashCode => Object.hash(runtimeType,colorId,const DeepCollectionEquality().hash(attributeResistanceBonuses),weaknessAttributeId);
 
 @override
 String toString() {
-  return 'BodyColorResistanceRule(colorId: $colorId, attributeResistanceBonuses: $attributeResistanceBonuses, weaknessAttributeId: $weaknessAttributeId, grantsAllAttributeResistanceBonusWhenSolo: $grantsAllAttributeResistanceBonusWhenSolo)';
+  return 'BodyColorResistanceRule(colorId: $colorId, attributeResistanceBonuses: $attributeResistanceBonuses, weaknessAttributeId: $weaknessAttributeId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BodyColorResistanceRuleCopyWith<$Res>  {
   factory $BodyColorResistanceRuleCopyWith(BodyColorResistanceRule value, $Res Function(BodyColorResistanceRule) _then) = _$BodyColorResistanceRuleCopyWithImpl;
 @useResult
 $Res call({
- String colorId, Map<String, int> attributeResistanceBonuses, String? weaknessAttributeId, bool grantsAllAttributeResistanceBonusWhenSolo
+ String colorId, Map<String, int> attributeResistanceBonuses, String? weaknessAttributeId
 });
 
 
@@ -65,13 +65,12 @@ class _$BodyColorResistanceRuleCopyWithImpl<$Res>
 
 /// Create a copy of BodyColorResistanceRule
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? colorId = null,Object? attributeResistanceBonuses = null,Object? weaknessAttributeId = freezed,Object? grantsAllAttributeResistanceBonusWhenSolo = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? colorId = null,Object? attributeResistanceBonuses = null,Object? weaknessAttributeId = freezed,}) {
   return _then(_self.copyWith(
 colorId: null == colorId ? _self.colorId : colorId // ignore: cast_nullable_to_non_nullable
 as String,attributeResistanceBonuses: null == attributeResistanceBonuses ? _self.attributeResistanceBonuses : attributeResistanceBonuses // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,weaknessAttributeId: freezed == weaknessAttributeId ? _self.weaknessAttributeId : weaknessAttributeId // ignore: cast_nullable_to_non_nullable
-as String?,grantsAllAttributeResistanceBonusWhenSolo: null == grantsAllAttributeResistanceBonusWhenSolo ? _self.grantsAllAttributeResistanceBonusWhenSolo : grantsAllAttributeResistanceBonusWhenSolo // ignore: cast_nullable_to_non_nullable
-as bool,
+as String?,
   ));
 }
 
@@ -156,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String colorId,  Map<String, int> attributeResistanceBonuses,  String? weaknessAttributeId,  bool grantsAllAttributeResistanceBonusWhenSolo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String colorId,  Map<String, int> attributeResistanceBonuses,  String? weaknessAttributeId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BodyColorResistanceRule() when $default != null:
-return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAttributeId,_that.grantsAllAttributeResistanceBonusWhenSolo);case _:
+return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAttributeId);case _:
   return orElse();
 
 }
@@ -177,10 +176,10 @@ return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAtt
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String colorId,  Map<String, int> attributeResistanceBonuses,  String? weaknessAttributeId,  bool grantsAllAttributeResistanceBonusWhenSolo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String colorId,  Map<String, int> attributeResistanceBonuses,  String? weaknessAttributeId)  $default,) {final _that = this;
 switch (_that) {
 case _BodyColorResistanceRule():
-return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAttributeId,_that.grantsAllAttributeResistanceBonusWhenSolo);case _:
+return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAttributeId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +196,10 @@ return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAtt
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String colorId,  Map<String, int> attributeResistanceBonuses,  String? weaknessAttributeId,  bool grantsAllAttributeResistanceBonusWhenSolo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String colorId,  Map<String, int> attributeResistanceBonuses,  String? weaknessAttributeId)?  $default,) {final _that = this;
 switch (_that) {
 case _BodyColorResistanceRule() when $default != null:
-return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAttributeId,_that.grantsAllAttributeResistanceBonusWhenSolo);case _:
+return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAttributeId);case _:
   return null;
 
 }
@@ -212,7 +211,7 @@ return $default(_that.colorId,_that.attributeResistanceBonuses,_that.weaknessAtt
 @JsonSerializable()
 
 class _BodyColorResistanceRule implements BodyColorResistanceRule {
-  const _BodyColorResistanceRule({required this.colorId, final  Map<String, int> attributeResistanceBonuses = const {}, this.weaknessAttributeId, this.grantsAllAttributeResistanceBonusWhenSolo = false}): _attributeResistanceBonuses = attributeResistanceBonuses;
+  const _BodyColorResistanceRule({required this.colorId, final  Map<String, int> attributeResistanceBonuses = const {}, this.weaknessAttributeId}): _attributeResistanceBonuses = attributeResistanceBonuses;
   factory _BodyColorResistanceRule.fromJson(Map<String, dynamic> json) => _$BodyColorResistanceRuleFromJson(json);
 
 @override final  String colorId;
@@ -224,7 +223,6 @@ class _BodyColorResistanceRule implements BodyColorResistanceRule {
 }
 
 @override final  String? weaknessAttributeId;
-@override@JsonKey() final  bool grantsAllAttributeResistanceBonusWhenSolo;
 
 /// Create a copy of BodyColorResistanceRule
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BodyColorResistanceRule&&(identical(other.colorId, colorId) || other.colorId == colorId)&&const DeepCollectionEquality().equals(other._attributeResistanceBonuses, _attributeResistanceBonuses)&&(identical(other.weaknessAttributeId, weaknessAttributeId) || other.weaknessAttributeId == weaknessAttributeId)&&(identical(other.grantsAllAttributeResistanceBonusWhenSolo, grantsAllAttributeResistanceBonusWhenSolo) || other.grantsAllAttributeResistanceBonusWhenSolo == grantsAllAttributeResistanceBonusWhenSolo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BodyColorResistanceRule&&(identical(other.colorId, colorId) || other.colorId == colorId)&&const DeepCollectionEquality().equals(other._attributeResistanceBonuses, _attributeResistanceBonuses)&&(identical(other.weaknessAttributeId, weaknessAttributeId) || other.weaknessAttributeId == weaknessAttributeId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,colorId,const DeepCollectionEquality().hash(_attributeResistanceBonuses),weaknessAttributeId,grantsAllAttributeResistanceBonusWhenSolo);
+int get hashCode => Object.hash(runtimeType,colorId,const DeepCollectionEquality().hash(_attributeResistanceBonuses),weaknessAttributeId);
 
 @override
 String toString() {
-  return 'BodyColorResistanceRule(colorId: $colorId, attributeResistanceBonuses: $attributeResistanceBonuses, weaknessAttributeId: $weaknessAttributeId, grantsAllAttributeResistanceBonusWhenSolo: $grantsAllAttributeResistanceBonusWhenSolo)';
+  return 'BodyColorResistanceRule(colorId: $colorId, attributeResistanceBonuses: $attributeResistanceBonuses, weaknessAttributeId: $weaknessAttributeId)';
 }
 
 
@@ -259,7 +257,7 @@ abstract mixin class _$BodyColorResistanceRuleCopyWith<$Res> implements $BodyCol
   factory _$BodyColorResistanceRuleCopyWith(_BodyColorResistanceRule value, $Res Function(_BodyColorResistanceRule) _then) = __$BodyColorResistanceRuleCopyWithImpl;
 @override @useResult
 $Res call({
- String colorId, Map<String, int> attributeResistanceBonuses, String? weaknessAttributeId, bool grantsAllAttributeResistanceBonusWhenSolo
+ String colorId, Map<String, int> attributeResistanceBonuses, String? weaknessAttributeId
 });
 
 
@@ -276,13 +274,12 @@ class __$BodyColorResistanceRuleCopyWithImpl<$Res>
 
 /// Create a copy of BodyColorResistanceRule
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? colorId = null,Object? attributeResistanceBonuses = null,Object? weaknessAttributeId = freezed,Object? grantsAllAttributeResistanceBonusWhenSolo = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? colorId = null,Object? attributeResistanceBonuses = null,Object? weaknessAttributeId = freezed,}) {
   return _then(_BodyColorResistanceRule(
 colorId: null == colorId ? _self.colorId : colorId // ignore: cast_nullable_to_non_nullable
 as String,attributeResistanceBonuses: null == attributeResistanceBonuses ? _self._attributeResistanceBonuses : attributeResistanceBonuses // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,weaknessAttributeId: freezed == weaknessAttributeId ? _self.weaknessAttributeId : weaknessAttributeId // ignore: cast_nullable_to_non_nullable
-as String?,grantsAllAttributeResistanceBonusWhenSolo: null == grantsAllAttributeResistanceBonusWhenSolo ? _self.grantsAllAttributeResistanceBonusWhenSolo : grantsAllAttributeResistanceBonusWhenSolo // ignore: cast_nullable_to_non_nullable
-as bool,
+as String?,
   ));
 }
 
