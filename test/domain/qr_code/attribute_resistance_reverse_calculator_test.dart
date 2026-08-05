@@ -32,10 +32,7 @@ void main() {
   void expectRoundTrip(List<String> bodyColors, {bool isSpColor = false}) {
     final target = build(bodyColors, isSpColor: isSpColor).attributeResistance;
 
-    final found = findColorCombination(
-      targetAttributeResistance: target,
-      masterData: masterData,
-    );
+    final found = target.findColorCombination(masterData);
 
     expect(found, isNotNull);
     final reconstructed = build(

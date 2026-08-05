@@ -1,73 +1,59 @@
-import '../master_data/body_color_resistance_rule.dart';
 import '../master_data/master_data.dart';
 import 'attribute_resistance.dart';
 import 'attribute_resistance_calculator.dart';
 
 /// Searches [masterData] for a single body color (with or without SP), a
 /// pair of distinct colors, or a same-color pair whose calculated
-/// attribute resistance matches [targetAttributeResistance] exactly.
+/// attribute resistance matches this list exactly.
 ///
 /// Returns the first matching `(bodyColors, isSpColor)` combination found,
 /// or null if none of the solo, distinct-pair, or same-pair candidates
 /// produce that result.
-({List<String> bodyColors, bool isSpColor})?
-findColorCombination({
-  required List<AttributeResistance> targetAttributeResistance,
-  required MasterData masterData,
-}) {
-  final target = _toMap(targetAttributeResistance);
-  final attributeIds = masterData.attributes.map((attribute) => attribute.id);
-  final rulesByColorId = {
-    for (final rule in masterData.bodyColorResistanceRules) rule.colorId: rule,
-  };
-  final colorIds = rulesByColorId.keys.toList();
+extension AttributeResistanceReverseLookup on List<AttributeResistance> {
+  BodyColorSelection? findColorCombination(MasterData masterData) {
+    final target = _toMap(this);
+    final colorIds = masterData.bodyColorResistanceRules
+        .map((rule) => rule.colorId)
+        .toList();
 
-  for (final colorId in colorIds) {
-    for (final isSpColor in [false, true]) {
-      final candidate = (bodyColors: [colorId], isSpColor: isSpColor);
-      if (_matches(candidate, target, rulesByColorId, attributeIds)) {
+    for (final colorId in colorIds) {
+      for (final isSpColor in [false, true]) {
+        final candidate = (bodyColors: [colorId], isSpColor: isSpColor);
+        if (_matches(candidate, target, masterData)) {
+          return candidate;
+        }
+      }
+    }
+
+    for (final colorId in colorIds) {
+      final candidate = (bodyColors: [colorId, colorId], isSpColor: false);
+      if (_matches(candidate, target, masterData)) {
         return candidate;
       }
     }
-  }
 
-  for (final colorId in colorIds) {
-    final candidate = (bodyColors: [colorId, colorId], isSpColor: false);
-    if (_matches(candidate, target, rulesByColorId, attributeIds)) {
-      return candidate;
-    }
-  }
-
-  for (var i = 0; i < colorIds.length; i++) {
-    for (var j = i + 1; j < colorIds.length; j++) {
-      final candidate = (
-        bodyColors: [colorIds[i], colorIds[j]],
-        isSpColor: false,
-      );
-      if (_matches(candidate, target, rulesByColorId, attributeIds)) {
-        return candidate;
+    for (var i = 0; i < colorIds.length; i++) {
+      for (var j = i + 1; j < colorIds.length; j++) {
+        final candidate = (
+          bodyColors: [colorIds[i], colorIds[j]],
+          isSpColor: false,
+        );
+        if (_matches(candidate, target, masterData)) {
+          return candidate;
+        }
       }
     }
-  }
 
-  return null;
+    return null;
+  }
 }
 
 bool _matches(
-  ({List<String> bodyColors, bool isSpColor}) candidate,
+  BodyColorSelection candidate,
   Map<String, int> target,
-  Map<String, BodyColorResistanceRule> rulesByColorId,
-  Iterable<String> attributeIds,
+  MasterData masterData,
 ) {
-  final ruleForColor = [
-    for (final colorId in candidate.bodyColors) rulesByColorId[colorId]!,
-  ];
-  final result = calculateAttributeResistances(
-    bodyColors: candidate.bodyColors,
-    ruleForColor: ruleForColor,
-    isSpColor: candidate.isSpColor,
-    attributeIds: attributeIds,
-  );
+  final result = candidate.calculateAttributeResistance(masterData);
   return _mapEquals(_toMap(result), target);
 }
 

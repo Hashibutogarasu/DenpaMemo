@@ -1,51 +1,78 @@
-import '../master_data/body_color_resistance_rule.dart';
+import '../master_data/master_data.dart';
 import 'attribute_resistance.dart';
+import 'denpa_men.dart';
 
-/// Derives the [AttributeResistance] list for a [DenpaMen] from its body
-/// colors' [BodyColorResistanceRule]s, instead of accepting resistance
-/// values directly.
-List<AttributeResistance> calculateAttributeResistances({
-  required List<String> bodyColors,
-  required List<BodyColorResistanceRule> ruleForColor,
-  required bool isSpColor,
-  required Iterable<String> attributeIds,
-}) {
-  final attributeIdList = attributeIds.toList();
-  final isSameColorPair =
-      bodyColors.length == 2 && bodyColors[0] == bodyColors[1];
-  final isDistinctColorPair = bodyColors.length == 2 && !isSameColorPair;
-  final baseRule = isDistinctColorPair ? null : ruleForColor.first;
+/// A body color selection (1 solo color, 2 distinct colors, or the same
+/// color twice) together with its SP-color state.
+typedef BodyColorSelection = ({List<String> bodyColors, bool isSpColor});
 
-  final totals = <String, int>{};
-  if (isDistinctColorPair) {
-    for (final rule in ruleForColor) {
-      rule.attributeResistanceBonuses.forEach((attributeId, bonus) {
-        totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
-      });
+/// Derives the [AttributeResistance] list a body color selection produces
+/// from [masterData]'s body color resistance rules, instead of accepting
+/// resistance values directly.
+extension AttributeResistanceCalculation on BodyColorSelection {
+  List<AttributeResistance> calculateAttributeResistance(
+    MasterData masterData,
+  ) {
+    final rulesByColorId = {
+      for (final rule in masterData.bodyColorResistanceRules)
+        rule.colorId: rule,
+    };
+    final ruleForColor = [
+      for (final colorId in bodyColors) rulesByColorId[colorId]!,
+    ];
+    final attributeIdList = masterData.attributes
+        .map((attribute) => attribute.id)
+        .toList();
+
+    final isSameColorPair =
+        bodyColors.length == 2 && bodyColors[0] == bodyColors[1];
+    final isDistinctColorPair = bodyColors.length == 2 && !isSameColorPair;
+    final baseRule = isDistinctColorPair ? null : ruleForColor.first;
+
+    final totals = <String, int>{};
+    if (isDistinctColorPair) {
+      for (final rule in ruleForColor) {
+        rule.attributeResistanceBonuses.forEach((attributeId, bonus) {
+          totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
+        });
+      }
+    } else {
+      totals.addAll(baseRule!.attributeResistanceBonuses);
     }
-  } else {
-    totals.addAll(baseRule!.attributeResistanceBonuses);
-  }
 
-  if (baseRule != null) {
-    _applySoloOrPairEffects(
-      totals: totals,
-      ownBonuses: baseRule.attributeResistanceBonuses,
-      attributeIdList: attributeIdList,
+    if (baseRule != null) {
+      _applySoloOrPairEffects(
+        totals: totals,
+        ownBonuses: baseRule.attributeResistanceBonuses,
+        attributeIdList: attributeIdList,
+        isSpColor: isSpColor,
+        isSameColorPair: isSameColorPair,
+      );
+    }
+
+    if (isDistinctColorPair) {
+      totals.updateAll((_, value) => value ~/ 2);
+    }
+
+    return [
+      for (final entry in totals.entries)
+        if (entry.value != 0)
+          AttributeResistance(attributeId: entry.key, value: entry.value),
+    ];
+  }
+}
+
+/// Derives [DenpaMen.attributeResistance] from [DenpaMen.bodyColors] /
+/// [DenpaMen.isSpColor] and [masterData]'s body color resistance rules.
+extension DenpaMenAttributeResistanceCalculation on DenpaMen {
+  List<AttributeResistance> calculateAttributeResistance(
+    MasterData masterData,
+  ) {
+    return (
+      bodyColors: bodyColors,
       isSpColor: isSpColor,
-      isSameColorPair: isSameColorPair,
-    );
+    ).calculateAttributeResistance(masterData);
   }
-
-  if (isDistinctColorPair) {
-    totals.updateAll((_, value) => value ~/ 2);
-  }
-
-  return [
-    for (final entry in totals.entries)
-      if (entry.value != 0)
-        AttributeResistance(attributeId: entry.key, value: entry.value),
-  ];
 }
 
 void _applySoloOrPairEffects({
