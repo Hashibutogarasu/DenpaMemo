@@ -2,8 +2,8 @@ import 'package:denpa_memo/data/master_data/json_master_data_repository.dart';
 import 'package:denpa_memo/domain/master_data/anntena.dart';
 import 'package:denpa_memo/domain/master_data/head_shape.dart';
 import 'package:denpa_memo/domain/master_data/master_data.dart';
-import 'package:denpa_memo/domain/qr_code/denpa_men.dart';
-import 'package:denpa_memo/domain/qr_code/denpa_men_factory.dart';
+import 'package:denpa_memo/domain/denpa_men/denpa_men.dart';
+import 'package:denpa_memo/domain/denpa_men/denpa_men_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

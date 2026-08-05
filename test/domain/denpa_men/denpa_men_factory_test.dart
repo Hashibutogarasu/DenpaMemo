@@ -6,8 +6,8 @@ import 'package:denpa_memo/domain/master_data/master_data.dart';
 import 'package:denpa_memo/domain/master_data/pattern.dart';
 import 'package:denpa_memo/domain/master_data/personality.dart';
 import 'package:denpa_memo/domain/master_data/physique.dart';
-import 'package:denpa_memo/domain/qr_code/denpa_men_factory.dart';
-import 'package:denpa_memo/domain/qr_code/denpa_men_validation_exception.dart';
+import 'package:denpa_memo/domain/denpa_men/denpa_men_factory.dart';
+import 'package:denpa_memo/domain/denpa_men/denpa_men_validation_exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

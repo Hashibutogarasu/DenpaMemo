@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'denpa_men.dart';
+import '../denpa_men/denpa_men.dart';
 
 part 'qr_code.freezed.dart';
 part 'qr_code.g.dart';
