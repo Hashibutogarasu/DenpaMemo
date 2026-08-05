@@ -1,0 +1,6 @@
+{
+  "id": "staticElectricity",
+  "displayName": "staticElectricity",
+  "dealsDamage": true,
+  "attackAttributeId": "thunder"
+}

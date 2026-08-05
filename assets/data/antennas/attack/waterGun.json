@@ -1,0 +1,6 @@
+{
+  "id": "waterGun",
+  "displayName": "waterGun",
+  "dealsDamage": true,
+  "attackAttributeId": "water"
+}

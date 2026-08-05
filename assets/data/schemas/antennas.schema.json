@@ -1,21 +1,38 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Antennas",
-  "description": "Antenna master data, parsed into Anntena (lib/domain/master_data/anntena.dart).",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "additionalProperties": false,
-    "required": ["id", "displayName"],
-    "properties": {
-      "id": {
-        "type": "string",
-        "description": "Stable identifier referenced by other data and code."
-      },
-      "displayName": {
-        "type": "string",
-        "description": "Name shown to the user."
-      }
+  "title": "Antenna",
+  "description": "A single antenna master data entry, parsed into Anntena (lib/domain/master_data/anntena.dart). One file per antenna, under assets/data/antennas/attack|support|other/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "displayName"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable identifier referenced by other data and code."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Translation key looked up in the app's localization resources; not literal display text."
+    },
+    "targetCount": {
+      "type": ["integer", "null"],
+      "description": "Number of targets this antenna's move hits, or null/omitted if it hits every opposing target instead of a fixed count."
+    },
+    "dealsDamage": {
+      "type": "boolean",
+      "description": "Whether this antenna's move deals damage. Defaults to false."
+    },
+    "attackAttributeId": {
+      "type": ["string", "null"],
+      "description": "Attribute id (see attributes.json) of the damage this antenna deals, or null/omitted if it deals no attribute-typed damage."
+    },
+    "isInheritable": {
+      "type": "boolean",
+      "description": "Whether this antenna can be inherited (bred) onto offspring. Defaults to false."
+    },
+    "evolvesToId": {
+      "type": ["string", "null"],
+      "description": "Antenna id this one evolves into, or null/omitted if it has no evolution."
     }
   }
 }
