@@ -100,4 +100,9 @@ void main() {
       }
     },
   );
+
+  test('bread grants +2 fear, plus red color +1 burn', () {
+    final result = abnormalityByAttribute(build(headShapeById('bread')));
+    expect(result, {'fear': 2, 'burn': 1});
+  });
 }
