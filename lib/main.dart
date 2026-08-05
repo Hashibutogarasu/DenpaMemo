@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'routing/app_router.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -9,24 +11,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'denpa_memo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: const SizedBox.shrink(),
+      routerConfig: appRouter,
     );
   }
 }
