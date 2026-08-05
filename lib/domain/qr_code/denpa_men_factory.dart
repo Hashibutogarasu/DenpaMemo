@@ -42,6 +42,7 @@ DenpaMen createDenpaMen({
     abnormalityResistances: _abnormalityResistances(headShape),
     bodyColors: bodyColors,
     attributeResistance: _attributeResistances(
+      bodyColors: bodyColors,
       ruleForColor: ruleForColor,
       isSpColor: isSpColor,
       attributeIds: masterData.attributes.map((attribute) => attribute.id),
@@ -74,13 +75,18 @@ List<AbnormalityResistance> _abnormalityResistances(HeadShape headShape) {
 }
 
 List<AttributeResistance> _attributeResistances({
+  required List<String> bodyColors,
   required List<BodyColorResistanceRule> ruleForColor,
   required bool isSpColor,
   required Iterable<String> attributeIds,
 }) {
-  final totals = <String, int>{};
+  final isSameColorPair = bodyColors.length == 2 && bodyColors[0] == bodyColors[1];
 
-  for (final rule in ruleForColor) {
+  final totals = <String, int>{};
+  final rulesToMerge = isSameColorPair
+      ? [ruleForColor.first]
+      : ruleForColor;
+  for (final rule in rulesToMerge) {
     rule.attributeResistanceBonuses.forEach((attributeId, bonus) {
       totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
     });
@@ -107,7 +113,9 @@ List<AttributeResistance> _attributeResistances({
   }
 
   if (ruleForColor.length == 2) {
-    totals.updateAll((_, value) => value ~/ 2);
+    totals.updateAll(
+      (_, value) => isSameColorPair ? value * 3 ~/ 2 : value ~/ 2,
+    );
   }
 
   return [
