@@ -34,25 +34,24 @@ DenpaMen createDenpaMen({
     for (final rule in masterData.bodyColorResistanceRules) rule.colorId: rule,
   };
 
-  final ruleForColor = <BodyColorResistanceRule>[
-    for (final colorId in bodyColors) _requireRule(rulesByColorId, colorId),
-  ];
+  for (final colorId in bodyColors) {
+    _requireRule(rulesByColorId, colorId);
+  }
 
-  return DenpaMen(
+  final draft = DenpaMen(
     abnormalityResistances: _abnormalityResistances(headShape),
     bodyColors: bodyColors,
-    attributeResistance: calculateAttributeResistances(
-      bodyColors: bodyColors,
-      ruleForColor: ruleForColor,
-      isSpColor: isSpColor,
-      attributeIds: masterData.attributes.map((attribute) => attribute.id),
-    ),
+    attributeResistance: const [],
     physique: physique,
     personality: personality,
     pattern: pattern,
     headShape: headShape,
     anntena: anntena,
     isSpColor: isSpColor,
+  );
+
+  return draft.copyWith(
+    attributeResistance: draft.calculateAttributeResistance(masterData),
   );
 }
 
