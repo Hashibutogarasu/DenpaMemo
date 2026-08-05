@@ -86,16 +86,23 @@ List<AttributeResistance> _attributeResistances({
     });
   }
 
+  final attributeIdList = attributeIds.toList();
   final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
-  final hasOwnStrength =
-      soloRule?.attributeResistanceBonuses.values.any((v) => v > 0) ?? false;
-  if (isSpColor && hasOwnStrength) {
-    totals.updateAll((_, value) => value < 0 ? 0 : value);
-  }
-
-  if (soloRule != null && soloRule.attributeResistanceBonuses.isEmpty) {
-    for (final attributeId in attributeIds) {
-      totals[attributeId] = (totals[attributeId] ?? 0) + 1;
+  if (soloRule != null) {
+    final ownBonuses = soloRule.attributeResistanceBonuses;
+    if (ownBonuses.isEmpty) {
+      for (final attributeId in attributeIdList) {
+        totals[attributeId] = (totals[attributeId] ?? 0) + 1;
+      }
+    } else if (isSpColor) {
+      final hasOwnStrength = ownBonuses.values.any((v) => v > 0);
+      if (hasOwnStrength) {
+        totals.updateAll((_, value) => value < 0 ? 0 : value);
+      } else if (ownBonuses.length == attributeIdList.length) {
+        for (final attributeId in attributeIdList) {
+          totals[attributeId] = -1;
+        }
+      }
     }
   }
 
