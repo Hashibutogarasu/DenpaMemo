@@ -86,11 +86,13 @@ List<AttributeResistance> _attributeResistances({
     });
   }
 
-  if (isSpColor) {
+  final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
+  final hasOwnStrength =
+      soloRule?.attributeResistanceBonuses.values.any((v) => v > 0) ?? false;
+  if (isSpColor && hasOwnStrength) {
     totals.updateAll((_, value) => value < 0 ? 0 : value);
   }
 
-  final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
   if (soloRule != null && soloRule.attributeResistanceBonuses.isEmpty) {
     for (final attributeId in attributeIds) {
       totals[attributeId] = (totals[attributeId] ?? 0) + 1;
