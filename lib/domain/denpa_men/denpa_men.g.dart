@@ -25,6 +25,16 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   headShape: HeadShape.fromJson(json['headShape'] as Map<String, dynamic>),
   anntena: Anntena.fromJson(json['anntena'] as Map<String, dynamic>),
   isSpColor: json['isSpColor'] as bool,
+  happiness: (json['happiness'] as num).toInt(),
+  level: (json['level'] as num).toInt(),
+  currentExp: (json['currentExp'] as num).toInt(),
+  maxExp: (json['maxExp'] as num).toInt(),
+  hp: (json['hp'] as num).toInt(),
+  ap: (json['ap'] as num).toInt(),
+  attack: (json['attack'] as num).toInt(),
+  defense: (json['defense'] as num).toInt(),
+  speed: (json['speed'] as num).toInt(),
+  evasionRate: (json['evasionRate'] as num).toInt(),
 );
 
 Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
@@ -38,4 +48,14 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'headShape': instance.headShape,
   'anntena': instance.anntena,
   'isSpColor': instance.isSpColor,
+  'happiness': instance.happiness,
+  'level': instance.level,
+  'currentExp': instance.currentExp,
+  'maxExp': instance.maxExp,
+  'hp': instance.hp,
+  'ap': instance.ap,
+  'attack': instance.attack,
+  'defense': instance.defense,
+  'speed': instance.speed,
+  'evasionRate': instance.evasionRate,
 };

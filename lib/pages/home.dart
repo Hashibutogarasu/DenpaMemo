@@ -30,16 +30,20 @@ class Home extends ConsumerWidget {
             pattern: masterData.patterns.first,
             anntena: masterData.anntenas.first,
             masterData: masterData,
+            happiness: 80,
+            level: 5,
+            currentExp: 120,
+            maxExp: 300,
           );
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: DenpaMenStatus(
               name: denpaMen.name,
-              level: 5,
-              happiness: 80,
-              expProgress: 0.4,
-              expLabel: '120/300',
+              level: denpaMen.level,
+              happiness: denpaMen.happiness,
+              expProgress: denpaMen.currentExp / denpaMen.maxExp,
+              expLabel: '${denpaMen.currentExp}/${denpaMen.maxExp}',
               attributeResistances: denpaMen.attributeResistance,
               abnormalityResistances: denpaMen.abnormalityResistances,
             ),
