@@ -6,7 +6,7 @@ import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
 import 'abnormality_resistance.dart';
-import 'attribute_resistance.dart';
+import 'attribute_resistance_calculator.dart';
 import 'denpa_men.dart';
 import 'denpa_men_validation_exception.dart';
 
@@ -41,7 +41,8 @@ DenpaMen createDenpaMen({
   return DenpaMen(
     abnormalityResistances: _abnormalityResistances(headShape),
     bodyColors: bodyColors,
-    attributeResistance: _attributeResistances(
+    attributeResistance: calculateAttributeResistances(
+      bodyColors: bodyColors,
       ruleForColor: ruleForColor,
       isSpColor: isSpColor,
       attributeIds: masterData.attributes.map((attribute) => attribute.id),
@@ -70,49 +71,5 @@ List<AbnormalityResistance> _abnormalityResistances(HeadShape headShape) {
   return [
     for (final entry in headShape.abnormalityResistanceBonuses.entries)
       AbnormalityResistance(abnormalityId: entry.key, value: entry.value),
-  ];
-}
-
-List<AttributeResistance> _attributeResistances({
-  required List<BodyColorResistanceRule> ruleForColor,
-  required bool isSpColor,
-  required Iterable<String> attributeIds,
-}) {
-  final totals = <String, int>{};
-
-  for (final rule in ruleForColor) {
-    rule.attributeResistanceBonuses.forEach((attributeId, bonus) {
-      totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
-    });
-  }
-
-  final attributeIdList = attributeIds.toList();
-  final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
-  if (soloRule != null) {
-    final ownBonuses = soloRule.attributeResistanceBonuses;
-    if (ownBonuses.isEmpty) {
-      for (final attributeId in attributeIdList) {
-        totals[attributeId] = (totals[attributeId] ?? 0) + 1;
-      }
-    } else if (isSpColor) {
-      final hasOwnStrength = ownBonuses.values.any((v) => v > 0);
-      if (hasOwnStrength) {
-        totals.updateAll((_, value) => value < 0 ? 0 : value);
-      } else if (ownBonuses.length == attributeIdList.length) {
-        for (final attributeId in attributeIdList) {
-          totals[attributeId] = -1;
-        }
-      }
-    }
-  }
-
-  if (ruleForColor.length == 2) {
-    totals.updateAll((_, value) => value ~/ 2);
-  }
-
-  return [
-    for (final entry in totals.entries)
-      if (entry.value != 0)
-        AttributeResistance(attributeId: entry.key, value: entry.value),
   ];
 }
