@@ -5,9 +5,8 @@ import '../master_data/master_data.dart';
 import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
-import 'abnormality_resistance_calculator.dart';
-import 'attribute_resistance_calculator.dart';
 import 'denpa_men.dart';
+import 'denpa_men_resistance_calculator.dart';
 import 'denpa_men_validation_exception.dart';
 
 /// Builds a [DenpaMen], validating [bodyColors] and deriving
@@ -52,9 +51,10 @@ DenpaMen createDenpaMen({
     isSpColor: isSpColor,
   );
 
+  final resistances = draft.calculateResistances(masterData);
   return draft.copyWith(
-    abnormalityResistances: draft.calculateAbnormalityResistance(masterData),
-    attributeResistance: draft.calculateAttributeResistance(masterData),
+    abnormalityResistances: resistances.abnormalityResistances,
+    attributeResistance: resistances.attributeResistance,
   );
 }
 
