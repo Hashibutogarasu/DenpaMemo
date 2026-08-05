@@ -11,7 +11,7 @@ import 'attribute_resistance_calculator.dart';
 /// or null if none of the solo, distinct-pair, or same-pair candidates
 /// produce that result.
 ({List<String> bodyColors, bool isSpColor})?
-findBodyColorCombinationForAttributeResistance({
+findColorCombination({
   required List<AttributeResistance> targetAttributeResistance,
   required MasterData masterData,
 }) {
