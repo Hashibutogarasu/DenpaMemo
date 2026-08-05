@@ -80,42 +80,57 @@ List<AttributeResistance> _attributeResistances({
   required bool isSpColor,
   required Iterable<String> attributeIds,
 }) {
+  final attributeIdList = attributeIds.toList();
   final isSameColorPair = bodyColors.length == 2 && bodyColors[0] == bodyColors[1];
+  final isDistinctColorPair = bodyColors.length == 2 && !isSameColorPair;
+  final baseRule = isDistinctColorPair ? null : ruleForColor.first;
 
   final totals = <String, int>{};
-  final rulesToMerge = isSameColorPair
-      ? [ruleForColor.first]
-      : ruleForColor;
-  for (final rule in rulesToMerge) {
-    rule.attributeResistanceBonuses.forEach((attributeId, bonus) {
-      totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
-    });
+  if (isDistinctColorPair) {
+    for (final rule in ruleForColor) {
+      rule.attributeResistanceBonuses.forEach((attributeId, bonus) {
+        totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
+      });
+    }
+  } else {
+    totals.addAll(baseRule!.attributeResistanceBonuses);
   }
 
-  final attributeIdList = attributeIds.toList();
-  final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
-  if (soloRule != null) {
-    final ownBonuses = soloRule.attributeResistanceBonuses;
+  if (baseRule != null) {
+    final ownBonuses = baseRule.attributeResistanceBonuses;
     if (ownBonuses.isEmpty) {
       for (final attributeId in attributeIdList) {
         totals[attributeId] = (totals[attributeId] ?? 0) + 1;
       }
-    } else if (isSpColor) {
+    } else {
       final hasOwnStrength = ownBonuses.values.any((v) => v > 0);
-      if (hasOwnStrength) {
-        totals.updateAll((_, value) => value < 0 ? 0 : value);
-      } else if (ownBonuses.length == attributeIdList.length) {
-        for (final attributeId in attributeIdList) {
-          totals[attributeId] = -1;
+      final isFullNegativeCoverage =
+          !hasOwnStrength && ownBonuses.length == attributeIdList.length;
+
+      if (isSpColor) {
+        if (hasOwnStrength) {
+          totals.updateAll((_, value) => value < 0 ? 0 : value);
+        } else if (isFullNegativeCoverage) {
+          for (final attributeId in attributeIdList) {
+            totals[attributeId] = -1;
+          }
+        }
+      } else if (isSameColorPair) {
+        if (hasOwnStrength) {
+          totals.updateAll((_, value) {
+            if (value > 0) return value + 1;
+            if (value < 0) return value - 1;
+            return value;
+          });
+        } else if (isFullNegativeCoverage) {
+          totals.updateAll((_, value) => value + 1);
         }
       }
     }
   }
 
-  if (ruleForColor.length == 2) {
-    totals.updateAll(
-      (_, value) => isSameColorPair ? value * 3 ~/ 2 : value ~/ 2,
-    );
+  if (isDistinctColorPair) {
+    totals.updateAll((_, value) => value ~/ 2);
   }
 
   return [
