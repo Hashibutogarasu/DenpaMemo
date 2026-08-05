@@ -5,6 +5,7 @@ import 'package:flutter/services.dart' show AssetBundle, rootBundle;
 import '../../domain/master_data/abnormality_type.dart';
 import '../../domain/master_data/anntena.dart';
 import '../../domain/master_data/attribute.dart';
+import '../../domain/master_data/body_color_abnormality_resistance_rule.dart';
 import '../../domain/master_data/body_color_resistance_rule.dart';
 import '../../domain/master_data/head_shape.dart';
 import '../../domain/master_data/master_data.dart';
@@ -19,6 +20,8 @@ const _attributesAssetPath = 'assets/data/attributes.json';
 const _abnormalityTypesAssetPath = 'assets/data/abnormality_types.json';
 const _bodyColorResistanceAssetPath =
     'assets/data/body_color_attribute_resistance.json';
+const _bodyColorAbnormalityResistanceAssetPath =
+    'assets/data/body_color_abnormality_resistance.json';
 const _physiquesAssetPath = 'assets/data/physiques.json';
 const _personalitiesAssetPath = 'assets/data/personalities.json';
 const _patternsAssetPath = 'assets/data/patterns.json';
@@ -53,8 +56,13 @@ class JsonMasterDataRepository implements MasterDataRepository {
       _abnormalityTypesAssetPath,
       AbnormalityType.fromJson,
     );
-    final bodyColorResistanceRules = await _loadColorResistanceRules(
+    final bodyColorResistanceRules = await _loadKeyedByColorId(
       _bodyColorResistanceAssetPath,
+      BodyColorResistanceRule.fromJson,
+    );
+    final bodyColorAbnormalityResistanceRules = await _loadKeyedByColorId(
+      _bodyColorAbnormalityResistanceAssetPath,
+      BodyColorAbnormalityResistanceRule.fromJson,
     );
     final physiques = await _loadList(_physiquesAssetPath, Physique.fromJson);
     final personalities = await _loadList(
@@ -69,6 +77,7 @@ class JsonMasterDataRepository implements MasterDataRepository {
       attributes: attributes,
       abnormalityTypes: abnormalityTypes,
       bodyColorResistanceRules: bodyColorResistanceRules,
+      bodyColorAbnormalityResistanceRules: bodyColorAbnormalityResistanceRules,
       physiques: physiques,
       personalities: personalities,
       patterns: patterns,
@@ -86,14 +95,15 @@ class JsonMasterDataRepository implements MasterDataRepository {
         .toList();
   }
 
-  Future<List<BodyColorResistanceRule>> _loadColorResistanceRules(
+  Future<List<T>> _loadKeyedByColorId<T>(
     String assetPath,
+    T Function(Map<String, dynamic> json) fromJson,
   ) async {
     final raw = await _bundle.loadString(assetPath);
     final decoded = jsonDecode(raw) as Map<String, dynamic>;
     return decoded.entries
         .map(
-          (entry) => BodyColorResistanceRule.fromJson({
+          (entry) => fromJson({
             _colorIdJsonKey: entry.key,
             ...entry.value as Map<String, dynamic>,
           }),

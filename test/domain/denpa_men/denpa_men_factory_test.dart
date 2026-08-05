@@ -61,6 +61,7 @@ void main() {
         attributeResistanceBonuses: {attributeIdA: 2, attributeIdB: -2},
       ),
     ],
+    bodyColorAbnormalityResistanceRules: const [],
   );
 
   test('throws InvalidBodyColorCountException when bodyColors is empty', () {

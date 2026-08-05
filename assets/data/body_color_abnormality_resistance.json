@@ -1,0 +1,14 @@
+{
+  "black": { "abnormalityResistanceBonuses": { "sleep": 1 } },
+  "red": { "abnormalityResistanceBonuses": { "burn": 1 } },
+  "blue": { "abnormalityResistanceBonuses": { "soaked": 1 } },
+  "yellow": { "abnormalityResistanceBonuses": { "electrocution": 1 } },
+  "lightBlue": { "abnormalityResistanceBonuses": { "frostbite": 1 } },
+  "green": { "abnormalityResistanceBonuses": { "cold": 1 } },
+  "orange": { "abnormalityResistanceBonuses": { "mud": 1 } },
+  "pink": { "abnormalityResistanceBonuses": { "charm": 1 } },
+  "purple": { "abnormalityResistanceBonuses": { "curse": 1 } },
+  "white": { "abnormalityResistanceBonuses": { "blind": 1 } },
+  "gold": { "abnormalityResistanceBonuses": { "paralysis": 1 } },
+  "silver": { "abnormalityResistanceBonuses": { "poison": 1 } }
+}

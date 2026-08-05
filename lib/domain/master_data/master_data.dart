@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'abnormality_type.dart';
 import 'anntena.dart';
 import 'attribute.dart';
+import 'body_color_abnormality_resistance_rule.dart';
 import 'body_color_resistance_rule.dart';
 import 'head_shape.dart';
 import 'pattern.dart';
@@ -20,6 +21,8 @@ abstract class MasterData with _$MasterData {
     required List<Attribute> attributes,
     required List<AbnormalityType> abnormalityTypes,
     required List<BodyColorResistanceRule> bodyColorResistanceRules,
+    required List<BodyColorAbnormalityResistanceRule>
+    bodyColorAbnormalityResistanceRules,
     required List<Physique> physiques,
     required List<Personality> personalities,
     required List<Pattern> patterns,

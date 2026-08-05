@@ -5,7 +5,7 @@ import '../master_data/master_data.dart';
 import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
-import 'abnormality_resistance.dart';
+import 'abnormality_resistance_calculator.dart';
 import 'attribute_resistance_calculator.dart';
 import 'denpa_men.dart';
 import 'denpa_men_validation_exception.dart';
@@ -41,7 +41,7 @@ DenpaMen createDenpaMen({
 
   final draft = DenpaMen(
     name: name,
-    abnormalityResistances: _abnormalityResistances(headShape),
+    abnormalityResistances: const [],
     bodyColors: bodyColors,
     attributeResistance: const [],
     physique: physique,
@@ -53,6 +53,7 @@ DenpaMen createDenpaMen({
   );
 
   return draft.copyWith(
+    abnormalityResistances: draft.calculateAbnormalityResistance(masterData),
     attributeResistance: draft.calculateAttributeResistance(masterData),
   );
 }
@@ -66,11 +67,4 @@ BodyColorResistanceRule _requireRule(
     throw UnknownBodyColorException(colorId);
   }
   return rule;
-}
-
-List<AbnormalityResistance> _abnormalityResistances(HeadShape headShape) {
-  return [
-    for (final entry in headShape.abnormalityResistanceBonuses.entries)
-      AbnormalityResistance(abnormalityId: entry.key, value: entry.value),
-  ];
 }
