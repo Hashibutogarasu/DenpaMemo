@@ -1,0 +1,7 @@
+[
+  { "id": "saidai", "displayName": "最大" },
+  { "id": "jun-dai", "displayName": "準大" },
+  { "id": "chuukan", "displayName": "中間" },
+  { "id": "jun-soku", "displayName": "準速" },
+  { "id": "saisoku", "displayName": "最速" }
+]
