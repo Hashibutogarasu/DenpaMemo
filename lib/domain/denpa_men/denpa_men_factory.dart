@@ -22,6 +22,16 @@ DenpaMen createDenpaMen({
   required Pattern pattern,
   required Anntena anntena,
   required MasterData masterData,
+  int happiness = 0,
+  int level = 1,
+  int currentExp = 0,
+  int maxExp = 0,
+  int hp = 0,
+  int ap = 0,
+  int attack = 0,
+  int defense = 0,
+  int speed = 0,
+  int evasionRate = 0,
 }) {
   if (bodyColors.length != 1 && bodyColors.length != 2) {
     throw InvalidBodyColorCountException(bodyColors.length);
@@ -49,6 +59,16 @@ DenpaMen createDenpaMen({
     headShape: headShape,
     anntena: anntena,
     isSpColor: isSpColor,
+    happiness: happiness,
+    level: level,
+    currentExp: currentExp,
+    maxExp: maxExp,
+    hp: hp,
+    ap: ap,
+    attack: attack,
+    defense: defense,
+    speed: speed,
+    evasionRate: evasionRate,
   );
 
   final resistances = draft.calculateResistances(masterData);

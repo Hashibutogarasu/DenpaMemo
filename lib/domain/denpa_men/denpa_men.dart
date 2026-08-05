@@ -27,6 +27,16 @@ abstract class DenpaMen with _$DenpaMen {
     required HeadShape headShape,
     required Anntena anntena,
     required bool isSpColor,
+    required int happiness,
+    required int level,
+    required int currentExp,
+    required int maxExp,
+    required int hp,
+    required int ap,
+    required int attack,
+    required int defense,
+    required int speed,
+    required int evasionRate,
   }) = _DenpaMen;
 
   factory DenpaMen.fromJson(Map<String, dynamic> json) =>
