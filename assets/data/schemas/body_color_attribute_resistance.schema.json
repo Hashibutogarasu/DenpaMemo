@@ -9,12 +9,8 @@
     "properties": {
       "attributeResistanceBonuses": {
         "type": "object",
-        "description": "Maps an attribute id (see attributes.json) to the resistance bonus this color grants.",
+        "description": "Maps an attribute id (see attributes.json) to the resistance bonus this color grants. Negative entries are automatically zeroed out when this color becomes an SP color, and a solo color with no entries here automatically grants +1 to every attribute.",
         "additionalProperties": { "type": "integer" }
-      },
-      "weaknessAttributeId": {
-        "type": ["string", "null"],
-        "description": "Attribute id (see attributes.json) that is negated when this color becomes an SP color."
       }
     }
   }

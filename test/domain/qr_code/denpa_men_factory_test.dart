@@ -7,6 +7,7 @@ import 'package:denpa_memo/domain/master_data/pattern.dart';
 import 'package:denpa_memo/domain/master_data/personality.dart';
 import 'package:denpa_memo/domain/master_data/physique.dart';
 import 'package:denpa_memo/domain/qr_code/denpa_men_factory.dart';
+import 'package:denpa_memo/domain/qr_code/denpa_men_validation_exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -16,6 +17,7 @@ void main() {
   final soloColorId = 'color-solo';
   final secondColorId = 'color-second';
   final soloAllBonusColorId = 'color-solo-all-bonus';
+  final weaknessColorId = 'color-weakness';
 
   final headShape = HeadShape(
     id: 'head-a',
@@ -45,7 +47,6 @@ void main() {
       BodyColorResistanceRule(
         colorId: soloColorId,
         attributeResistanceBonuses: {attributeIdA: 2},
-        weaknessAttributeId: attributeIdB,
       ),
       BodyColorResistanceRule(
         colorId: secondColorId,
@@ -55,10 +56,14 @@ void main() {
         colorId: soloAllBonusColorId,
         attributeResistanceBonuses: const {},
       ),
+      BodyColorResistanceRule(
+        colorId: weaknessColorId,
+        attributeResistanceBonuses: {attributeIdA: 2, attributeIdB: -2},
+      ),
     ],
   );
 
-  test('throws when bodyColors is empty', () {
+  test('throws InvalidBodyColorCountException when bodyColors is empty', () {
     expect(
       () => createDenpaMen(
         bodyColors: const [],
@@ -70,41 +75,47 @@ void main() {
         anntena: anntena,
         masterData: masterData,
       ),
-      throwsArgumentError,
+      throwsA(isA<InvalidBodyColorCountException>()),
     );
   });
 
-  test('throws when bodyColors has more than two colors', () {
-    expect(
-      () => createDenpaMen(
-        bodyColors: [soloColorId, secondColorId, soloAllBonusColorId],
-        isSpColor: false,
-        headShape: headShape,
-        physique: physique,
-        personality: personality,
-        pattern: pattern,
-        anntena: anntena,
-        masterData: masterData,
-      ),
-      throwsArgumentError,
-    );
-  });
+  test(
+    'throws InvalidBodyColorCountException when bodyColors has more than two colors',
+    () {
+      expect(
+        () => createDenpaMen(
+          bodyColors: [soloColorId, secondColorId, soloAllBonusColorId],
+          isSpColor: false,
+          headShape: headShape,
+          physique: physique,
+          personality: personality,
+          pattern: pattern,
+          anntena: anntena,
+          masterData: masterData,
+        ),
+        throwsA(isA<InvalidBodyColorCountException>()),
+      );
+    },
+  );
 
-  test('throws when isSpColor is true with two colors', () {
-    expect(
-      () => createDenpaMen(
-        bodyColors: [soloColorId, secondColorId],
-        isSpColor: true,
-        headShape: headShape,
-        physique: physique,
-        personality: personality,
-        pattern: pattern,
-        anntena: anntena,
-        masterData: masterData,
-      ),
-      throwsArgumentError,
-    );
-  });
+  test(
+    'throws SpColorRequiresSingleBodyColorException when isSpColor is true with two colors',
+    () {
+      expect(
+        () => createDenpaMen(
+          bodyColors: [soloColorId, secondColorId],
+          isSpColor: true,
+          headShape: headShape,
+          physique: physique,
+          personality: personality,
+          pattern: pattern,
+          anntena: anntena,
+          masterData: masterData,
+        ),
+        throwsA(isA<SpColorRequiresSingleBodyColorException>()),
+      );
+    },
+  );
 
   test('derives abnormality resistances from headShape', () {
     final denpaMen = createDenpaMen(
@@ -147,23 +158,31 @@ void main() {
     expect(resistanceB.value, 1);
   });
 
-  test('SP color negates the weakness attribute', () {
-    final denpaMen = createDenpaMen(
-      bodyColors: [soloColorId],
-      isSpColor: true,
-      headShape: headShape,
-      physique: physique,
-      personality: personality,
-      pattern: pattern,
-      anntena: anntena,
-      masterData: masterData,
-    );
+  test(
+    'SP color zeroes out negative attribute resistance, leaving only the positive one',
+    () {
+      final denpaMen = createDenpaMen(
+        bodyColors: [weaknessColorId],
+        isSpColor: true,
+        headShape: headShape,
+        physique: physique,
+        personality: personality,
+        pattern: pattern,
+        anntena: anntena,
+        masterData: masterData,
+      );
 
-    final weakness = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == attributeIdB,
-    );
-    expect(weakness.value, 0);
-  });
+      expect(
+        denpaMen.attributeResistance.where((r) => r.attributeId == attributeIdB),
+        isEmpty,
+      );
+      final resistanceA = denpaMen.attributeResistance.firstWhere(
+        (r) => r.attributeId == attributeIdA,
+      );
+      expect(resistanceA.value, 2);
+      expect(denpaMen.attributeResistance, hasLength(1));
+    },
+  );
 
   test('two colors halve the combined attribute resistance', () {
     final denpaMen = createDenpaMen(

@@ -10,7 +10,6 @@ abstract class BodyColorResistanceRule with _$BodyColorResistanceRule {
   const factory BodyColorResistanceRule({
     required String colorId,
     @Default({}) Map<String, int> attributeResistanceBonuses,
-    String? weaknessAttributeId,
   }) = _BodyColorResistanceRule;
 
   factory BodyColorResistanceRule.fromJson(Map<String, dynamic> json) =>

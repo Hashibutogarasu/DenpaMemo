@@ -15,7 +15,6 @@ _BodyColorResistanceRule _$BodyColorResistanceRuleFromJson(
         (k, e) => MapEntry(k, (e as num).toInt()),
       ) ??
       const {},
-  weaknessAttributeId: json['weaknessAttributeId'] as String?,
 );
 
 Map<String, dynamic> _$BodyColorResistanceRuleToJson(
@@ -23,5 +22,4 @@ Map<String, dynamic> _$BodyColorResistanceRuleToJson(
 ) => <String, dynamic>{
   'colorId': instance.colorId,
   'attributeResistanceBonuses': instance.attributeResistanceBonuses,
-  'weaknessAttributeId': instance.weaknessAttributeId,
 };

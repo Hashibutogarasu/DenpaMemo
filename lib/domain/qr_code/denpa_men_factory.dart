@@ -8,6 +8,7 @@ import '../master_data/physique.dart';
 import 'abnormality_resistance.dart';
 import 'attribute_resistance.dart';
 import 'denpa_men.dart';
+import 'denpa_men_validation_exception.dart';
 
 /// Builds a [DenpaMen], validating [bodyColors] and deriving
 /// [DenpaMen.attributeResistance] / [DenpaMen.abnormalityResistances] from
@@ -23,18 +24,10 @@ DenpaMen createDenpaMen({
   required MasterData masterData,
 }) {
   if (bodyColors.length != 1 && bodyColors.length != 2) {
-    throw ArgumentError.value(
-      bodyColors,
-      'bodyColors',
-      'must contain exactly 1 or 2 colors',
-    );
+    throw InvalidBodyColorCountException(bodyColors.length);
   }
   if (isSpColor && bodyColors.length != 1) {
-    throw ArgumentError.value(
-      isSpColor,
-      'isSpColor',
-      'can only be true when bodyColors has exactly 1 color',
-    );
+    throw const SpColorRequiresSingleBodyColorException();
   }
 
   final rulesByColorId = {
@@ -68,7 +61,7 @@ BodyColorResistanceRule _requireRule(
 ) {
   final rule = rulesByColorId[colorId];
   if (rule == null) {
-    throw ArgumentError.value(colorId, 'bodyColors', 'unknown body color id');
+    throw UnknownBodyColorException(colorId);
   }
   return rule;
 }
@@ -93,19 +86,14 @@ List<AttributeResistance> _attributeResistances({
     });
   }
 
-  final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
-  final grantsAllAttributeBonus =
-      isSpColor || (soloRule?.attributeResistanceBonuses.isEmpty ?? false);
-  if (grantsAllAttributeBonus) {
-    for (final attributeId in attributeIds) {
-      totals[attributeId] = (totals[attributeId] ?? 0) + 1;
-    }
+  if (isSpColor) {
+    totals.updateAll((_, value) => value < 0 ? 0 : value);
   }
 
-  if (isSpColor) {
-    final weaknessAttributeId = soloRule?.weaknessAttributeId;
-    if (weaknessAttributeId != null) {
-      totals[weaknessAttributeId] = 0;
+  final soloRule = ruleForColor.length == 1 ? ruleForColor.first : null;
+  if (soloRule != null && soloRule.attributeResistanceBonuses.isEmpty) {
+    for (final attributeId in attributeIds) {
+      totals[attributeId] = (totals[attributeId] ?? 0) + 1;
     }
   }
 
@@ -115,6 +103,7 @@ List<AttributeResistance> _attributeResistances({
 
   return [
     for (final entry in totals.entries)
-      AttributeResistance(attributeId: entry.key, value: entry.value),
+      if (entry.value != 0)
+        AttributeResistance(attributeId: entry.key, value: entry.value),
   ];
 }
