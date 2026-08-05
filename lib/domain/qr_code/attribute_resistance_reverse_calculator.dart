@@ -16,45 +16,25 @@ extension AttributeResistanceReverseLookup on List<AttributeResistance> {
         .map((rule) => rule.colorId)
         .toList();
 
-    for (final colorId in colorIds) {
-      for (final isSpColor in [false, true]) {
-        final candidate = (bodyColors: [colorId], isSpColor: isSpColor);
-        if (_matches(candidate, target, masterData)) {
-          return candidate;
-        }
-      }
-    }
+    final candidates = <BodyColorSelection>[
+      for (final colorId in colorIds) (bodyColors: [colorId], isSpColor: false),
+      for (final colorId in colorIds) (bodyColors: [colorId], isSpColor: true),
+      for (final colorId in colorIds)
+        (bodyColors: [colorId, colorId], isSpColor: false),
+      for (var i = 0; i < colorIds.length; i++)
+        for (var j = i + 1; j < colorIds.length; j++)
+          (bodyColors: [colorIds[i], colorIds[j]], isSpColor: false),
+    ];
 
-    for (final colorId in colorIds) {
-      final candidate = (bodyColors: [colorId, colorId], isSpColor: false);
-      if (_matches(candidate, target, masterData)) {
+    for (final candidate in candidates) {
+      final result = candidate.calculateAttributeResistance(masterData);
+      if (_mapEquals(_toMap(result), target)) {
         return candidate;
-      }
-    }
-
-    for (var i = 0; i < colorIds.length; i++) {
-      for (var j = i + 1; j < colorIds.length; j++) {
-        final candidate = (
-          bodyColors: [colorIds[i], colorIds[j]],
-          isSpColor: false,
-        );
-        if (_matches(candidate, target, masterData)) {
-          return candidate;
-        }
       }
     }
 
     return null;
   }
-}
-
-bool _matches(
-  BodyColorSelection candidate,
-  Map<String, int> target,
-  MasterData masterData,
-) {
-  final result = candidate.calculateAttributeResistance(masterData);
-  return _mapEquals(_toMap(result), target);
 }
 
 Map<String, int> _toMap(List<AttributeResistance> list) => {
