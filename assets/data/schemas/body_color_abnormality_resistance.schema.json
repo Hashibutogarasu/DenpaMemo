@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BodyColorAbnormalityResistance",
+  "description": "Per-color abnormality resistance rules, keyed by color id. Parsed into BodyColorAbnormalityResistanceRule (lib/domain/master_data/body_color_abnormality_resistance_rule.dart) — each key becomes colorId.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "abnormalityResistanceBonuses": {
+        "type": "object",
+        "description": "Maps an abnormality id (see abnormality_types.json) to the resistance bonus this color grants. Every body color's bonus is summed independently — a same-color pair adds it twice, and distinct colors are never halved or reduced.",
+        "additionalProperties": { "type": "integer" }
+      }
+    }
+  }
+}

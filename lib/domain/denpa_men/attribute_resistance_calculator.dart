@@ -1,6 +1,5 @@
 import '../master_data/master_data.dart';
 import 'attribute_resistance.dart';
-import 'denpa_men.dart';
 
 /// A body color selection (1 solo color, 2 distinct colors, or the same
 /// color twice) together with its SP-color state.
@@ -59,19 +58,6 @@ extension AttributeResistanceCalculation on BodyColorSelection {
         if (entry.value != 0)
           AttributeResistance(attributeId: entry.key, value: entry.value),
     ];
-  }
-}
-
-/// Derives [DenpaMen.attributeResistance] from [DenpaMen.bodyColors] /
-/// [DenpaMen.isSpColor] and [masterData]'s body color resistance rules.
-extension DenpaMenAttributeResistanceCalculation on DenpaMen {
-  List<AttributeResistance> calculateAttributeResistance(
-    MasterData masterData,
-  ) {
-    return (
-      bodyColors: bodyColors,
-      isSpColor: isSpColor,
-    ).calculateAttributeResistance(masterData);
   }
 }
 

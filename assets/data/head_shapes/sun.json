@@ -1,0 +1,20 @@
+{
+  "id": "sun",
+  "displayName": "sun",
+  "abnormalityResistanceBonuses": {
+    "poison": 3,
+    "burn": 3,
+    "frostbite": 3,
+    "cold": 3,
+    "mud": 3,
+    "electrocution": 3,
+    "soaked": 3,
+    "blind": 3,
+    "curse": 3,
+    "suddenDeath": 3,
+    "paralysis": 3,
+    "sleep": 3,
+    "charm": 3,
+    "fear": 3
+  }
+}

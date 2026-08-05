@@ -1,7 +1,7 @@
 {
   "json.schemas": [
     {
-      "fileMatch": ["/assets/data/head_shapes.json"],
+      "fileMatch": ["/assets/data/head_shapes/*.json"],
       "url": "./assets/data/schemas/head_shapes.schema.json"
     },
     {
@@ -31,6 +31,10 @@
     {
       "fileMatch": ["/assets/data/body_color_attribute_resistance.json"],
       "url": "./assets/data/schemas/body_color_attribute_resistance.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/body_color_abnormality_resistance.json"],
+      "url": "./assets/data/schemas/body_color_abnormality_resistance.schema.json"
     }
   ]
 }
