@@ -20,6 +20,7 @@ void main() {
 
   DenpaMen build(HeadShape headShape) {
     return createDenpaMen(
+      name: 'test-denpa-men',
       bodyColors: const ['red'],
       isSpColor: false,
       headShape: headShape,

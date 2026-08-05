@@ -17,6 +17,7 @@ void main() {
 
   DenpaMen buildSpColor(String colorId) {
     return createDenpaMen(
+      name: 'test-denpa-men',
       bodyColors: [colorId],
       isSpColor: true,
       headShape: const HeadShape(id: 'head-a', displayName: 'head-a'),

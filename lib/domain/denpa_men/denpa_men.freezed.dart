@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DenpaMen {
 
- List<AbnormalityResistance> get abnormalityResistances; List<String> get bodyColors; List<AttributeResistance> get attributeResistance; Physique get physique; Personality get personality; Pattern get pattern; HeadShape get headShape; Anntena get anntena; bool get isSpColor;
+ String get name; List<AbnormalityResistance> get abnormalityResistances; List<String> get bodyColors; List<AttributeResistance> get attributeResistance; Physique get physique; Personality get personality; Pattern get pattern; HeadShape get headShape; Anntena get anntena; bool get isSpColor;
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DenpaMenCopyWith<DenpaMen> get copyWith => _$DenpaMenCopyWithImpl<DenpaMen>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DenpaMen&&const DeepCollectionEquality().equals(other.abnormalityResistances, abnormalityResistances)&&const DeepCollectionEquality().equals(other.bodyColors, bodyColors)&&const DeepCollectionEquality().equals(other.attributeResistance, attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DenpaMen&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.abnormalityResistances, abnormalityResistances)&&const DeepCollectionEquality().equals(other.bodyColors, bodyColors)&&const DeepCollectionEquality().equals(other.attributeResistance, attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(abnormalityResistances),const DeepCollectionEquality().hash(bodyColors),const DeepCollectionEquality().hash(attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor);
+int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(abnormalityResistances),const DeepCollectionEquality().hash(bodyColors),const DeepCollectionEquality().hash(attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor);
 
 @override
 String toString() {
-  return 'DenpaMen(abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor)';
+  return 'DenpaMen(name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DenpaMenCopyWith<$Res>  {
   factory $DenpaMenCopyWith(DenpaMen value, $Res Function(DenpaMen) _then) = _$DenpaMenCopyWithImpl;
 @useResult
 $Res call({
- List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor
+ String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor
 });
 
 
@@ -65,9 +65,10 @@ class _$DenpaMenCopyWithImpl<$Res>
 
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,}) {
   return _then(_self.copyWith(
-abnormalityResistances: null == abnormalityResistances ? _self.abnormalityResistances : abnormalityResistances // ignore: cast_nullable_to_non_nullable
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,abnormalityResistances: null == abnormalityResistances ? _self.abnormalityResistances : abnormalityResistances // ignore: cast_nullable_to_non_nullable
 as List<AbnormalityResistance>,bodyColors: null == bodyColors ? _self.bodyColors : bodyColors // ignore: cast_nullable_to_non_nullable
 as List<String>,attributeResistance: null == attributeResistance ? _self.attributeResistance : attributeResistance // ignore: cast_nullable_to_non_nullable
 as List<AttributeResistance>,physique: null == physique ? _self.physique : physique // ignore: cast_nullable_to_non_nullable
@@ -206,10 +207,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DenpaMen() when $default != null:
-return $default(_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor);case _:
+return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor);case _:
   return orElse();
 
 }
@@ -227,10 +228,10 @@ return $default(_that.abnormalityResistances,_that.bodyColors,_that.attributeRes
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor)  $default,) {final _that = this;
 switch (_that) {
 case _DenpaMen():
-return $default(_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor);case _:
+return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -247,10 +248,10 @@ return $default(_that.abnormalityResistances,_that.bodyColors,_that.attributeRes
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor)?  $default,) {final _that = this;
 switch (_that) {
 case _DenpaMen() when $default != null:
-return $default(_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor);case _:
+return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor);case _:
   return null;
 
 }
@@ -262,9 +263,10 @@ return $default(_that.abnormalityResistances,_that.bodyColors,_that.attributeRes
 @JsonSerializable()
 
 class _DenpaMen implements DenpaMen {
-  const _DenpaMen({required final  List<AbnormalityResistance> abnormalityResistances, required final  List<String> bodyColors, required final  List<AttributeResistance> attributeResistance, required this.physique, required this.personality, required this.pattern, required this.headShape, required this.anntena, required this.isSpColor}): _abnormalityResistances = abnormalityResistances,_bodyColors = bodyColors,_attributeResistance = attributeResistance;
+  const _DenpaMen({required this.name, required final  List<AbnormalityResistance> abnormalityResistances, required final  List<String> bodyColors, required final  List<AttributeResistance> attributeResistance, required this.physique, required this.personality, required this.pattern, required this.headShape, required this.anntena, required this.isSpColor}): _abnormalityResistances = abnormalityResistances,_bodyColors = bodyColors,_attributeResistance = attributeResistance;
   factory _DenpaMen.fromJson(Map<String, dynamic> json) => _$DenpaMenFromJson(json);
 
+@override final  String name;
  final  List<AbnormalityResistance> _abnormalityResistances;
 @override List<AbnormalityResistance> get abnormalityResistances {
   if (_abnormalityResistances is EqualUnmodifiableListView) return _abnormalityResistances;
@@ -306,16 +308,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DenpaMen&&const DeepCollectionEquality().equals(other._abnormalityResistances, _abnormalityResistances)&&const DeepCollectionEquality().equals(other._bodyColors, _bodyColors)&&const DeepCollectionEquality().equals(other._attributeResistance, _attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DenpaMen&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._abnormalityResistances, _abnormalityResistances)&&const DeepCollectionEquality().equals(other._bodyColors, _bodyColors)&&const DeepCollectionEquality().equals(other._attributeResistance, _attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_abnormalityResistances),const DeepCollectionEquality().hash(_bodyColors),const DeepCollectionEquality().hash(_attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor);
+int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(_abnormalityResistances),const DeepCollectionEquality().hash(_bodyColors),const DeepCollectionEquality().hash(_attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor);
 
 @override
 String toString() {
-  return 'DenpaMen(abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor)';
+  return 'DenpaMen(name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor)';
 }
 
 
@@ -326,7 +328,7 @@ abstract mixin class _$DenpaMenCopyWith<$Res> implements $DenpaMenCopyWith<$Res>
   factory _$DenpaMenCopyWith(_DenpaMen value, $Res Function(_DenpaMen) _then) = __$DenpaMenCopyWithImpl;
 @override @useResult
 $Res call({
- List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor
+ String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor
 });
 
 
@@ -343,9 +345,10 @@ class __$DenpaMenCopyWithImpl<$Res>
 
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,}) {
   return _then(_DenpaMen(
-abnormalityResistances: null == abnormalityResistances ? _self._abnormalityResistances : abnormalityResistances // ignore: cast_nullable_to_non_nullable
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,abnormalityResistances: null == abnormalityResistances ? _self._abnormalityResistances : abnormalityResistances // ignore: cast_nullable_to_non_nullable
 as List<AbnormalityResistance>,bodyColors: null == bodyColors ? _self._bodyColors : bodyColors // ignore: cast_nullable_to_non_nullable
 as List<String>,attributeResistance: null == attributeResistance ? _self._attributeResistance : attributeResistance // ignore: cast_nullable_to_non_nullable
 as List<AttributeResistance>,physique: null == physique ? _self.physique : physique // ignore: cast_nullable_to_non_nullable
