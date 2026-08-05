@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BodyColorAttributeResistance",
+  "description": "Per-color attribute resistance rules, keyed by color id. Parsed into BodyColorResistanceRule (lib/domain/master_data/body_color_resistance_rule.dart) — each key becomes colorId.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "attributeResistanceBonuses": {
+        "type": "object",
+        "description": "Maps an attribute id (see attributes.json) to the resistance bonus this color grants.",
+        "additionalProperties": { "type": "integer" }
+      },
+      "weaknessAttributeId": {
+        "type": ["string", "null"],
+        "description": "Attribute id (see attributes.json) that is negated when this color becomes an SP color."
+      },
+      "grantsAllAttributeResistanceBonusWhenSolo": {
+        "type": "boolean",
+        "description": "When this color is the only body color, adds +1 to every attribute resistance (the 'black' rule)."
+      }
+    }
+  }
+}

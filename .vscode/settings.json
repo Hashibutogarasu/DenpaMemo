@@ -1,0 +1,36 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": ["/assets/data/head_shapes.json"],
+      "url": "./assets/data/schemas/head_shapes.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/antennas.json"],
+      "url": "./assets/data/schemas/antennas.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/attributes.json"],
+      "url": "./assets/data/schemas/attributes.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/abnormality_types.json"],
+      "url": "./assets/data/schemas/abnormality_types.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/physiques.json"],
+      "url": "./assets/data/schemas/physiques.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/personalities.json"],
+      "url": "./assets/data/schemas/personalities.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/patterns.json"],
+      "url": "./assets/data/schemas/patterns.schema.json"
+    },
+    {
+      "fileMatch": ["/assets/data/body_color_attribute_resistance.json"],
+      "url": "./assets/data/schemas/body_color_attribute_resistance.schema.json"
+    }
+  ]
+}
