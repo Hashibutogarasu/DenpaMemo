@@ -11,6 +11,7 @@ void main() {
     final masterData = await JsonMasterDataRepository().load();
 
     final denpaMen = createDenpaMen(
+      name: 'test-denpa-men',
       bodyColors: const ['pink'],
       isSpColor: true,
       headShape: const HeadShape(id: 'head-a', displayName: 'head-a'),

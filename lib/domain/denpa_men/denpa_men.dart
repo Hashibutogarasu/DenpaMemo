@@ -17,6 +17,7 @@ part 'denpa_men.g.dart';
 @freezed
 abstract class DenpaMen with _$DenpaMen {
   const factory DenpaMen({
+    required String name,
     required List<AbnormalityResistance> abnormalityResistances,
     required List<String> bodyColors,
     required List<AttributeResistance> attributeResistance,

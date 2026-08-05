@@ -66,6 +66,7 @@ void main() {
   test('throws InvalidBodyColorCountException when bodyColors is empty', () {
     expect(
       () => createDenpaMen(
+        name: 'test-denpa-men',
         bodyColors: const [],
         isSpColor: false,
         headShape: headShape,
@@ -84,6 +85,7 @@ void main() {
     () {
       expect(
         () => createDenpaMen(
+          name: 'test-denpa-men',
           bodyColors: [soloColorId, secondColorId, soloAllBonusColorId],
           isSpColor: false,
           headShape: headShape,
@@ -103,6 +105,7 @@ void main() {
     () {
       expect(
         () => createDenpaMen(
+          name: 'test-denpa-men',
           bodyColors: [soloColorId, secondColorId],
           isSpColor: true,
           headShape: headShape,
@@ -119,6 +122,7 @@ void main() {
 
   test('derives abnormality resistances from headShape', () {
     final denpaMen = createDenpaMen(
+      name: 'test-denpa-men',
       bodyColors: [soloColorId],
       isSpColor: false,
       headShape: headShape,
@@ -138,6 +142,7 @@ void main() {
 
   test('solo color with no attribute resistance bonuses of its own adds +1 to all', () {
     final denpaMen = createDenpaMen(
+      name: 'test-denpa-men',
       bodyColors: [soloAllBonusColorId],
       isSpColor: false,
       headShape: headShape,
@@ -162,6 +167,7 @@ void main() {
     'SP color zeroes out negative attribute resistance, leaving only the positive one',
     () {
       final denpaMen = createDenpaMen(
+        name: 'test-denpa-men',
         bodyColors: [weaknessColorId],
         isSpColor: true,
         headShape: headShape,
@@ -186,6 +192,7 @@ void main() {
 
   test('two colors halve the combined attribute resistance', () {
     final denpaMen = createDenpaMen(
+      name: 'test-denpa-men',
       bodyColors: [soloColorId, secondColorId],
       isSpColor: false,
       headShape: headShape,

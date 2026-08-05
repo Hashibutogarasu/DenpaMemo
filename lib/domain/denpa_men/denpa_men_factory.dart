@@ -14,6 +14,7 @@ import 'denpa_men_validation_exception.dart';
 /// [DenpaMen.attributeResistance] / [DenpaMen.abnormalityResistances] from
 /// [masterData] instead of accepting them directly.
 DenpaMen createDenpaMen({
+  required String name,
   required List<String> bodyColors,
   required bool isSpColor,
   required HeadShape headShape,
@@ -39,6 +40,7 @@ DenpaMen createDenpaMen({
   }
 
   final draft = DenpaMen(
+    name: name,
     abnormalityResistances: _abnormalityResistances(headShape),
     bodyColors: bodyColors,
     attributeResistance: const [],

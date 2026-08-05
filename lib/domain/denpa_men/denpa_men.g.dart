@@ -7,6 +7,7 @@ part of 'denpa_men.dart';
 // **************************************************************************
 
 _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
+  name: json['name'] as String,
   abnormalityResistances: (json['abnormalityResistances'] as List<dynamic>)
       .map((e) => AbnormalityResistance.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -27,6 +28,7 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
 );
 
 Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
+  'name': instance.name,
   'abnormalityResistances': instance.abnormalityResistances,
   'bodyColors': instance.bodyColors,
   'attributeResistance': instance.attributeResistance,
