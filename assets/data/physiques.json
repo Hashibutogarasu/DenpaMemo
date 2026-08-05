@@ -1,7 +1,7 @@
 [
-  { "id": "saidai", "displayName": "saidai" },
-  { "id": "jun-dai", "displayName": "junDai" },
-  { "id": "chuukan", "displayName": "chuukan" },
-  { "id": "jun-soku", "displayName": "junSoku" },
-  { "id": "saisoku", "displayName": "saisoku" }
+  { "id": "largest", "displayName": "largest" },
+  { "id": "large", "displayName": "large" },
+  { "id": "medium", "displayName": "medium" },
+  { "id": "fast", "displayName": "fast" },
+  { "id": "fastest", "displayName": "fastest" }
 ]

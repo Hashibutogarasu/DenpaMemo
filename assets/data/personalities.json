@@ -1,9 +1,9 @@
 [
-  { "id": "ichigo", "displayName": "ichigo" },
-  { "id": "nigauri", "displayName": "nigauri" },
-  { "id": "tougarashi", "displayName": "tougarashi" },
+  { "id": "strawberry", "displayName": "strawberry" },
+  { "id": "bitterMelon", "displayName": "bitterMelon" },
+  { "id": "chiliPepper", "displayName": "chiliPepper" },
   { "id": "banana", "displayName": "banana" },
-  { "id": "remon", "displayName": "remon" },
-  { "id": "budou", "displayName": "budou" },
-  { "id": "kaki", "displayName": "kaki" }
+  { "id": "lemon", "displayName": "lemon" },
+  { "id": "grape", "displayName": "grape" },
+  { "id": "persimmon", "displayName": "persimmon" }
 ]
