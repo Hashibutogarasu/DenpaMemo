@@ -139,6 +139,7 @@ class DenpaMenStatus extends StatelessWidget {
               ),
               child: Text(memo!),
             ),
+            const SizedBox(height: 12),
           ],
         ],
       ),
