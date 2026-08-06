@@ -38,38 +38,36 @@ void main() {
     for (final r in denpaMen.attributeResistance) r.attributeId: r.value,
   };
 
-  test('bowlCut grants +1 to every attribute on top of black color +1', () {
+  test('bowlCut grants +1 to every attribute', () {
     final result = attributeByAttribute(build(headShapeById('bowlCut')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 2);
-    }
-  });
-
-  test('light grants +2 to every attribute on top of black color +1', () {
-    final result = attributeByAttribute(build(headShapeById('light')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 3);
-    }
-  });
-
-  test('fin grants +2 to every attribute on top of black color +1', () {
-    final result = attributeByAttribute(build(headShapeById('fin')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 3);
-    }
-  });
-
-  test('moon grants +1 to every attribute on top of black color +1', () {
-    final result = attributeByAttribute(build(headShapeById('moon')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 2);
-    }
-  });
-
-  test('sun (no attribute bonus of its own) leaves only black color +1', () {
-    final result = attributeByAttribute(build(headShapeById('sun')));
     for (final attribute in masterData.attributes) {
       expect(result[attribute.id], 1);
     }
+  });
+
+  test('light grants +2 to every attribute', () {
+    final result = attributeByAttribute(build(headShapeById('light')));
+    for (final attribute in masterData.attributes) {
+      expect(result[attribute.id], 2);
+    }
+  });
+
+  test('fin grants +2 to every attribute', () {
+    final result = attributeByAttribute(build(headShapeById('fin')));
+    for (final attribute in masterData.attributes) {
+      expect(result[attribute.id], 2);
+    }
+  });
+
+  test('moon grants +1 to every attribute', () {
+    final result = attributeByAttribute(build(headShapeById('moon')));
+    for (final attribute in masterData.attributes) {
+      expect(result[attribute.id], 1);
+    }
+  });
+
+  test('sun (no attribute bonus of its own) leaves no attribute resistance', () {
+    final result = attributeByAttribute(build(headShapeById('sun')));
+    expect(result, isEmpty);
   });
 }

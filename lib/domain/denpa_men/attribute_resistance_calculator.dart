@@ -69,8 +69,10 @@ void _applySoloOrPairEffects({
   required bool isSameColorPair,
 }) {
   if (ownBonuses.isEmpty) {
-    for (final attributeId in attributeIdList) {
-      totals[attributeId] = (totals[attributeId] ?? 0) + 1;
+    if (isSpColor) {
+      for (final attributeId in attributeIdList) {
+        totals[attributeId] = (totals[attributeId] ?? 0) + 1;
+      }
     }
     return;
   }
