@@ -6,6 +6,7 @@ import '../i18n/gen/strings.g.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
 import 'icon/attribute.dart' as attribute_icon;
+import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute.dart';
 import 'label/happiness.dart';
 import 'label/level.dart';
@@ -112,7 +113,7 @@ class DenpaMenStatus extends StatelessWidget {
           ),
           NestedContainer(
             padding: const EdgeInsets.all(8),
-            child: _ResistanceWrap(
+            child: _AbnormalityResistanceWrap(
               columns: 3,
               entries: [
                 for (final resistance in abnormalityResistances)
@@ -210,6 +211,44 @@ class _ResistanceWrap extends StatelessWidget {
               SizedBox(
                 width: columnWidth,
                 child: _ResistanceEntry(label: entry.label, value: entry.value),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// Lays [entries] out left-packed with a fixed 5dp gap in both directions,
+/// sized so exactly [columns] fit per row.
+class _AbnormalityResistanceWrap extends StatelessWidget {
+  const _AbnormalityResistanceWrap({
+    required this.columns,
+    required this.entries,
+  });
+
+  static const double _gap = 5;
+
+  final int columns;
+  final List<_ResistanceData> entries;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columnWidth =
+            (constraints.maxWidth - _gap * (columns - 1)) / columns;
+        return Wrap(
+          spacing: _gap,
+          runSpacing: _gap,
+          children: [
+            for (final entry in entries)
+              SizedBox(
+                width: columnWidth,
+                child: AbnormalityResistanceEntry(
+                  label: entry.label,
+                  value: entry.value,
+                ),
               ),
           ],
         );
