@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import '../domain/denpa_men/abnormality_resistance.dart';
 import '../domain/denpa_men/attribute_resistance.dart';
 import '../i18n/gen/strings.g.dart';
+import '../theme/app_colors.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
-import 'icon/attribute.dart' as attribute_icon;
 import 'label/abnormality_resistance_entry.dart';
-import 'label/attribute.dart';
-import 'label/happiness.dart';
-import 'label/level.dart';
+import 'label/attribute_resistance_entry.dart';
+import 'label/exp_progress.dart';
+import 'label/gauge_label.dart';
+import 'label/gauge_value.dart';
+import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
 import 'label/status.dart';
 
@@ -20,7 +22,6 @@ class DenpaMenStatus extends StatelessWidget {
     required this.level,
     required this.happiness,
     required this.expProgress,
-    required this.expLabel,
     required this.attributeResistances,
     required this.abnormalityResistances,
     required this.hp,
@@ -33,10 +34,9 @@ class DenpaMenStatus extends StatelessWidget {
   });
 
   final String name;
-  final int level;
-  final int happiness;
-  final double expProgress;
-  final String expLabel;
+  final GaugeValue level;
+  final GaugeValue happiness;
+  final double? expProgress;
   final List<AttributeResistance> attributeResistances;
   final List<AbnormalityResistance> abnormalityResistances;
   final int hp;
@@ -59,28 +59,28 @@ class DenpaMenStatus extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              LevelLabel(level: level),
-              HappinessLabel(happiness: happiness),
+              GaugeLabel(label: t.denpaMenStatus.level, value: level),
+              GaugeLabel(label: t.denpaMenStatus.happiness, value: happiness),
             ],
           ),
-          Text(name, style: Theme.of(context).textTheme.titleLarge),
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: OutlinedTitleText(
+              text: name,
+              outlineColor: AppColors.accent,
+              fontSize:
+                  Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
+            ),
+          ),
+          Container(
+            height: 2,
+            margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
+            color: AppColors.accent,
+          ),
           Row(
             children: [
               StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(999),
-                  child: LinearProgressIndicator(
-                    value: expProgress,
-                    minHeight: 12,
-                    backgroundColor: Colors.white,
-                    valueColor: const AlwaysStoppedAnimation(
-                      Color(0xFF056193),
-                    ),
-                  ),
-                ),
-              ),
-              Text(expLabel),
+              Expanded(child: ExpProgress(progress: expProgress)),
             ],
           ),
           NestedContainer(
@@ -188,7 +188,10 @@ class _ResistanceData {
 }
 
 /// Lays [entries] out left-packed with a fixed 5dp gap in both directions,
-/// sized so exactly [columns] fit per row.
+/// sized so exactly [columns] fit per row. Each entry's [AttributeLabel]
+/// pill stretches to fill its column (see [AttributeResistanceEntry]), so
+/// entries sit packed against each other instead of leaving gaps around
+/// content narrower than the column.
 class _ResistanceWrap extends StatelessWidget {
   const _ResistanceWrap({required this.columns, required this.entries});
 
@@ -210,7 +213,10 @@ class _ResistanceWrap extends StatelessWidget {
             for (final entry in entries)
               SizedBox(
                 width: columnWidth,
-                child: _ResistanceEntry(label: entry.label, value: entry.value),
+                child: AttributeResistanceEntry(
+                  label: entry.label,
+                  value: entry.value,
+                ),
               ),
           ],
         );
@@ -253,26 +259,6 @@ class _AbnormalityResistanceWrap extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class _ResistanceEntry extends StatelessWidget {
-  const _ResistanceEntry({required this.label, required this.value});
-
-  final String label;
-  final int value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const attribute_icon.AttributeIcon(),
-        Flexible(
-          child: AttributeLabel(text: '$label ${value >= 0 ? '+' : ''}$value'),
-        ),
-      ],
     );
   }
 }

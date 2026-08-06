@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 /// App-wide header whose bottom edge slants at [_angleDegrees]: higher on
 /// the left, lower on the right. The top edge stays flush with the top of
 /// the bar's own box, so nothing behind the bar shows through — only the
@@ -20,8 +22,6 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
   static const double _height = 56;
   static const double _borderWidth = 6;
   static const double _angleDegrees = 10;
-  static const Color _backgroundColor = Color(0xFF52BBE5);
-  static const Color _borderColor = Color(0xFF0865C2);
 
   static double get _slant =>
       _height * math.tan(_angleDegrees * math.pi / 180);
@@ -36,8 +36,8 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: CustomPaint(
         painter: _SlantedHeaderPainter(
           slant: _slant,
-          fillColor: _backgroundColor,
-          borderColor: _borderColor,
+          fillColor: AppColors.headerBackground,
+          borderColor: AppColors.headerBorder,
           borderWidth: _borderWidth,
         ),
         child: title == null

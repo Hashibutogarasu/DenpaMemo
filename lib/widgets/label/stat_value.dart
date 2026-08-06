@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 /// Displays a single stat entry as a container with a rounded label whose
 /// right edge is cut at an angle (matching [StatusLabel]'s shape), with
 /// [value] rendered outside the label, right-aligned within the container.
@@ -20,8 +22,6 @@ class StatValueLabel extends StatelessWidget {
   final Widget value;
   final double height;
 
-  static const Color _labelColor = Color(0xFF7FC9FF);
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -30,7 +30,7 @@ class StatValueLabel extends StatelessWidget {
           left: height / 2,
           right: 0,
           bottom: 0,
-          child: Container(height: 2, color: _labelColor),
+          child: Container(height: 2, color: AppColors.pillBackground),
         ),
         Row(
           children: [
@@ -39,11 +39,11 @@ class StatValueLabel extends StatelessWidget {
                 clipper: _SlantedLabelClipper(),
                 child: Container(
                   height: height,
-                  color: _labelColor,
+                  color: AppColors.pillBackground,
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 12, right: 18),
                   child: DefaultTextStyle.merge(
-                    style: const TextStyle(color: Color(0xFF2B2031)),
+                    style: const TextStyle(color: AppColors.pillText),
                     child: Text(label, overflow: TextOverflow.ellipsis),
                   ),
                 ),

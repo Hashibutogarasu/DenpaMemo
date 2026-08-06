@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/master_data/head_shape.dart';
 import '../i18n/gen/strings.g.dart';
-import 'color/body_color_palette.dart';
+import '../theme/app_colors.dart';
+import 'color/color_dot.dart';
 import 'container/nested.dart';
+import 'container/selection_tile.dart';
 import 'container/status.dart';
 import 'dialog/body_color_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
-import 'field/inline_number_field.dart';
-import 'field/inline_text_field.dart';
-import 'label/stat_value.dart';
-import 'label/status.dart';
+import 'editable_exp.dart';
+import 'editable_stat_grid.dart';
+import 'field/outlined_inline_name_field.dart';
+import 'label/gauge_value.dart';
+import 'label/inline_gauge_label.dart';
 
 /// Right-hand desktop pane letting the user edit [denpaMen] in place. Name
 /// and numeric stats are edited inline; head shape and body color open a
@@ -53,75 +56,51 @@ class EditableDenpaMenStatus extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _InlineNumberStatusLabel(
+              InlineGaugeLabel(
                 label: t.denpaMenStatus.level,
-                value: denpaMen.level,
+                value: GaugeValue(
+                  current: denpaMen.level,
+                  max: denpaMen.maxLevel,
+                ),
                 onChanged: (value) =>
                     onChanged(denpaMen.copyWith(level: value)),
               ),
-              _InlineNumberStatusLabel(
+              InlineGaugeLabel(
                 label: t.denpaMenStatus.happiness,
-                value: denpaMen.happiness,
+                value: GaugeValue(
+                  current: denpaMen.happiness,
+                  max: denpaMen.maxHappiness,
+                ),
                 onChanged: (value) =>
                     onChanged(denpaMen.copyWith(happiness: value)),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          InlineTextField(
-            value: denpaMen.name,
-            style: Theme.of(context).textTheme.titleLarge,
-            onChanged: (value) => onChanged(denpaMen.copyWith(name: value)),
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: OutlinedInlineNameField(
+              value: denpaMen.name,
+              onChanged: (value) => onChanged(denpaMen.copyWith(name: value)),
+            ),
           ),
-          Row(
-            children: [
-              StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(999),
-                  child: LinearProgressIndicator(
-                    value: denpaMen.maxExp > 0
-                        ? denpaMen.currentExp / denpaMen.maxExp
-                        : 0,
-                    minHeight: 12,
-                    backgroundColor: Colors.white,
-                    valueColor: const AlwaysStoppedAnimation(
-                      Color(0xFF056193),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 32,
-                child: InlineNumberField(
-                  value: denpaMen.currentExp,
-                  textAlign: TextAlign.end,
-                  onChanged: (value) =>
-                      onChanged(denpaMen.copyWith(currentExp: value)),
-                ),
-              ),
-              const Text('/'),
-              SizedBox(
-                width: 32,
-                child: InlineNumberField(
-                  value: denpaMen.maxExp,
-                  onChanged: (value) =>
-                      onChanged(denpaMen.copyWith(maxExp: value)),
-                ),
-              ),
-            ],
+          Container(
+            height: 2,
+            margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
+            color: AppColors.accent,
           ),
+          EditableExp(denpaMen: denpaMen, onChanged: onChanged),
           const SizedBox(height: 8),
           NestedContainer(
             padding: const EdgeInsets.all(8),
-            child: _EditableStatGrid(denpaMen: denpaMen, onChanged: onChanged),
+            child: EditableStatGrid(denpaMen: denpaMen, onChanged: onChanged),
           ),
           const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: _SelectionTile(
+                child: SelectionTile(
                   label: t.editableStatus.headShape,
                   onTap: () async {
                     final selected = await showHeadShapeSelectionDialog(
@@ -142,7 +121,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: _SelectionTile(
+                child: SelectionTile(
                   label: t.editableStatus.bodyColor,
                   onTap: () async {
                     final result = await showBodyColorSelectionDialog(
@@ -165,7 +144,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
                       for (final colorId in denpaMen.bodyColors)
                         Padding(
                           padding: const EdgeInsets.only(right: 4),
-                          child: _ColorDot(colorId: colorId),
+                          child: ColorDot(colorId: colorId),
                         ),
                     ],
                   ),
@@ -174,161 +153,6 @@ class EditableDenpaMenStatus extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _InlineNumberStatusLabel extends StatelessWidget {
-  const _InlineNumberStatusLabel({
-    required this.label,
-    required this.value,
-    required this.onChanged,
-  });
-
-  final String label;
-  final int value;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return StatusLabel(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(label),
-          const SizedBox(width: 4),
-          SizedBox(
-            width: 32,
-            child: InlineNumberField(value: value, onChanged: onChanged),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _EditableStatGrid extends StatelessWidget {
-  const _EditableStatGrid({required this.denpaMen, required this.onChanged});
-
-  final DenpaMen denpaMen;
-  final ValueChanged<DenpaMen> onChanged;
-
-  static const int _columns = 2;
-  static const double _gap = 8;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = context.t;
-    final entries = <(String, int, ValueChanged<int>)>[
-      (
-        t.stat.hp,
-        denpaMen.hp,
-        (value) => onChanged(denpaMen.copyWith(hp: value)),
-      ),
-      (
-        t.stat.ap,
-        denpaMen.ap,
-        (value) => onChanged(denpaMen.copyWith(ap: value)),
-      ),
-      (
-        t.stat.attack,
-        denpaMen.attack,
-        (value) => onChanged(denpaMen.copyWith(attack: value)),
-      ),
-      (
-        t.stat.defense,
-        denpaMen.defense,
-        (value) => onChanged(denpaMen.copyWith(defense: value)),
-      ),
-      (
-        t.stat.speed,
-        denpaMen.speed,
-        (value) => onChanged(denpaMen.copyWith(speed: value)),
-      ),
-      (
-        t.stat.evasionRate,
-        denpaMen.evasionRate,
-        (value) => onChanged(denpaMen.copyWith(evasionRate: value)),
-      ),
-    ];
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final columnWidth =
-            (constraints.maxWidth - _gap * (_columns - 1)) / _columns;
-        return Wrap(
-          spacing: _gap,
-          runSpacing: _gap,
-          children: [
-            for (final entry in entries)
-              SizedBox(
-                width: columnWidth,
-                child: StatValueLabel(
-                  label: entry.$1,
-                  value: InlineNumberField(
-                    value: entry.$2,
-                    onChanged: entry.$3,
-                  ),
-                ),
-              ),
-          ],
-        );
-      },
-    );
-  }
-}
-
-class _SelectionTile extends StatelessWidget {
-  const _SelectionTile({
-    required this.label,
-    required this.child,
-    required this.onTap,
-  });
-
-  final String label;
-  final Widget child;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: onTap,
-      child: NestedContainer(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(label, style: Theme.of(context).textTheme.labelSmall),
-            Row(
-              children: [
-                Expanded(child: child),
-                const Icon(Icons.chevron_right),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ColorDot extends StatelessWidget {
-  const _ColorDot({required this.colorId});
-
-  final String colorId;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: bodyColorPalette[colorId],
-        border: Border.all(color: Colors.black26),
       ),
     );
   }

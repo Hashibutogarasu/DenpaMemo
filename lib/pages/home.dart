@@ -9,6 +9,7 @@ import '../providers/master_data_providers.dart';
 import '../widgets/denpa_men_status.dart';
 import '../widgets/editable_denpa_men_status.dart';
 import '../widgets/header/slanted_app_bar.dart';
+import '../widgets/label/gauge_value.dart';
 import '../widgets/label/outlined_title.dart';
 
 class Home extends ConsumerWidget {
@@ -42,25 +43,25 @@ class _HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<_HomeBody> {
   late DenpaMen _denpaMen = createDenpaMen(
-    name: 'サンプル',
-    bodyColors: const ['red', 'blue'],
-    isSpColor: false,
-    headShape: widget.masterData.headShapes.firstWhere((h) => h.id == 'sun'),
+    name: 'こうた',
+    bodyColors: const ['black'],
+    isSpColor: true,
+    headShape: widget.masterData.headShapes.firstWhere((h) => h.id == 'circle'),
     physique: widget.masterData.physiques.first,
     personality: widget.masterData.personalities.first,
     pattern: widget.masterData.patterns.first,
     anntena: widget.masterData.anntenas.first,
     masterData: widget.masterData,
-    happiness: 80,
-    level: 5,
-    currentExp: 120,
-    maxExp: 300,
-    hp: 100,
-    ap: 50,
-    attack: 30,
-    defense: 20,
-    speed: 15,
-    evasionRate: 5,
+    happiness: 320,
+    maxHappiness: 320,
+    level: 180,
+    maxLevel: 180,
+    hp: 9309,
+    ap: 7,
+    attack: 5969,
+    defense: 5436,
+    speed: 5583,
+    evasionRate: 7,
   );
 
   void _applyEdit(DenpaMen draft) {
@@ -76,7 +77,9 @@ class _HomeBodyState extends State<_HomeBody> {
         anntena: draft.anntena,
         masterData: widget.masterData,
         happiness: draft.happiness,
+        maxHappiness: draft.maxHappiness,
         level: draft.level,
+        maxLevel: draft.maxLevel,
         currentExp: draft.currentExp,
         maxExp: draft.maxExp,
         hp: draft.hp,
@@ -99,12 +102,20 @@ class _HomeBodyState extends State<_HomeBody> {
           Expanded(
             child: DenpaMenStatus(
               name: _denpaMen.name,
-              level: _denpaMen.level,
-              happiness: _denpaMen.happiness,
-              expProgress: _denpaMen.maxExp > 0
-                  ? _denpaMen.currentExp / _denpaMen.maxExp
-                  : 0,
-              expLabel: '${_denpaMen.currentExp}/${_denpaMen.maxExp}',
+              level: GaugeValue(
+                current: _denpaMen.level,
+                max: _denpaMen.maxLevel,
+              ),
+              happiness: GaugeValue(
+                current: _denpaMen.happiness,
+                max: _denpaMen.maxHappiness,
+              ),
+              expProgress:
+                  _denpaMen.currentExp != null &&
+                      _denpaMen.maxExp != null &&
+                      _denpaMen.maxExp! > 0
+                  ? _denpaMen.currentExp! / _denpaMen.maxExp!
+                  : null,
               attributeResistances: _denpaMen.attributeResistance,
               abnormalityResistances: _denpaMen.abnormalityResistances,
               hp: _denpaMen.hp,

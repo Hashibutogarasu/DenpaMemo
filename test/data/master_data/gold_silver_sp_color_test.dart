@@ -17,6 +17,8 @@ void main() {
 
   DenpaMen buildSpColor(String colorId) {
     return createDenpaMen(
+      maxHappiness: 0,
+      maxLevel: 1,
       name: 'test-denpa-men',
       bodyColors: [colorId],
       isSpColor: true,

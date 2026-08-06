@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DenpaMen {
 
- String get name; List<AbnormalityResistance> get abnormalityResistances; List<String> get bodyColors; List<AttributeResistance> get attributeResistance; Physique get physique; Personality get personality; Pattern get pattern; HeadShape get headShape; Anntena get anntena; bool get isSpColor; int get happiness; int get level; int get currentExp; int get maxExp; int get hp; int get ap; int get attack; int get defense; int get speed; int get evasionRate;
+ String get name; List<AbnormalityResistance> get abnormalityResistances; List<String> get bodyColors; List<AttributeResistance> get attributeResistance; Physique get physique; Personality get personality; Pattern get pattern; HeadShape get headShape; Anntena get anntena; bool get isSpColor; int get happiness; int get maxHappiness; int get level; int get maxLevel; int? get currentExp; int? get maxExp; int get hp; int get ap; int get attack; int get defense; int get speed; int get evasionRate;
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DenpaMenCopyWith<DenpaMen> get copyWith => _$DenpaMenCopyWithImpl<DenpaMen>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DenpaMen&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.abnormalityResistances, abnormalityResistances)&&const DeepCollectionEquality().equals(other.bodyColors, bodyColors)&&const DeepCollectionEquality().equals(other.attributeResistance, attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DenpaMen&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.abnormalityResistances, abnormalityResistances)&&const DeepCollectionEquality().equals(other.bodyColors, bodyColors)&&const DeepCollectionEquality().equals(other.attributeResistance, attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.maxHappiness, maxHappiness) || other.maxHappiness == maxHappiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,name,const DeepCollectionEquality().hash(abnormalityResistances),const DeepCollectionEquality().hash(bodyColors),const DeepCollectionEquality().hash(attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor,happiness,level,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate]);
+int get hashCode => Object.hashAll([runtimeType,name,const DeepCollectionEquality().hash(abnormalityResistances),const DeepCollectionEquality().hash(bodyColors),const DeepCollectionEquality().hash(attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor,happiness,maxHappiness,level,maxLevel,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate]);
 
 @override
 String toString() {
-  return 'DenpaMen(name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor, happiness: $happiness, level: $level, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate)';
+  return 'DenpaMen(name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor, happiness: $happiness, maxHappiness: $maxHappiness, level: $level, maxLevel: $maxLevel, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DenpaMenCopyWith<$Res>  {
   factory $DenpaMenCopyWith(DenpaMen value, $Res Function(DenpaMen) _then) = _$DenpaMenCopyWithImpl;
 @useResult
 $Res call({
- String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor, int happiness, int level, int currentExp, int maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate
+ String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor, int happiness, int maxHappiness, int level, int maxLevel, int? currentExp, int? maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate
 });
 
 
@@ -65,7 +65,7 @@ class _$DenpaMenCopyWithImpl<$Res>
 
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,Object? happiness = null,Object? level = null,Object? currentExp = null,Object? maxExp = null,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,Object? happiness = null,Object? maxHappiness = null,Object? level = null,Object? maxLevel = null,Object? currentExp = freezed,Object? maxExp = freezed,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,abnormalityResistances: null == abnormalityResistances ? _self.abnormalityResistances : abnormalityResistances // ignore: cast_nullable_to_non_nullable
@@ -78,10 +78,12 @@ as Pattern,headShape: null == headShape ? _self.headShape : headShape // ignore:
 as HeadShape,anntena: null == anntena ? _self.anntena : anntena // ignore: cast_nullable_to_non_nullable
 as Anntena,isSpColor: null == isSpColor ? _self.isSpColor : isSpColor // ignore: cast_nullable_to_non_nullable
 as bool,happiness: null == happiness ? _self.happiness : happiness // ignore: cast_nullable_to_non_nullable
+as int,maxHappiness: null == maxHappiness ? _self.maxHappiness : maxHappiness // ignore: cast_nullable_to_non_nullable
 as int,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
-as int,currentExp: null == currentExp ? _self.currentExp : currentExp // ignore: cast_nullable_to_non_nullable
-as int,maxExp: null == maxExp ? _self.maxExp : maxExp // ignore: cast_nullable_to_non_nullable
-as int,hp: null == hp ? _self.hp : hp // ignore: cast_nullable_to_non_nullable
+as int,maxLevel: null == maxLevel ? _self.maxLevel : maxLevel // ignore: cast_nullable_to_non_nullable
+as int,currentExp: freezed == currentExp ? _self.currentExp : currentExp // ignore: cast_nullable_to_non_nullable
+as int?,maxExp: freezed == maxExp ? _self.maxExp : maxExp // ignore: cast_nullable_to_non_nullable
+as int?,hp: null == hp ? _self.hp : hp // ignore: cast_nullable_to_non_nullable
 as int,ap: null == ap ? _self.ap : ap // ignore: cast_nullable_to_non_nullable
 as int,attack: null == attack ? _self.attack : attack // ignore: cast_nullable_to_non_nullable
 as int,defense: null == defense ? _self.defense : defense // ignore: cast_nullable_to_non_nullable
@@ -217,10 +219,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor,  int happiness,  int level,  int currentExp,  int maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DenpaMen() when $default != null:
-return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor,_that.happiness,_that.level,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate);case _:
+return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate);case _:
   return orElse();
 
 }
@@ -238,10 +240,10 @@ return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.a
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor,  int happiness,  int level,  int currentExp,  int maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate)  $default,) {final _that = this;
 switch (_that) {
 case _DenpaMen():
-return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor,_that.happiness,_that.level,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate);case _:
+return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -258,10 +260,10 @@ return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.a
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor,  int happiness,  int level,  int currentExp,  int maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate)?  $default,) {final _that = this;
 switch (_that) {
 case _DenpaMen() when $default != null:
-return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor,_that.happiness,_that.level,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate);case _:
+return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate);case _:
   return null;
 
 }
@@ -273,7 +275,7 @@ return $default(_that.name,_that.abnormalityResistances,_that.bodyColors,_that.a
 @JsonSerializable()
 
 class _DenpaMen implements DenpaMen {
-  const _DenpaMen({required this.name, required final  List<AbnormalityResistance> abnormalityResistances, required final  List<String> bodyColors, required final  List<AttributeResistance> attributeResistance, required this.physique, required this.personality, required this.pattern, required this.headShape, required this.anntena, required this.isSpColor, required this.happiness, required this.level, required this.currentExp, required this.maxExp, required this.hp, required this.ap, required this.attack, required this.defense, required this.speed, required this.evasionRate}): _abnormalityResistances = abnormalityResistances,_bodyColors = bodyColors,_attributeResistance = attributeResistance;
+  const _DenpaMen({required this.name, required final  List<AbnormalityResistance> abnormalityResistances, required final  List<String> bodyColors, required final  List<AttributeResistance> attributeResistance, required this.physique, required this.personality, required this.pattern, required this.headShape, required this.anntena, required this.isSpColor, required this.happiness, required this.maxHappiness, required this.level, required this.maxLevel, required this.currentExp, required this.maxExp, required this.hp, required this.ap, required this.attack, required this.defense, required this.speed, required this.evasionRate}): _abnormalityResistances = abnormalityResistances,_bodyColors = bodyColors,_attributeResistance = attributeResistance;
   factory _DenpaMen.fromJson(Map<String, dynamic> json) => _$DenpaMenFromJson(json);
 
 @override final  String name;
@@ -305,9 +307,11 @@ class _DenpaMen implements DenpaMen {
 @override final  Anntena anntena;
 @override final  bool isSpColor;
 @override final  int happiness;
+@override final  int maxHappiness;
 @override final  int level;
-@override final  int currentExp;
-@override final  int maxExp;
+@override final  int maxLevel;
+@override final  int? currentExp;
+@override final  int? maxExp;
 @override final  int hp;
 @override final  int ap;
 @override final  int attack;
@@ -328,16 +332,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DenpaMen&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._abnormalityResistances, _abnormalityResistances)&&const DeepCollectionEquality().equals(other._bodyColors, _bodyColors)&&const DeepCollectionEquality().equals(other._attributeResistance, _attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DenpaMen&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._abnormalityResistances, _abnormalityResistances)&&const DeepCollectionEquality().equals(other._bodyColors, _bodyColors)&&const DeepCollectionEquality().equals(other._attributeResistance, _attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.maxHappiness, maxHappiness) || other.maxHappiness == maxHappiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,name,const DeepCollectionEquality().hash(_abnormalityResistances),const DeepCollectionEquality().hash(_bodyColors),const DeepCollectionEquality().hash(_attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor,happiness,level,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate]);
+int get hashCode => Object.hashAll([runtimeType,name,const DeepCollectionEquality().hash(_abnormalityResistances),const DeepCollectionEquality().hash(_bodyColors),const DeepCollectionEquality().hash(_attributeResistance),physique,personality,pattern,headShape,anntena,isSpColor,happiness,maxHappiness,level,maxLevel,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate]);
 
 @override
 String toString() {
-  return 'DenpaMen(name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor, happiness: $happiness, level: $level, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate)';
+  return 'DenpaMen(name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, isSpColor: $isSpColor, happiness: $happiness, maxHappiness: $maxHappiness, level: $level, maxLevel: $maxLevel, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate)';
 }
 
 
@@ -348,7 +352,7 @@ abstract mixin class _$DenpaMenCopyWith<$Res> implements $DenpaMenCopyWith<$Res>
   factory _$DenpaMenCopyWith(_DenpaMen value, $Res Function(_DenpaMen) _then) = __$DenpaMenCopyWithImpl;
 @override @useResult
 $Res call({
- String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor, int happiness, int level, int currentExp, int maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate
+ String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, bool isSpColor, int happiness, int maxHappiness, int level, int maxLevel, int? currentExp, int? maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate
 });
 
 
@@ -365,7 +369,7 @@ class __$DenpaMenCopyWithImpl<$Res>
 
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,Object? happiness = null,Object? level = null,Object? currentExp = null,Object? maxExp = null,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? isSpColor = null,Object? happiness = null,Object? maxHappiness = null,Object? level = null,Object? maxLevel = null,Object? currentExp = freezed,Object? maxExp = freezed,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,}) {
   return _then(_DenpaMen(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,abnormalityResistances: null == abnormalityResistances ? _self._abnormalityResistances : abnormalityResistances // ignore: cast_nullable_to_non_nullable
@@ -378,10 +382,12 @@ as Pattern,headShape: null == headShape ? _self.headShape : headShape // ignore:
 as HeadShape,anntena: null == anntena ? _self.anntena : anntena // ignore: cast_nullable_to_non_nullable
 as Anntena,isSpColor: null == isSpColor ? _self.isSpColor : isSpColor // ignore: cast_nullable_to_non_nullable
 as bool,happiness: null == happiness ? _self.happiness : happiness // ignore: cast_nullable_to_non_nullable
+as int,maxHappiness: null == maxHappiness ? _self.maxHappiness : maxHappiness // ignore: cast_nullable_to_non_nullable
 as int,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
-as int,currentExp: null == currentExp ? _self.currentExp : currentExp // ignore: cast_nullable_to_non_nullable
-as int,maxExp: null == maxExp ? _self.maxExp : maxExp // ignore: cast_nullable_to_non_nullable
-as int,hp: null == hp ? _self.hp : hp // ignore: cast_nullable_to_non_nullable
+as int,maxLevel: null == maxLevel ? _self.maxLevel : maxLevel // ignore: cast_nullable_to_non_nullable
+as int,currentExp: freezed == currentExp ? _self.currentExp : currentExp // ignore: cast_nullable_to_non_nullable
+as int?,maxExp: freezed == maxExp ? _self.maxExp : maxExp // ignore: cast_nullable_to_non_nullable
+as int?,hp: null == hp ? _self.hp : hp // ignore: cast_nullable_to_non_nullable
 as int,ap: null == ap ? _self.ap : ap // ignore: cast_nullable_to_non_nullable
 as int,attack: null == attack ? _self.attack : attack // ignore: cast_nullable_to_non_nullable
 as int,defense: null == defense ? _self.defense : defense // ignore: cast_nullable_to_non_nullable

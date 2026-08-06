@@ -29,6 +29,8 @@ void main() {
     required String patternId,
   }) {
     return createDenpaMen(
+      maxHappiness: 0,
+      maxLevel: 1,
       name: 'test-denpa-men',
       bodyColors: bodyColors,
       isSpColor: false,

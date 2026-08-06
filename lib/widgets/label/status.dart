@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 class StatusLabel extends StatelessWidget {
   const StatusLabel({super.key, required this.child, this.height = 30});
 
@@ -14,11 +16,11 @@ class StatusLabel extends StatelessWidget {
       clipper: _StatusLabelClipper(),
       child: Container(
         height: height,
-        color: const Color(0xFF90E2FF),
+        color: AppColors.statusBackground,
         alignment: Alignment.center,
         padding: const EdgeInsets.only(left: 14, right: 20),
         child: DefaultTextStyle.merge(
-          style: const TextStyle(color: Color(0xFF056193)),
+          style: const TextStyle(color: AppColors.accent),
           child: child,
         ),
       ),

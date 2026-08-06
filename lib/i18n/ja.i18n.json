@@ -10,7 +10,8 @@
   "denpaMenStatus": {
     "level": "レベル",
     "happiness": "幸福度",
-    "untilNextLevel": "次のLvまで"
+    "untilNextLevel": "次のLvまで",
+    "max": "MAX"
   },
   "stat": {
     "hp": "HP",
@@ -18,7 +19,9 @@
     "attack": "こうげきりょく",
     "defense": "ぼうぎょりょく",
     "speed": "すばやさ",
-    "evasionRate": "かいひりつ"
+    "evasionRate": "かいひりつ",
+    "currentExp": "けいけんち",
+    "maxExp": "ひつようけいけんち"
   },
   "editableStatus": {
     "headShape": "頭の形",
@@ -26,6 +29,7 @@
     "spColor": "SPカラー"
   },
   "headShape": {
+    "circle": "まる",
     "bowlCut": "おかっぱ",
     "bread": "しょくぱん",
     "castleTower": "てんしゅ",

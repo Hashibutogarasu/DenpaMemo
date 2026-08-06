@@ -46,6 +46,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
 	late final Translations$editableStatus$ja editableStatus = Translations$editableStatus$ja.internal(_root);
 	Map<String, String> get headShape => {
+		'circle': 'まる',
 		'bowlCut': 'おかっぱ',
 		'bread': 'しょくぱん',
 		'castleTower': 'てんしゅ',
@@ -149,6 +150,9 @@ class Translations$denpaMenStatus$ja {
 
 	/// ja: '次のLvまで'
 	String get untilNextLevel => '次のLvまで';
+
+	/// ja: 'MAX'
+	String get max => 'MAX';
 }
 
 // Path: stat
@@ -176,6 +180,12 @@ class Translations$stat$ja {
 
 	/// ja: 'かいひりつ'
 	String get evasionRate => 'かいひりつ';
+
+	/// ja: 'けいけんち'
+	String get currentExp => 'けいけんち';
+
+	/// ja: 'ひつようけいけんち'
+	String get maxExp => 'ひつようけいけんち';
 }
 
 // Path: editableStatus
@@ -211,15 +221,19 @@ extension on Translations {
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => '次のLvまで',
+			'denpaMenStatus.max' => 'MAX',
 			'stat.hp' => 'HP',
 			'stat.ap' => 'AP',
 			'stat.attack' => 'こうげきりょく',
 			'stat.defense' => 'ぼうぎょりょく',
 			'stat.speed' => 'すばやさ',
 			'stat.evasionRate' => 'かいひりつ',
+			'stat.currentExp' => 'けいけんち',
+			'stat.maxExp' => 'ひつようけいけんち',
 			'editableStatus.headShape' => '頭の形',
 			'editableStatus.bodyColor' => '体色',
 			'editableStatus.spColor' => 'SPカラー',
+			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',
 			'headShape.bread' => 'しょくぱん',
 			'headShape.castleTower' => 'てんしゅ',

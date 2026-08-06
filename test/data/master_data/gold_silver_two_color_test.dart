@@ -13,6 +13,8 @@ void main() {
       final masterData = await JsonMasterDataRepository().load();
 
       final denpaMen = createDenpaMen(
+        maxHappiness: 0,
+        maxLevel: 1,
         name: 'test-denpa-men',
         bodyColors: const ['gold', 'silver'],
         isSpColor: false,
