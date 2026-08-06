@@ -207,6 +207,9 @@ class Translations$editableStatus$ja {
 
 	/// ja: 'SPカラー'
 	String get spColor => 'SPカラー';
+
+	/// ja: '補正'
+	String get correction => '補正';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -236,6 +239,7 @@ extension on Translations {
 			'editableStatus.headShape' => '頭の形',
 			'editableStatus.bodyColor' => '体色',
 			'editableStatus.spColor' => 'SPカラー',
+			'editableStatus.correction' => '補正',
 			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',
 			'headShape.bread' => 'しょくぱん',

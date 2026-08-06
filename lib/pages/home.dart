@@ -135,6 +135,7 @@ class _HomeBodyState extends State<_HomeBody> {
             child: EditableDenpaMenStatus(
               denpaMen: _denpaMen,
               headShapes: widget.masterData.headShapes,
+              corrections: widget.masterData.corrections,
               onChanged: _applyEdit,
             ),
           ),

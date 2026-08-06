@@ -26,7 +26,8 @@
   "editableStatus": {
     "headShape": "頭の形",
     "bodyColor": "体色",
-    "spColor": "SPカラー"
+    "spColor": "SPカラー",
+    "correction": "補正"
   },
   "headShape": {
     "circle": "まる",
