@@ -62,7 +62,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'sun': 'たいよう',
 	};
 	Map<String, String> get correction => {
-		'protagonist': 'しゅじんこうほせい',
+		'protagonist': '主人公補正',
 	};
 	Map<String, String> get bodyColor => {
 		'red': 'あか',
@@ -254,7 +254,7 @@ extension on Translations {
 			'headShape.ring' => 'わっか',
 			'headShape.silkHat' => 'シルクハット',
 			'headShape.sun' => 'たいよう',
-			'correction.protagonist' => 'しゅじんこうほせい',
+			'correction.protagonist' => '主人公補正',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',
 			'bodyColor.yellow' => 'きいろ',
