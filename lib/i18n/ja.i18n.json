@@ -11,7 +11,8 @@
     "level": "レベル",
     "happiness": "幸福度",
     "untilNextLevel": "つぎのLvまで",
-    "max": "MAX"
+    "max": "MAX",
+    "noAttributeResistance": "ぞくせいたいせいなし"
   },
   "stat": {
     "hp": "HP",

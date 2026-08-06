@@ -157,6 +157,9 @@ class Translations$denpaMenStatus$ja {
 
 	/// ja: 'MAX'
 	String get max => 'MAX';
+
+	/// ja: 'ぞくせいたいせいなし'
+	String get noAttributeResistance => 'ぞくせいたいせいなし';
 }
 
 // Path: stat
@@ -232,6 +235,7 @@ extension on Translations {
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
 			'denpaMenStatus.max' => 'MAX',
+			'denpaMenStatus.noAttributeResistance' => 'ぞくせいたいせいなし',
 			'stat.hp' => 'HP',
 			'stat.ap' => 'AP',
 			'stat.attack' => 'こうげきりょく',

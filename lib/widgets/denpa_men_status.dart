@@ -30,6 +30,7 @@ class DenpaMenStatus extends StatelessWidget {
     required this.defense,
     required this.speed,
     required this.evasionRate,
+    required this.totalAttributeCount,
     this.memo,
   });
 
@@ -45,11 +46,20 @@ class DenpaMenStatus extends StatelessWidget {
   final int defense;
   final int speed;
   final int evasionRate;
+  final int totalAttributeCount;
   final String? memo;
+
+  static const int _attributeResistanceColumns = 4;
 
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final attributeResistanceRows = (totalAttributeCount /
+            _attributeResistanceColumns)
+        .ceil();
+    final attributeResistanceHeight =
+        attributeResistanceRows * AttributeResistanceEntry.height +
+        (attributeResistanceRows - 1) * _ResistanceWrap._gap;
 
     return StatusContainer(
       padding: const EdgeInsets.all(8),
@@ -99,16 +109,21 @@ class DenpaMenStatus extends StatelessWidget {
           ),
           NestedContainer(
             padding: const EdgeInsets.all(8),
-            child: _ResistanceWrap(
-              columns: 4,
-              entries: [
-                for (final resistance in attributeResistances)
-                  _ResistanceData(
-                    label: t.attribute[resistance.attributeId] ??
-                        resistance.attributeId,
-                    value: resistance.value,
-                  ),
-              ],
+            child: SizedBox(
+              height: attributeResistanceHeight,
+              child: attributeResistances.isEmpty
+                  ? Center(child: Text(t.denpaMenStatus.noAttributeResistance))
+                  : _ResistanceWrap(
+                      columns: _attributeResistanceColumns,
+                      entries: [
+                        for (final resistance in attributeResistances)
+                          _ResistanceData(
+                            label: t.attribute[resistance.attributeId] ??
+                                resistance.attributeId,
+                            value: resistance.value,
+                          ),
+                      ],
+                    ),
             ),
           ),
           NestedContainer(
