@@ -1,6 +1,5 @@
 {
   "id": "light",
-  "displayName": "light",
   "abnormalityResistanceBonuses": {
     "poison": 2,
     "burn": 2,

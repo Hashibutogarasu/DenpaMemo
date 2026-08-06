@@ -1,7 +1,17 @@
 [
-  { "id": "largest", "displayName": "largest" },
-  { "id": "large", "displayName": "large" },
-  { "id": "medium", "displayName": "medium" },
-  { "id": "fast", "displayName": "fast" },
-  { "id": "fastest", "displayName": "fastest" }
+  {
+    "id": "largest"
+  },
+  {
+    "id": "large"
+  },
+  {
+    "id": "medium"
+  },
+  {
+    "id": "fast"
+  },
+  {
+    "id": "fastest"
+  }
 ]

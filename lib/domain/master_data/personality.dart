@@ -7,10 +7,7 @@ part 'personality.g.dart';
 /// `assets/data/personalities.json`.
 @freezed
 abstract class Personality with _$Personality {
-  const factory Personality({
-    required String id,
-    required String displayName,
-  }) = _Personality;
+  const factory Personality({required String id}) = _Personality;
 
   factory Personality.fromJson(Map<String, dynamic> json) =>
       _$PersonalityFromJson(json);

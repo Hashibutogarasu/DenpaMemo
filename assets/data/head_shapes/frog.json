@@ -1,6 +1,5 @@
 {
   "id": "frog",
-  "displayName": "frog",
   "abnormalityResistanceBonuses": {
     "poison": 1,
     "burn": 1,

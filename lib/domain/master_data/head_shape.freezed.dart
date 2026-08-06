@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HeadShape {
 
- String get id; String get displayName; Map<String, int> get abnormalityResistanceBonuses; Map<String, int> get attributeResistanceBonuses;
+ String get id; Map<String, int> get abnormalityResistanceBonuses; Map<String, int> get attributeResistanceBonuses;
 /// Create a copy of HeadShape
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $HeadShapeCopyWith<HeadShape> get copyWith => _$HeadShapeCopyWithImpl<HeadShape>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HeadShape&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&const DeepCollectionEquality().equals(other.abnormalityResistanceBonuses, abnormalityResistanceBonuses)&&const DeepCollectionEquality().equals(other.attributeResistanceBonuses, attributeResistanceBonuses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HeadShape&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other.abnormalityResistanceBonuses, abnormalityResistanceBonuses)&&const DeepCollectionEquality().equals(other.attributeResistanceBonuses, attributeResistanceBonuses));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,const DeepCollectionEquality().hash(abnormalityResistanceBonuses),const DeepCollectionEquality().hash(attributeResistanceBonuses));
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(abnormalityResistanceBonuses),const DeepCollectionEquality().hash(attributeResistanceBonuses));
 
 @override
 String toString() {
-  return 'HeadShape(id: $id, displayName: $displayName, abnormalityResistanceBonuses: $abnormalityResistanceBonuses, attributeResistanceBonuses: $attributeResistanceBonuses)';
+  return 'HeadShape(id: $id, abnormalityResistanceBonuses: $abnormalityResistanceBonuses, attributeResistanceBonuses: $attributeResistanceBonuses)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $HeadShapeCopyWith<$Res>  {
   factory $HeadShapeCopyWith(HeadShape value, $Res Function(HeadShape) _then) = _$HeadShapeCopyWithImpl;
 @useResult
 $Res call({
- String id, String displayName, Map<String, int> abnormalityResistanceBonuses, Map<String, int> attributeResistanceBonuses
+ String id, Map<String, int> abnormalityResistanceBonuses, Map<String, int> attributeResistanceBonuses
 });
 
 
@@ -65,10 +65,9 @@ class _$HeadShapeCopyWithImpl<$Res>
 
 /// Create a copy of HeadShape
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,Object? abnormalityResistanceBonuses = null,Object? attributeResistanceBonuses = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? abnormalityResistanceBonuses = null,Object? attributeResistanceBonuses = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,abnormalityResistanceBonuses: null == abnormalityResistanceBonuses ? _self.abnormalityResistanceBonuses : abnormalityResistanceBonuses // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,attributeResistanceBonuses: null == attributeResistanceBonuses ? _self.attributeResistanceBonuses : attributeResistanceBonuses // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,
@@ -156,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName,  Map<String, int> abnormalityResistanceBonuses,  Map<String, int> attributeResistanceBonuses)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  Map<String, int> abnormalityResistanceBonuses,  Map<String, int> attributeResistanceBonuses)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HeadShape() when $default != null:
-return $default(_that.id,_that.displayName,_that.abnormalityResistanceBonuses,_that.attributeResistanceBonuses);case _:
+return $default(_that.id,_that.abnormalityResistanceBonuses,_that.attributeResistanceBonuses);case _:
   return orElse();
 
 }
@@ -177,10 +176,10 @@ return $default(_that.id,_that.displayName,_that.abnormalityResistanceBonuses,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName,  Map<String, int> abnormalityResistanceBonuses,  Map<String, int> attributeResistanceBonuses)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  Map<String, int> abnormalityResistanceBonuses,  Map<String, int> attributeResistanceBonuses)  $default,) {final _that = this;
 switch (_that) {
 case _HeadShape():
-return $default(_that.id,_that.displayName,_that.abnormalityResistanceBonuses,_that.attributeResistanceBonuses);case _:
+return $default(_that.id,_that.abnormalityResistanceBonuses,_that.attributeResistanceBonuses);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +196,10 @@ return $default(_that.id,_that.displayName,_that.abnormalityResistanceBonuses,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName,  Map<String, int> abnormalityResistanceBonuses,  Map<String, int> attributeResistanceBonuses)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  Map<String, int> abnormalityResistanceBonuses,  Map<String, int> attributeResistanceBonuses)?  $default,) {final _that = this;
 switch (_that) {
 case _HeadShape() when $default != null:
-return $default(_that.id,_that.displayName,_that.abnormalityResistanceBonuses,_that.attributeResistanceBonuses);case _:
+return $default(_that.id,_that.abnormalityResistanceBonuses,_that.attributeResistanceBonuses);case _:
   return null;
 
 }
@@ -212,11 +211,10 @@ return $default(_that.id,_that.displayName,_that.abnormalityResistanceBonuses,_t
 @JsonSerializable()
 
 class _HeadShape implements HeadShape {
-  const _HeadShape({required this.id, required this.displayName, final  Map<String, int> abnormalityResistanceBonuses = const {}, final  Map<String, int> attributeResistanceBonuses = const {}}): _abnormalityResistanceBonuses = abnormalityResistanceBonuses,_attributeResistanceBonuses = attributeResistanceBonuses;
+  const _HeadShape({required this.id, final  Map<String, int> abnormalityResistanceBonuses = const {}, final  Map<String, int> attributeResistanceBonuses = const {}}): _abnormalityResistanceBonuses = abnormalityResistanceBonuses,_attributeResistanceBonuses = attributeResistanceBonuses;
   factory _HeadShape.fromJson(Map<String, dynamic> json) => _$HeadShapeFromJson(json);
 
 @override final  String id;
-@override final  String displayName;
  final  Map<String, int> _abnormalityResistanceBonuses;
 @override@JsonKey() Map<String, int> get abnormalityResistanceBonuses {
   if (_abnormalityResistanceBonuses is EqualUnmodifiableMapView) return _abnormalityResistanceBonuses;
@@ -245,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HeadShape&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&const DeepCollectionEquality().equals(other._abnormalityResistanceBonuses, _abnormalityResistanceBonuses)&&const DeepCollectionEquality().equals(other._attributeResistanceBonuses, _attributeResistanceBonuses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HeadShape&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other._abnormalityResistanceBonuses, _abnormalityResistanceBonuses)&&const DeepCollectionEquality().equals(other._attributeResistanceBonuses, _attributeResistanceBonuses));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,const DeepCollectionEquality().hash(_abnormalityResistanceBonuses),const DeepCollectionEquality().hash(_attributeResistanceBonuses));
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(_abnormalityResistanceBonuses),const DeepCollectionEquality().hash(_attributeResistanceBonuses));
 
 @override
 String toString() {
-  return 'HeadShape(id: $id, displayName: $displayName, abnormalityResistanceBonuses: $abnormalityResistanceBonuses, attributeResistanceBonuses: $attributeResistanceBonuses)';
+  return 'HeadShape(id: $id, abnormalityResistanceBonuses: $abnormalityResistanceBonuses, attributeResistanceBonuses: $attributeResistanceBonuses)';
 }
 
 
@@ -265,7 +263,7 @@ abstract mixin class _$HeadShapeCopyWith<$Res> implements $HeadShapeCopyWith<$Re
   factory _$HeadShapeCopyWith(_HeadShape value, $Res Function(_HeadShape) _then) = __$HeadShapeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String displayName, Map<String, int> abnormalityResistanceBonuses, Map<String, int> attributeResistanceBonuses
+ String id, Map<String, int> abnormalityResistanceBonuses, Map<String, int> attributeResistanceBonuses
 });
 
 
@@ -282,10 +280,9 @@ class __$HeadShapeCopyWithImpl<$Res>
 
 /// Create a copy of HeadShape
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,Object? abnormalityResistanceBonuses = null,Object? attributeResistanceBonuses = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? abnormalityResistanceBonuses = null,Object? attributeResistanceBonuses = null,}) {
   return _then(_HeadShape(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,abnormalityResistanceBonuses: null == abnormalityResistanceBonuses ? _self._abnormalityResistanceBonuses : abnormalityResistanceBonuses // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,attributeResistanceBonuses: null == attributeResistanceBonuses ? _self._attributeResistanceBonuses : attributeResistanceBonuses // ignore: cast_nullable_to_non_nullable
 as Map<String, int>,

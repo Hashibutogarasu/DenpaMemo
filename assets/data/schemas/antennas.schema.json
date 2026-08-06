@@ -4,15 +4,11 @@
   "description": "A single antenna master data entry, parsed into Anntena (lib/domain/master_data/anntena.dart). One file per antenna, under assets/data/antennas/attack|support|other/.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "displayName"],
+  "required": ["id"],
   "properties": {
     "id": {
       "type": "string",
-      "description": "Stable identifier referenced by other data and code."
-    },
-    "displayName": {
-      "type": "string",
-      "description": "Translation key looked up in the app's localization resources; not literal display text."
+      "description": "Stable identifier referenced by other data and code, and looked up in the app's localization resources for display text."
     },
     "targetCount": {
       "type": ["integer", "null"],

@@ -1,6 +1,5 @@
 {
   "id": "sun",
-  "displayName": "sun",
   "abnormalityResistanceBonuses": {
     "poison": 3,
     "burn": 3,

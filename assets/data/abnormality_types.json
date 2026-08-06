@@ -1,17 +1,47 @@
 [
-  { "id": "poison", "displayName": "poison" },
-  { "id": "burn", "displayName": "burn" },
-  { "id": "frostbite", "displayName": "frostbite" },
-  { "id": "cold", "displayName": "cold" },
-  { "id": "mud", "displayName": "mud" },
-  { "id": "electrocution", "displayName": "electrocution" },
-  { "id": "soaked", "displayName": "soaked" },
-  { "id": "blind", "displayName": "blind" },
-  { "id": "curse", "displayName": "curse" },
-  { "id": "suddenDeath", "displayName": "suddenDeath" },
-  { "id": "paralysis", "displayName": "paralysis" },
-  { "id": "sleep", "displayName": "sleep" },
-  { "id": "charm", "displayName": "charm" },
-  { "id": "fear", "displayName": "fear" },
-  { "id": "jack", "displayName": "jack" }
+  {
+    "id": "poison"
+  },
+  {
+    "id": "burn"
+  },
+  {
+    "id": "frostbite"
+  },
+  {
+    "id": "cold"
+  },
+  {
+    "id": "mud"
+  },
+  {
+    "id": "electrocution"
+  },
+  {
+    "id": "soaked"
+  },
+  {
+    "id": "blind"
+  },
+  {
+    "id": "curse"
+  },
+  {
+    "id": "suddenDeath"
+  },
+  {
+    "id": "paralysis"
+  },
+  {
+    "id": "sleep"
+  },
+  {
+    "id": "charm"
+  },
+  {
+    "id": "fear"
+  },
+  {
+    "id": "jack"
+  }
 ]

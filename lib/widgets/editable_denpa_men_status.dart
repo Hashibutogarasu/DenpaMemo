@@ -117,8 +117,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    t.headShape[denpaMen.headShape.id] ??
-                        denpaMen.headShape.displayName,
+                    t.headShape[denpaMen.headShape.id] ?? denpaMen.headShape.id,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

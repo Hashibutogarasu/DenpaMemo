@@ -12,7 +12,6 @@ part 'correction.g.dart';
 abstract class Correction with _$Correction {
   const factory Correction({
     required String id,
-    required String displayName,
     @Default(0) int hpBonus,
     @Default(0) int apBonus,
     @Default(0) int attackBonus,

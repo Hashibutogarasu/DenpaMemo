@@ -1,8 +1,9 @@
 [
   {
     "id": "protagonist",
-    "displayName": "protagonist",
     "hpBonus": 12,
-    "abnormalityResistanceBonuses": { "suddenDeath": 2 }
+    "abnormalityResistanceBonuses": {
+      "suddenDeath": 2
+    }
   }
 ]

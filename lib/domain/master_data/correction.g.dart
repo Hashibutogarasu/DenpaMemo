@@ -8,7 +8,6 @@ part of 'correction.dart';
 
 _Correction _$CorrectionFromJson(Map<String, dynamic> json) => _Correction(
   id: json['id'] as String,
-  displayName: json['displayName'] as String,
   hpBonus: (json['hpBonus'] as num?)?.toInt() ?? 0,
   apBonus: (json['apBonus'] as num?)?.toInt() ?? 0,
   attackBonus: (json['attackBonus'] as num?)?.toInt() ?? 0,
@@ -25,7 +24,6 @@ _Correction _$CorrectionFromJson(Map<String, dynamic> json) => _Correction(
 Map<String, dynamic> _$CorrectionToJson(_Correction instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'displayName': instance.displayName,
       'hpBonus': instance.hpBonus,
       'apBonus': instance.apBonus,
       'attackBonus': instance.attackBonus,

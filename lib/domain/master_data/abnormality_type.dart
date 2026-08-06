@@ -7,10 +7,7 @@ part 'abnormality_type.g.dart';
 /// `assets/data/abnormality_types.json`.
 @freezed
 abstract class AbnormalityType with _$AbnormalityType {
-  const factory AbnormalityType({
-    required String id,
-    required String displayName,
-  }) = _AbnormalityType;
+  const factory AbnormalityType({required String id}) = _AbnormalityType;
 
   factory AbnormalityType.fromJson(Map<String, dynamic> json) =>
       _$AbnormalityTypeFromJson(json);

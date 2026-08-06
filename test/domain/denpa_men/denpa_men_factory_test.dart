@@ -21,23 +21,19 @@ void main() {
 
   final headShape = HeadShape(
     id: 'head-a',
-    displayName: 'head-a',
     abnormalityResistanceBonuses: {abnormalityId: 3},
   );
-  final anntena = const Anntena(id: 'anntena-a', displayName: 'anntena-a');
-  final physique = const Physique(id: 'physique-a', displayName: 'physique-a');
-  final personality = const Personality(
-    id: 'personality-a',
-    displayName: 'personality-a',
-  );
-  final pattern = const Pattern(id: 'pattern-a', displayName: 'pattern-a');
+  final anntena = const Anntena(id: 'anntena-a');
+  final physique = const Physique(id: 'physique-a');
+  final personality = const Personality(id: 'personality-a');
+  final pattern = const Pattern(id: 'pattern-a');
 
   final masterData = MasterData(
     headShapes: [headShape],
     anntenas: [anntena],
     attributes: [
-      Attribute(id: attributeIdA, displayName: attributeIdA, index: 0),
-      Attribute(id: attributeIdB, displayName: attributeIdB, index: 1),
+      Attribute(id: attributeIdA, index: 0),
+      Attribute(id: attributeIdB, index: 1),
     ],
     abnormalityTypes: [],
     physiques: [physique],

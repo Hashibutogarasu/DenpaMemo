@@ -1,6 +1,5 @@
 {
   "id": "dumpling",
-  "displayName": "dumpling",
   "abnormalityResistanceBonuses": {
     "poison": 1,
     "burn": 1,

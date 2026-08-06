@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Correction {
 
- String get id; String get displayName; int get hpBonus; int get apBonus; int get attackBonus; int get defenseBonus; int get speedBonus; int get evasionRateBonus; Map<String, int> get abnormalityResistanceBonuses;
+ String get id; int get hpBonus; int get apBonus; int get attackBonus; int get defenseBonus; int get speedBonus; int get evasionRateBonus; Map<String, int> get abnormalityResistanceBonuses;
 /// Create a copy of Correction
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CorrectionCopyWith<Correction> get copyWith => _$CorrectionCopyWithImpl<Correct
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Correction&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.hpBonus, hpBonus) || other.hpBonus == hpBonus)&&(identical(other.apBonus, apBonus) || other.apBonus == apBonus)&&(identical(other.attackBonus, attackBonus) || other.attackBonus == attackBonus)&&(identical(other.defenseBonus, defenseBonus) || other.defenseBonus == defenseBonus)&&(identical(other.speedBonus, speedBonus) || other.speedBonus == speedBonus)&&(identical(other.evasionRateBonus, evasionRateBonus) || other.evasionRateBonus == evasionRateBonus)&&const DeepCollectionEquality().equals(other.abnormalityResistanceBonuses, abnormalityResistanceBonuses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Correction&&(identical(other.id, id) || other.id == id)&&(identical(other.hpBonus, hpBonus) || other.hpBonus == hpBonus)&&(identical(other.apBonus, apBonus) || other.apBonus == apBonus)&&(identical(other.attackBonus, attackBonus) || other.attackBonus == attackBonus)&&(identical(other.defenseBonus, defenseBonus) || other.defenseBonus == defenseBonus)&&(identical(other.speedBonus, speedBonus) || other.speedBonus == speedBonus)&&(identical(other.evasionRateBonus, evasionRateBonus) || other.evasionRateBonus == evasionRateBonus)&&const DeepCollectionEquality().equals(other.abnormalityResistanceBonuses, abnormalityResistanceBonuses));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,hpBonus,apBonus,attackBonus,defenseBonus,speedBonus,evasionRateBonus,const DeepCollectionEquality().hash(abnormalityResistanceBonuses));
+int get hashCode => Object.hash(runtimeType,id,hpBonus,apBonus,attackBonus,defenseBonus,speedBonus,evasionRateBonus,const DeepCollectionEquality().hash(abnormalityResistanceBonuses));
 
 @override
 String toString() {
-  return 'Correction(id: $id, displayName: $displayName, hpBonus: $hpBonus, apBonus: $apBonus, attackBonus: $attackBonus, defenseBonus: $defenseBonus, speedBonus: $speedBonus, evasionRateBonus: $evasionRateBonus, abnormalityResistanceBonuses: $abnormalityResistanceBonuses)';
+  return 'Correction(id: $id, hpBonus: $hpBonus, apBonus: $apBonus, attackBonus: $attackBonus, defenseBonus: $defenseBonus, speedBonus: $speedBonus, evasionRateBonus: $evasionRateBonus, abnormalityResistanceBonuses: $abnormalityResistanceBonuses)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CorrectionCopyWith<$Res>  {
   factory $CorrectionCopyWith(Correction value, $Res Function(Correction) _then) = _$CorrectionCopyWithImpl;
 @useResult
 $Res call({
- String id, String displayName, int hpBonus, int apBonus, int attackBonus, int defenseBonus, int speedBonus, int evasionRateBonus, Map<String, int> abnormalityResistanceBonuses
+ String id, int hpBonus, int apBonus, int attackBonus, int defenseBonus, int speedBonus, int evasionRateBonus, Map<String, int> abnormalityResistanceBonuses
 });
 
 
@@ -65,10 +65,9 @@ class _$CorrectionCopyWithImpl<$Res>
 
 /// Create a copy of Correction
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,Object? hpBonus = null,Object? apBonus = null,Object? attackBonus = null,Object? defenseBonus = null,Object? speedBonus = null,Object? evasionRateBonus = null,Object? abnormalityResistanceBonuses = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? hpBonus = null,Object? apBonus = null,Object? attackBonus = null,Object? defenseBonus = null,Object? speedBonus = null,Object? evasionRateBonus = null,Object? abnormalityResistanceBonuses = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,hpBonus: null == hpBonus ? _self.hpBonus : hpBonus // ignore: cast_nullable_to_non_nullable
 as int,apBonus: null == apBonus ? _self.apBonus : apBonus // ignore: cast_nullable_to_non_nullable
 as int,attackBonus: null == attackBonus ? _self.attackBonus : attackBonus // ignore: cast_nullable_to_non_nullable
@@ -161,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName,  int hpBonus,  int apBonus,  int attackBonus,  int defenseBonus,  int speedBonus,  int evasionRateBonus,  Map<String, int> abnormalityResistanceBonuses)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int hpBonus,  int apBonus,  int attackBonus,  int defenseBonus,  int speedBonus,  int evasionRateBonus,  Map<String, int> abnormalityResistanceBonuses)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Correction() when $default != null:
-return $default(_that.id,_that.displayName,_that.hpBonus,_that.apBonus,_that.attackBonus,_that.defenseBonus,_that.speedBonus,_that.evasionRateBonus,_that.abnormalityResistanceBonuses);case _:
+return $default(_that.id,_that.hpBonus,_that.apBonus,_that.attackBonus,_that.defenseBonus,_that.speedBonus,_that.evasionRateBonus,_that.abnormalityResistanceBonuses);case _:
   return orElse();
 
 }
@@ -182,10 +181,10 @@ return $default(_that.id,_that.displayName,_that.hpBonus,_that.apBonus,_that.att
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName,  int hpBonus,  int apBonus,  int attackBonus,  int defenseBonus,  int speedBonus,  int evasionRateBonus,  Map<String, int> abnormalityResistanceBonuses)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int hpBonus,  int apBonus,  int attackBonus,  int defenseBonus,  int speedBonus,  int evasionRateBonus,  Map<String, int> abnormalityResistanceBonuses)  $default,) {final _that = this;
 switch (_that) {
 case _Correction():
-return $default(_that.id,_that.displayName,_that.hpBonus,_that.apBonus,_that.attackBonus,_that.defenseBonus,_that.speedBonus,_that.evasionRateBonus,_that.abnormalityResistanceBonuses);case _:
+return $default(_that.id,_that.hpBonus,_that.apBonus,_that.attackBonus,_that.defenseBonus,_that.speedBonus,_that.evasionRateBonus,_that.abnormalityResistanceBonuses);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +201,10 @@ return $default(_that.id,_that.displayName,_that.hpBonus,_that.apBonus,_that.att
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName,  int hpBonus,  int apBonus,  int attackBonus,  int defenseBonus,  int speedBonus,  int evasionRateBonus,  Map<String, int> abnormalityResistanceBonuses)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int hpBonus,  int apBonus,  int attackBonus,  int defenseBonus,  int speedBonus,  int evasionRateBonus,  Map<String, int> abnormalityResistanceBonuses)?  $default,) {final _that = this;
 switch (_that) {
 case _Correction() when $default != null:
-return $default(_that.id,_that.displayName,_that.hpBonus,_that.apBonus,_that.attackBonus,_that.defenseBonus,_that.speedBonus,_that.evasionRateBonus,_that.abnormalityResistanceBonuses);case _:
+return $default(_that.id,_that.hpBonus,_that.apBonus,_that.attackBonus,_that.defenseBonus,_that.speedBonus,_that.evasionRateBonus,_that.abnormalityResistanceBonuses);case _:
   return null;
 
 }
@@ -217,11 +216,10 @@ return $default(_that.id,_that.displayName,_that.hpBonus,_that.apBonus,_that.att
 @JsonSerializable()
 
 class _Correction implements Correction {
-  const _Correction({required this.id, required this.displayName, this.hpBonus = 0, this.apBonus = 0, this.attackBonus = 0, this.defenseBonus = 0, this.speedBonus = 0, this.evasionRateBonus = 0, final  Map<String, int> abnormalityResistanceBonuses = const {}}): _abnormalityResistanceBonuses = abnormalityResistanceBonuses;
+  const _Correction({required this.id, this.hpBonus = 0, this.apBonus = 0, this.attackBonus = 0, this.defenseBonus = 0, this.speedBonus = 0, this.evasionRateBonus = 0, final  Map<String, int> abnormalityResistanceBonuses = const {}}): _abnormalityResistanceBonuses = abnormalityResistanceBonuses;
   factory _Correction.fromJson(Map<String, dynamic> json) => _$CorrectionFromJson(json);
 
 @override final  String id;
-@override final  String displayName;
 @override@JsonKey() final  int hpBonus;
 @override@JsonKey() final  int apBonus;
 @override@JsonKey() final  int attackBonus;
@@ -249,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Correction&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.hpBonus, hpBonus) || other.hpBonus == hpBonus)&&(identical(other.apBonus, apBonus) || other.apBonus == apBonus)&&(identical(other.attackBonus, attackBonus) || other.attackBonus == attackBonus)&&(identical(other.defenseBonus, defenseBonus) || other.defenseBonus == defenseBonus)&&(identical(other.speedBonus, speedBonus) || other.speedBonus == speedBonus)&&(identical(other.evasionRateBonus, evasionRateBonus) || other.evasionRateBonus == evasionRateBonus)&&const DeepCollectionEquality().equals(other._abnormalityResistanceBonuses, _abnormalityResistanceBonuses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Correction&&(identical(other.id, id) || other.id == id)&&(identical(other.hpBonus, hpBonus) || other.hpBonus == hpBonus)&&(identical(other.apBonus, apBonus) || other.apBonus == apBonus)&&(identical(other.attackBonus, attackBonus) || other.attackBonus == attackBonus)&&(identical(other.defenseBonus, defenseBonus) || other.defenseBonus == defenseBonus)&&(identical(other.speedBonus, speedBonus) || other.speedBonus == speedBonus)&&(identical(other.evasionRateBonus, evasionRateBonus) || other.evasionRateBonus == evasionRateBonus)&&const DeepCollectionEquality().equals(other._abnormalityResistanceBonuses, _abnormalityResistanceBonuses));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,hpBonus,apBonus,attackBonus,defenseBonus,speedBonus,evasionRateBonus,const DeepCollectionEquality().hash(_abnormalityResistanceBonuses));
+int get hashCode => Object.hash(runtimeType,id,hpBonus,apBonus,attackBonus,defenseBonus,speedBonus,evasionRateBonus,const DeepCollectionEquality().hash(_abnormalityResistanceBonuses));
 
 @override
 String toString() {
-  return 'Correction(id: $id, displayName: $displayName, hpBonus: $hpBonus, apBonus: $apBonus, attackBonus: $attackBonus, defenseBonus: $defenseBonus, speedBonus: $speedBonus, evasionRateBonus: $evasionRateBonus, abnormalityResistanceBonuses: $abnormalityResistanceBonuses)';
+  return 'Correction(id: $id, hpBonus: $hpBonus, apBonus: $apBonus, attackBonus: $attackBonus, defenseBonus: $defenseBonus, speedBonus: $speedBonus, evasionRateBonus: $evasionRateBonus, abnormalityResistanceBonuses: $abnormalityResistanceBonuses)';
 }
 
 
@@ -269,7 +267,7 @@ abstract mixin class _$CorrectionCopyWith<$Res> implements $CorrectionCopyWith<$
   factory _$CorrectionCopyWith(_Correction value, $Res Function(_Correction) _then) = __$CorrectionCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String displayName, int hpBonus, int apBonus, int attackBonus, int defenseBonus, int speedBonus, int evasionRateBonus, Map<String, int> abnormalityResistanceBonuses
+ String id, int hpBonus, int apBonus, int attackBonus, int defenseBonus, int speedBonus, int evasionRateBonus, Map<String, int> abnormalityResistanceBonuses
 });
 
 
@@ -286,10 +284,9 @@ class __$CorrectionCopyWithImpl<$Res>
 
 /// Create a copy of Correction
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,Object? hpBonus = null,Object? apBonus = null,Object? attackBonus = null,Object? defenseBonus = null,Object? speedBonus = null,Object? evasionRateBonus = null,Object? abnormalityResistanceBonuses = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? hpBonus = null,Object? apBonus = null,Object? attackBonus = null,Object? defenseBonus = null,Object? speedBonus = null,Object? evasionRateBonus = null,Object? abnormalityResistanceBonuses = null,}) {
   return _then(_Correction(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,hpBonus: null == hpBonus ? _self.hpBonus : hpBonus // ignore: cast_nullable_to_non_nullable
 as int,apBonus: null == apBonus ? _self.apBonus : apBonus // ignore: cast_nullable_to_non_nullable
 as int,attackBonus: null == attackBonus ? _self.attackBonus : attackBonus // ignore: cast_nullable_to_non_nullable

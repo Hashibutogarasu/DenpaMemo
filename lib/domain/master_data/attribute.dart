@@ -8,11 +8,8 @@ part 'attribute.g.dart';
 /// independent of the order entries happen to appear in the source JSON.
 @freezed
 abstract class Attribute with _$Attribute {
-  const factory Attribute({
-    required String id,
-    required String displayName,
-    required int index,
-  }) = _Attribute;
+  const factory Attribute({required String id, required int index}) =
+      _Attribute;
 
   factory Attribute.fromJson(Map<String, dynamic> json) =>
       _$AttributeFromJson(json);

@@ -1,6 +1,5 @@
 {
   "id": "sharpIce",
-  "displayName": "sharpIce",
   "dealsDamage": true,
   "attackAttributeId": "ice"
 }

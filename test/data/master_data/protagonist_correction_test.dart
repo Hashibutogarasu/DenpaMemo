@@ -11,8 +11,8 @@ void main() {
     'protagonist correction adds HP +12 and suddenDeath resistance +2 on top of the base calculation',
     () async {
       final masterData = await JsonMasterDataRepository().load();
-      final headShape = const HeadShape(id: 'head-a', displayName: 'head-a');
-      final anntena = const Anntena(id: 'anntena-a', displayName: 'anntena-a');
+      final headShape = const HeadShape(id: 'head-a');
+      final anntena = const Anntena(id: 'anntena-a');
       final protagonist = masterData.corrections.firstWhere(
         (c) => c.id == 'protagonist',
       );

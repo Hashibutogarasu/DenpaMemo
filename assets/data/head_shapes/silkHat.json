@@ -1,6 +1,5 @@
 {
   "id": "silkHat",
-  "displayName": "silkHat",
   "abnormalityResistanceBonuses": {
     "poison": 2,
     "burn": 2,
