@@ -60,6 +60,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'ring': 'わっか',
 		'silkHat': 'シルクハット',
 		'sun': 'たいよう',
+		'wing': 'はね',
 	};
 	Map<String, String> get correction => {
 		'protagonist': '主人公補正',
@@ -258,6 +259,7 @@ extension on Translations {
 			'headShape.ring' => 'わっか',
 			'headShape.silkHat' => 'シルクハット',
 			'headShape.sun' => 'たいよう',
+			'headShape.wing' => 'はね',
 			'correction.protagonist' => '主人公補正',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',

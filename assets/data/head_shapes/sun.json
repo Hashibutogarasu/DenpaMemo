@@ -1,5 +1,7 @@
 {
   "id": "sun",
+  "attackBonus": 50,
+  "defenseBonus": 100,
   "abnormalityResistanceBonuses": {
     "poison": 3,
     "burn": 3,
