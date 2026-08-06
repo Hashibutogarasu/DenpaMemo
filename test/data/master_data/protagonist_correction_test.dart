@@ -1,6 +1,7 @@
 import 'package:denpa_memo/data/master_data/json_master_data_repository.dart';
 import 'package:denpa_memo/domain/master_data/anntena.dart';
 import 'package:denpa_memo/domain/master_data/head_shape.dart';
+import 'package:denpa_memo/domain/denpa_men/denpa_men_correction_calculator.dart';
 import 'package:denpa_memo/domain/denpa_men/denpa_men_factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -46,7 +47,7 @@ void main() {
         masterData: masterData,
         hp: 100,
         corrections: [protagonist],
-      );
+      ).applyCorrections();
 
       expect(withCorrection.hp, withoutCorrection.hp + 12);
       expect(

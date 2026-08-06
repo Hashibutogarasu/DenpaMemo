@@ -7,14 +7,16 @@ import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
 import 'denpa_men.dart';
-import 'denpa_men_correction_calculator.dart';
 import 'denpa_men_resistance_calculator.dart';
 import 'denpa_men_validation_exception.dart';
 
 /// Builds a [DenpaMen], validating [bodyColors] and deriving
 /// [DenpaMen.attributeResistance] / [DenpaMen.abnormalityResistances] from
-/// [masterData] instead of accepting them directly. [corrections] are
-/// applied last, on top of the derived resistances.
+/// [masterData] instead of accepting them directly. The returned [DenpaMen]
+/// holds base growth stats and resistances; [DenpaMen.corrections] are kept
+/// as-is and only applied on top via
+/// [DenpaMenCorrectionCalculation.applyCorrections] at display time, so
+/// repeated edits never compound them.
 DenpaMen createDenpaMen({
   required String name,
   required List<String> bodyColors,
@@ -83,12 +85,10 @@ DenpaMen createDenpaMen({
   );
 
   final resistances = draft.calculateResistances(masterData);
-  return draft
-      .copyWith(
-        abnormalityResistances: resistances.abnormalityResistances,
-        attributeResistance: resistances.attributeResistance,
-      )
-      .applyCorrections();
+  return draft.copyWith(
+    abnormalityResistances: resistances.abnormalityResistances,
+    attributeResistance: resistances.attributeResistance,
+  );
 }
 
 BodyColorResistanceRule _requireRule(
