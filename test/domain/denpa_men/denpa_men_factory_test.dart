@@ -62,6 +62,7 @@ void main() {
       ),
     ],
     bodyColorAbnormalityResistanceRules: const [],
+    corrections: const [],
   );
 
   test('throws InvalidBodyColorCountException when bodyColors is empty', () {

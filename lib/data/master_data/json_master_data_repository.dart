@@ -7,6 +7,7 @@ import '../../domain/master_data/anntena.dart';
 import '../../domain/master_data/attribute.dart';
 import '../../domain/master_data/body_color_abnormality_resistance_rule.dart';
 import '../../domain/master_data/body_color_resistance_rule.dart';
+import '../../domain/master_data/correction.dart';
 import '../../domain/master_data/head_shape.dart';
 import '../../domain/master_data/master_data.dart';
 import '../../domain/master_data/pattern.dart';
@@ -25,6 +26,7 @@ const _bodyColorAbnormalityResistanceAssetPath =
 const _physiquesAssetPath = 'assets/data/physiques.json';
 const _personalitiesAssetPath = 'assets/data/personalities.json';
 const _patternsAssetPath = 'assets/data/patterns.json';
+const _correctionsAssetPath = 'assets/data/corrections.json';
 const _colorIdJsonKey = 'colorId';
 
 /// [MasterDataRepository] implementation backed by JSON files bundled as
@@ -72,6 +74,10 @@ class JsonMasterDataRepository implements MasterDataRepository {
       Personality.fromJson,
     );
     final patterns = await _loadList(_patternsAssetPath, Pattern.fromJson);
+    final corrections = await _loadList(
+      _correctionsAssetPath,
+      Correction.fromJson,
+    );
 
     return MasterData(
       headShapes: headShapes,
@@ -83,6 +89,7 @@ class JsonMasterDataRepository implements MasterDataRepository {
       physiques: physiques,
       personalities: personalities,
       patterns: patterns,
+      corrections: corrections,
     );
   }
 

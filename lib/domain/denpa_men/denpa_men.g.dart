@@ -37,6 +37,9 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   defense: (json['defense'] as num).toInt(),
   speed: (json['speed'] as num).toInt(),
   evasionRate: (json['evasionRate'] as num).toInt(),
+  corrections: (json['corrections'] as List<dynamic>)
+      .map((e) => Correction.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
@@ -62,4 +65,5 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'defense': instance.defense,
   'speed': instance.speed,
   'evasionRate': instance.evasionRate,
+  'corrections': instance.corrections,
 };

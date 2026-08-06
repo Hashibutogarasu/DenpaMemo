@@ -5,6 +5,7 @@ import 'anntena.dart';
 import 'attribute.dart';
 import 'body_color_abnormality_resistance_rule.dart';
 import 'body_color_resistance_rule.dart';
+import 'correction.dart';
 import 'head_shape.dart';
 import 'pattern.dart';
 import 'personality.dart';
@@ -26,6 +27,7 @@ abstract class MasterData with _$MasterData {
     required List<Physique> physiques,
     required List<Personality> personalities,
     required List<Pattern> patterns,
+    required List<Correction> corrections,
   }) = _MasterData;
 }
 

@@ -62,6 +62,9 @@ class _HomeBodyState extends State<_HomeBody> {
     defense: 5436,
     speed: 5583,
     evasionRate: 7,
+    corrections: [
+      widget.masterData.corrections.firstWhere((c) => c.id == 'protagonist'),
+    ],
   );
 
   void _applyEdit(DenpaMen draft) {
@@ -88,6 +91,7 @@ class _HomeBodyState extends State<_HomeBody> {
         defense: draft.defense,
         speed: draft.speed,
         evasionRate: draft.evasionRate,
+        corrections: draft.corrections,
       );
     });
   }
