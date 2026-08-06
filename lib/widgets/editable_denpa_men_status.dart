@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/master_data/head_shape.dart';
 import '../i18n/gen/strings.g.dart';
+import '../theme/app_colors.dart';
 import 'color/body_color_palette.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
@@ -77,8 +78,8 @@ class EditableDenpaMenStatus extends StatelessWidget {
           ),
           Container(
             height: 2,
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            color: const Color(0xFF056193),
+            margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
+            color: AppColors.accent,
           ),
           Row(
             children: [
@@ -93,7 +94,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
                     minHeight: 12,
                     backgroundColor: Colors.white,
                     valueColor: const AlwaysStoppedAnimation(
-                      Color(0xFF056193),
+                      AppColors.accent,
                     ),
                   ),
                 ),
@@ -200,7 +201,6 @@ class _OutlinedInlineNameField extends StatelessWidget {
   final String value;
   final ValueChanged<String> onChanged;
 
-  static const Color _outlineColor = Color(0xFF056193);
   static const double _outlineWidth = 3;
 
   @override
@@ -216,7 +216,7 @@ class _OutlinedInlineNameField extends StatelessWidget {
               foreground: Paint()
                 ..style = PaintingStyle.stroke
                 ..strokeWidth = _outlineWidth
-                ..color = _outlineColor,
+                ..color = AppColors.accent,
             ),
           ),
         ),

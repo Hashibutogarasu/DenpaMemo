@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 class StatusContainer extends StatelessWidget {
   const StatusContainer({super.key, required this.child, this.padding});
 
@@ -11,7 +13,7 @@ class StatusContainer extends StatelessWidget {
     return Container(
       padding: padding ?? const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF90E2FF),
+        color: AppColors.statusBackground,
         borderRadius: BorderRadius.circular(20),
       ),
       child: child,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 /// Renders [text] twice — once stroked in [outlineColor] behind a solid
 /// [fillColor] pass — so the title reads as an outlined header title.
 class OutlinedTitleText extends StatelessWidget {
@@ -7,7 +9,7 @@ class OutlinedTitleText extends StatelessWidget {
     super.key,
     required this.text,
     this.fillColor = Colors.white,
-    this.outlineColor = const Color(0xFF238BCB),
+    this.outlineColor = AppColors.headerTitleOutline,
     this.fontSize = 26,
     this.outlineWidth = 3,
   });

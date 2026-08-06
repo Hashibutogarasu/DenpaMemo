@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../domain/denpa_men/abnormality_resistance.dart';
 import '../domain/denpa_men/attribute_resistance.dart';
 import '../i18n/gen/strings.g.dart';
+import '../theme/app_colors.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
 import 'label/abnormality_resistance_entry.dart';
@@ -67,15 +68,15 @@ class DenpaMenStatus extends StatelessWidget {
             padding: const EdgeInsets.only(left: 14),
             child: OutlinedTitleText(
               text: name,
-              outlineColor: const Color(0xFF056193),
+              outlineColor: AppColors.accent,
               fontSize:
                   Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
             ),
           ),
           Container(
             height: 2,
-            margin: const EdgeInsets.symmetric(vertical: 4),
-            color: const Color(0xFF056193),
+            margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
+            color: AppColors.accent,
           ),
           Row(
             children: [
@@ -88,7 +89,7 @@ class DenpaMenStatus extends StatelessWidget {
                     minHeight: 12,
                     backgroundColor: Colors.white,
                     valueColor: const AlwaysStoppedAnimation(
-                      Color(0xFF056193),
+                      AppColors.accent,
                     ),
                   ),
                 ),

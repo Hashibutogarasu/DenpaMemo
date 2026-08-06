@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 class NestedContainer extends StatelessWidget {
   const NestedContainer({super.key, required this.child, this.padding});
 
@@ -11,9 +13,9 @@ class NestedContainer extends StatelessWidget {
     return Container(
       padding: padding ?? const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFC8E0E7),
+        color: AppColors.nestedBackground,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFF90DAFE), width: 2),
+        border: Border.all(color: AppColors.nestedBorder, width: 2),
       ),
       child: child,
     );
