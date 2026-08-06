@@ -41,6 +41,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
+	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
 	late final Translations$editableStatus$ja editableStatus = Translations$editableStatus$ja.internal(_root);
@@ -117,6 +118,21 @@ class Translations$common$ja {
 	String get confirm => '決定';
 }
 
+// Path: page
+class Translations$page$ja {
+	Translations$page$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'ホーム'
+	String get home => 'ホーム';
+
+	/// ja: '設定'
+	String get settings => '設定';
+}
+
 // Path: denpaMenStatus
 class Translations$denpaMenStatus$ja {
 	Translations$denpaMenStatus$ja.internal(this._root);
@@ -190,6 +206,8 @@ extension on Translations {
 		return switch (path) {
 			'common.cancel' => 'キャンセル',
 			'common.confirm' => '決定',
+			'page.home' => 'ホーム',
+			'page.settings' => '設定',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => '次のLvまで',

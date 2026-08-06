@@ -3,6 +3,10 @@
     "cancel": "キャンセル",
     "confirm": "決定"
   },
+  "page": {
+    "home": "ホーム",
+    "settings": "設定"
+  },
   "denpaMenStatus": {
     "level": "レベル",
     "happiness": "幸福度",
