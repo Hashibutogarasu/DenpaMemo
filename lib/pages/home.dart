@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -225,9 +227,9 @@ class _HomeBodyState extends State<_HomeBody> {
   }
 }
 
-/// Wraps a pane at a fixed [minWidth] so it never shrinks below its default
-/// size; if the viewport is narrower still, the pane scrolls horizontally
-/// instead of compressing its contents.
+/// Fills the page's viewport width, but never shrinks below [minWidth]; if
+/// the viewport is narrower still, the pane scrolls horizontally instead of
+/// compressing its contents.
 class _HomeBodyPane extends StatelessWidget {
   const _HomeBodyPane({required this.minWidth, required this.child});
 
@@ -236,15 +238,19 @@ class _HomeBodyPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width: minWidth,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: child,
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: math.max(minWidth, constraints.maxWidth),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: child,
+            ),
+          ),
+        );
+      },
     );
   }
 }
