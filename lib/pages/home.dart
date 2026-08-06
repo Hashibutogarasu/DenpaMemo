@@ -133,6 +133,7 @@ class _HomeBodyState extends State<_HomeBody> {
               defense: corrected.defense,
               speed: corrected.speed,
               evasionRate: corrected.evasionRate,
+              totalAttributeCount: widget.masterData.attributes.length,
               memo: corrected.memo,
             ),
           ),

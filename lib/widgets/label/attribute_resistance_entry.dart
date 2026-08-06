@@ -20,12 +20,12 @@ class AttributeResistanceEntry extends StatelessWidget {
   final String label;
   final int value;
 
-  static const double _iconSize = 20;
+  static const double height = 20;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _iconSize,
+      height: height,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -37,7 +37,7 @@ class AttributeResistanceEntry extends StatelessWidget {
             child: AttributeLabel(
               child: Row(
                 children: [
-                  const SizedBox(width: _iconSize),
+                  const SizedBox(width: height),
                   Expanded(
                     child: Text(
                       label,
