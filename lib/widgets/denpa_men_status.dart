@@ -8,6 +8,7 @@ import 'container/nested.dart';
 import 'container/status.dart';
 import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute_resistance_entry.dart';
+import 'label/exp_bar.dart';
 import 'label/happiness.dart';
 import 'label/level.dart';
 import 'label/outlined_title.dart';
@@ -96,17 +97,7 @@ class DenpaMenStatus extends StatelessWidget {
                           ),
                         SizedBox(
                           width: constraints.maxWidth * 0.3,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(999),
-                            child: LinearProgressIndicator(
-                              value: expProgress ?? 1,
-                              minHeight: 12,
-                              backgroundColor: Colors.white,
-                              valueColor: const AlwaysStoppedAnimation(
-                                AppColors.accent,
-                              ),
-                            ),
-                          ),
+                          child: ExpBar(value: expProgress ?? 1),
                         ),
                       ],
                     );

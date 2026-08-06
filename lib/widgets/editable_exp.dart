@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
 import '../i18n/gen/strings.g.dart';
-import '../theme/app_colors.dart';
 import 'field/inline_nullable_number_field.dart';
+import 'label/exp_bar.dart';
 import 'label/outlined_title.dart';
 import 'label/status.dart';
 
@@ -55,17 +55,7 @@ class EditableExp extends StatelessWidget {
                         ),
                       SizedBox(
                         width: constraints.maxWidth * 0.3,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(999),
-                          child: LinearProgressIndicator(
-                            value: isMax ? 1 : progress,
-                            minHeight: 12,
-                            backgroundColor: Colors.white,
-                            valueColor: const AlwaysStoppedAnimation(
-                              AppColors.accent,
-                            ),
-                          ),
-                        ),
+                        child: ExpBar(value: isMax ? 1 : progress),
                       ),
                     ],
                   );
