@@ -65,33 +65,41 @@ class EditableExp extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 4),
-        Row(
-          children: [
-            Text(t.stat.currentExp),
-            const SizedBox(width: 4),
-            SizedBox(
-              width: 60,
-              child: InlineNullableNumberField(
-                value: denpaMen.currentExp,
-                onChanged: (value) =>
-                    onChanged(denpaMen.copyWith(currentExp: value)),
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Row(
+            children: [
+              Text(t.stat.currentExp),
+              const Spacer(),
+              SizedBox(
+                width: 60,
+                child: InlineNullableNumberField(
+                  value: denpaMen.currentExp,
+                  textAlign: TextAlign.end,
+                  onChanged: (value) =>
+                      onChanged(denpaMen.copyWith(currentExp: value)),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        Row(
-          children: [
-            Text(t.stat.maxExp),
-            const SizedBox(width: 4),
-            SizedBox(
-              width: 60,
-              child: InlineNullableNumberField(
-                value: denpaMen.maxExp,
-                onChanged: (value) =>
-                    onChanged(denpaMen.copyWith(maxExp: value)),
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Row(
+            children: [
+              Text(t.stat.maxExp),
+              const Spacer(),
+              SizedBox(
+                width: 60,
+                child: InlineNullableNumberField(
+                  value: denpaMen.maxExp,
+                  textAlign: TextAlign.end,
+                  onChanged: (value) =>
+                      onChanged(denpaMen.copyWith(maxExp: value)),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

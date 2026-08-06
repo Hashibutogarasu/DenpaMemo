@@ -1,11 +1,10 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
 
-/// Level-up progress bar with a slanted left edge and a rounded right edge,
-/// backed by [AppColors.expBarBackground] with the filled portion in
+/// Level-up progress bar with a square right edge and a slanted left edge
+/// whose bottom corner juts out further left than its top corner, backed by
+/// [AppColors.expBarBackground] with the filled portion in
 /// [AppColors.expBarProgress].
 class ExpBar extends StatelessWidget {
   const ExpBar({super.key, required this.value, this.minHeight = 12});
@@ -33,19 +32,12 @@ class ExpBar extends StatelessWidget {
 class _LeftSlantedClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    final radius = size.height / 2;
     final slant = size.height * 0.6;
-    final rightCenter = Offset(size.width - radius, radius);
     return Path()
       ..moveTo(slant, 0)
-      ..lineTo(size.width - radius, 0)
-      ..arcTo(
-        Rect.fromCircle(center: rightCenter, radius: radius),
-        -math.pi / 2,
-        math.pi,
-        false,
-      )
-      ..lineTo(slant, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
       ..close();
   }
 
