@@ -8,3 +8,5 @@ translate_var: t
 maps:
   - attribute
   - abnormality
+  - headShape
+  - bodyColor

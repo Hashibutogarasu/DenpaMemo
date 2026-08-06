@@ -9,6 +9,7 @@ import 'icon/attribute.dart' as attribute_icon;
 import 'label/attribute.dart';
 import 'label/happiness.dart';
 import 'label/level.dart';
+import 'label/stat_value.dart';
 import 'label/status.dart';
 
 class DenpaMenStatus extends StatelessWidget {
@@ -21,6 +22,12 @@ class DenpaMenStatus extends StatelessWidget {
     required this.expLabel,
     required this.attributeResistances,
     required this.abnormalityResistances,
+    required this.hp,
+    required this.ap,
+    required this.attack,
+    required this.defense,
+    required this.speed,
+    required this.evasionRate,
     this.memo,
   });
 
@@ -31,6 +38,12 @@ class DenpaMenStatus extends StatelessWidget {
   final String expLabel;
   final List<AttributeResistance> attributeResistances;
   final List<AbnormalityResistance> abnormalityResistances;
+  final int hp;
+  final int ap;
+  final int attack;
+  final int defense;
+  final int speed;
+  final int evasionRate;
   final String? memo;
 
   @override
@@ -71,6 +84,20 @@ class DenpaMenStatus extends StatelessWidget {
           ),
           NestedContainer(
             padding: const EdgeInsets.all(8),
+            child: _StatWrap(
+              columns: 2,
+              entries: [
+                _StatData(label: t.stat.hp, value: hp),
+                _StatData(label: t.stat.ap, value: ap),
+                _StatData(label: t.stat.attack, value: attack),
+                _StatData(label: t.stat.defense, value: defense),
+                _StatData(label: t.stat.speed, value: speed),
+                _StatData(label: t.stat.evasionRate, value: evasionRate),
+              ],
+            ),
+          ),
+          NestedContainer(
+            padding: const EdgeInsets.all(8),
             child: _ResistanceWrap(
               columns: 4,
               entries: [
@@ -106,6 +133,48 @@ class DenpaMenStatus extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _StatData {
+  const _StatData({required this.label, required this.value});
+
+  final String label;
+  final int value;
+}
+
+/// Lays growth stats out left-packed with a fixed 5dp gap in both
+/// directions, sized so exactly [columns] fit per row.
+class _StatWrap extends StatelessWidget {
+  const _StatWrap({required this.columns, required this.entries});
+
+  static const double _gap = 5;
+
+  final int columns;
+  final List<_StatData> entries;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columnWidth =
+            (constraints.maxWidth - _gap * (columns - 1)) / columns;
+        return Wrap(
+          spacing: _gap,
+          runSpacing: _gap,
+          children: [
+            for (final entry in entries)
+              SizedBox(
+                width: columnWidth,
+                child: StatValueLabel(
+                  label: entry.label,
+                  value: Text('${entry.value}'),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
