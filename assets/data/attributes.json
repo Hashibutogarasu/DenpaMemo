@@ -1,10 +1,10 @@
 [
-  { "id": "fire", "displayName": "fire" },
-  { "id": "water", "displayName": "water" },
-  { "id": "thunder", "displayName": "thunder" },
-  { "id": "earth", "displayName": "earth" },
-  { "id": "ice", "displayName": "ice" },
-  { "id": "wind", "displayName": "wind" },
-  { "id": "light", "displayName": "light" },
-  { "id": "dark", "displayName": "dark" }
+  { "id": "fire", "displayName": "fire", "index": 0 },
+  { "id": "ice", "displayName": "ice", "index": 1 },
+  { "id": "wind", "displayName": "wind", "index": 2 },
+  { "id": "earth", "displayName": "earth", "index": 3 },
+  { "id": "thunder", "displayName": "thunder", "index": 4 },
+  { "id": "water", "displayName": "water", "index": 5 },
+  { "id": "light", "displayName": "light", "index": 6 },
+  { "id": "dark", "displayName": "dark", "index": 7 }
 ]

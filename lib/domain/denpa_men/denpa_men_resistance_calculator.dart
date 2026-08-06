@@ -41,6 +41,11 @@ extension DenpaMenResistanceCalculation on DenpaMen {
       attributeTotals[attributeId] = (attributeTotals[attributeId] ?? 0) + bonus;
     });
 
+    final attributeIndexById = {
+      for (final attribute in masterData.attributes)
+        attribute.id: attribute.index,
+    };
+
     return (
       abnormalityResistances: [
         for (final entry in abnormalityTotals.entries)
@@ -50,11 +55,16 @@ extension DenpaMenResistanceCalculation on DenpaMen {
               value: entry.value,
             ),
       ],
-      attributeResistance: [
-        for (final entry in attributeTotals.entries)
-          if (entry.value != 0)
-            AttributeResistance(attributeId: entry.key, value: entry.value),
-      ],
+      attributeResistance:
+          [
+            for (final entry in attributeTotals.entries)
+              if (entry.value != 0)
+                AttributeResistance(attributeId: entry.key, value: entry.value),
+          ]..sort(
+            (a, b) => (attributeIndexById[a.attributeId] ?? 0).compareTo(
+              attributeIndexById[b.attributeId] ?? 0,
+            ),
+          ),
     );
   }
 }

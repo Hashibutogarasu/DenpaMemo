@@ -36,8 +36,8 @@ void main() {
     headShapes: [headShape],
     anntenas: [anntena],
     attributes: [
-      Attribute(id: attributeIdA, displayName: attributeIdA),
-      Attribute(id: attributeIdB, displayName: attributeIdB),
+      Attribute(id: attributeIdA, displayName: attributeIdA, index: 0),
+      Attribute(id: attributeIdB, displayName: attributeIdB, index: 1),
     ],
     abnormalityTypes: [],
     physiques: [physique],
