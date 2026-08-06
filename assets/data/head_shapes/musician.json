@@ -1,5 +1,6 @@
 {
   "id": "musician",
-  "displayName": "musician",
-  "abnormalityResistanceBonuses": { "charm": 1 }
+  "abnormalityResistanceBonuses": {
+    "charm": 1
+  }
 }

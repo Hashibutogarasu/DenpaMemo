@@ -8,7 +8,6 @@ part of 'anntena.dart';
 
 _Anntena _$AnntenaFromJson(Map<String, dynamic> json) => _Anntena(
   id: json['id'] as String,
-  displayName: json['displayName'] as String,
   targetCount: (json['targetCount'] as num?)?.toInt(),
   dealsDamage: json['dealsDamage'] as bool? ?? false,
   attackAttributeId: json['attackAttributeId'] as String?,
@@ -18,7 +17,6 @@ _Anntena _$AnntenaFromJson(Map<String, dynamic> json) => _Anntena(
 
 Map<String, dynamic> _$AnntenaToJson(_Anntena instance) => <String, dynamic>{
   'id': instance.id,
-  'displayName': instance.displayName,
   'targetCount': instance.targetCount,
   'dealsDamage': instance.dealsDamage,
   'attackAttributeId': instance.attackAttributeId,

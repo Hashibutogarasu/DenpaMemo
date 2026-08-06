@@ -12,6 +12,7 @@ class InlineTextField extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.keyboardType,
     this.inputFormatters,
+    this.multiline = false,
   });
 
   final String value;
@@ -20,6 +21,10 @@ class InlineTextField extends StatefulWidget {
   final TextAlign textAlign;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+
+  /// Whether the field grows to fit wrapped text across multiple lines
+  /// instead of staying a single line.
+  final bool multiline;
 
   @override
   State<InlineTextField> createState() => _InlineTextFieldState();
@@ -52,6 +57,8 @@ class _InlineTextFieldState extends State<InlineTextField> {
       textAlign: widget.textAlign,
       keyboardType: widget.keyboardType,
       inputFormatters: widget.inputFormatters,
+      maxLines: widget.multiline ? null : 1,
+      minLines: widget.multiline ? 3 : null,
       decoration: const InputDecoration(
         border: InputBorder.none,
         enabledBorder: InputBorder.none,

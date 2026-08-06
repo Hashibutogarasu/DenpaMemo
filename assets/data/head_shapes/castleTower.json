@@ -1,5 +1,6 @@
 {
   "id": "castleTower",
-  "displayName": "castleTower",
-  "abnormalityResistanceBonuses": { "jack": 2 }
+  "abnormalityResistanceBonuses": {
+    "jack": 2
+  }
 }

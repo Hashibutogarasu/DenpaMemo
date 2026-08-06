@@ -1,7 +1,8 @@
 {
   "id": "bowlCut",
-  "displayName": "bowlCut",
-  "abnormalityResistanceBonuses": { "jack": 1 },
+  "abnormalityResistanceBonuses": {
+    "jack": 1
+  },
   "attributeResistanceBonuses": {
     "fire": 1,
     "water": 1,

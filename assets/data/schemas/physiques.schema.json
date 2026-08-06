@@ -6,15 +6,11 @@
   "items": {
     "type": "object",
     "additionalProperties": false,
-    "required": ["id", "displayName"],
+    "required": ["id"],
     "properties": {
       "id": {
         "type": "string",
-        "description": "Stable identifier referenced by other data and code."
-      },
-      "displayName": {
-        "type": "string",
-        "description": "Name shown to the user."
+        "description": "Stable identifier referenced by other data and code, and looked up in the app's localization resources for display text."
       }
     }
   }

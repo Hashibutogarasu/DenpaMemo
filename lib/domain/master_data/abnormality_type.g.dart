@@ -7,10 +7,7 @@ part of 'abnormality_type.dart';
 // **************************************************************************
 
 _AbnormalityType _$AbnormalityTypeFromJson(Map<String, dynamic> json) =>
-    _AbnormalityType(
-      id: json['id'] as String,
-      displayName: json['displayName'] as String,
-    );
+    _AbnormalityType(id: json['id'] as String);
 
 Map<String, dynamic> _$AbnormalityTypeToJson(_AbnormalityType instance) =>
-    <String, dynamic>{'id': instance.id, 'displayName': instance.displayName};
+    <String, dynamic>{'id': instance.id};

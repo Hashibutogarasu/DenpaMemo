@@ -9,7 +9,6 @@ part 'anntena.g.dart';
 abstract class Anntena with _$Anntena {
   const factory Anntena({
     required String id,
-    required String displayName,
     /// Number of targets the antenna's move hits, or null if it hits every
     /// opposing target instead of a fixed count.
     int? targetCount,

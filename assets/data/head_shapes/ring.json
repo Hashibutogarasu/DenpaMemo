@@ -1,5 +1,6 @@
 {
   "id": "ring",
-  "displayName": "ring",
-  "abnormalityResistanceBonuses": { "charm": 3 }
+  "abnormalityResistanceBonuses": {
+    "charm": 3
+  }
 }

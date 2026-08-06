@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Attribute {
 
- String get id; String get displayName; int get index;
+ String get id; int get index;
 /// Create a copy of Attribute
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AttributeCopyWith<Attribute> get copyWith => _$AttributeCopyWithImpl<Attribute>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.index, index) || other.index == index));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.index, index) || other.index == index));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,index);
+int get hashCode => Object.hash(runtimeType,id,index);
 
 @override
 String toString() {
-  return 'Attribute(id: $id, displayName: $displayName, index: $index)';
+  return 'Attribute(id: $id, index: $index)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AttributeCopyWith<$Res>  {
   factory $AttributeCopyWith(Attribute value, $Res Function(Attribute) _then) = _$AttributeCopyWithImpl;
 @useResult
 $Res call({
- String id, String displayName, int index
+ String id, int index
 });
 
 
@@ -65,10 +65,9 @@ class _$AttributeCopyWithImpl<$Res>
 
 /// Create a copy of Attribute
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,Object? index = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? index = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -155,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName,  int index)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int index)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Attribute() when $default != null:
-return $default(_that.id,_that.displayName,_that.index);case _:
+return $default(_that.id,_that.index);case _:
   return orElse();
 
 }
@@ -176,10 +175,10 @@ return $default(_that.id,_that.displayName,_that.index);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName,  int index)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int index)  $default,) {final _that = this;
 switch (_that) {
 case _Attribute():
-return $default(_that.id,_that.displayName,_that.index);case _:
+return $default(_that.id,_that.index);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +195,10 @@ return $default(_that.id,_that.displayName,_that.index);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName,  int index)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int index)?  $default,) {final _that = this;
 switch (_that) {
 case _Attribute() when $default != null:
-return $default(_that.id,_that.displayName,_that.index);case _:
+return $default(_that.id,_that.index);case _:
   return null;
 
 }
@@ -211,11 +210,10 @@ return $default(_that.id,_that.displayName,_that.index);case _:
 @JsonSerializable()
 
 class _Attribute implements Attribute {
-  const _Attribute({required this.id, required this.displayName, required this.index});
+  const _Attribute({required this.id, required this.index});
   factory _Attribute.fromJson(Map<String, dynamic> json) => _$AttributeFromJson(json);
 
 @override final  String id;
-@override final  String displayName;
 @override final  int index;
 
 /// Create a copy of Attribute
@@ -231,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.index, index) || other.index == index));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.index, index) || other.index == index));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName,index);
+int get hashCode => Object.hash(runtimeType,id,index);
 
 @override
 String toString() {
-  return 'Attribute(id: $id, displayName: $displayName, index: $index)';
+  return 'Attribute(id: $id, index: $index)';
 }
 
 
@@ -251,7 +249,7 @@ abstract mixin class _$AttributeCopyWith<$Res> implements $AttributeCopyWith<$Re
   factory _$AttributeCopyWith(_Attribute value, $Res Function(_Attribute) _then) = __$AttributeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String displayName, int index
+ String id, int index
 });
 
 
@@ -268,10 +266,9 @@ class __$AttributeCopyWithImpl<$Res>
 
 /// Create a copy of Attribute
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,Object? index = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? index = null,}) {
   return _then(_Attribute(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
 as int,
   ));

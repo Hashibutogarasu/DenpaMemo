@@ -1,6 +1,5 @@
 {
   "id": "fallingRock",
-  "displayName": "fallingRock",
   "dealsDamage": true,
   "attackAttributeId": "earth"
 }

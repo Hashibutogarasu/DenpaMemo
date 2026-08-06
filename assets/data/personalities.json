@@ -1,9 +1,23 @@
 [
-  { "id": "strawberry", "displayName": "strawberry" },
-  { "id": "bitterMelon", "displayName": "bitterMelon" },
-  { "id": "chiliPepper", "displayName": "chiliPepper" },
-  { "id": "banana", "displayName": "banana" },
-  { "id": "lemon", "displayName": "lemon" },
-  { "id": "grape", "displayName": "grape" },
-  { "id": "persimmon", "displayName": "persimmon" }
+  {
+    "id": "strawberry"
+  },
+  {
+    "id": "bitterMelon"
+  },
+  {
+    "id": "chiliPepper"
+  },
+  {
+    "id": "banana"
+  },
+  {
+    "id": "lemon"
+  },
+  {
+    "id": "grape"
+  },
+  {
+    "id": "persimmon"
+  }
 ]

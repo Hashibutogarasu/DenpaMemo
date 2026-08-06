@@ -1,6 +1,5 @@
 {
   "id": "moon",
-  "displayName": "moon",
   "attributeResistanceBonuses": {
     "fire": 1,
     "water": 1,

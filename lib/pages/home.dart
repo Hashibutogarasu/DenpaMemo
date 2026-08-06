@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
+import '../domain/denpa_men/denpa_men_correction_calculator.dart';
 import '../domain/denpa_men/denpa_men_factory.dart';
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
@@ -62,6 +63,10 @@ class _HomeBodyState extends State<_HomeBody> {
     defense: 5436,
     speed: 5583,
     evasionRate: 7,
+    corrections: [
+      widget.masterData.corrections.firstWhere((c) => c.id == 'protagonist'),
+    ],
+    memo: null,
   );
 
   void _applyEdit(DenpaMen draft) {
@@ -88,12 +93,16 @@ class _HomeBodyState extends State<_HomeBody> {
         defense: draft.defense,
         speed: draft.speed,
         evasionRate: draft.evasionRate,
+        corrections: draft.corrections,
+        memo: draft.memo,
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final corrected = _denpaMen.applyCorrections();
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -101,29 +110,30 @@ class _HomeBodyState extends State<_HomeBody> {
         children: [
           Expanded(
             child: DenpaMenStatus(
-              name: _denpaMen.name,
+              name: corrected.name,
               level: GaugeValue(
-                current: _denpaMen.level,
-                max: _denpaMen.maxLevel,
+                current: corrected.level,
+                max: corrected.maxLevel,
               ),
               happiness: GaugeValue(
-                current: _denpaMen.happiness,
-                max: _denpaMen.maxHappiness,
+                current: corrected.happiness,
+                max: corrected.maxHappiness,
               ),
               expProgress:
-                  _denpaMen.currentExp != null &&
-                      _denpaMen.maxExp != null &&
-                      _denpaMen.maxExp! > 0
-                  ? _denpaMen.currentExp! / _denpaMen.maxExp!
+                  corrected.currentExp != null &&
+                      corrected.maxExp != null &&
+                      corrected.maxExp! > 0
+                  ? corrected.currentExp! / corrected.maxExp!
                   : null,
-              attributeResistances: _denpaMen.attributeResistance,
-              abnormalityResistances: _denpaMen.abnormalityResistances,
-              hp: _denpaMen.hp,
-              ap: _denpaMen.ap,
-              attack: _denpaMen.attack,
-              defense: _denpaMen.defense,
-              speed: _denpaMen.speed,
-              evasionRate: _denpaMen.evasionRate,
+              attributeResistances: corrected.attributeResistance,
+              abnormalityResistances: corrected.abnormalityResistances,
+              hp: corrected.hp,
+              ap: corrected.ap,
+              attack: corrected.attack,
+              defense: corrected.defense,
+              speed: corrected.speed,
+              evasionRate: corrected.evasionRate,
+              memo: corrected.memo,
             ),
           ),
           const SizedBox(width: 16),
@@ -131,6 +141,7 @@ class _HomeBodyState extends State<_HomeBody> {
             child: EditableDenpaMenStatus(
               denpaMen: _denpaMen,
               headShapes: widget.masterData.headShapes,
+              corrections: widget.masterData.corrections,
               onChanged: _applyEdit,
             ),
           ),

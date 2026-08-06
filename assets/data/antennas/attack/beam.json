@@ -1,1 +1,4 @@
-{ "id": "beam", "displayName": "beam", "dealsDamage": true }
+{
+  "id": "beam",
+  "dealsDamage": true
+}

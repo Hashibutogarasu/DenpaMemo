@@ -1,5 +1,6 @@
 import '../master_data/anntena.dart';
 import '../master_data/body_color_resistance_rule.dart';
+import '../master_data/correction.dart';
 import '../master_data/head_shape.dart';
 import '../master_data/master_data.dart';
 import '../master_data/pattern.dart';
@@ -11,7 +12,11 @@ import 'denpa_men_validation_exception.dart';
 
 /// Builds a [DenpaMen], validating [bodyColors] and deriving
 /// [DenpaMen.attributeResistance] / [DenpaMen.abnormalityResistances] from
-/// [masterData] instead of accepting them directly.
+/// [masterData] instead of accepting them directly. The returned [DenpaMen]
+/// holds base growth stats and resistances; [DenpaMen.corrections] are kept
+/// as-is and only applied on top via
+/// [DenpaMenCorrectionCalculation.applyCorrections] at display time, so
+/// repeated edits never compound them.
 DenpaMen createDenpaMen({
   required String name,
   required List<String> bodyColors,
@@ -34,6 +39,8 @@ DenpaMen createDenpaMen({
   int defense = 0,
   int speed = 0,
   int evasionRate = 0,
+  List<Correction> corrections = const [],
+  String? memo,
 }) {
   if (bodyColors.length != 1 && bodyColors.length != 2) {
     throw InvalidBodyColorCountException(bodyColors.length);
@@ -73,6 +80,8 @@ DenpaMen createDenpaMen({
     defense: defense,
     speed: speed,
     evasionRate: evasionRate,
+    corrections: corrections,
+    memo: memo == null || memo.isEmpty ? null : memo,
   );
 
   final resistances = draft.calculateResistances(masterData);

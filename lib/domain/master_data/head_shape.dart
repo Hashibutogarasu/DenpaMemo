@@ -9,7 +9,6 @@ part 'head_shape.g.dart';
 abstract class HeadShape with _$HeadShape {
   const factory HeadShape({
     required String id,
-    required String displayName,
     @Default({}) Map<String, int> abnormalityResistanceBonuses,
     @Default({}) Map<String, int> attributeResistanceBonuses,
   }) = _HeadShape;

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MasterData {
 
- List<HeadShape> get headShapes; List<Anntena> get anntenas; List<Attribute> get attributes; List<AbnormalityType> get abnormalityTypes; List<BodyColorResistanceRule> get bodyColorResistanceRules; List<BodyColorAbnormalityResistanceRule> get bodyColorAbnormalityResistanceRules; List<Physique> get physiques; List<Personality> get personalities; List<Pattern> get patterns;
+ List<HeadShape> get headShapes; List<Anntena> get anntenas; List<Attribute> get attributes; List<AbnormalityType> get abnormalityTypes; List<BodyColorResistanceRule> get bodyColorResistanceRules; List<BodyColorAbnormalityResistanceRule> get bodyColorAbnormalityResistanceRules; List<Physique> get physiques; List<Personality> get personalities; List<Pattern> get patterns; List<Correction> get corrections;
 /// Create a copy of MasterData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $MasterDataCopyWith<MasterData> get copyWith => _$MasterDataCopyWithImpl<MasterD
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MasterData&&const DeepCollectionEquality().equals(other.headShapes, headShapes)&&const DeepCollectionEquality().equals(other.anntenas, anntenas)&&const DeepCollectionEquality().equals(other.attributes, attributes)&&const DeepCollectionEquality().equals(other.abnormalityTypes, abnormalityTypes)&&const DeepCollectionEquality().equals(other.bodyColorResistanceRules, bodyColorResistanceRules)&&const DeepCollectionEquality().equals(other.bodyColorAbnormalityResistanceRules, bodyColorAbnormalityResistanceRules)&&const DeepCollectionEquality().equals(other.physiques, physiques)&&const DeepCollectionEquality().equals(other.personalities, personalities)&&const DeepCollectionEquality().equals(other.patterns, patterns));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MasterData&&const DeepCollectionEquality().equals(other.headShapes, headShapes)&&const DeepCollectionEquality().equals(other.anntenas, anntenas)&&const DeepCollectionEquality().equals(other.attributes, attributes)&&const DeepCollectionEquality().equals(other.abnormalityTypes, abnormalityTypes)&&const DeepCollectionEquality().equals(other.bodyColorResistanceRules, bodyColorResistanceRules)&&const DeepCollectionEquality().equals(other.bodyColorAbnormalityResistanceRules, bodyColorAbnormalityResistanceRules)&&const DeepCollectionEquality().equals(other.physiques, physiques)&&const DeepCollectionEquality().equals(other.personalities, personalities)&&const DeepCollectionEquality().equals(other.patterns, patterns)&&const DeepCollectionEquality().equals(other.corrections, corrections));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(headShapes),const DeepCollectionEquality().hash(anntenas),const DeepCollectionEquality().hash(attributes),const DeepCollectionEquality().hash(abnormalityTypes),const DeepCollectionEquality().hash(bodyColorResistanceRules),const DeepCollectionEquality().hash(bodyColorAbnormalityResistanceRules),const DeepCollectionEquality().hash(physiques),const DeepCollectionEquality().hash(personalities),const DeepCollectionEquality().hash(patterns));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(headShapes),const DeepCollectionEquality().hash(anntenas),const DeepCollectionEquality().hash(attributes),const DeepCollectionEquality().hash(abnormalityTypes),const DeepCollectionEquality().hash(bodyColorResistanceRules),const DeepCollectionEquality().hash(bodyColorAbnormalityResistanceRules),const DeepCollectionEquality().hash(physiques),const DeepCollectionEquality().hash(personalities),const DeepCollectionEquality().hash(patterns),const DeepCollectionEquality().hash(corrections));
 
 @override
 String toString() {
-  return 'MasterData(headShapes: $headShapes, anntenas: $anntenas, attributes: $attributes, abnormalityTypes: $abnormalityTypes, bodyColorResistanceRules: $bodyColorResistanceRules, bodyColorAbnormalityResistanceRules: $bodyColorAbnormalityResistanceRules, physiques: $physiques, personalities: $personalities, patterns: $patterns)';
+  return 'MasterData(headShapes: $headShapes, anntenas: $anntenas, attributes: $attributes, abnormalityTypes: $abnormalityTypes, bodyColorResistanceRules: $bodyColorResistanceRules, bodyColorAbnormalityResistanceRules: $bodyColorAbnormalityResistanceRules, physiques: $physiques, personalities: $personalities, patterns: $patterns, corrections: $corrections)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $MasterDataCopyWith<$Res>  {
   factory $MasterDataCopyWith(MasterData value, $Res Function(MasterData) _then) = _$MasterDataCopyWithImpl;
 @useResult
 $Res call({
- List<HeadShape> headShapes, List<Anntena> anntenas, List<Attribute> attributes, List<AbnormalityType> abnormalityTypes, List<BodyColorResistanceRule> bodyColorResistanceRules, List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules, List<Physique> physiques, List<Personality> personalities, List<Pattern> patterns
+ List<HeadShape> headShapes, List<Anntena> anntenas, List<Attribute> attributes, List<AbnormalityType> abnormalityTypes, List<BodyColorResistanceRule> bodyColorResistanceRules, List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules, List<Physique> physiques, List<Personality> personalities, List<Pattern> patterns, List<Correction> corrections
 });
 
 
@@ -62,7 +62,7 @@ class _$MasterDataCopyWithImpl<$Res>
 
 /// Create a copy of MasterData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? headShapes = null,Object? anntenas = null,Object? attributes = null,Object? abnormalityTypes = null,Object? bodyColorResistanceRules = null,Object? bodyColorAbnormalityResistanceRules = null,Object? physiques = null,Object? personalities = null,Object? patterns = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? headShapes = null,Object? anntenas = null,Object? attributes = null,Object? abnormalityTypes = null,Object? bodyColorResistanceRules = null,Object? bodyColorAbnormalityResistanceRules = null,Object? physiques = null,Object? personalities = null,Object? patterns = null,Object? corrections = null,}) {
   return _then(_self.copyWith(
 headShapes: null == headShapes ? _self.headShapes : headShapes // ignore: cast_nullable_to_non_nullable
 as List<HeadShape>,anntenas: null == anntenas ? _self.anntenas : anntenas // ignore: cast_nullable_to_non_nullable
@@ -73,7 +73,8 @@ as List<BodyColorResistanceRule>,bodyColorAbnormalityResistanceRules: null == bo
 as List<BodyColorAbnormalityResistanceRule>,physiques: null == physiques ? _self.physiques : physiques // ignore: cast_nullable_to_non_nullable
 as List<Physique>,personalities: null == personalities ? _self.personalities : personalities // ignore: cast_nullable_to_non_nullable
 as List<Personality>,patterns: null == patterns ? _self.patterns : patterns // ignore: cast_nullable_to_non_nullable
-as List<Pattern>,
+as List<Pattern>,corrections: null == corrections ? _self.corrections : corrections // ignore: cast_nullable_to_non_nullable
+as List<Correction>,
   ));
 }
 
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<HeadShape> headShapes,  List<Anntena> anntenas,  List<Attribute> attributes,  List<AbnormalityType> abnormalityTypes,  List<BodyColorResistanceRule> bodyColorResistanceRules,  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules,  List<Physique> physiques,  List<Personality> personalities,  List<Pattern> patterns)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<HeadShape> headShapes,  List<Anntena> anntenas,  List<Attribute> attributes,  List<AbnormalityType> abnormalityTypes,  List<BodyColorResistanceRule> bodyColorResistanceRules,  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules,  List<Physique> physiques,  List<Personality> personalities,  List<Pattern> patterns,  List<Correction> corrections)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MasterData() when $default != null:
-return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormalityTypes,_that.bodyColorResistanceRules,_that.bodyColorAbnormalityResistanceRules,_that.physiques,_that.personalities,_that.patterns);case _:
+return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormalityTypes,_that.bodyColorResistanceRules,_that.bodyColorAbnormalityResistanceRules,_that.physiques,_that.personalities,_that.patterns,_that.corrections);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormali
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<HeadShape> headShapes,  List<Anntena> anntenas,  List<Attribute> attributes,  List<AbnormalityType> abnormalityTypes,  List<BodyColorResistanceRule> bodyColorResistanceRules,  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules,  List<Physique> physiques,  List<Personality> personalities,  List<Pattern> patterns)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<HeadShape> headShapes,  List<Anntena> anntenas,  List<Attribute> attributes,  List<AbnormalityType> abnormalityTypes,  List<BodyColorResistanceRule> bodyColorResistanceRules,  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules,  List<Physique> physiques,  List<Personality> personalities,  List<Pattern> patterns,  List<Correction> corrections)  $default,) {final _that = this;
 switch (_that) {
 case _MasterData():
-return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormalityTypes,_that.bodyColorResistanceRules,_that.bodyColorAbnormalityResistanceRules,_that.physiques,_that.personalities,_that.patterns);case _:
+return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormalityTypes,_that.bodyColorResistanceRules,_that.bodyColorAbnormalityResistanceRules,_that.physiques,_that.personalities,_that.patterns,_that.corrections);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormali
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<HeadShape> headShapes,  List<Anntena> anntenas,  List<Attribute> attributes,  List<AbnormalityType> abnormalityTypes,  List<BodyColorResistanceRule> bodyColorResistanceRules,  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules,  List<Physique> physiques,  List<Personality> personalities,  List<Pattern> patterns)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<HeadShape> headShapes,  List<Anntena> anntenas,  List<Attribute> attributes,  List<AbnormalityType> abnormalityTypes,  List<BodyColorResistanceRule> bodyColorResistanceRules,  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules,  List<Physique> physiques,  List<Personality> personalities,  List<Pattern> patterns,  List<Correction> corrections)?  $default,) {final _that = this;
 switch (_that) {
 case _MasterData() when $default != null:
-return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormalityTypes,_that.bodyColorResistanceRules,_that.bodyColorAbnormalityResistanceRules,_that.physiques,_that.personalities,_that.patterns);case _:
+return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormalityTypes,_that.bodyColorResistanceRules,_that.bodyColorAbnormalityResistanceRules,_that.physiques,_that.personalities,_that.patterns,_that.corrections);case _:
   return null;
 
 }
@@ -214,7 +215,7 @@ return $default(_that.headShapes,_that.anntenas,_that.attributes,_that.abnormali
 
 
 class _MasterData implements MasterData {
-  const _MasterData({required final  List<HeadShape> headShapes, required final  List<Anntena> anntenas, required final  List<Attribute> attributes, required final  List<AbnormalityType> abnormalityTypes, required final  List<BodyColorResistanceRule> bodyColorResistanceRules, required final  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules, required final  List<Physique> physiques, required final  List<Personality> personalities, required final  List<Pattern> patterns}): _headShapes = headShapes,_anntenas = anntenas,_attributes = attributes,_abnormalityTypes = abnormalityTypes,_bodyColorResistanceRules = bodyColorResistanceRules,_bodyColorAbnormalityResistanceRules = bodyColorAbnormalityResistanceRules,_physiques = physiques,_personalities = personalities,_patterns = patterns;
+  const _MasterData({required final  List<HeadShape> headShapes, required final  List<Anntena> anntenas, required final  List<Attribute> attributes, required final  List<AbnormalityType> abnormalityTypes, required final  List<BodyColorResistanceRule> bodyColorResistanceRules, required final  List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules, required final  List<Physique> physiques, required final  List<Personality> personalities, required final  List<Pattern> patterns, required final  List<Correction> corrections}): _headShapes = headShapes,_anntenas = anntenas,_attributes = attributes,_abnormalityTypes = abnormalityTypes,_bodyColorResistanceRules = bodyColorResistanceRules,_bodyColorAbnormalityResistanceRules = bodyColorAbnormalityResistanceRules,_physiques = physiques,_personalities = personalities,_patterns = patterns,_corrections = corrections;
   
 
  final  List<HeadShape> _headShapes;
@@ -280,6 +281,13 @@ class _MasterData implements MasterData {
   return EqualUnmodifiableListView(_patterns);
 }
 
+ final  List<Correction> _corrections;
+@override List<Correction> get corrections {
+  if (_corrections is EqualUnmodifiableListView) return _corrections;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_corrections);
+}
+
 
 /// Create a copy of MasterData
 /// with the given fields replaced by the non-null parameter values.
@@ -291,16 +299,16 @@ _$MasterDataCopyWith<_MasterData> get copyWith => __$MasterDataCopyWithImpl<_Mas
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MasterData&&const DeepCollectionEquality().equals(other._headShapes, _headShapes)&&const DeepCollectionEquality().equals(other._anntenas, _anntenas)&&const DeepCollectionEquality().equals(other._attributes, _attributes)&&const DeepCollectionEquality().equals(other._abnormalityTypes, _abnormalityTypes)&&const DeepCollectionEquality().equals(other._bodyColorResistanceRules, _bodyColorResistanceRules)&&const DeepCollectionEquality().equals(other._bodyColorAbnormalityResistanceRules, _bodyColorAbnormalityResistanceRules)&&const DeepCollectionEquality().equals(other._physiques, _physiques)&&const DeepCollectionEquality().equals(other._personalities, _personalities)&&const DeepCollectionEquality().equals(other._patterns, _patterns));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MasterData&&const DeepCollectionEquality().equals(other._headShapes, _headShapes)&&const DeepCollectionEquality().equals(other._anntenas, _anntenas)&&const DeepCollectionEquality().equals(other._attributes, _attributes)&&const DeepCollectionEquality().equals(other._abnormalityTypes, _abnormalityTypes)&&const DeepCollectionEquality().equals(other._bodyColorResistanceRules, _bodyColorResistanceRules)&&const DeepCollectionEquality().equals(other._bodyColorAbnormalityResistanceRules, _bodyColorAbnormalityResistanceRules)&&const DeepCollectionEquality().equals(other._physiques, _physiques)&&const DeepCollectionEquality().equals(other._personalities, _personalities)&&const DeepCollectionEquality().equals(other._patterns, _patterns)&&const DeepCollectionEquality().equals(other._corrections, _corrections));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_headShapes),const DeepCollectionEquality().hash(_anntenas),const DeepCollectionEquality().hash(_attributes),const DeepCollectionEquality().hash(_abnormalityTypes),const DeepCollectionEquality().hash(_bodyColorResistanceRules),const DeepCollectionEquality().hash(_bodyColorAbnormalityResistanceRules),const DeepCollectionEquality().hash(_physiques),const DeepCollectionEquality().hash(_personalities),const DeepCollectionEquality().hash(_patterns));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_headShapes),const DeepCollectionEquality().hash(_anntenas),const DeepCollectionEquality().hash(_attributes),const DeepCollectionEquality().hash(_abnormalityTypes),const DeepCollectionEquality().hash(_bodyColorResistanceRules),const DeepCollectionEquality().hash(_bodyColorAbnormalityResistanceRules),const DeepCollectionEquality().hash(_physiques),const DeepCollectionEquality().hash(_personalities),const DeepCollectionEquality().hash(_patterns),const DeepCollectionEquality().hash(_corrections));
 
 @override
 String toString() {
-  return 'MasterData(headShapes: $headShapes, anntenas: $anntenas, attributes: $attributes, abnormalityTypes: $abnormalityTypes, bodyColorResistanceRules: $bodyColorResistanceRules, bodyColorAbnormalityResistanceRules: $bodyColorAbnormalityResistanceRules, physiques: $physiques, personalities: $personalities, patterns: $patterns)';
+  return 'MasterData(headShapes: $headShapes, anntenas: $anntenas, attributes: $attributes, abnormalityTypes: $abnormalityTypes, bodyColorResistanceRules: $bodyColorResistanceRules, bodyColorAbnormalityResistanceRules: $bodyColorAbnormalityResistanceRules, physiques: $physiques, personalities: $personalities, patterns: $patterns, corrections: $corrections)';
 }
 
 
@@ -311,7 +319,7 @@ abstract mixin class _$MasterDataCopyWith<$Res> implements $MasterDataCopyWith<$
   factory _$MasterDataCopyWith(_MasterData value, $Res Function(_MasterData) _then) = __$MasterDataCopyWithImpl;
 @override @useResult
 $Res call({
- List<HeadShape> headShapes, List<Anntena> anntenas, List<Attribute> attributes, List<AbnormalityType> abnormalityTypes, List<BodyColorResistanceRule> bodyColorResistanceRules, List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules, List<Physique> physiques, List<Personality> personalities, List<Pattern> patterns
+ List<HeadShape> headShapes, List<Anntena> anntenas, List<Attribute> attributes, List<AbnormalityType> abnormalityTypes, List<BodyColorResistanceRule> bodyColorResistanceRules, List<BodyColorAbnormalityResistanceRule> bodyColorAbnormalityResistanceRules, List<Physique> physiques, List<Personality> personalities, List<Pattern> patterns, List<Correction> corrections
 });
 
 
@@ -328,7 +336,7 @@ class __$MasterDataCopyWithImpl<$Res>
 
 /// Create a copy of MasterData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? headShapes = null,Object? anntenas = null,Object? attributes = null,Object? abnormalityTypes = null,Object? bodyColorResistanceRules = null,Object? bodyColorAbnormalityResistanceRules = null,Object? physiques = null,Object? personalities = null,Object? patterns = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? headShapes = null,Object? anntenas = null,Object? attributes = null,Object? abnormalityTypes = null,Object? bodyColorResistanceRules = null,Object? bodyColorAbnormalityResistanceRules = null,Object? physiques = null,Object? personalities = null,Object? patterns = null,Object? corrections = null,}) {
   return _then(_MasterData(
 headShapes: null == headShapes ? _self._headShapes : headShapes // ignore: cast_nullable_to_non_nullable
 as List<HeadShape>,anntenas: null == anntenas ? _self._anntenas : anntenas // ignore: cast_nullable_to_non_nullable
@@ -339,7 +347,8 @@ as List<BodyColorResistanceRule>,bodyColorAbnormalityResistanceRules: null == bo
 as List<BodyColorAbnormalityResistanceRule>,physiques: null == physiques ? _self._physiques : physiques // ignore: cast_nullable_to_non_nullable
 as List<Physique>,personalities: null == personalities ? _self._personalities : personalities // ignore: cast_nullable_to_non_nullable
 as List<Personality>,patterns: null == patterns ? _self._patterns : patterns // ignore: cast_nullable_to_non_nullable
-as List<Pattern>,
+as List<Pattern>,corrections: null == corrections ? _self._corrections : corrections // ignore: cast_nullable_to_non_nullable
+as List<Correction>,
   ));
 }
 

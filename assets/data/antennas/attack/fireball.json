@@ -1,6 +1,5 @@
 {
   "id": "fireball",
-  "displayName": "fireball",
   "dealsDamage": true,
   "attackAttributeId": "fire"
 }

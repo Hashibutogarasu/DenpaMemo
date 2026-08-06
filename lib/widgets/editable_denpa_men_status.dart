@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
+import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
@@ -9,16 +10,19 @@ import 'container/nested.dart';
 import 'container/selection_tile.dart';
 import 'container/status.dart';
 import 'dialog/body_color_selection_dialog.dart';
+import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
 import 'editable_exp.dart';
 import 'editable_stat_grid.dart';
+import 'field/inline_text_field.dart';
 import 'field/outlined_inline_name_field.dart';
 import 'label/gauge_value.dart';
 import 'label/inline_gauge_label.dart';
 
 /// Right-hand desktop pane letting the user edit [denpaMen] in place. Name
-/// and numeric stats are edited inline; head shape and body color open a
-/// [showHeadShapeSelectionDialog] / [showBodyColorSelectionDialog].
+/// and numeric stats are edited inline; head shape, body color, and
+/// corrections open a [showHeadShapeSelectionDialog] /
+/// [showBodyColorSelectionDialog] / [showCorrectionSelectionDialog].
 ///
 /// Every edit produces a full draft [DenpaMen] via [onChanged] so the caller
 /// can re-derive resistances (e.g. through `createDenpaMen`) and update the
@@ -28,11 +32,13 @@ class EditableDenpaMenStatus extends StatelessWidget {
     super.key,
     required this.denpaMen,
     required this.headShapes,
+    required this.corrections,
     required this.onChanged,
   });
 
   final DenpaMen denpaMen;
   final List<HeadShape> headShapes;
+  final List<Correction> corrections;
   final ValueChanged<DenpaMen> onChanged;
 
   @override
@@ -117,8 +123,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    t.headShape[denpaMen.headShape.id] ??
-                        denpaMen.headShape.displayName,
+                    t.headShape[denpaMen.headShape.id] ?? denpaMen.headShape.id,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -155,6 +160,52 @@ class EditableDenpaMenStatus extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 8),
+          SelectionTile(
+            label: t.editableStatus.correction,
+            onTap: () async {
+              final selected = await showCorrectionSelectionDialog(
+                context,
+                corrections: corrections,
+                selected: denpaMen.corrections,
+              );
+              if (selected != null) {
+                onChanged(denpaMen.copyWith(corrections: selected));
+              }
+            },
+            child: Text(
+              denpaMen.corrections
+                  .map((c) => t.correction[c.id] ?? c.id)
+                  .join('、'),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  t.editableStatus.memo,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                InlineTextField(
+                  value: denpaMen.memo ?? '',
+                  multiline: true,
+                  onChanged: (value) => onChanged(
+                    denpaMen.copyWith(memo: value.isEmpty ? null : value),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

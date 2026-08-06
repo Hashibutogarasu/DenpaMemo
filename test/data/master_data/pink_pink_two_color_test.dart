@@ -16,11 +16,11 @@ void main() {
       name: 'test-denpa-men',
       bodyColors: const ['pink', 'pink'],
       isSpColor: false,
-      headShape: const HeadShape(id: 'head-a', displayName: 'head-a'),
+      headShape: const HeadShape(id: 'head-a'),
       physique: masterData.physiques.first,
       personality: masterData.personalities.first,
       pattern: masterData.patterns.first,
-      anntena: const Anntena(id: 'anntena-a', displayName: 'anntena-a'),
+      anntena: const Anntena(id: 'anntena-a'),
       masterData: masterData,
     );
 

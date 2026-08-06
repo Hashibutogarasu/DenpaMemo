@@ -4,15 +4,11 @@
   "description": "A single head shape master data entry, parsed into HeadShape (lib/domain/master_data/head_shape.dart). One file per head shape, under assets/data/head_shapes/.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "displayName"],
+  "required": ["id"],
   "properties": {
     "id": {
       "type": "string",
-      "description": "Stable identifier referenced by other data and code."
-    },
-    "displayName": {
-      "type": "string",
-      "description": "Translation key looked up in the app's localization resources; not literal display text."
+      "description": "Stable identifier referenced by other data and code, and looked up in the app's localization resources for display text."
     },
     "abnormalityResistanceBonuses": {
       "type": "object",

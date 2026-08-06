@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../master_data/anntena.dart';
+import '../master_data/correction.dart';
 import '../master_data/head_shape.dart';
 import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
@@ -39,6 +40,8 @@ abstract class DenpaMen with _$DenpaMen {
     required int defense,
     required int speed,
     required int evasionRate,
+    required List<Correction> corrections,
+    String? memo,
   }) = _DenpaMen;
 
   factory DenpaMen.fromJson(Map<String, dynamic> json) =>

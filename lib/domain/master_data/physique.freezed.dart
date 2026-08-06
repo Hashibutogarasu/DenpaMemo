@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Physique {
 
- String get id; String get displayName;
+ String get id;
 /// Create a copy of Physique
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PhysiqueCopyWith<Physique> get copyWith => _$PhysiqueCopyWithImpl<Physique>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Physique&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Physique&&(identical(other.id, id) || other.id == id));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName);
+int get hashCode => Object.hash(runtimeType,id);
 
 @override
 String toString() {
-  return 'Physique(id: $id, displayName: $displayName)';
+  return 'Physique(id: $id)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueCopyWith<$Res>  {
   factory $PhysiqueCopyWith(Physique value, $Res Function(Physique) _then) = _$PhysiqueCopyWithImpl;
 @useResult
 $Res call({
- String id, String displayName
+ String id
 });
 
 
@@ -65,10 +65,9 @@ class _$PhysiqueCopyWithImpl<$Res>
 
 /// Create a copy of Physique
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? displayName = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -154,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String displayName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Physique() when $default != null:
-return $default(_that.id,_that.displayName);case _:
+return $default(_that.id);case _:
   return orElse();
 
 }
@@ -175,10 +174,10 @@ return $default(_that.id,_that.displayName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String displayName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id)  $default,) {final _that = this;
 switch (_that) {
 case _Physique():
-return $default(_that.id,_that.displayName);case _:
+return $default(_that.id);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +194,10 @@ return $default(_that.id,_that.displayName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String displayName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id)?  $default,) {final _that = this;
 switch (_that) {
 case _Physique() when $default != null:
-return $default(_that.id,_that.displayName);case _:
+return $default(_that.id);case _:
   return null;
 
 }
@@ -210,11 +209,10 @@ return $default(_that.id,_that.displayName);case _:
 @JsonSerializable()
 
 class _Physique implements Physique {
-  const _Physique({required this.id, required this.displayName});
+  const _Physique({required this.id});
   factory _Physique.fromJson(Map<String, dynamic> json) => _$PhysiqueFromJson(json);
 
 @override final  String id;
-@override final  String displayName;
 
 /// Create a copy of Physique
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Physique&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Physique&&(identical(other.id, id) || other.id == id));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,displayName);
+int get hashCode => Object.hash(runtimeType,id);
 
 @override
 String toString() {
-  return 'Physique(id: $id, displayName: $displayName)';
+  return 'Physique(id: $id)';
 }
 
 
@@ -249,7 +247,7 @@ abstract mixin class _$PhysiqueCopyWith<$Res> implements $PhysiqueCopyWith<$Res>
   factory _$PhysiqueCopyWith(_Physique value, $Res Function(_Physique) _then) = __$PhysiqueCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String displayName
+ String id
 });
 
 
@@ -266,10 +264,9 @@ class __$PhysiqueCopyWithImpl<$Res>
 
 /// Create a copy of Physique
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? displayName = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
   return _then(_Physique(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

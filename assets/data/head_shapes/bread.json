@@ -1,5 +1,6 @@
 {
   "id": "bread",
-  "displayName": "bread",
-  "abnormalityResistanceBonuses": { "fear": 2 }
+  "abnormalityResistanceBonuses": {
+    "fear": 2
+  }
 }

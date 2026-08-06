@@ -50,7 +50,7 @@ class _HeadShapeSelectionDialogState
         children: [
           for (final headShape in widget.headShapes)
             ListTile(
-              title: Text(t.headShape[headShape.id] ?? headShape.displayName),
+              title: Text(t.headShape[headShape.id] ?? headShape.id),
               selected: headShape.id == _selected.id,
               trailing: headShape.id == _selected.id
                   ? const Icon(Icons.check)
