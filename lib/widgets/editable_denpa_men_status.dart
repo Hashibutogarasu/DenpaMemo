@@ -145,12 +145,18 @@ class EditableDenpaMenStatus extends StatelessWidget {
                 child: _SelectionTile(
                   label: t.editableStatus.bodyColor,
                   onTap: () async {
-                    final selected = await showBodyColorSelectionDialog(
+                    final result = await showBodyColorSelectionDialog(
                       context,
                       selected: denpaMen.bodyColors,
+                      isSpColor: denpaMen.isSpColor,
                     );
-                    if (selected != null) {
-                      onChanged(denpaMen.copyWith(bodyColors: selected));
+                    if (result != null) {
+                      onChanged(
+                        denpaMen.copyWith(
+                          bodyColors: result.bodyColors,
+                          isSpColor: result.isSpColor,
+                        ),
+                      );
                     }
                   },
                   child: Row(

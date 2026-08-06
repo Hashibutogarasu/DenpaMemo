@@ -6,23 +6,37 @@ import 'bottom_slide_dialog.dart';
 
 const int _maxSelectableColors = 2;
 
+/// Result of [showBodyColorSelectionDialog]: the chosen body color ids and
+/// whether they should be treated as an SP color (only ever valid for a
+/// single selected color, see `createDenpaMen`'s validation).
+typedef BodyColorSelectionResult = ({List<String> bodyColors, bool isSpColor});
+
 /// Shows [BottomSlideDialog] letting the user pick up to
-/// [_maxSelectableColors] body color ids from a grid of round swatches. At
+/// [_maxSelectableColors] body color ids from a grid of round swatches, plus
+/// an SP color switch enabled only while a single color is selected. At
 /// least one color must remain selected to confirm.
-Future<List<String>?> showBodyColorSelectionDialog(
+Future<BodyColorSelectionResult?> showBodyColorSelectionDialog(
   BuildContext context, {
   required List<String> selected,
+  required bool isSpColor,
 }) {
-  return showBottomSlideDialog<List<String>>(
+  return showBottomSlideDialog<BodyColorSelectionResult>(
     context: context,
-    builder: (context) => _BodyColorSelectionDialog(initial: selected),
+    builder: (context) => _BodyColorSelectionDialog(
+      initial: selected,
+      initialIsSpColor: isSpColor,
+    ),
   );
 }
 
 class _BodyColorSelectionDialog extends StatefulWidget {
-  const _BodyColorSelectionDialog({required this.initial});
+  const _BodyColorSelectionDialog({
+    required this.initial,
+    required this.initialIsSpColor,
+  });
 
   final List<String> initial;
+  final bool initialIsSpColor;
 
   @override
   State<_BodyColorSelectionDialog> createState() =>
@@ -32,6 +46,9 @@ class _BodyColorSelectionDialog extends StatefulWidget {
 class _BodyColorSelectionDialogState
     extends State<_BodyColorSelectionDialog> {
   late final List<String> _selected = List.of(widget.initial);
+  late bool _isSpColor = widget.initialIsSpColor;
+
+  bool get _canBeSpColor => _selected.length == 1;
 
   void _toggle(String colorId) {
     setState(() {
@@ -39,6 +56,9 @@ class _BodyColorSelectionDialogState
         _selected.remove(colorId);
       } else if (_selected.length < _maxSelectableColors) {
         _selected.add(colorId);
+      }
+      if (!_canBeSpColor) {
+        _isSpColor = false;
       }
     });
   }
@@ -50,20 +70,35 @@ class _BodyColorSelectionDialogState
     return BottomSlideDialog(
       title: t.editableStatus.bodyColor,
       confirmEnabled: _selected.isNotEmpty,
-      onConfirm: () => Navigator.of(context).pop(_selected),
+      onConfirm: () => Navigator.of(
+        context,
+      ).pop((bodyColors: _selected, isSpColor: _isSpColor)),
       content: SingleChildScrollView(
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 12,
-          runSpacing: 12,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            for (final colorId in bodyColorPalette.keys)
-              _ColorSwatch(
-                colorId: colorId,
-                label: t.bodyColor[colorId] ?? colorId,
-                selected: _selected.contains(colorId),
-                onTap: () => _toggle(colorId),
-              ),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                for (final colorId in bodyColorPalette.keys)
+                  _ColorSwatch(
+                    colorId: colorId,
+                    label: t.bodyColor[colorId] ?? colorId,
+                    selected: _selected.contains(colorId),
+                    onTap: () => _toggle(colorId),
+                  ),
+              ],
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(t.editableStatus.spColor),
+              value: _isSpColor,
+              onChanged: _canBeSpColor
+                  ? (value) => setState(() => _isSpColor = value)
+                  : null,
+            ),
           ],
         ),
       ),

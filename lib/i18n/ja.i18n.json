@@ -18,7 +18,8 @@
   },
   "editableStatus": {
     "headShape": "頭の形",
-    "bodyColor": "体色"
+    "bodyColor": "体色",
+    "spColor": "SPカラー"
   },
   "headShape": {
     "bowlCut": "おかっぱ",
