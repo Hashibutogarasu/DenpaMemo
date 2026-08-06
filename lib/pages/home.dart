@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_correction_calculator.dart';
@@ -8,6 +9,7 @@ import '../domain/denpa_men/denpa_men_factory.dart';
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/master_data_providers.dart';
+import '../theme/app_colors.dart';
 import '../widgets/denpa_men_status.dart';
 import '../widgets/editable_denpa_men_status.dart';
 import '../widgets/header/slanted_app_bar.dart';
@@ -191,15 +193,32 @@ class _HomeBodyState extends State<_HomeBody> {
           );
         }
 
-        return Listener(
-          onPointerSignal: _handlePointerSignal,
-          child: PageView(
-            controller: _pageController,
-            children: [
-              _HomeBodyPane(minWidth: _minPaneWidth, child: preview),
-              _HomeBodyPane(minWidth: _minPaneWidth, child: editable),
-            ],
-          ),
+        return Column(
+          children: [
+            Expanded(
+              child: Listener(
+                onPointerSignal: _handlePointerSignal,
+                child: PageView(
+                  controller: _pageController,
+                  children: [
+                    _HomeBodyPane(minWidth: _minPaneWidth, child: preview),
+                    _HomeBodyPane(minWidth: _minPaneWidth, child: editable),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: SmoothPageIndicator(
+                controller: _pageController,
+                count: 2,
+                effect: WormEffect(
+                  dotColor: AppColors.nestedBorder,
+                  activeDotColor: AppColors.accent,
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

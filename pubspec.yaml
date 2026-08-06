@@ -16,6 +16,7 @@ dependencies:
   json_annotation: ^4.12.0
   flutter_riverpod: ^2.6.1
   slang_flutter: ^4.18.0
+  smooth_page_indicator: ^2.0.1
 
 dev_dependencies:
   flutter_test:
