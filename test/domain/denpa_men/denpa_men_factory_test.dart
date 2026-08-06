@@ -149,13 +149,36 @@ void main() {
     expect(denpaMen.abnormalityResistances.single.value, 3);
   });
 
-  test('solo color with no attribute resistance bonuses of its own adds +1 to all', () {
+  test('solo color with no attribute resistance bonuses of its own grants none when not SP', () {
     final denpaMen = createDenpaMen(
       maxHappiness: 0,
       maxLevel: 1,
       name: 'test-denpa-men',
       bodyColors: [soloAllBonusColorId],
       isSpColor: false,
+      headShape: headShape,
+      physique: physique,
+      personality: personality,
+      pattern: pattern,
+      anntena: anntena,
+      masterData: masterData,
+    );
+
+    expect(
+      denpaMen.attributeResistance.where(
+        (r) => r.attributeId == attributeIdA || r.attributeId == attributeIdB,
+      ),
+      isEmpty,
+    );
+  });
+
+  test('solo color with no attribute resistance bonuses of its own adds +1 to all when SP', () {
+    final denpaMen = createDenpaMen(
+      maxHappiness: 0,
+      maxLevel: 1,
+      name: 'test-denpa-men',
+      bodyColors: [soloAllBonusColorId],
+      isSpColor: true,
       headShape: headShape,
       physique: physique,
       personality: personality,
