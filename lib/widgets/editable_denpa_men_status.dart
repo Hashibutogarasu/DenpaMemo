@@ -70,11 +70,15 @@ class EditableDenpaMenStatus extends StatelessWidget {
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.only(left: 14),
-            child: InlineTextField(
+            child: _OutlinedInlineNameField(
               value: denpaMen.name,
-              style: Theme.of(context).textTheme.titleLarge,
               onChanged: (value) => onChanged(denpaMen.copyWith(name: value)),
             ),
+          ),
+          Container(
+            height: 2,
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            color: const Color(0xFF056193),
           ),
           Row(
             children: [
@@ -178,6 +182,50 @@ class EditableDenpaMenStatus extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Inline-editable name field styled like [OutlinedTitleText]: white fill
+/// over an outline stroked in the level label's color. Achieved by
+/// layering a non-interactive stroked [Text] behind an [InlineTextField]
+/// whose own fill is white, since a single [TextStyle] can't paint both a
+/// fill and a stroke pass at once.
+class _OutlinedInlineNameField extends StatelessWidget {
+  const _OutlinedInlineNameField({
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String value;
+  final ValueChanged<String> onChanged;
+
+  static const Color _outlineColor = Color(0xFF056193);
+  static const double _outlineWidth = 3;
+
+  @override
+  Widget build(BuildContext context) {
+    final baseStyle = Theme.of(context).textTheme.titleLarge ?? const TextStyle();
+
+    return Stack(
+      children: [
+        IgnorePointer(
+          child: Text(
+            value,
+            style: baseStyle.copyWith(
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = _outlineWidth
+                ..color = _outlineColor,
+            ),
+          ),
+        ),
+        InlineTextField(
+          value: value,
+          style: baseStyle.copyWith(color: Colors.white),
+          onChanged: onChanged,
+        ),
+      ],
     );
   }
 }

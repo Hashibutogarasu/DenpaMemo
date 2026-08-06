@@ -9,6 +9,7 @@ import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute_resistance_entry.dart';
 import 'label/happiness.dart';
 import 'label/level.dart';
+import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
 import 'label/status.dart';
 
@@ -64,7 +65,17 @@ class DenpaMenStatus extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 14),
-            child: Text(name, style: Theme.of(context).textTheme.titleLarge),
+            child: OutlinedTitleText(
+              text: name,
+              outlineColor: const Color(0xFF056193),
+              fontSize:
+                  Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
+            ),
+          ),
+          Container(
+            height: 2,
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            color: const Color(0xFF056193),
           ),
           Row(
             children: [
