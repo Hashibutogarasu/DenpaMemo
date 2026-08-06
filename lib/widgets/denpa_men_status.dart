@@ -21,7 +21,6 @@ class DenpaMenStatus extends StatelessWidget {
     required this.level,
     required this.happiness,
     required this.expProgress,
-    required this.expLabel,
     required this.attributeResistances,
     required this.abnormalityResistances,
     required this.hp,
@@ -36,8 +35,7 @@ class DenpaMenStatus extends StatelessWidget {
   final String name;
   final int level;
   final int happiness;
-  final double expProgress;
-  final String expLabel;
+  final double? expProgress;
   final List<AttributeResistance> attributeResistances;
   final List<AbnormalityResistance> abnormalityResistances;
   final int hp;
@@ -82,19 +80,39 @@ class DenpaMenStatus extends StatelessWidget {
             children: [
               StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
               Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(999),
-                  child: LinearProgressIndicator(
-                    value: expProgress,
-                    minHeight: 12,
-                    backgroundColor: Colors.white,
-                    valueColor: const AlwaysStoppedAnimation(
-                      AppColors.accent,
-                    ),
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (expProgress == null)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: OutlinedTitleText(
+                              text: t.denpaMenStatus.max,
+                              outlineColor: Colors.red,
+                              fontSize: 16,
+                            ),
+                          ),
+                        SizedBox(
+                          width: constraints.maxWidth * 0.3,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(999),
+                            child: LinearProgressIndicator(
+                              value: expProgress ?? 1,
+                              minHeight: 12,
+                              backgroundColor: Colors.white,
+                              valueColor: const AlwaysStoppedAnimation(
+                                AppColors.accent,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
-              Text(expLabel),
             ],
           ),
           NestedContainer(

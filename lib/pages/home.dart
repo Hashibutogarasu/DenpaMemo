@@ -99,10 +99,12 @@ class _HomeBodyState extends State<_HomeBody> {
               name: _denpaMen.name,
               level: _denpaMen.level,
               happiness: _denpaMen.happiness,
-              expProgress: _denpaMen.maxExp > 0
-                  ? _denpaMen.currentExp / _denpaMen.maxExp
-                  : 0,
-              expLabel: '${_denpaMen.currentExp}/${_denpaMen.maxExp}',
+              expProgress:
+                  _denpaMen.currentExp != null &&
+                      _denpaMen.maxExp != null &&
+                      _denpaMen.maxExp! > 0
+                  ? _denpaMen.currentExp! / _denpaMen.maxExp!
+                  : null,
               attributeResistances: _denpaMen.attributeResistance,
               abnormalityResistances: _denpaMen.abnormalityResistances,
               hp: _denpaMen.hp,
