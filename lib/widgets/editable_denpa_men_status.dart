@@ -62,8 +62,10 @@ class EditableDenpaMenStatus extends StatelessWidget {
                   current: denpaMen.level,
                   max: denpaMen.maxLevel,
                 ),
-                onChanged: (value) =>
+                onCurrentChanged: (value) =>
                     onChanged(denpaMen.copyWith(level: value)),
+                onMaxChanged: (value) =>
+                    onChanged(denpaMen.copyWith(maxLevel: value)),
               ),
               InlineGaugeLabel(
                 label: t.denpaMenStatus.happiness,
@@ -71,8 +73,10 @@ class EditableDenpaMenStatus extends StatelessWidget {
                   current: denpaMen.happiness,
                   max: denpaMen.maxHappiness,
                 ),
-                onChanged: (value) =>
+                onCurrentChanged: (value) =>
                     onChanged(denpaMen.copyWith(happiness: value)),
+                onMaxChanged: (value) =>
+                    onChanged(denpaMen.copyWith(maxHappiness: value)),
               ),
             ],
           ),
