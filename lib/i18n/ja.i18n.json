@@ -10,7 +10,7 @@
   "denpaMenStatus": {
     "level": "レベル",
     "happiness": "幸福度",
-    "untilNextLevel": "次のLvまで",
+    "untilNextLevel": "つぎのLvまで",
     "max": "MAX"
   },
   "stat": {

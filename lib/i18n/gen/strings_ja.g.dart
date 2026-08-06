@@ -148,8 +148,8 @@ class Translations$denpaMenStatus$ja {
 	/// ja: '幸福度'
 	String get happiness => '幸福度';
 
-	/// ja: '次のLvまで'
-	String get untilNextLevel => '次のLvまで';
+	/// ja: 'つぎのLvまで'
+	String get untilNextLevel => 'つぎのLvまで';
 
 	/// ja: 'MAX'
 	String get max => 'MAX';
@@ -220,7 +220,7 @@ extension on Translations {
 			'page.settings' => '設定',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
-			'denpaMenStatus.untilNextLevel' => '次のLvまで',
+			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
 			'denpaMenStatus.max' => 'MAX',
 			'stat.hp' => 'HP',
 			'stat.ap' => 'AP',
