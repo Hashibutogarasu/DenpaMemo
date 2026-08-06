@@ -62,7 +62,10 @@ class DenpaMenStatus extends StatelessWidget {
               HappinessLabel(happiness: happiness),
             ],
           ),
-          Text(name, style: Theme.of(context).textTheme.titleLarge),
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: Text(name, style: Theme.of(context).textTheme.titleLarge),
+          ),
           Row(
             children: [
               StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),

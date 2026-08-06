@@ -68,10 +68,13 @@ class EditableDenpaMenStatus extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          InlineTextField(
-            value: denpaMen.name,
-            style: Theme.of(context).textTheme.titleLarge,
-            onChanged: (value) => onChanged(denpaMen.copyWith(name: value)),
+          Padding(
+            padding: const EdgeInsets.only(left: 14),
+            child: InlineTextField(
+              value: denpaMen.name,
+              style: Theme.of(context).textTheme.titleLarge,
+              onChanged: (value) => onChanged(denpaMen.copyWith(name: value)),
+            ),
           ),
           Row(
             children: [
