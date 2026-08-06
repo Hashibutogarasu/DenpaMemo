@@ -125,16 +125,21 @@ class DenpaMenStatus extends StatelessWidget {
               ],
             ),
           ),
-          if (memo != null)
+          if (memo != null) ...[
+            const SizedBox(height: 8),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(memo!),
             ),
+          ],
         ],
       ),
     );
