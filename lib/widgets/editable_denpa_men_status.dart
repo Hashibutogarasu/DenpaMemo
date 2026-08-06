@@ -62,27 +62,32 @@ class EditableDenpaMenStatus extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InlineGaugeLabel(
-                label: t.denpaMenStatus.level,
-                value: GaugeValue(
-                  current: denpaMen.level,
-                  max: denpaMen.maxLevel,
+              Flexible(
+                child: InlineGaugeLabel(
+                  label: t.denpaMenStatus.level,
+                  value: GaugeValue(
+                    current: denpaMen.level,
+                    max: denpaMen.maxLevel,
+                  ),
+                  onCurrentChanged: (value) =>
+                      onChanged(denpaMen.copyWith(level: value)),
+                  onMaxChanged: (value) =>
+                      onChanged(denpaMen.copyWith(maxLevel: value)),
                 ),
-                onCurrentChanged: (value) =>
-                    onChanged(denpaMen.copyWith(level: value)),
-                onMaxChanged: (value) =>
-                    onChanged(denpaMen.copyWith(maxLevel: value)),
               ),
-              InlineGaugeLabel(
-                label: t.denpaMenStatus.happiness,
-                value: GaugeValue(
-                  current: denpaMen.happiness,
-                  max: denpaMen.maxHappiness,
+              const SizedBox(width: 8),
+              Flexible(
+                child: InlineGaugeLabel(
+                  label: t.denpaMenStatus.happiness,
+                  value: GaugeValue(
+                    current: denpaMen.happiness,
+                    max: denpaMen.maxHappiness,
+                  ),
+                  onCurrentChanged: (value) =>
+                      onChanged(denpaMen.copyWith(happiness: value)),
+                  onMaxChanged: (value) =>
+                      onChanged(denpaMen.copyWith(maxHappiness: value)),
                 ),
-                onCurrentChanged: (value) =>
-                    onChanged(denpaMen.copyWith(happiness: value)),
-                onMaxChanged: (value) =>
-                    onChanged(denpaMen.copyWith(maxHappiness: value)),
               ),
             ],
           ),

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
@@ -71,8 +73,10 @@ class EditableStatGrid extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columnWidth =
-            (constraints.maxWidth - _gap * (_columns - 1)) / _columns;
+        final columnWidth = math.max(
+          0.0,
+          (constraints.maxWidth - _gap * (_columns - 1)) / _columns,
+        );
         return Wrap(
           spacing: _gap,
           runSpacing: _gap,

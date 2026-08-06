@@ -35,7 +35,9 @@ class AttributeResistanceEntry extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: AttributeLabel(
-              child: Row(
+              child: Flex(
+                direction: Axis.horizontal,
+                clipBehavior: Clip.hardEdge,
                 children: [
                   const SizedBox(width: height),
                   Expanded(

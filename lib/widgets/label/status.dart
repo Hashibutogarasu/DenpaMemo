@@ -17,7 +17,6 @@ class StatusLabel extends StatelessWidget {
       child: Container(
         height: height,
         color: AppColors.statusBackground,
-        alignment: Alignment.center,
         padding: const EdgeInsets.only(left: 14, right: 20),
         child: DefaultTextStyle.merge(
           style: const TextStyle(color: AppColors.accent),

@@ -99,54 +99,90 @@ class _HomeBodyState extends State<_HomeBody> {
     });
   }
 
+  static const double _minPaneWidth = 360;
+  static const double _paneGap = 16;
+
   @override
   Widget build(BuildContext context) {
     final corrected = _denpaMen.applyCorrections();
 
+    final preview = DenpaMenStatus(
+      name: corrected.name,
+      level: GaugeValue(current: corrected.level, max: corrected.maxLevel),
+      happiness: GaugeValue(
+        current: corrected.happiness,
+        max: corrected.maxHappiness,
+      ),
+      expProgress:
+          corrected.currentExp != null &&
+              corrected.maxExp != null &&
+              corrected.maxExp! > 0
+          ? corrected.currentExp! / corrected.maxExp!
+          : null,
+      attributeResistances: corrected.attributeResistance,
+      abnormalityResistances: corrected.abnormalityResistances,
+      hp: corrected.hp,
+      ap: corrected.ap,
+      attack: corrected.attack,
+      defense: corrected.defense,
+      speed: corrected.speed,
+      evasionRate: corrected.evasionRate,
+      totalAttributeCount: widget.masterData.attributes.length,
+      memo: corrected.memo,
+    );
+    final editable = EditableDenpaMenStatus(
+      denpaMen: _denpaMen,
+      headShapes: widget.masterData.headShapes,
+      corrections: widget.masterData.corrections,
+      onChanged: _applyEdit,
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth >= _minPaneWidth * 2 + _paneGap) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: preview),
+                const SizedBox(width: _paneGap),
+                Expanded(child: editable),
+              ],
+            ),
+          );
+        }
+
+        return PageView(
+          children: [
+            _HomeBodyPane(minWidth: _minPaneWidth, child: preview),
+            _HomeBodyPane(minWidth: _minPaneWidth, child: editable),
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// Wraps a pane at a fixed [minWidth] so it never shrinks below its default
+/// size; if the viewport is narrower still, the pane scrolls horizontally
+/// instead of compressing its contents.
+class _HomeBodyPane extends StatelessWidget {
+  const _HomeBodyPane({required this.minWidth, required this.child});
+
+  final double minWidth;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: DenpaMenStatus(
-              name: corrected.name,
-              level: GaugeValue(
-                current: corrected.level,
-                max: corrected.maxLevel,
-              ),
-              happiness: GaugeValue(
-                current: corrected.happiness,
-                max: corrected.maxHappiness,
-              ),
-              expProgress:
-                  corrected.currentExp != null &&
-                      corrected.maxExp != null &&
-                      corrected.maxExp! > 0
-                  ? corrected.currentExp! / corrected.maxExp!
-                  : null,
-              attributeResistances: corrected.attributeResistance,
-              abnormalityResistances: corrected.abnormalityResistances,
-              hp: corrected.hp,
-              ap: corrected.ap,
-              attack: corrected.attack,
-              defense: corrected.defense,
-              speed: corrected.speed,
-              evasionRate: corrected.evasionRate,
-              totalAttributeCount: widget.masterData.attributes.length,
-              memo: corrected.memo,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: EditableDenpaMenStatus(
-              denpaMen: _denpaMen,
-              headShapes: widget.masterData.headShapes,
-              corrections: widget.masterData.corrections,
-              onChanged: _applyEdit,
-            ),
-          ),
-        ],
+      scrollDirection: Axis.horizontal,
+      child: SizedBox(
+        width: minWidth,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: child,
+        ),
       ),
     );
   }
