@@ -40,7 +40,39 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	Translations $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => Translations(meta: meta ?? this.$meta);
 
 	// Translations
+	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
+	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
+	late final Translations$editableStatus$ja editableStatus = Translations$editableStatus$ja.internal(_root);
+	Map<String, String> get headShape => {
+		'bowlCut': 'おかっぱ',
+		'bread': 'しょくぱん',
+		'castleTower': 'てんしゅ',
+		'dumpling': 'おだんご',
+		'fin': 'ひれ',
+		'frog': 'かえる',
+		'grandCastleTower': 'だいてんしゅ',
+		'light': 'ひかり',
+		'moon': 'つき',
+		'musician': 'おんがくか',
+		'ring': 'わっか',
+		'silkHat': 'シルクハット',
+		'sun': 'たいよう',
+	};
+	Map<String, String> get bodyColor => {
+		'red': 'あか',
+		'blue': 'あお',
+		'yellow': 'きいろ',
+		'green': 'みどり',
+		'lightBlue': 'みずいろ',
+		'orange': 'だいだい',
+		'black': 'くろ',
+		'purple': 'むらさき',
+		'white': 'しろ',
+		'pink': 'もも',
+		'gold': 'きん',
+		'silver': 'ぎん',
+	};
 	Map<String, String> get attribute => {
 		'fire': '火',
 		'water': '水',
@@ -70,6 +102,21 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	};
 }
 
+// Path: common
+class Translations$common$ja {
+	Translations$common$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'キャンセル'
+	String get cancel => 'キャンセル';
+
+	/// ja: '決定'
+	String get confirm => '決定';
+}
+
 // Path: denpaMenStatus
 class Translations$denpaMenStatus$ja {
 	Translations$denpaMenStatus$ja.internal(this._root);
@@ -88,6 +135,51 @@ class Translations$denpaMenStatus$ja {
 	String get untilNextLevel => '次のLvまで';
 }
 
+// Path: stat
+class Translations$stat$ja {
+	Translations$stat$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'HP'
+	String get hp => 'HP';
+
+	/// ja: 'AP'
+	String get ap => 'AP';
+
+	/// ja: 'こうげきりょく'
+	String get attack => 'こうげきりょく';
+
+	/// ja: 'ぼうぎょりょく'
+	String get defense => 'ぼうぎょりょく';
+
+	/// ja: 'すばやさ'
+	String get speed => 'すばやさ';
+
+	/// ja: 'かいひりつ'
+	String get evasionRate => 'かいひりつ';
+}
+
+// Path: editableStatus
+class Translations$editableStatus$ja {
+	Translations$editableStatus$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '頭の形'
+	String get headShape => '頭の形';
+
+	/// ja: '体色'
+	String get bodyColor => '体色';
+
+	/// ja: 'SPカラー'
+	String get spColor => 'SPカラー';
+}
+
 /// The flat map containing all translations for locale <ja>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -96,9 +188,45 @@ class Translations$denpaMenStatus$ja {
 extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
+			'common.cancel' => 'キャンセル',
+			'common.confirm' => '決定',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => '次のLvまで',
+			'stat.hp' => 'HP',
+			'stat.ap' => 'AP',
+			'stat.attack' => 'こうげきりょく',
+			'stat.defense' => 'ぼうぎょりょく',
+			'stat.speed' => 'すばやさ',
+			'stat.evasionRate' => 'かいひりつ',
+			'editableStatus.headShape' => '頭の形',
+			'editableStatus.bodyColor' => '体色',
+			'editableStatus.spColor' => 'SPカラー',
+			'headShape.bowlCut' => 'おかっぱ',
+			'headShape.bread' => 'しょくぱん',
+			'headShape.castleTower' => 'てんしゅ',
+			'headShape.dumpling' => 'おだんご',
+			'headShape.fin' => 'ひれ',
+			'headShape.frog' => 'かえる',
+			'headShape.grandCastleTower' => 'だいてんしゅ',
+			'headShape.light' => 'ひかり',
+			'headShape.moon' => 'つき',
+			'headShape.musician' => 'おんがくか',
+			'headShape.ring' => 'わっか',
+			'headShape.silkHat' => 'シルクハット',
+			'headShape.sun' => 'たいよう',
+			'bodyColor.red' => 'あか',
+			'bodyColor.blue' => 'あお',
+			'bodyColor.yellow' => 'きいろ',
+			'bodyColor.green' => 'みどり',
+			'bodyColor.lightBlue' => 'みずいろ',
+			'bodyColor.orange' => 'だいだい',
+			'bodyColor.black' => 'くろ',
+			'bodyColor.purple' => 'むらさき',
+			'bodyColor.white' => 'しろ',
+			'bodyColor.pink' => 'もも',
+			'bodyColor.gold' => 'きん',
+			'bodyColor.silver' => 'ぎん',
 			'attribute.fire' => '火',
 			'attribute.water' => '水',
 			'attribute.thunder' => '雷',

@@ -1,8 +1,54 @@
 {
+  "common": {
+    "cancel": "キャンセル",
+    "confirm": "決定"
+  },
   "denpaMenStatus": {
     "level": "レベル",
     "happiness": "幸福度",
     "untilNextLevel": "次のLvまで"
+  },
+  "stat": {
+    "hp": "HP",
+    "ap": "AP",
+    "attack": "こうげきりょく",
+    "defense": "ぼうぎょりょく",
+    "speed": "すばやさ",
+    "evasionRate": "かいひりつ"
+  },
+  "editableStatus": {
+    "headShape": "頭の形",
+    "bodyColor": "体色",
+    "spColor": "SPカラー"
+  },
+  "headShape": {
+    "bowlCut": "おかっぱ",
+    "bread": "しょくぱん",
+    "castleTower": "てんしゅ",
+    "dumpling": "おだんご",
+    "fin": "ひれ",
+    "frog": "かえる",
+    "grandCastleTower": "だいてんしゅ",
+    "light": "ひかり",
+    "moon": "つき",
+    "musician": "おんがくか",
+    "ring": "わっか",
+    "silkHat": "シルクハット",
+    "sun": "たいよう"
+  },
+  "bodyColor": {
+    "red": "あか",
+    "blue": "あお",
+    "yellow": "きいろ",
+    "green": "みどり",
+    "lightBlue": "みずいろ",
+    "orange": "だいだい",
+    "black": "くろ",
+    "purple": "むらさき",
+    "white": "しろ",
+    "pink": "もも",
+    "gold": "きん",
+    "silver": "ぎん"
   },
   "attribute": {
     "fire": "火",
