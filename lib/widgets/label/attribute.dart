@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AttributeLabel extends StatelessWidget {
-  const AttributeLabel({super.key, required this.text});
+  const AttributeLabel({super.key, required this.child});
 
-  final String text;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +13,9 @@ class AttributeLabel extends StatelessWidget {
         color: const Color(0xFF7FC9FF),
         borderRadius: BorderRadius.circular(999),
       ),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
+      child: DefaultTextStyle.merge(
         style: const TextStyle(color: Color(0xFF2B2031)),
+        child: child,
       ),
     );
   }

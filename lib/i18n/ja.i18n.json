@@ -26,6 +26,7 @@
     "spColor": "SPカラー"
   },
   "headShape": {
+    "circle": "まる",
     "bowlCut": "おかっぱ",
     "bread": "しょくぱん",
     "castleTower": "てんしゅ",

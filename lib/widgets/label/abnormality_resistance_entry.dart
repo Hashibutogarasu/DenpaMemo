@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../icon/abnormality.dart';
+import 'signed_number.dart';
 
 /// Displays a single abnormality resistance entry: a square, black-bordered
 /// icon, the abnormality name left-aligned, and its signed value right-
@@ -22,7 +23,7 @@ class AbnormalityResistanceEntry extends StatelessWidget {
         const AbnormalityIcon(),
         const SizedBox(width: 4),
         Expanded(child: Text(label, overflow: TextOverflow.ellipsis)),
-        Text('${value >= 0 ? '+' : ''}$value'),
+        SignedNumberText(value: value),
       ],
     );
   }

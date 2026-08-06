@@ -5,9 +5,8 @@ import '../domain/denpa_men/attribute_resistance.dart';
 import '../i18n/gen/strings.g.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
-import 'icon/attribute.dart' as attribute_icon;
 import 'label/abnormality_resistance_entry.dart';
-import 'label/attribute.dart';
+import 'label/attribute_resistance_entry.dart';
 import 'label/happiness.dart';
 import 'label/level.dart';
 import 'label/stat_value.dart';
@@ -188,7 +187,10 @@ class _ResistanceData {
 }
 
 /// Lays [entries] out left-packed with a fixed 5dp gap in both directions,
-/// sized so exactly [columns] fit per row.
+/// sized so exactly [columns] fit per row. Each entry's [AttributeLabel]
+/// pill stretches to fill its column (see [AttributeResistanceEntry]), so
+/// entries sit packed against each other instead of leaving gaps around
+/// content narrower than the column.
 class _ResistanceWrap extends StatelessWidget {
   const _ResistanceWrap({required this.columns, required this.entries});
 
@@ -210,7 +212,10 @@ class _ResistanceWrap extends StatelessWidget {
             for (final entry in entries)
               SizedBox(
                 width: columnWidth,
-                child: _ResistanceEntry(label: entry.label, value: entry.value),
+                child: AttributeResistanceEntry(
+                  label: entry.label,
+                  value: entry.value,
+                ),
               ),
           ],
         );
@@ -253,26 +258,6 @@ class _AbnormalityResistanceWrap extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class _ResistanceEntry extends StatelessWidget {
-  const _ResistanceEntry({required this.label, required this.value});
-
-  final String label;
-  final int value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const attribute_icon.AttributeIcon(),
-        Flexible(
-          child: AttributeLabel(text: '$label ${value >= 0 ? '+' : ''}$value'),
-        ),
-      ],
     );
   }
 }
