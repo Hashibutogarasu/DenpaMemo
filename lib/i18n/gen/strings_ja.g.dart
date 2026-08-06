@@ -184,11 +184,11 @@ class Translations$stat$ja {
 	/// ja: 'かいひりつ'
 	String get evasionRate => 'かいひりつ';
 
-	/// ja: 'けいけんち'
-	String get currentExp => 'けいけんち';
+	/// ja: '経験値'
+	String get currentExp => '経験値';
 
-	/// ja: 'ひつようけいけんち'
-	String get maxExp => 'ひつようけいけんち';
+	/// ja: '必要経験値'
+	String get maxExp => '必要経験値';
 }
 
 // Path: editableStatus
@@ -210,6 +210,9 @@ class Translations$editableStatus$ja {
 
 	/// ja: '補正'
 	String get correction => '補正';
+
+	/// ja: 'メモ'
+	String get memo => 'メモ';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -234,12 +237,13 @@ extension on Translations {
 			'stat.defense' => 'ぼうぎょりょく',
 			'stat.speed' => 'すばやさ',
 			'stat.evasionRate' => 'かいひりつ',
-			'stat.currentExp' => 'けいけんち',
-			'stat.maxExp' => 'ひつようけいけんち',
+			'stat.currentExp' => '経験値',
+			'stat.maxExp' => '必要経験値',
 			'editableStatus.headShape' => '頭の形',
 			'editableStatus.bodyColor' => '体色',
 			'editableStatus.spColor' => 'SPカラー',
 			'editableStatus.correction' => '補正',
+			'editableStatus.memo' => 'メモ',
 			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',
 			'headShape.bread' => 'しょくぱん',

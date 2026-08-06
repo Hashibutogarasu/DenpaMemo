@@ -65,6 +65,7 @@ class _HomeBodyState extends State<_HomeBody> {
     corrections: [
       widget.masterData.corrections.firstWhere((c) => c.id == 'protagonist'),
     ],
+    memo: null,
   );
 
   void _applyEdit(DenpaMen draft) {
@@ -92,6 +93,7 @@ class _HomeBodyState extends State<_HomeBody> {
         speed: draft.speed,
         evasionRate: draft.evasionRate,
         corrections: draft.corrections,
+        memo: draft.memo,
       );
     });
   }
@@ -128,6 +130,7 @@ class _HomeBodyState extends State<_HomeBody> {
               defense: _denpaMen.defense,
               speed: _denpaMen.speed,
               evasionRate: _denpaMen.evasionRate,
+              memo: _denpaMen.memo,
             ),
           ),
           const SizedBox(width: 16),

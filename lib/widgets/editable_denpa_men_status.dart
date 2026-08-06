@@ -14,6 +14,7 @@ import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
 import 'editable_exp.dart';
 import 'editable_stat_grid.dart';
+import 'field/inline_text_field.dart';
 import 'field/outlined_inline_name_field.dart';
 import 'label/gauge_value.dart';
 import 'label/inline_gauge_label.dart';
@@ -178,6 +179,32 @@ class EditableDenpaMenStatus extends StatelessWidget {
                   .map((c) => t.correction[c.id] ?? c.id)
                   .join('、'),
               overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  t.editableStatus.memo,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                InlineTextField(
+                  value: denpaMen.memo ?? '',
+                  multiline: true,
+                  onChanged: (value) => onChanged(
+                    denpaMen.copyWith(memo: value.isEmpty ? null : value),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

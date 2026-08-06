@@ -41,6 +41,7 @@ abstract class DenpaMen with _$DenpaMen {
     required int speed,
     required int evasionRate,
     required List<Correction> corrections,
+    String? memo,
   }) = _DenpaMen;
 
   factory DenpaMen.fromJson(Map<String, dynamic> json) =>

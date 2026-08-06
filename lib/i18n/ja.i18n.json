@@ -20,14 +20,15 @@
     "defense": "ぼうぎょりょく",
     "speed": "すばやさ",
     "evasionRate": "かいひりつ",
-    "currentExp": "けいけんち",
-    "maxExp": "ひつようけいけんち"
+    "currentExp": "経験値",
+    "maxExp": "必要経験値"
   },
   "editableStatus": {
     "headShape": "頭の形",
     "bodyColor": "体色",
     "spColor": "SPカラー",
-    "correction": "補正"
+    "correction": "補正",
+    "memo": "メモ"
   },
   "headShape": {
     "circle": "まる",

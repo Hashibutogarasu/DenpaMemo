@@ -38,6 +38,7 @@ DenpaMen createDenpaMen({
   int speed = 0,
   int evasionRate = 0,
   List<Correction> corrections = const [],
+  String? memo,
 }) {
   if (bodyColors.length != 1 && bodyColors.length != 2) {
     throw InvalidBodyColorCountException(bodyColors.length);
@@ -78,6 +79,7 @@ DenpaMen createDenpaMen({
     speed: speed,
     evasionRate: evasionRate,
     corrections: corrections,
+    memo: memo == null || memo.isEmpty ? null : memo,
   );
 
   final resistances = draft.calculateResistances(masterData);
