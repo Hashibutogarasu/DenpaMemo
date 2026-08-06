@@ -170,12 +170,6 @@ class Translations$editableStatus$ja {
 
 	// Translations
 
-	/// ja: 'ステータス編集'
-	String get title => 'ステータス編集';
-
-	/// ja: '名前'
-	String get name => '名前';
-
 	/// ja: '頭の形'
 	String get headShape => '頭の形';
 
@@ -202,8 +196,6 @@ extension on Translations {
 			'stat.defense' => 'ぼうぎょりょく',
 			'stat.speed' => 'すばやさ',
 			'stat.evasionRate' => 'かいひりつ',
-			'editableStatus.title' => 'ステータス編集',
-			'editableStatus.name' => '名前',
 			'editableStatus.headShape' => '頭の形',
 			'editableStatus.bodyColor' => '体色',
 			'headShape.bowlCut' => 'おかっぱ',

@@ -17,8 +17,6 @@
     "evasionRate": "かいひりつ"
   },
   "editableStatus": {
-    "title": "ステータス編集",
-    "name": "名前",
     "headShape": "頭の形",
     "bodyColor": "体色"
   },

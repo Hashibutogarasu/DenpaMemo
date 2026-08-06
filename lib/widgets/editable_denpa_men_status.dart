@@ -41,9 +41,9 @@ class EditableDenpaMenStatus extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            t.editableStatus.title,
-            style: Theme.of(context).textTheme.titleMedium,
+          const Align(
+            alignment: Alignment.topLeft,
+            child: Icon(Icons.edit, size: 20),
           ),
           const SizedBox(height: 8),
           Row(
