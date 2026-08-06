@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_correction_calculator.dart';
+import '../domain/denpa_men/denpa_men_head_shape_stat_calculator.dart';
+import '../domain/denpa_men/denpa_men_stat_bonus.dart';
 import '../i18n/gen/strings.g.dart';
 import 'field/inline_number_field.dart';
 import 'label/correction_bonus_overlay.dart';
@@ -27,7 +29,7 @@ class EditableStatGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final bonus = denpaMen.correctionsStatBonus();
+    final bonus = denpaMen.headShapeStatBonus() + denpaMen.correctionsStatBonus();
     final entries = <(String, int, int, ValueChanged<int>)>[
       (
         t.stat.hp,

@@ -1,21 +1,12 @@
 import 'abnormality_resistance.dart';
 import 'denpa_men.dart';
+import 'denpa_men_head_shape_stat_calculator.dart';
+import 'denpa_men_stat_bonus.dart';
 
-/// The combined growth-stat bonus a [DenpaMen]'s [DenpaMen.corrections]
-/// contribute, as produced by
-/// [DenpaMenCorrectionCalculation.correctionsStatBonus].
-typedef DenpaMenStatBonus = ({
-  int hp,
-  int ap,
-  int attack,
-  int defense,
-  int speed,
-  int evasionRate,
-});
-
-/// Applies a [DenpaMen]'s [DenpaMen.corrections] on top of its
-/// already-calculated growth stats and abnormality resistances — the last
-/// step in the pipeline, right before a [DenpaMen] is finalized.
+/// Applies a [DenpaMen]'s head shape and [DenpaMen.corrections] growth-stat
+/// bonuses on top of its already-calculated base stats and abnormality
+/// resistances — the last step in the pipeline, right before a [DenpaMen]
+/// is finalized.
 extension DenpaMenCorrectionCalculation on DenpaMen {
   /// Sums [DenpaMen.corrections]' growth-stat bonuses, without applying
   /// them — used to show the pending bonus alongside an editable base stat.
@@ -47,9 +38,7 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
   }
 
   DenpaMen applyCorrections() {
-    if (corrections.isEmpty) return this;
-
-    final statBonus = correctionsStatBonus();
+    final statBonus = headShapeStatBonus() + correctionsStatBonus();
     final abnormalityBonuses = <String, int>{};
     for (final correction in corrections) {
       correction.abnormalityResistanceBonuses.forEach((abnormalityId, bonus) {

@@ -1,5 +1,7 @@
 {
   "id": "fin",
+  "attackBonus": 100,
+  "defenseBonus": 50,
   "attributeResistanceBonuses": {
     "fire": 2,
     "water": 2,
