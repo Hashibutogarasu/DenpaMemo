@@ -4,9 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_factory.dart';
 import '../domain/master_data/master_data.dart';
+import '../i18n/gen/strings.g.dart';
 import '../providers/master_data_providers.dart';
 import '../widgets/denpa_men_status.dart';
 import '../widgets/editable_denpa_men_status.dart';
+import '../widgets/header/slanted_app_bar.dart';
+import '../widgets/label/outlined_title.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -16,8 +19,8 @@ class Home extends ConsumerWidget {
     final masterDataAsync = ref.watch(masterDataProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: SlantedAppBar(
+        title: OutlinedTitleText(text: context.t.page.home),
       ),
       body: masterDataAsync.when(
         data: (masterData) => _HomeBody(masterData: masterData),
