@@ -13,7 +13,8 @@ import 'dialog/head_shape_selection_dialog.dart';
 import 'editable_exp.dart';
 import 'editable_stat_grid.dart';
 import 'field/outlined_inline_name_field.dart';
-import 'label/inline_number_status_label.dart';
+import 'label/gauge_value.dart';
+import 'label/inline_gauge_label.dart';
 
 /// Right-hand desktop pane letting the user edit [denpaMen] in place. Name
 /// and numeric stats are edited inline; head shape and body color open a
@@ -55,15 +56,21 @@ class EditableDenpaMenStatus extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InlineNumberStatusLabel(
+              InlineGaugeLabel(
                 label: t.denpaMenStatus.level,
-                value: denpaMen.level,
+                value: GaugeValue(
+                  current: denpaMen.level,
+                  max: denpaMen.maxLevel,
+                ),
                 onChanged: (value) =>
                     onChanged(denpaMen.copyWith(level: value)),
               ),
-              InlineNumberStatusLabel(
+              InlineGaugeLabel(
                 label: t.denpaMenStatus.happiness,
-                value: denpaMen.happiness,
+                value: GaugeValue(
+                  current: denpaMen.happiness,
+                  max: denpaMen.maxHappiness,
+                ),
                 onChanged: (value) =>
                     onChanged(denpaMen.copyWith(happiness: value)),
               ),

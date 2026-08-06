@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../i18n/gen/strings.g.dart';
 import 'field/inline_nullable_number_field.dart';
-import 'label/exp_bar.dart';
-import 'label/outlined_title.dart';
+import 'label/exp_progress.dart';
 import 'label/status.dart';
 
 /// Editable exp section: the level-up progress bar (30% of the row's
@@ -39,28 +38,7 @@ class EditableExp extends StatelessWidget {
           children: [
             StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      if (isMax)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: OutlinedTitleText(
-                            text: t.denpaMenStatus.max,
-                            outlineColor: Colors.red,
-                            fontSize: 16,
-                          ),
-                        ),
-                      SizedBox(
-                        width: constraints.maxWidth * 0.3,
-                        child: ExpBar(value: isMax ? 1 : progress),
-                      ),
-                    ],
-                  );
-                },
-              ),
+              child: ExpProgress(progress: isMax ? null : progress),
             ),
           ],
         ),

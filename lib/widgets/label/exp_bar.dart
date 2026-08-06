@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 
 /// Level-up progress bar with a square right edge and a slanted left edge
-/// whose bottom corner juts out further left than its top corner, backed by
-/// [AppColors.expBarBackground] with the filled portion in
-/// [AppColors.expBarProgress].
+/// whose bottom corner juts out further left than its top corner. Fills
+/// with [AppColors.expBarFilled] from the right as [value] increases,
+/// against an [AppColors.expBarUnfilled] backdrop.
 class ExpBar extends StatelessWidget {
   const ExpBar({super.key, required this.value, this.minHeight = 12});
 
@@ -18,11 +18,20 @@ class ExpBar extends StatelessWidget {
       height: minHeight,
       child: ClipPath(
         clipper: _LeftSlantedClipper(),
-        child: LinearProgressIndicator(
-          value: value,
-          minHeight: minHeight,
-          backgroundColor: AppColors.expBarBackground,
-          valueColor: const AlwaysStoppedAnimation(AppColors.expBarProgress),
+        child: Stack(
+          children: [
+            const SizedBox.expand(
+              child: ColoredBox(color: AppColors.expBarUnfilled),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: FractionallySizedBox(
+                widthFactor: value.clamp(0, 1),
+                heightFactor: 1,
+                child: const ColoredBox(color: AppColors.expBarFilled),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -8,9 +8,9 @@ import 'container/nested.dart';
 import 'container/status.dart';
 import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute_resistance_entry.dart';
-import 'label/exp_bar.dart';
-import 'label/happiness.dart';
-import 'label/level.dart';
+import 'label/exp_progress.dart';
+import 'label/gauge_label.dart';
+import 'label/gauge_value.dart';
 import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
 import 'label/status.dart';
@@ -34,8 +34,8 @@ class DenpaMenStatus extends StatelessWidget {
   });
 
   final String name;
-  final int level;
-  final int happiness;
+  final GaugeValue level;
+  final GaugeValue happiness;
   final double? expProgress;
   final List<AttributeResistance> attributeResistances;
   final List<AbnormalityResistance> abnormalityResistances;
@@ -59,8 +59,8 @@ class DenpaMenStatus extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              LevelLabel(level: level),
-              HappinessLabel(happiness: happiness),
+              GaugeLabel(label: t.denpaMenStatus.level, value: level),
+              GaugeLabel(label: t.denpaMenStatus.happiness, value: happiness),
             ],
           ),
           Padding(
@@ -80,30 +80,7 @@ class DenpaMenStatus extends StatelessWidget {
           Row(
             children: [
               StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (expProgress == null)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: OutlinedTitleText(
-                              text: t.denpaMenStatus.max,
-                              outlineColor: Colors.red,
-                              fontSize: 16,
-                            ),
-                          ),
-                        SizedBox(
-                          width: constraints.maxWidth * 0.3,
-                          child: ExpBar(value: expProgress ?? 1),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
+              Expanded(child: ExpProgress(progress: expProgress)),
             ],
           ),
           NestedContainer(

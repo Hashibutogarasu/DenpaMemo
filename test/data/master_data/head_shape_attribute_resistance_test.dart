@@ -18,11 +18,10 @@ void main() {
   HeadShape headShapeById(String id) =>
       masterData.headShapes.firstWhere((h) => h.id == id);
 
-  // Body color 'black' grants no attribute resistance bonus of its own
-  // (see body_color_attribute_resistance.json), so as a solo color it
-  // grants +1 to every attribute on top of the head shape's own bonus.
   DenpaMen build(HeadShape headShape) {
     return createDenpaMen(
+      maxHappiness: 0,
+      maxLevel: 1,
       name: 'test-denpa-men',
       bodyColors: const ['black'],
       isSpColor: false,

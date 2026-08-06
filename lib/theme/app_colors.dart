@@ -12,6 +12,7 @@ abstract final class AppColors {
   static const Color headerBackground = Color(0xFF52BBE5);
   static const Color headerBorder = Color(0xFF0865C2);
   static const Color headerTitleOutline = Color(0xFF238BCB);
-  static const Color expBarBackground = Color(0xFFFFEB3B);
-  static const Color expBarProgress = accent;
+  static const Color expBarFilled = Color(0xFFFFEB3B);
+  static const Color expBarUnfilled = accent;
+  static const Color maxedValue = Color(0xFF7BEA95);
 }

@@ -23,6 +23,8 @@ void main() {
   // includes that on top of the head shape's own bonuses.
   DenpaMen build(HeadShape headShape) {
     return createDenpaMen(
+      maxHappiness: 0,
+      maxLevel: 1,
       name: 'test-denpa-men',
       bodyColors: const ['red'],
       isSpColor: false,

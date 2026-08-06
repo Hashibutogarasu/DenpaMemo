@@ -18,6 +18,8 @@ void main() {
 
   DenpaMen build(List<String> bodyColors, {bool isSpColor = false}) {
     return createDenpaMen(
+      maxHappiness: 0,
+      maxLevel: 1,
       name: 'test-denpa-men',
       bodyColors: bodyColors,
       isSpColor: isSpColor,
