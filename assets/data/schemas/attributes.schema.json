@@ -6,7 +6,7 @@
   "items": {
     "type": "object",
     "additionalProperties": false,
-    "required": ["id", "displayName"],
+    "required": ["id", "displayName", "index"],
     "properties": {
       "id": {
         "type": "string",
@@ -15,6 +15,11 @@
       "displayName": {
         "type": "string",
         "description": "Name shown to the user."
+      },
+      "index": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Display order in the UI, independent of the entry's position in this file."
       }
     }
   }
