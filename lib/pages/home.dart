@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -101,6 +102,43 @@ class _HomeBodyState extends State<_HomeBody> {
 
   static const double _minPaneWidth = 360;
   static const double _paneGap = 16;
+  static const double _wheelPageChangeThreshold = 20;
+
+  final PageController _pageController = PageController();
+  bool _isChangingPage = false;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _handlePointerSignal(PointerSignalEvent event) {
+    if (event is! PointerScrollEvent || _isChangingPage) {
+      return;
+    }
+    final delta = event.scrollDelta.dx.abs() > event.scrollDelta.dy.abs()
+        ? event.scrollDelta.dx
+        : event.scrollDelta.dy;
+    if (delta.abs() < _wheelPageChangeThreshold) {
+      return;
+    }
+
+    final currentPage = _pageController.page?.round() ?? 0;
+    final targetPage = (currentPage + (delta > 0 ? 1 : -1)).clamp(0, 1);
+    if (targetPage == currentPage) {
+      return;
+    }
+
+    _isChangingPage = true;
+    _pageController
+        .animateToPage(
+          targetPage,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        )
+        .whenComplete(() => _isChangingPage = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,11 +191,15 @@ class _HomeBodyState extends State<_HomeBody> {
           );
         }
 
-        return PageView(
-          children: [
-            _HomeBodyPane(minWidth: _minPaneWidth, child: preview),
-            _HomeBodyPane(minWidth: _minPaneWidth, child: editable),
-          ],
+        return Listener(
+          onPointerSignal: _handlePointerSignal,
+          child: PageView(
+            controller: _pageController,
+            children: [
+              _HomeBodyPane(minWidth: _minPaneWidth, child: preview),
+              _HomeBodyPane(minWidth: _minPaneWidth, child: editable),
+            ],
+          ),
         );
       },
     );
