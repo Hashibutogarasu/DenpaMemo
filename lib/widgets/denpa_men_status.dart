@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/abnormality_resistance.dart';
@@ -69,8 +71,16 @@ class DenpaMenStatus extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GaugeLabel(label: t.denpaMenStatus.level, value: level),
-              GaugeLabel(label: t.denpaMenStatus.happiness, value: happiness),
+              Flexible(
+                child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: GaugeLabel(
+                  label: t.denpaMenStatus.happiness,
+                  value: happiness,
+                ),
+              ),
             ],
           ),
           Padding(
@@ -183,8 +193,10 @@ class _StatWrap extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columnWidth =
-            (constraints.maxWidth - _gap * (columns - 1)) / columns;
+        final columnWidth = math.max(
+          0.0,
+          (constraints.maxWidth - _gap * (columns - 1)) / columns,
+        );
         return Wrap(
           spacing: _gap,
           runSpacing: _gap,
@@ -228,8 +240,10 @@ class _ResistanceWrap extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columnWidth =
-            (constraints.maxWidth - _gap * (columns - 1)) / columns;
+        final columnWidth = math.max(
+          0.0,
+          (constraints.maxWidth - _gap * (columns - 1)) / columns,
+        );
         return Wrap(
           spacing: _gap,
           runSpacing: _gap,
@@ -266,8 +280,10 @@ class _AbnormalityResistanceWrap extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columnWidth =
-            (constraints.maxWidth - _gap * (columns - 1)) / columns;
+        final columnWidth = math.max(
+          0.0,
+          (constraints.maxWidth - _gap * (columns - 1)) / columns,
+        );
         return Wrap(
           spacing: _gap,
           runSpacing: _gap,

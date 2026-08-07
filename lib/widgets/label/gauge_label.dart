@@ -16,10 +16,12 @@ class GaugeLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StatusLabel(
-      child: Row(
+      child: Flex(
+        direction: Axis.horizontal,
         mainAxisSize: MainAxisSize.min,
+        clipBehavior: Clip.hardEdge,
         children: [
-          Text(label),
+          Flexible(child: Text(label, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 4),
           Text(
             '${value.current}',
