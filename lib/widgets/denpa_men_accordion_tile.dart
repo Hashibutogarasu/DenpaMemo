@@ -94,12 +94,10 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: () => setState(() => _expanded = !_expanded),
-                  child: AnimatedCrossFade(
+                  child: AnimatedOpacity(
                     duration: _animationDuration,
-                    crossFadeState: _expanded
-                        ? CrossFadeState.showSecond
-                        : CrossFadeState.showFirst,
-                    firstChild: Row(
+                    opacity: _expanded ? 0 : 1,
+                    child: Row(
                       children: [
                         Flexible(
                           child: OutlinedTitleText(
@@ -118,7 +116,6 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                         ),
                       ],
                     ),
-                    secondChild: const SizedBox(width: double.infinity),
                   ),
                 ),
               ),
