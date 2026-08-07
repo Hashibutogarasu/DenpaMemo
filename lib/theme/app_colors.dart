@@ -15,4 +15,5 @@ abstract final class AppColors {
   static const Color expBarFilled = Color(0xFFFFEB3B);
   static const Color expBarUnfilled = accent;
   static const Color maxedValue = Color(0xFF7BEA95);
+  static const Color inactiveBonus = Color(0xFFE53935);
 }

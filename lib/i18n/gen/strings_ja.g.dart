@@ -254,6 +254,9 @@ class Translations$editableStatus$ja {
 
 	/// ja: 'メモ'
 	String get memo => 'メモ';
+
+	/// ja: '補正を考慮する'
+	String get considerCorrections => '補正を考慮する';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -295,6 +298,7 @@ extension on Translations {
 			'editableStatus.spColor' => 'SPカラー',
 			'editableStatus.correction' => '補正',
 			'editableStatus.memo' => 'メモ',
+			'editableStatus.considerCorrections' => '補正を考慮する',
 			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',
 			'headShape.bread' => 'しょくぱん',

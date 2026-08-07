@@ -20,10 +20,12 @@ class EditableStatGrid extends StatelessWidget {
     super.key,
     required this.denpaMen,
     required this.onChanged,
+    required this.considerCorrections,
   });
 
   final DenpaMen denpaMen;
   final ValueChanged<DenpaMen> onChanged;
+  final bool considerCorrections;
 
   static const int _columns = 2;
   static const double _gap = 8;
@@ -31,7 +33,8 @@ class EditableStatGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final bonus = denpaMen.headShapeStatBonus() + denpaMen.correctionsStatBonus();
+    final bonus =
+        denpaMen.headShapeStatBonus() + denpaMen.correctionsStatBonus();
     final entries = <(String, int, int, ValueChanged<int>)>[
       (
         t.stat.hp,
@@ -94,7 +97,10 @@ class EditableStatGrid extends StatelessWidget {
                         onChanged: entry.$4,
                       ),
                     ),
-                    CorrectionBonusOverlay(value: entry.$3),
+                    CorrectionBonusOverlay(
+                      value: entry.$3,
+                      active: considerCorrections,
+                    ),
                   ],
                 ),
               ),

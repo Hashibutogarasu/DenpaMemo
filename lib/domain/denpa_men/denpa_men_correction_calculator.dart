@@ -37,8 +37,15 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
     );
   }
 
-  DenpaMen applyCorrections() {
-    final statBonus = headShapeStatBonus() + correctionsStatBonus();
+  /// [includeStatBonus] controls whether [headShapeStatBonus] and
+  /// [correctionsStatBonus] (as opposed to the corrections' abnormality
+  /// resistance bonuses, which always apply) are added on top of the base
+  /// growth stats. Set to false when the edited values should be reflected
+  /// exactly as-is, ignoring both bonuses.
+  DenpaMen applyCorrections({bool includeStatBonus = true}) {
+    final statBonus = includeStatBonus
+        ? headShapeStatBonus() + correctionsStatBonus()
+        : (hp: 0, ap: 0, attack: 0, defense: 0, speed: 0, evasionRate: 0);
     final abnormalityBonuses = <String, int>{};
     for (final correction in corrections) {
       correction.abnormalityResistanceBonuses.forEach((abnormalityId, bonus) {
@@ -66,10 +73,7 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
       abnormalityResistances: [
         for (final entry in abnormalityTotals.entries)
           if (entry.value != 0)
-            AbnormalityResistance(
-              abnormalityId: entry.key,
-              value: entry.value,
-            ),
+            AbnormalityResistance(abnormalityId: entry.key, value: entry.value),
       ],
     );
   }

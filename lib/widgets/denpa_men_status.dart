@@ -46,8 +46,11 @@ class DenpaMenStatus extends StatelessWidget {
     Key? key,
     required int totalAttributeCount,
     bool showContainer = true,
+    bool includeStatBonus = true,
   }) {
-    final corrected = denpaMen.applyCorrections();
+    final corrected = denpaMen.applyCorrections(
+      includeStatBonus: includeStatBonus,
+    );
     return DenpaMenStatus(
       key: key,
       name: corrected.name,
