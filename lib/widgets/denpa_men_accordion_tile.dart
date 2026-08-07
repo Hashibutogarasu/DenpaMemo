@@ -36,6 +36,8 @@ class DenpaMenAccordionTile extends ConsumerStatefulWidget {
 enum _TileAction { edit, delete }
 
 class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
+  static const _animationDuration = Duration(milliseconds: 200);
+
   bool _expanded = false;
 
   Future<void> _delete(BuildContext context) async {
@@ -92,17 +94,21 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: () => setState(() => _expanded = !_expanded),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      OutlinedTitleText(
-                        text: denpaMen.name,
-                        outlineColor: AppColors.accent,
-                        fontSize: 20,
-                      ),
-                      if (!_expanded) ...[
-                        const SizedBox(height: 4),
+                  child: AnimatedCrossFade(
+                    duration: _animationDuration,
+                    crossFadeState: _expanded
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    firstChild: Row(
+                      children: [
+                        Flexible(
+                          child: OutlinedTitleText(
+                            text: denpaMen.name,
+                            outlineColor: AppColors.accent,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
                         GaugeLabel(
                           label: t.denpaMenStatus.level,
                           value: GaugeValue(
@@ -111,7 +117,8 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                           ),
                         ),
                       ],
-                    ],
+                    ),
+                    secondChild: const SizedBox(width: double.infinity),
                   ),
                 ),
               ),
@@ -134,18 +141,23 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                 onTap: () => setState(() => _expanded = !_expanded),
                 child: AnimatedRotation(
                   turns: _expanded ? 0.5 : 0,
-                  duration: const Duration(milliseconds: 200),
+                  duration: _animationDuration,
                   child: const Icon(Icons.expand_more, color: AppColors.accent),
                 ),
               ),
             ],
           ),
-          if (_expanded)
-            DenpaMenStatus.fromDenpaMen(
-              denpaMen,
-              totalAttributeCount: widget.masterData.attributes.length,
-              showContainer: false,
-            ),
+          AnimatedSize(
+            duration: _animationDuration,
+            alignment: Alignment.topCenter,
+            child: _expanded
+                ? DenpaMenStatus.fromDenpaMen(
+                    denpaMen,
+                    totalAttributeCount: widget.masterData.attributes.length,
+                    showContainer: false,
+                  )
+                : const SizedBox(width: double.infinity),
+          ),
         ],
       ),
     );
