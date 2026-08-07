@@ -40,7 +40,8 @@
     "bodyColor": "体色",
     "spColor": "SPカラー",
     "correction": "補正",
-    "memo": "メモ"
+    "memo": "メモ",
+    "considerCorrections": "補正を考慮する"
   },
   "headShape": {
     "circle": "まる",

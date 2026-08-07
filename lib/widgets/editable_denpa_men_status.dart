@@ -34,12 +34,16 @@ class EditableDenpaMenStatus extends StatelessWidget {
     required this.headShapes,
     required this.corrections,
     required this.onChanged,
+    required this.considerCorrections,
+    required this.onConsiderCorrectionsChanged,
   });
 
   final DenpaMen denpaMen;
   final List<HeadShape> headShapes;
   final List<Correction> corrections;
   final ValueChanged<DenpaMen> onChanged;
+  final bool considerCorrections;
+  final ValueChanged<bool> onConsiderCorrectionsChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +113,16 @@ class EditableDenpaMenStatus extends StatelessWidget {
           NestedContainer(
             padding: const EdgeInsets.all(8),
             child: EditableStatGrid(denpaMen: denpaMen, onChanged: onChanged),
+          ),
+          Row(
+            children: [
+              Checkbox(
+                value: considerCorrections,
+                onChanged: (value) =>
+                    onConsiderCorrectionsChanged(value ?? false),
+              ),
+              Expanded(child: Text(t.editableStatus.considerCorrections)),
+            ],
           ),
           const SizedBox(height: 8),
           Row(
