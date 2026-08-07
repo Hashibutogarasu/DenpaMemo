@@ -112,7 +112,11 @@ class EditableDenpaMenStatus extends StatelessWidget {
           const SizedBox(height: 8),
           NestedContainer(
             padding: const EdgeInsets.all(8),
-            child: EditableStatGrid(denpaMen: denpaMen, onChanged: onChanged),
+            child: EditableStatGrid(
+              denpaMen: denpaMen,
+              onChanged: onChanged,
+              considerCorrections: considerCorrections,
+            ),
           ),
           Row(
             children: [
