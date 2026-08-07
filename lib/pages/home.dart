@@ -6,10 +6,11 @@ import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/master_data_providers.dart';
+import '../routing/app_router.dart';
 import '../widgets/denpa_men_status.dart';
-import '../widgets/header/slanted_app_bar.dart';
 import '../widgets/label/outlined_title.dart';
-import 'add_denpa_men_page.dart';
+import '../widgets/scaffold/app_scaffold.dart';
+import 'denpa_men_editor.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -18,10 +19,8 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final masterDataAsync = ref.watch(masterDataProvider);
 
-    return Scaffold(
-      appBar: SlantedAppBar(
-        title: OutlinedTitleText(text: context.t.page.home),
-      ),
+    return AppScaffold(
+      title: OutlinedTitleText(text: context.t.page.home),
       body: masterDataAsync.when(
         data: (masterData) => _HomeBody(masterData: masterData),
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -29,11 +28,9 @@ class Home extends ConsumerWidget {
       ),
       floatingActionButton: masterDataAsync.maybeWhen(
         data: (masterData) => FloatingActionButton(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => AddDenpaMenPage(masterData: masterData),
-            ),
-          ),
+          onPressed: () => AddDenpaMenRoute(
+            $extra: DenpaMenEditorArgs(masterData: masterData),
+          ).push(context),
           child: const Icon(Icons.add),
         ),
         orElse: () => null,
@@ -131,14 +128,12 @@ class _DenpaMenAccordionTile extends ConsumerWidget {
             alignment: MainAxisAlignment.end,
             children: [
               TextButton.icon(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => AddDenpaMenPage(
-                      masterData: masterData,
-                      initial: record,
-                    ),
+                onPressed: () => AddDenpaMenRoute(
+                  $extra: DenpaMenEditorArgs(
+                    masterData: masterData,
+                    initial: record,
                   ),
-                ),
+                ).push(context),
                 icon: const Icon(Icons.edit),
                 label: Text(t.common.edit),
               ),

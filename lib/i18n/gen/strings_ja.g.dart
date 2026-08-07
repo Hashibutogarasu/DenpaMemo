@@ -131,6 +131,9 @@ class Translations$common$ja {
 
 	/// ja: '削除'
 	String get delete => '削除';
+
+	/// ja: '戻る'
+	String get back => '戻る';
 }
 
 // Path: page
@@ -266,6 +269,7 @@ extension on Translations {
 			'common.save' => '保存',
 			'common.edit' => '編集',
 			'common.delete' => '削除',
+			'common.back' => '戻る',
 			'page.home' => 'ホーム',
 			'page.settings' => '設定',
 			'page.addDenpaMen' => '電波人間を追加',

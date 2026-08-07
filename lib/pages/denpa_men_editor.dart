@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_factory.dart';
@@ -8,24 +9,35 @@ import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../widgets/add_denpa_men.dart';
-import '../widgets/header/slanted_app_bar.dart';
 import '../widgets/label/outlined_title.dart';
+import '../widgets/scaffold/app_scaffold.dart';
+
+/// Arguments passed as `$extra` by `AddDenpaMenRoute` (see
+/// `routing/app_router.dart`), since [MasterData] and [DenpaMenRecord] carry
+/// runtime objects that cannot be encoded into a URL.
+class DenpaMenEditorArgs {
+  const DenpaMenEditorArgs({required this.masterData, this.initial});
+
+  final MasterData masterData;
+  final DenpaMenRecord? initial;
+}
 
 /// Full-screen host for [AddDenpaMen]: creates a new [DenpaMen] when
 /// [initial] is null, otherwise edits it in place. Saving writes through
 /// [denpaMenRepositoryProvider] and pops back to the caller.
-class AddDenpaMenPage extends ConsumerStatefulWidget {
-  const AddDenpaMenPage({super.key, required this.masterData, this.initial});
+class DenpaMenEditor extends ConsumerStatefulWidget {
+  const DenpaMenEditor({super.key, required this.masterData, this.initial});
 
   final MasterData masterData;
   final DenpaMenRecord? initial;
 
   @override
-  ConsumerState<AddDenpaMenPage> createState() => _AddDenpaMenPageState();
+  ConsumerState<DenpaMenEditor> createState() => _DenpaMenEditorState();
 }
 
-class _AddDenpaMenPageState extends ConsumerState<AddDenpaMenPage> {
-  late DenpaMen _denpaMen = widget.initial?.denpaMen ?? _createDefaultDenpaMen(widget.masterData);
+class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
+  late DenpaMen _denpaMen =
+      widget.initial?.denpaMen ?? _createDefaultDenpaMen(widget.masterData);
 
   static DenpaMen _createDefaultDenpaMen(MasterData masterData) {
     return createDenpaMen(
@@ -79,20 +91,18 @@ class _AddDenpaMenPageState extends ConsumerState<AddDenpaMenPage> {
     ref
         .read(denpaMenRepositoryProvider)
         .save(_denpaMen, id: widget.initial?.id ?? 0);
-    Navigator.of(context).pop();
+    context.pop();
   }
 
   @override
   Widget build(BuildContext context) {
     final t = context.t;
 
-    return Scaffold(
-      appBar: SlantedAppBar(
-        title: OutlinedTitleText(
-          text: widget.initial == null
-              ? t.page.addDenpaMen
-              : t.page.editDenpaMen,
-        ),
+    return AppScaffold(
+      title: OutlinedTitleText(
+        text: widget.initial == null
+            ? t.page.addDenpaMen
+            : t.page.editDenpaMen,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _save,

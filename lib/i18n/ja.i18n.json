@@ -4,7 +4,8 @@
     "confirm": "決定",
     "save": "保存",
     "edit": "編集",
-    "delete": "削除"
+    "delete": "削除",
+    "back": "戻る"
   },
   "page": {
     "home": "ホーム",
