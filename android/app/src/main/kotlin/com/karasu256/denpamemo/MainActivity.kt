@@ -1,4 +1,4 @@
-package com.karasu256.denpamemno.denpa_memo
+package com.karasu256.denpamemo
 
 import io.flutter.embedding.android.FlutterActivity
 

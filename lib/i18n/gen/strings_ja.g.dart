@@ -40,6 +40,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	Translations $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => Translations(meta: meta ?? this.$meta);
 
 	// Translations
+	late final Translations$app$ja app = Translations$app$ja.internal(_root);
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
@@ -107,6 +108,18 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'fear': 'きょうふ',
 		'jack': 'ジャック',
 	};
+}
+
+// Path: app
+class Translations$app$ja {
+	Translations$app$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'Denpa Memo'
+	String get name => 'Denpa Memo';
 }
 
 // Path: common
@@ -267,6 +280,7 @@ class Translations$editableStatus$ja {
 extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
+			'app.name' => 'Denpa Memo',
 			'common.cancel' => 'キャンセル',
 			'common.confirm' => '決定',
 			'common.save' => '保存',

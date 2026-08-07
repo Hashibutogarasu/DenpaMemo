@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       child: ProviderScope(
         overrides: [objectBoxProvider.overrideWithValue(objectBox)],
         child: MaterialApp.router(
-          title: 'denpa_memo',
+          title: t.app.name,
           theme: ThemeData(
             colorScheme: .fromSeed(seedColor: Colors.deepPurple),
           ),
