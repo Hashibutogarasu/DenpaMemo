@@ -1,0 +1,147 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:1562260616338364164",
+      "lastPropertyId": "24:4509287055483744944",
+      "name": "DenpaMenEntity",
+      "properties": [
+        {
+          "id": "1:4518677638759927784",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1678332826215474320",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:7384834193292633991",
+          "name": "bodyColors",
+          "type": 30
+        },
+        {
+          "id": "4:240743922568522855",
+          "name": "isSpColor",
+          "type": 1
+        },
+        {
+          "id": "5:3412817286492428836",
+          "name": "headShapeId",
+          "type": 9
+        },
+        {
+          "id": "6:1529654537423370336",
+          "name": "physiqueId",
+          "type": 9
+        },
+        {
+          "id": "7:1921853114358389931",
+          "name": "personalityId",
+          "type": 9
+        },
+        {
+          "id": "8:2324596901086733694",
+          "name": "patternId",
+          "type": 9
+        },
+        {
+          "id": "9:150511633125376551",
+          "name": "anntenaId",
+          "type": 9
+        },
+        {
+          "id": "10:7425614304559427245",
+          "name": "happiness",
+          "type": 6
+        },
+        {
+          "id": "11:6770545541219690562",
+          "name": "maxHappiness",
+          "type": 6
+        },
+        {
+          "id": "12:1608238419420294109",
+          "name": "level",
+          "type": 6
+        },
+        {
+          "id": "13:428813470595810936",
+          "name": "maxLevel",
+          "type": 6
+        },
+        {
+          "id": "14:502716158300729293",
+          "name": "currentExp",
+          "type": 6
+        },
+        {
+          "id": "15:3614088515149994097",
+          "name": "maxExp",
+          "type": 6
+        },
+        {
+          "id": "16:3462830622638241361",
+          "name": "hp",
+          "type": 6
+        },
+        {
+          "id": "17:5826268725323252208",
+          "name": "ap",
+          "type": 6
+        },
+        {
+          "id": "18:369635564058708228",
+          "name": "attack",
+          "type": 6
+        },
+        {
+          "id": "19:2935931659019258784",
+          "name": "defense",
+          "type": 6
+        },
+        {
+          "id": "20:161778045795335911",
+          "name": "speed",
+          "type": 6
+        },
+        {
+          "id": "21:7118546690303302775",
+          "name": "evasionRate",
+          "type": 6
+        },
+        {
+          "id": "22:1918332064718651983",
+          "name": "correctionIds",
+          "type": 30
+        },
+        {
+          "id": "23:8338000133373889233",
+          "name": "memo",
+          "type": 9
+        },
+        {
+          "id": "24:4509287055483744944",
+          "name": "createdAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:1562260616338364164",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

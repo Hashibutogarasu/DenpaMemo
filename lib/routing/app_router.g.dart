@@ -6,7 +6,11 @@ part of 'app_router.dart';
 // GoRouterGenerator
 // **************************************************************************
 
-List<RouteBase> get $appRoutes => [$homeRoute, $settingsRoute];
+List<RouteBase> get $appRoutes => [
+  $homeRoute,
+  $settingsRoute,
+  $addDenpaMenRoute,
+];
 
 RouteBase get $homeRoute => GoRouteData.$route(
   path: '/',
@@ -58,4 +62,35 @@ mixin $SettingsRoute on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $addDenpaMenRoute => GoRouteData.$route(
+  path: '/add',
+  hasOverriddenOnExit: false,
+  factory: $AddDenpaMenRoute._fromState,
+);
+
+mixin $AddDenpaMenRoute on GoRouteData {
+  static AddDenpaMenRoute _fromState(GoRouterState state) =>
+      AddDenpaMenRoute($extra: state.extra as DenpaMenEditorArgs?);
+
+  AddDenpaMenRoute get _self => this as AddDenpaMenRoute;
+
+  @override
+  String get location => GoRouteData.$location('/add');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
 }
