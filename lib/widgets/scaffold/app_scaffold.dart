@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../header/slanted_app_bar.dart';
@@ -10,6 +11,9 @@ import '../navigation/app_back_button.dart';
 /// as siblings in one [Stack]. Keeping both buttons in the same Stack —
 /// rather than routing one of them through [Scaffold.floatingActionButton]
 /// — is what keeps their height and bottom offset pixel-identical.
+///
+/// Also binds Escape to the same pop, so keyboard users get the same
+/// stack-aware back behavior as the on-screen button.
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
     super.key,
@@ -28,24 +32,34 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final canPop = context.canPop();
 
-    return Scaffold(
-      appBar: SlantedAppBar(title: title),
-      body: Stack(
-        children: [
-          Positioned.fill(child: body),
-          if (canPop)
-            const Positioned(
-              left: _buttonInset,
-              bottom: _buttonInset,
-              child: AppBackButton(),
-            ),
-          if (floatingActionButton != null)
-            Positioned(
-              right: _buttonInset,
-              bottom: _buttonInset,
-              child: floatingActionButton!,
-            ),
-        ],
+    return CallbackShortcuts(
+      bindings: {
+        if (canPop)
+          const SingleActivator(LogicalKeyboardKey.escape): () =>
+              context.pop(),
+      },
+      child: Focus(
+        autofocus: true,
+        child: Scaffold(
+          appBar: SlantedAppBar(title: title),
+          body: Stack(
+            children: [
+              Positioned.fill(child: body),
+              if (canPop)
+                const Positioned(
+                  left: _buttonInset,
+                  bottom: _buttonInset,
+                  child: AppBackButton(),
+                ),
+              if (floatingActionButton != null)
+                Positioned(
+                  right: _buttonInset,
+                  bottom: _buttonInset,
+                  child: floatingActionButton!,
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

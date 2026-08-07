@@ -36,6 +36,7 @@ class DenpaMenStatus extends StatelessWidget {
     required this.evasionRate,
     required this.totalAttributeCount,
     this.memo,
+    this.showContainer = true,
   });
 
   /// Builds the preview for [denpaMen] with corrections applied, resolving
@@ -44,6 +45,7 @@ class DenpaMenStatus extends StatelessWidget {
     DenpaMen denpaMen, {
     Key? key,
     required int totalAttributeCount,
+    bool showContainer = true,
   }) {
     final corrected = denpaMen.applyCorrections();
     return DenpaMenStatus(
@@ -70,6 +72,7 @@ class DenpaMenStatus extends StatelessWidget {
       evasionRate: corrected.evasionRate,
       totalAttributeCount: totalAttributeCount,
       memo: corrected.memo,
+      showContainer: showContainer,
     );
   }
 
@@ -87,124 +90,127 @@ class DenpaMenStatus extends StatelessWidget {
   final int evasionRate;
   final int totalAttributeCount;
   final String? memo;
+  final bool showContainer;
 
   static const int _attributeResistanceColumns = 4;
 
   @override
   Widget build(BuildContext context) {
+    final content = _buildContent(context);
+    if (!showContainer) {
+      return content;
+    }
+    return StatusContainer(padding: const EdgeInsets.all(8), child: content);
+  }
+
+  Widget _buildContent(BuildContext context) {
     final t = context.t;
-    final attributeResistanceRows = (totalAttributeCount /
-            _attributeResistanceColumns)
-        .ceil();
+    final attributeResistanceRows =
+        (totalAttributeCount / _attributeResistanceColumns).ceil();
     final attributeResistanceHeight =
         attributeResistanceRows * AttributeResistanceEntry.height +
         (attributeResistanceRows - 1) * _ResistanceWrap._gap;
 
-    return StatusContainer(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
+            ),
+            const SizedBox(width: 8),
+            Flexible(
+              child: GaugeLabel(
+                label: t.denpaMenStatus.happiness,
+                value: happiness,
               ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: GaugeLabel(
-                  label: t.denpaMenStatus.happiness,
-                  value: happiness,
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 14),
-            child: OutlinedTitleText(
-              text: name,
-              outlineColor: AppColors.accent,
-              fontSize:
-                  Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
             ),
-          ),
-          Container(
-            height: 2,
-            margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
-            color: AppColors.accent,
-          ),
-          Row(
-            children: [
-              StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
-              Expanded(child: ExpProgress(progress: expProgress)),
-            ],
-          ),
-          NestedContainer(
-            padding: const EdgeInsets.all(8),
-            child: _StatWrap(
-              columns: 2,
-              entries: [
-                _StatData(label: t.stat.hp, value: hp),
-                _StatData(label: t.stat.ap, value: ap),
-                _StatData(label: t.stat.attack, value: attack),
-                _StatData(label: t.stat.defense, value: defense),
-                _StatData(label: t.stat.speed, value: speed),
-                _StatData(label: t.stat.evasionRate, value: evasionRate),
-              ],
-            ),
-          ),
-          NestedContainer(
-            padding: const EdgeInsets.all(8),
-            child: SizedBox(
-              height: attributeResistanceHeight,
-              child: attributeResistances.isEmpty
-                  ? Center(child: Text(t.denpaMenStatus.noAttributeResistance))
-                  : _ResistanceWrap(
-                      columns: _attributeResistanceColumns,
-                      entries: [
-                        for (final resistance in attributeResistances)
-                          _ResistanceData(
-                            label: t.attribute[resistance.attributeId] ??
-                                resistance.attributeId,
-                            value: resistance.value,
-                          ),
-                      ],
-                    ),
-            ),
-          ),
-          NestedContainer(
-            padding: const EdgeInsets.all(8),
-            child: _AbnormalityResistanceWrap(
-              columns: 3,
-              entries: [
-                for (final resistance in abnormalityResistances)
-                  _ResistanceData(
-                    label: t.abnormality[resistance.abnormalityId] ??
-                        resistance.abnormalityId,
-                    value: resistance.value,
-                  ),
-              ],
-            ),
-          ),
-          if (memo != null) ...[
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(memo!),
-            ),
-            const SizedBox(height: 12),
           ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: OutlinedTitleText(
+            text: name,
+            outlineColor: AppColors.accent,
+            fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
+          ),
+        ),
+        Container(
+          height: 2,
+          margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
+          color: AppColors.accent,
+        ),
+        Row(
+          children: [
+            StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
+            Expanded(child: ExpProgress(progress: expProgress)),
+          ],
+        ),
+        NestedContainer(
+          padding: const EdgeInsets.all(8),
+          child: _StatWrap(
+            columns: 2,
+            entries: [
+              _StatData(label: t.stat.hp, value: hp),
+              _StatData(label: t.stat.ap, value: ap),
+              _StatData(label: t.stat.attack, value: attack),
+              _StatData(label: t.stat.defense, value: defense),
+              _StatData(label: t.stat.speed, value: speed),
+              _StatData(label: t.stat.evasionRate, value: evasionRate),
+            ],
+          ),
+        ),
+        NestedContainer(
+          padding: const EdgeInsets.all(8),
+          child: SizedBox(
+            height: attributeResistanceHeight,
+            child: attributeResistances.isEmpty
+                ? Center(child: Text(t.denpaMenStatus.noAttributeResistance))
+                : _ResistanceWrap(
+                    columns: _attributeResistanceColumns,
+                    entries: [
+                      for (final resistance in attributeResistances)
+                        _ResistanceData(
+                          label:
+                              t.attribute[resistance.attributeId] ??
+                              resistance.attributeId,
+                          value: resistance.value,
+                        ),
+                    ],
+                  ),
+          ),
+        ),
+        NestedContainer(
+          padding: const EdgeInsets.all(8),
+          child: _AbnormalityResistanceWrap(
+            columns: 3,
+            entries: [
+              for (final resistance in abnormalityResistances)
+                _ResistanceData(
+                  label:
+                      t.abnormality[resistance.abnormalityId] ??
+                      resistance.abnormalityId,
+                  value: resistance.value,
+                ),
+            ],
+          ),
+        ),
+        if (memo != null) ...[
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(memo!),
+          ),
+          const SizedBox(height: 12),
         ],
-      ),
+      ],
     );
   }
 }

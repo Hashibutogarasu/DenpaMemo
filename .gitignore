@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# ObjectBox native library fetched by setup.sh for `flutter test`
+/download/
+/lib/libobjectbox.so
