@@ -1,4 +1,7 @@
 {
+  "app": {
+    "name": "Denpa Memo"
+  },
   "common": {
     "cancel": "キャンセル",
     "confirm": "決定",
