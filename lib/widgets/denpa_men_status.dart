@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/abnormality_resistance.dart';
 import '../domain/denpa_men/attribute_resistance.dart';
+import '../domain/denpa_men/denpa_men.dart';
+import '../domain/denpa_men/denpa_men_correction_calculator.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
 import 'container/nested.dart';
@@ -35,6 +37,41 @@ class DenpaMenStatus extends StatelessWidget {
     required this.totalAttributeCount,
     this.memo,
   });
+
+  /// Builds the preview for [denpaMen] with corrections applied, resolving
+  /// [totalAttributeCount] against the master data it was created from.
+  factory DenpaMenStatus.fromDenpaMen(
+    DenpaMen denpaMen, {
+    Key? key,
+    required int totalAttributeCount,
+  }) {
+    final corrected = denpaMen.applyCorrections();
+    return DenpaMenStatus(
+      key: key,
+      name: corrected.name,
+      level: GaugeValue(current: corrected.level, max: corrected.maxLevel),
+      happiness: GaugeValue(
+        current: corrected.happiness,
+        max: corrected.maxHappiness,
+      ),
+      expProgress:
+          corrected.currentExp != null &&
+              corrected.maxExp != null &&
+              corrected.maxExp! > 0
+          ? corrected.currentExp! / corrected.maxExp!
+          : null,
+      attributeResistances: corrected.attributeResistance,
+      abnormalityResistances: corrected.abnormalityResistances,
+      hp: corrected.hp,
+      ap: corrected.ap,
+      attack: corrected.attack,
+      defense: corrected.defense,
+      speed: corrected.speed,
+      evasionRate: corrected.evasionRate,
+      totalAttributeCount: totalAttributeCount,
+      memo: corrected.memo,
+    );
+  }
 
   final String name;
   final GaugeValue level;

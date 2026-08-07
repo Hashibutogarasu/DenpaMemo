@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
+	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
 	late final Translations$editableStatus$ja editableStatus = Translations$editableStatus$ja.internal(_root);
@@ -121,6 +122,15 @@ class Translations$common$ja {
 
 	/// ja: '決定'
 	String get confirm => '決定';
+
+	/// ja: '保存'
+	String get save => '保存';
+
+	/// ja: '編集'
+	String get edit => '編集';
+
+	/// ja: '削除'
+	String get delete => '削除';
 }
 
 // Path: page
@@ -136,6 +146,30 @@ class Translations$page$ja {
 
 	/// ja: '設定'
 	String get settings => '設定';
+
+	/// ja: '電波人間を追加'
+	String get addDenpaMen => '電波人間を追加';
+
+	/// ja: '電波人間を編集'
+	String get editDenpaMen => '電波人間を編集';
+}
+
+// Path: home
+class Translations$home$ja {
+	Translations$home$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '電波人間が登録されていません'
+	String get empty => '電波人間が登録されていません';
+
+	/// ja: '削除の確認'
+	String get deleteConfirmTitle => '削除の確認';
+
+	/// ja: 'この電波人間を削除しますか?'
+	String get deleteConfirmMessage => 'この電波人間を削除しますか?';
 }
 
 // Path: denpaMenStatus
@@ -229,8 +263,16 @@ extension on Translations {
 		return switch (path) {
 			'common.cancel' => 'キャンセル',
 			'common.confirm' => '決定',
+			'common.save' => '保存',
+			'common.edit' => '編集',
+			'common.delete' => '削除',
 			'page.home' => 'ホーム',
 			'page.settings' => '設定',
+			'page.addDenpaMen' => '電波人間を追加',
+			'page.editDenpaMen' => '電波人間を編集',
+			'home.empty' => '電波人間が登録されていません',
+			'home.deleteConfirmTitle' => '削除の確認',
+			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
