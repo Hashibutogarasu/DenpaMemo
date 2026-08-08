@@ -32,6 +32,7 @@ extension DenpaMenEntityMapper on DenpaMen {
       correctionIds: corrections.map((correction) => correction.id).toList(),
       memo: memo,
       createdAt: createdAt,
+      moveInDate: moveInDate,
     );
   }
 }
@@ -81,6 +82,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
           )
           .toList(),
       memo: memo,
+      moveInDate: moveInDate,
     );
   }
 }

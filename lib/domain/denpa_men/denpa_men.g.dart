@@ -41,6 +41,9 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
       .map((e) => Correction.fromJson(e as Map<String, dynamic>))
       .toList(),
   memo: json['memo'] as String?,
+  moveInDate: json['moveInDate'] == null
+      ? null
+      : DateTime.parse(json['moveInDate'] as String),
 );
 
 Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
@@ -68,4 +71,5 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'evasionRate': instance.evasionRate,
   'corrections': instance.corrections,
   'memo': instance.memo,
+  'moveInDate': instance.moveInDate?.toIso8601String(),
 };

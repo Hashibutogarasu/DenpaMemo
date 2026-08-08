@@ -15,9 +15,10 @@ import '../../theme/app_colors.dart';
 /// required height) scale with window width, which blows up well past a
 /// usable header height on a wide desktop window.
 class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const SlantedAppBar({super.key, this.title});
+  const SlantedAppBar({super.key, this.title, this.actions});
 
   final Widget? title;
+  final List<Widget>? actions;
 
   static const double _height = 56;
   static const double _borderWidth = 6;
@@ -40,13 +41,18 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
           borderColor: AppColors.headerBorder,
           borderWidth: _borderWidth,
         ),
-        child: title == null
+        child: title == null && actions == null
             ? null
             : SafeArea(
                 bottom: false,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 14),
-                  child: Align(alignment: Alignment.topLeft, child: title),
+                  padding: const EdgeInsets.only(left: 20, top: 8, right: 8),
+                  child: Row(
+                    children: [
+                      if (title != null) Expanded(child: title!),
+                      if (actions != null) ...actions!,
+                    ],
+                  ),
                 ),
               ),
       ),

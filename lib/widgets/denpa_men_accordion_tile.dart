@@ -23,10 +23,34 @@ class DenpaMenAccordionTile extends ConsumerStatefulWidget {
     super.key,
     required this.record,
     required this.masterData,
+    required this.selectionMode,
+    required this.selected,
+    required this.isCut,
+    required this.onSelectedChanged,
   });
 
   final DenpaMenRecord record;
   final MasterData masterData;
+
+  /// Whether the home list is currently in multi-select mode. The checkbox
+  /// slot is always reserved in the header regardless of this flag — only
+  /// the [Checkbox] itself is swapped for an invisible placeholder — so
+  /// entering/leaving selection mode never reflows the row.
+  final bool selectionMode;
+
+  /// Whether this tile is currently selected. Ignored when
+  /// [selectionMode] is false.
+  final bool selected;
+
+  /// Whether this tile was cut and is pending a paste-driven removal;
+  /// rendered greyed-out until then.
+  final bool isCut;
+
+  /// Invoked when the checkbox is toggled, the tile is tapped while
+  /// [selectionMode] is true, or the tile is long-pressed while
+  /// [selectionMode] is false (which enters selection mode by selecting
+  /// this tile).
+  final ValueChanged<bool> onSelectedChanged;
 
   @override
   ConsumerState<DenpaMenAccordionTile> createState() =>
@@ -78,22 +102,50 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
     }
   }
 
+  void _handleTap() {
+    if (widget.selectionMode) {
+      widget.onSelectedChanged(!widget.selected);
+    } else {
+      setState(() => _expanded = !_expanded);
+    }
+  }
+
+  void _handleLongPress() {
+    if (!widget.selectionMode) {
+      widget.onSelectedChanged(true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = context.t;
     final denpaMen = widget.record.denpaMen;
 
-    return StatusContainer(
+    return Opacity(
+      opacity: widget.isCut ? 0.5 : 1,
+      child: StatusContainer(
       padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: [
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: widget.selectionMode
+                    ? Checkbox(
+                        value: widget.selected,
+                        onChanged: (value) =>
+                            widget.onSelectedChanged(value ?? false),
+                      )
+                    : null,
+              ),
               Expanded(
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
-                  onTap: () => setState(() => _expanded = !_expanded),
+                  onTap: _handleTap,
+                  onLongPress: _handleLongPress,
                   child: AnimatedOpacity(
                     duration: _animationDuration,
                     opacity: _expanded ? 0 : 1,
@@ -135,7 +187,8 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
               ),
               InkWell(
                 borderRadius: BorderRadius.circular(20),
-                onTap: () => setState(() => _expanded = !_expanded),
+                onTap: _handleTap,
+                onLongPress: _handleLongPress,
                 child: AnimatedRotation(
                   turns: _expanded ? 0.5 : 0,
                   duration: _animationDuration,
@@ -156,6 +209,7 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                 : const SizedBox(width: double.infinity),
           ),
         ],
+      ),
       ),
     );
   }

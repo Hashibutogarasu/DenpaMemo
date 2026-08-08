@@ -186,6 +186,24 @@ class Translations$home$ja {
 
 	/// ja: 'この電波人間を削除しますか?'
 	String get deleteConfirmMessage => 'この電波人間を削除しますか?';
+
+	/// ja: '選択した電波人間を削除しますか?'
+	String get deleteSelectedConfirmMessage => '選択した電波人間を削除しますか?';
+
+	/// ja: '選択項目をエクスポート'
+	String get exportSelected => '選択項目をエクスポート';
+
+	/// ja: '選択した電波人間をJSONとしてコピーしました'
+	String get exportedToClipboard => '選択した電波人間をJSONとしてコピーしました';
+
+	/// ja: 'コピー'
+	String get copySelected => 'コピー';
+
+	/// ja: 'カット'
+	String get cutSelected => 'カット';
+
+	/// ja: '検索'
+	String get searchHint => '検索';
 }
 
 // Path: denpaMenStatus
@@ -294,6 +312,12 @@ extension on Translations {
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
+			'home.deleteSelectedConfirmMessage' => '選択した電波人間を削除しますか?',
+			'home.exportSelected' => '選択項目をエクスポート',
+			'home.exportedToClipboard' => '選択した電波人間をJSONとしてコピーしました',
+			'home.copySelected' => 'コピー',
+			'home.cutSelected' => 'カット',
+			'home.searchHint' => '検索',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
