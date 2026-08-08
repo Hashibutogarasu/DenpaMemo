@@ -19,8 +19,7 @@ class SelectionFloatingMenu extends ConsumerWidget {
   final Duration duration;
 
   void _copy(WidgetRef ref) {
-    final records =
-        ref.read(denpaMenListProvider(masterData)).valueOrNull ?? [];
+    final records = ref.read(denpaMenListProvider(masterData)).value ?? [];
     final selectedIds = ref.read(selectedDenpaMenIdsProvider);
     final denpaMens = [
       for (final record in records)
