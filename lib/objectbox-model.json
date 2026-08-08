@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "24:4509287055483744944",
+      "lastPropertyId": "25:2384250894206438545",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -127,6 +127,11 @@
         {
           "id": "24:4509287055483744944",
           "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "25:2384250894206438545",
+          "name": "moveInDate",
           "type": 10
         }
       ],

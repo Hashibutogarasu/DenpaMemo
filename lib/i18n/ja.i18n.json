@@ -19,7 +19,13 @@
   "home": {
     "empty": "電波人間が登録されていません",
     "deleteConfirmTitle": "削除の確認",
-    "deleteConfirmMessage": "この電波人間を削除しますか?"
+    "deleteConfirmMessage": "この電波人間を削除しますか?",
+    "deleteSelectedConfirmMessage": "選択した電波人間を削除しますか?",
+    "exportSelected": "選択項目をエクスポート",
+    "exportedToClipboard": "選択した電波人間をJSONとしてコピーしました",
+    "copySelected": "コピー",
+    "cutSelected": "カット",
+    "searchHint": "検索"
   },
   "denpaMenStatus": {
     "level": "レベル",

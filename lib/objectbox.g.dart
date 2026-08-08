@@ -22,7 +22,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(24, 4509287055483744944),
+    lastPropertyId: const obx_int.IdUid(25, 2384250894206438545),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -169,6 +169,12 @@ final _entities = <obx_int.ModelEntity>[
         type: 10,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(25, 2384250894206438545),
+        name: 'moveInDate',
+        type: 10,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -256,7 +262,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final memoOffset = object.memo == null
             ? null
             : fbb.writeString(object.memo!);
-        fbb.startTable(25);
+        fbb.startTable(26);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -281,12 +287,18 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(21, correctionIdsOffset);
         fbb.addOffset(22, memoOffset);
         fbb.addInt64(23, object.createdAt.millisecondsSinceEpoch);
+        fbb.addInt64(24, object.moveInDate?.millisecondsSinceEpoch);
         fbb.finish(fbb.endTable());
         return object.id;
       },
       objectFromFB: (obx.Store store, ByteData fbData) {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
+        final moveInDateValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          52,
+        );
         final idParam = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
@@ -401,6 +413,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
           const fb.Int64Reader().vTableGet(buffer, rootOffset, 50, 0),
         );
+        final moveInDateParam = moveInDateValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(moveInDateValue);
         final object = DenpaMenEntity(
           id: idParam,
           name: nameParam,
@@ -426,6 +441,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           correctionIds: correctionIdsParam,
           memo: memoParam,
           createdAt: createdAtParam,
+          moveInDate: moveInDateParam,
         );
 
         return object;
@@ -556,5 +572,10 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.createdAt].
   static final createdAt = obx.QueryDateProperty<DenpaMenEntity>(
     _entities[0].properties[23],
+  );
+
+  /// See [DenpaMenEntity.moveInDate].
+  static final moveInDate = obx.QueryDateProperty<DenpaMenEntity>(
+    _entities[0].properties[24],
   );
 }

@@ -60,6 +60,9 @@ class DenpaMenEntity {
   @Property(type: PropertyType.date)
   DateTime createdAt;
 
+  @Property(type: PropertyType.date)
+  DateTime? moveInDate;
+
   DenpaMenEntity({
     this.id = 0,
     required this.name,
@@ -85,5 +88,6 @@ class DenpaMenEntity {
     required this.correctionIds,
     this.memo,
     required this.createdAt,
+    this.moveInDate,
   });
 }
