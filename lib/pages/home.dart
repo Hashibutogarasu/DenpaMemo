@@ -25,8 +25,7 @@ class Home extends ConsumerWidget {
     MasterData masterData,
   ) async {
     final t = context.t;
-    final records =
-        ref.read(denpaMenListProvider(masterData)).valueOrNull ?? [];
+    final records = ref.read(denpaMenListProvider(masterData)).value ?? [];
     final selectedIds = ref.read(selectedDenpaMenIdsProvider);
     final selected = [
       for (final record in records)
@@ -45,7 +44,7 @@ class Home extends ConsumerWidget {
     final masterDataAsync = ref.watch(masterDataProvider);
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
-    final masterData = masterDataAsync.valueOrNull;
+    final masterData = masterDataAsync.value;
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.home),

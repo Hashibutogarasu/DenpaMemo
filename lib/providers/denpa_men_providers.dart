@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import '../data/denpa_men/objectbox_denpa_men_repository.dart';
 import '../domain/denpa_men/denpa_men.dart';
