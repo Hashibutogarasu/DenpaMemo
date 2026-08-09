@@ -15,6 +15,7 @@ import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'data/denpa_men/denpa_men_entity.dart';
+import 'data/qr_code/qr_code_entity.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -22,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(25, 2384250894206438545),
+    lastPropertyId: const obx_int.IdUid(26, 4119833927849556695),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -175,6 +176,50 @@ final _entities = <obx_int.ModelEntity>[
         type: 10,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(26, 4119833927849556695),
+        name: 'qrCodeId',
+        type: 11,
+        flags: 520,
+        indexId: const obx_int.IdUid(1, 4149304241743661584),
+        relationField: 'qrCode',
+        relationTarget: 'QrCodeEntity',
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(2, 7586720445347852204),
+    name: 'QrCodeEntity',
+    lastPropertyId: const obx_int.IdUid(4, 5963905535047034243),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 8136527907161312430),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 5051089340257853467),
+        name: 'rawValue',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 7865551652871338519),
+        name: 'hash',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(2, 2492110792462433612),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 5963905535047034243),
+        name: 'createdAt',
+        type: 10,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -224,8 +269,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(1, 1562260616338364164),
-    lastIndexId: const obx_int.IdUid(0, 0),
+    lastEntityId: const obx_int.IdUid(2, 7586720445347852204),
+    lastIndexId: const obx_int.IdUid(2, 2492110792462433612),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [],
@@ -240,7 +285,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final bindings = <Type, obx_int.EntityDefinition>{
     DenpaMenEntity: obx_int.EntityDefinition<DenpaMenEntity>(
       model: _entities[0],
-      toOneRelations: (DenpaMenEntity object) => [],
+      toOneRelations: (DenpaMenEntity object) => [object.qrCode],
       toManyRelations: (DenpaMenEntity object) => {},
       getId: (DenpaMenEntity object) => object.id,
       setId: (DenpaMenEntity object, int id) {
@@ -262,7 +307,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final memoOffset = object.memo == null
             ? null
             : fbb.writeString(object.memo!);
-        fbb.startTable(26);
+        fbb.startTable(27);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -288,6 +333,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(22, memoOffset);
         fbb.addInt64(23, object.createdAt.millisecondsSinceEpoch);
         fbb.addInt64(24, object.moveInDate?.millisecondsSinceEpoch);
+        fbb.addInt64(25, object.qrCode.targetId);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -443,6 +489,59 @@ obx_int.ModelDefinition getObjectBoxModel() {
           createdAt: createdAtParam,
           moveInDate: moveInDateParam,
         );
+        object.qrCode.targetId = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          54,
+          0,
+        );
+        object.qrCode.attach(store);
+        return object;
+      },
+    ),
+    QrCodeEntity: obx_int.EntityDefinition<QrCodeEntity>(
+      model: _entities[1],
+      toOneRelations: (QrCodeEntity object) => [],
+      toManyRelations: (QrCodeEntity object) => {},
+      getId: (QrCodeEntity object) => object.id,
+      setId: (QrCodeEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (QrCodeEntity object, fb.Builder fbb) {
+        final rawValueOffset = fbb.writeString(object.rawValue);
+        final hashOffset = fbb.writeString(object.hash);
+        fbb.startTable(5);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, rawValueOffset);
+        fbb.addOffset(2, hashOffset);
+        fbb.addInt64(3, object.createdAt.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final rawValueParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final hashParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
+        );
+        final object = QrCodeEntity(
+          id: idParam,
+          rawValue: rawValueParam,
+          hash: hashParam,
+          createdAt: createdAtParam,
+        );
 
         return object;
       },
@@ -577,5 +676,33 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.moveInDate].
   static final moveInDate = obx.QueryDateProperty<DenpaMenEntity>(
     _entities[0].properties[24],
+  );
+
+  /// See [DenpaMenEntity.qrCode].
+  static final qrCode = obx.QueryRelationToOne<DenpaMenEntity, QrCodeEntity>(
+    _entities[0].properties[25],
+  );
+}
+
+/// [QrCodeEntity] entity fields to define ObjectBox queries.
+class QrCodeEntity_ {
+  /// See [QrCodeEntity.id].
+  static final id = obx.QueryIntegerProperty<QrCodeEntity>(
+    _entities[1].properties[0],
+  );
+
+  /// See [QrCodeEntity.rawValue].
+  static final rawValue = obx.QueryStringProperty<QrCodeEntity>(
+    _entities[1].properties[1],
+  );
+
+  /// See [QrCodeEntity.hash].
+  static final hash = obx.QueryStringProperty<QrCodeEntity>(
+    _entities[1].properties[2],
+  );
+
+  /// See [QrCodeEntity.createdAt].
+  static final createdAt = obx.QueryDateProperty<QrCodeEntity>(
+    _entities[1].properties[3],
   );
 }

@@ -14,7 +14,6 @@ import '../widgets/denpa_men_accordion_tile.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/selection_floating_menu.dart';
-import 'denpa_men_editor.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -69,9 +68,8 @@ class Home extends ConsumerWidget {
       ),
       floatingActionButton: masterDataAsync.maybeWhen(
         data: (masterData) => FloatingActionButton(
-          onPressed: () => AddDenpaMenRoute(
-            $extra: DenpaMenEditorArgs(masterData: masterData),
-          ).push(context),
+          onPressed: () =>
+              DenpaMenQrRoute($extra: masterData).push(context),
           child: const Icon(Icons.add),
         ),
         orElse: () => null,

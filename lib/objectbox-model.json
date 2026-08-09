@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "25:2384250894206438545",
+      "lastPropertyId": "26:4119833927849556695",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -133,13 +133,52 @@
           "id": "25:2384250894206438545",
           "name": "moveInDate",
           "type": 10
+        },
+        {
+          "id": "26:4119833927849556695",
+          "name": "qrCodeId",
+          "indexId": "1:4149304241743661584",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "QrCodeEntity"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:7586720445347852204",
+      "lastPropertyId": "4:5963905535047034243",
+      "name": "QrCodeEntity",
+      "properties": [
+        {
+          "id": "1:8136527907161312430",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5051089340257853467",
+          "name": "rawValue",
+          "type": 9
+        },
+        {
+          "id": "3:7865551652871338519",
+          "name": "hash",
+          "indexId": "2:2492110792462433612",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "4:5963905535047034243",
+          "name": "createdAt",
+          "type": 10
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "1:1562260616338364164",
-  "lastIndexId": "0:0",
+  "lastEntityId": "2:7586720445347852204",
+  "lastIndexId": "2:2492110792462433612",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
