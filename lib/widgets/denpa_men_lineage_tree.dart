@@ -206,14 +206,19 @@ class _LineageGraph extends StatelessWidget {
           _NodeKind.caughtDenpaMen => GestureDetector(
             onTap: () => _showPreview(context, info.denpaMen!),
             child: DenpaMenNode(
-              name: info!.name!,
+              denpaMenId: info!.denpaMen!.id,
+              name: info.name!,
               catchIndex: info.catchIndex,
               size: nodeSize,
             ),
           ),
           _NodeKind.bredDenpaMen => GestureDetector(
             onTap: () => _showPreview(context, info.denpaMen!),
-            child: DenpaMenNode(name: info!.name!, size: nodeSize),
+            child: DenpaMenNode(
+              denpaMenId: info!.denpaMen!.id,
+              name: info.name!,
+              size: nodeSize,
+            ),
           ),
           _NodeKind.invisible || null => SizedBox(
             width: nodeSize,

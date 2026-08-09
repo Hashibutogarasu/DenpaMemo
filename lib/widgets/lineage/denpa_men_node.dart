@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
+import '../icon/denpa_men_icon.dart';
+
 /// A `DenpaMen` node in
-/// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart): an empty square
-/// where an icon will eventually go (no icon field exists on `DenpaMen`
-/// yet), with its name shown below. When [catchIndex] is set (an
-/// individual caught directly under a QR code), it's overlaid in the
-/// square's bottom-right corner; bred descendants pass null since they
-/// have no catch order of their own.
+/// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart): [denpaMenId]'s
+/// icon (or a placeholder if it has none set), with its name shown below.
+/// When [catchIndex] is set (an individual caught directly under a QR
+/// code), it's overlaid in the icon's bottom-right corner; bred
+/// descendants pass null since they have no catch order of their own.
 class DenpaMenNode extends StatelessWidget {
   const DenpaMenNode({
     super.key,
+    required this.denpaMenId,
     required this.name,
     required this.size,
     this.catchIndex,
   });
 
+  final String denpaMenId;
   final String name;
   final double size;
   final int? catchIndex;
@@ -27,15 +30,7 @@ class DenpaMenNode extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                border: Border.all(color: Theme.of(context).dividerColor),
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
+            DenpaMenIcon(denpaMenId: denpaMenId, size: size),
             if (catchIndex != null)
               Positioned(
                 right: 4,
