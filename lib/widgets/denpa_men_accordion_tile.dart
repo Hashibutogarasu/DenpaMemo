@@ -10,6 +10,7 @@ import '../routing/app_router.dart';
 import '../theme/app_colors.dart';
 import 'container/status.dart';
 import 'denpa_men_status.dart';
+import 'icon/denpa_men_icon.dart';
 import 'label/gauge_label.dart';
 import 'label/gauge_value.dart';
 import 'label/outlined_title.dart';
@@ -153,6 +154,8 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                     opacity: _expanded ? 0 : 1,
                     child: Row(
                       children: [
+                        DenpaMenIcon(denpaMenId: denpaMen.id, size: 32),
+                        const SizedBox(width: 8),
                         Flexible(
                           child: OutlinedTitleText(
                             text: denpaMen.name,
@@ -207,6 +210,7 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                     denpaMen,
                     totalAttributeCount: widget.masterData.attributes.length,
                     showContainer: false,
+                    showIcon: true,
                   )
                 : const SizedBox(width: double.infinity),
           ),
