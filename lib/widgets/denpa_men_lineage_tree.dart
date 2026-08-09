@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
@@ -7,6 +9,7 @@ import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/master_data.dart';
 import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
+import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
 import 'dialog/denpa_men_preview_dialog.dart';
@@ -37,10 +40,31 @@ class DenpaMenLineageTree extends ConsumerWidget {
           if (qrCodes.isEmpty) {
             return Center(child: Text(context.t.home.empty));
           }
+
+          final iconAsyncs = {
+            for (final record in denpaMenRecords)
+              record.denpaMen.id: ref.watch(
+                denpaMenIconProvider(record.denpaMen.id),
+              ),
+          };
+          if (iconAsyncs.values.any((icon) => icon.isLoading)) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (iconAsyncs.values.any((icon) => icon.hasError)) {
+            final erroredIcon = iconAsyncs.values.firstWhere(
+              (icon) => icon.hasError,
+            );
+            return Center(child: Text('${erroredIcon.error}'));
+          }
+
           return _LineageGraph(
             qrCodes: qrCodes,
             denpaMenRecords: denpaMenRecords,
             masterData: masterData,
+            iconsById: {
+              for (final entry in iconAsyncs.entries)
+                entry.key: entry.value.value,
+            },
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -90,11 +114,13 @@ class _LineageGraph extends StatelessWidget {
     required this.qrCodes,
     required this.denpaMenRecords,
     required this.masterData,
+    required this.iconsById,
   });
 
   final List<QrCodeRecord> qrCodes;
   final List<DenpaMenRecord> denpaMenRecords;
   final MasterData masterData;
+  final Map<String, File?> iconsById;
 
   void _showPreview(BuildContext context, DenpaMen denpaMen) {
     showDialog<void>(
@@ -198,28 +224,35 @@ class _LineageGraph extends StatelessWidget {
       centerGraph: true,
       builder: (node) {
         final info = nodeInfoByKey[node.key!.value];
-        return switch (info?.kind) {
-          _NodeKind.qrCode => QrCodeNode(
-            rawValue: info!.rawValue!,
-            size: nodeSize,
-          ),
-          _NodeKind.caughtDenpaMen => GestureDetector(
-            onTap: () => _showPreview(context, info.denpaMen!),
-            child: DenpaMenNode(
-              name: info!.name!,
-              catchIndex: info.catchIndex,
+        return RepaintBoundary(
+          child: switch (info?.kind) {
+            _NodeKind.qrCode => QrCodeNode(
+              rawValue: info!.rawValue!,
               size: nodeSize,
             ),
-          ),
-          _NodeKind.bredDenpaMen => GestureDetector(
-            onTap: () => _showPreview(context, info.denpaMen!),
-            child: DenpaMenNode(name: info!.name!, size: nodeSize),
-          ),
-          _NodeKind.invisible || null => SizedBox(
-            width: nodeSize,
-            height: nodeSize,
-          ),
-        };
+            _NodeKind.caughtDenpaMen => GestureDetector(
+              onTap: () => _showPreview(context, info.denpaMen!),
+              child: DenpaMenNode(
+                iconFile: iconsById[info!.denpaMen!.id],
+                name: info.name!,
+                catchIndex: info.catchIndex,
+                size: nodeSize,
+              ),
+            ),
+            _NodeKind.bredDenpaMen => GestureDetector(
+              onTap: () => _showPreview(context, info.denpaMen!),
+              child: DenpaMenNode(
+                iconFile: iconsById[info!.denpaMen!.id],
+                name: info.name!,
+                size: nodeSize,
+              ),
+            ),
+            _NodeKind.invisible || null => SizedBox(
+              width: nodeSize,
+              height: nodeSize,
+            ),
+          },
+        );
       },
     );
   }
