@@ -65,6 +65,9 @@
     "parents": "親",
     "parentUnset": "未設定",
     "qrCodeName": "QRコードの名前",
+    "qrCode": "QRコード",
+    "qrCodeUnset": "未設定",
+    "catchOrder": "キャッチ順",
     "memo": "メモ",
     "considerCorrections": "補正を考慮する"
   },

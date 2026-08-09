@@ -105,6 +105,8 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         evasionRate: draft.evasionRate,
         corrections: draft.corrections,
         parentIds: draft.parentIds,
+        catchOrder: draft.catchOrder,
+        qrCodeId: draft.qrCodeId,
         memo: draft.memo,
       );
     });
@@ -175,6 +177,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       for (final record in records)
         if (record.denpaMen.id != _denpaMen.id) record,
     ];
+    final qrCodeCandidates = ref.watch(qrCodeListProvider).value ?? [];
 
     return AppScaffold(
       title: OutlinedTitleText(
@@ -208,6 +211,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         denpaMen: _denpaMen,
         masterData: widget.masterData,
         parentCandidates: parentCandidates,
+        qrCodeCandidates: qrCodeCandidates,
         onChanged: _applyEdit,
       ),
     );
