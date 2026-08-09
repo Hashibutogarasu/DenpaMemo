@@ -27,10 +27,14 @@ class DenpaMenAccordionTile extends ConsumerStatefulWidget {
     required this.selected,
     required this.isCut,
     required this.onSelectedChanged,
+    this.animationDuration = const Duration(milliseconds: 200),
   });
 
   final DenpaMenRecord record;
   final MasterData masterData;
+
+  /// Duration of the expand/collapse and rotation animations.
+  final Duration animationDuration;
 
   /// Whether the home list is currently in multi-select mode. The checkbox
   /// slot is always reserved in the header regardless of this flag — only
@@ -60,8 +64,6 @@ class DenpaMenAccordionTile extends ConsumerStatefulWidget {
 enum _TileAction { edit, delete }
 
 class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
-  static const _animationDuration = Duration(milliseconds: 200);
-
   bool _expanded = false;
 
   Future<void> _delete(BuildContext context) async {
@@ -147,7 +149,7 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                   onTap: _handleTap,
                   onLongPress: _handleLongPress,
                   child: AnimatedOpacity(
-                    duration: _animationDuration,
+                    duration: widget.animationDuration,
                     opacity: _expanded ? 0 : 1,
                     child: Row(
                       children: [
@@ -191,14 +193,14 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                 onLongPress: _handleLongPress,
                 child: AnimatedRotation(
                   turns: _expanded ? 0.5 : 0,
-                  duration: _animationDuration,
+                  duration: widget.animationDuration,
                   child: const Icon(Icons.expand_more, color: AppColors.accent),
                 ),
               ),
             ],
           ),
           AnimatedSize(
-            duration: _animationDuration,
+            duration: widget.animationDuration,
             alignment: Alignment.topCenter,
             child: _expanded
                 ? DenpaMenStatus.fromDenpaMen(

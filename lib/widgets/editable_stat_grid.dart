@@ -21,14 +21,15 @@ class EditableStatGrid extends StatelessWidget {
     required this.denpaMen,
     required this.onChanged,
     required this.considerCorrections,
+    this.columns = 2,
+    this.gap = 8,
   });
 
   final DenpaMen denpaMen;
   final ValueChanged<DenpaMen> onChanged;
   final bool considerCorrections;
-
-  static const int _columns = 2;
-  static const double _gap = 8;
+  final int columns;
+  final double gap;
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +79,11 @@ class EditableStatGrid extends StatelessWidget {
       builder: (context, constraints) {
         final columnWidth = math.max(
           0.0,
-          (constraints.maxWidth - _gap * (_columns - 1)) / _columns,
+          (constraints.maxWidth - gap * (columns - 1)) / columns,
         );
         return Wrap(
-          spacing: _gap,
-          runSpacing: _gap,
+          spacing: gap,
+          runSpacing: gap,
           children: [
             for (final entry in entries)
               SizedBox(

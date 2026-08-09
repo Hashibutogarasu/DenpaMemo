@@ -15,12 +15,12 @@ class AttributeResistanceEntry extends StatelessWidget {
     super.key,
     required this.label,
     required this.value,
+    this.height = 20,
   });
 
   final String label;
   final int value;
-
-  static const double height = 20;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class AttributeResistanceEntry extends StatelessWidget {
                 direction: Axis.horizontal,
                 clipBehavior: Clip.hardEdge,
                 children: [
-                  const SizedBox(width: height),
+                  SizedBox(width: height),
                   Expanded(
                     child: Text(
                       label,
@@ -57,7 +57,7 @@ class AttributeResistanceEntry extends StatelessWidget {
               ),
             ),
           ),
-          const Positioned(left: 0, top: 0, child: AttributeIcon()),
+          Positioned(left: 0, top: 0, child: AttributeIcon(size: height)),
         ],
       ),
     );

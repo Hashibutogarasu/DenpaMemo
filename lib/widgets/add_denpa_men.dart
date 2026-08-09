@@ -28,6 +28,9 @@ class AddDenpaMen extends StatefulWidget {
     required this.parentCandidates,
     required this.qrCodeCandidates,
     required this.onChanged,
+    this.minPaneWidth = 360,
+    this.paneGap = 16,
+    this.wheelPageChangeThreshold = 20,
   });
 
   final DenpaMen denpaMen;
@@ -35,16 +38,15 @@ class AddDenpaMen extends StatefulWidget {
   final List<DenpaMenRecord> parentCandidates;
   final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
+  final double minPaneWidth;
+  final double paneGap;
+  final double wheelPageChangeThreshold;
 
   @override
   State<AddDenpaMen> createState() => _AddDenpaMenState();
 }
 
 class _AddDenpaMenState extends State<AddDenpaMen> {
-  static const double _minPaneWidth = 360;
-  static const double _paneGap = 16;
-  static const double _wheelPageChangeThreshold = 20;
-
   final PageController _pageController = PageController();
   bool _isChangingPage = false;
 
@@ -61,7 +63,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
     final delta = event.scrollDelta.dx.abs() > event.scrollDelta.dy.abs()
         ? event.scrollDelta.dx
         : event.scrollDelta.dy;
-    if (delta.abs() < _wheelPageChangeThreshold) {
+    if (delta.abs() < widget.wheelPageChangeThreshold) {
       return;
     }
 
@@ -87,6 +89,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       widget.denpaMen,
       totalAttributeCount: widget.masterData.attributes.length,
       includeStatBonus: widget.denpaMen.considerCorrections,
+      showIcon: true,
     );
     final editable = EditableDenpaMenStatus(
       denpaMen: widget.denpaMen,
@@ -104,14 +107,14 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth >= _minPaneWidth * 2 + _paneGap) {
+        if (constraints.maxWidth >= widget.minPaneWidth * 2 + widget.paneGap) {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(child: preview),
-                const SizedBox(width: _paneGap),
+                SizedBox(width: widget.paneGap),
                 Expanded(child: editable),
               ],
             ),
@@ -126,8 +129,8 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
                 child: PageView(
                   controller: _pageController,
                   children: [
-                    _AddDenpaMenPane(minWidth: _minPaneWidth, child: preview),
-                    _AddDenpaMenPane(minWidth: _minPaneWidth, child: editable),
+                    _AddDenpaMenPane(minWidth: widget.minPaneWidth, child: preview),
+                    _AddDenpaMenPane(minWidth: widget.minPaneWidth, child: editable),
                   ],
                 ),
               ),

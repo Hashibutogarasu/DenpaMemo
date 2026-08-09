@@ -26,14 +26,14 @@ class AppScaffold extends ConsumerWidget {
     required this.body,
     this.floatingActionButton,
     this.actions,
+    this.buttonInset = 16,
   });
 
   final Widget title;
   final Widget body;
   final Widget? floatingActionButton;
   final List<Widget>? actions;
-
-  static const double _buttonInset = 16;
+  final double buttonInset;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,15 +60,15 @@ class AppScaffold extends ConsumerWidget {
             children: [
               Positioned.fill(child: body),
               if (canPop)
-                const Positioned(
-                  left: _buttonInset,
-                  bottom: _buttonInset,
-                  child: AppBackButton(),
+                Positioned(
+                  left: buttonInset,
+                  bottom: buttonInset,
+                  child: const AppBackButton(),
                 ),
               if (floatingActionButton != null)
                 Positioned(
-                  right: _buttonInset,
-                  bottom: _buttonInset,
+                  right: buttonInset,
+                  bottom: buttonInset,
                   child: floatingActionButton!,
                 ),
               const Positioned(

@@ -4,31 +4,36 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
 
-/// App-wide header whose bottom edge slants at [_angleDegrees]: higher on
+/// App-wide header whose bottom edge slants at [angleDegrees]: higher on
 /// the left, lower on the right. The top edge stays flush with the top of
 /// the bar's own box, so nothing behind the bar shows through — only the
 /// bottom edge grows taller as it moves right, which is why the bar's own
 /// height (its "top part") is taller than a plain [AppBar].
 ///
-/// The slant offset is derived from [_height] rather than the bar's width —
+/// The slant offset is derived from [height] rather than the bar's width —
 /// deriving it from width would make the offset (and therefore the bar's
 /// required height) scale with window width, which blows up well past a
 /// usable header height on a wide desktop window.
 class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const SlantedAppBar({super.key, this.title, this.actions});
+  const SlantedAppBar({
+    super.key,
+    this.title,
+    this.actions,
+    this.height = 56,
+    this.borderWidth = 6,
+    this.angleDegrees = 10,
+  });
 
   final Widget? title;
   final List<Widget>? actions;
+  final double height;
+  final double borderWidth;
+  final double angleDegrees;
 
-  static const double _height = 56;
-  static const double _borderWidth = 6;
-  static const double _angleDegrees = 10;
-
-  static double get _slant =>
-      _height * math.tan(_angleDegrees * math.pi / 180);
+  double get _slant => height * math.tan(angleDegrees * math.pi / 180);
 
   @override
-  Size get preferredSize => Size.fromHeight(_height + _slant);
+  Size get preferredSize => Size.fromHeight(height + _slant);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +44,7 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
           slant: _slant,
           fillColor: AppColors.headerBackground,
           borderColor: AppColors.headerBorder,
-          borderWidth: _borderWidth,
+          borderWidth: borderWidth,
         ),
         child: title == null && actions == null
             ? null

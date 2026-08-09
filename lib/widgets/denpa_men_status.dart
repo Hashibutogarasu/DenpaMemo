@@ -9,8 +9,10 @@ import '../domain/denpa_men/denpa_men_correction_calculator.dart';
 import '../domain/master_data/anntena.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
+import 'container/indented_header.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
+import 'icon/denpa_men_icon.dart';
 import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute_resistance_entry.dart';
 import 'label/exp_progress.dart';
@@ -23,6 +25,7 @@ import 'label/status.dart';
 class DenpaMenStatus extends StatelessWidget {
   const DenpaMenStatus({
     super.key,
+    required this.denpaMenId,
     required this.name,
     required this.level,
     required this.happiness,
@@ -39,6 +42,9 @@ class DenpaMenStatus extends StatelessWidget {
     required this.totalAttributeCount,
     this.memo,
     this.showContainer = true,
+    this.showIcon = false,
+    this.attributeResistanceColumns = 4,
+    this.entryHeight = 20,
   });
 
   /// Builds the preview for [denpaMen] with corrections applied, resolving
@@ -49,12 +55,14 @@ class DenpaMenStatus extends StatelessWidget {
     required int totalAttributeCount,
     bool showContainer = true,
     bool includeStatBonus = true,
+    bool showIcon = false,
   }) {
     final corrected = denpaMen.applyCorrections(
       includeStatBonus: includeStatBonus,
     );
     return DenpaMenStatus(
       key: key,
+      denpaMenId: corrected.id,
       name: corrected.name,
       level: GaugeValue(current: corrected.level, max: corrected.maxLevel),
       happiness: GaugeValue(
@@ -79,9 +87,11 @@ class DenpaMenStatus extends StatelessWidget {
       totalAttributeCount: totalAttributeCount,
       memo: corrected.memo,
       showContainer: showContainer,
+      showIcon: showIcon,
     );
   }
 
+  final String denpaMenId;
   final String name;
   final GaugeValue level;
   final GaugeValue happiness;
@@ -98,8 +108,9 @@ class DenpaMenStatus extends StatelessWidget {
   final int totalAttributeCount;
   final String? memo;
   final bool showContainer;
-
-  static const int _attributeResistanceColumns = 4;
+  final bool showIcon;
+  final int attributeResistanceColumns;
+  final double entryHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -112,43 +123,72 @@ class DenpaMenStatus extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     final t = context.t;
+    const resistanceGap = 5.0;
     final attributeResistanceRows =
-        (totalAttributeCount / _attributeResistanceColumns).ceil();
+        (totalAttributeCount / attributeResistanceColumns).ceil();
     final attributeResistanceHeight =
-        attributeResistanceRows * AttributeResistanceEntry.height +
-        (attributeResistanceRows - 1) * _ResistanceWrap._gap;
+        attributeResistanceRows * entryHeight +
+        (attributeResistanceRows - 1) * resistanceGap;
+
+    final gaugesRow = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
+        ),
+        const SizedBox(width: 8),
+        Flexible(
+          child: GaugeLabel(
+            label: t.denpaMenStatus.happiness,
+            value: happiness,
+          ),
+        ),
+      ],
+    );
+    final nameText = OutlinedTitleText(
+      text: name,
+      outlineColor: AppColors.accent,
+      fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
+    );
+
+    final header = IndentedHeader(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (showIcon)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                DenpaMenIcon(denpaMenId: denpaMenId, size: 56),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [gaugesRow, nameText],
+                    ),
+                  ),
+                ),
+              ],
+            )
+          else ...[
+            gaugesRow,
+            nameText,
+          ],
+          Container(
+            height: 2,
+            margin: const EdgeInsets.only(top: 4, bottom: 4),
+            color: AppColors.accent,
+          ),
+        ],
+      ),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
-            ),
-            const SizedBox(width: 8),
-            Flexible(
-              child: GaugeLabel(
-                label: t.denpaMenStatus.happiness,
-                value: happiness,
-              ),
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 14),
-          child: OutlinedTitleText(
-            text: name,
-            outlineColor: AppColors.accent,
-            fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
-          ),
-        ),
-        Container(
-          height: 2,
-          margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
-          color: AppColors.accent,
-        ),
+        header,
         Row(
           children: [
             StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
@@ -159,6 +199,7 @@ class DenpaMenStatus extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: _StatWrap(
             columns: 2,
+            gap: resistanceGap,
             entries: [
               _StatData(
                 label: t.stat.antenna,
@@ -181,7 +222,9 @@ class DenpaMenStatus extends StatelessWidget {
             child: attributeResistances.isEmpty
                 ? Center(child: Text(t.denpaMenStatus.noAttributeResistance))
                 : _ResistanceWrap(
-                    columns: _attributeResistanceColumns,
+                    columns: attributeResistanceColumns,
+                    gap: resistanceGap,
+                    entryHeight: entryHeight,
                     entries: [
                       for (final resistance in attributeResistances)
                         _ResistanceData(
@@ -198,6 +241,7 @@ class DenpaMenStatus extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: _AbnormalityResistanceWrap(
             columns: 3,
+            gap: resistanceGap,
             entries: [
               for (final resistance in abnormalityResistances)
                 _ResistanceData(
@@ -244,12 +288,11 @@ class _StatData {
 /// Lays growth stats out left-packed with a fixed 5dp gap in both
 /// directions, sized so exactly [columns] fit per row.
 class _StatWrap extends StatelessWidget {
-  const _StatWrap({required this.columns, required this.entries});
-
-  static const double _gap = 5;
+  const _StatWrap({required this.columns, required this.entries, this.gap = 5});
 
   final int columns;
   final List<_StatData> entries;
+  final double gap;
 
   @override
   Widget build(BuildContext context) {
@@ -257,15 +300,15 @@ class _StatWrap extends StatelessWidget {
       builder: (context, constraints) {
         final columnWidth = math.max(
           0.0,
-          (constraints.maxWidth - _gap * (columns - 1)) / columns,
+          (constraints.maxWidth - gap * (columns - 1)) / columns,
         );
         return Wrap(
-          spacing: _gap,
-          runSpacing: _gap,
+          spacing: gap,
+          runSpacing: gap,
           children: [
             for (final entry in entries)
               SizedBox(
-                width: columnWidth * entry.span + _gap * (entry.span - 1),
+                width: columnWidth * entry.span + gap * (entry.span - 1),
                 child: StatValueLabel(
                   label: entry.label,
                   value: Text(entry.textValue ?? '${entry.value}'),
@@ -291,12 +334,17 @@ class _ResistanceData {
 /// entries sit packed against each other instead of leaving gaps around
 /// content narrower than the column.
 class _ResistanceWrap extends StatelessWidget {
-  const _ResistanceWrap({required this.columns, required this.entries});
-
-  static const double _gap = 5;
+  const _ResistanceWrap({
+    required this.columns,
+    required this.entries,
+    this.gap = 5,
+    this.entryHeight = 20,
+  });
 
   final int columns;
   final List<_ResistanceData> entries;
+  final double gap;
+  final double entryHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -304,11 +352,11 @@ class _ResistanceWrap extends StatelessWidget {
       builder: (context, constraints) {
         final columnWidth = math.max(
           0.0,
-          (constraints.maxWidth - _gap * (columns - 1)) / columns,
+          (constraints.maxWidth - gap * (columns - 1)) / columns,
         );
         return Wrap(
-          spacing: _gap,
-          runSpacing: _gap,
+          spacing: gap,
+          runSpacing: gap,
           children: [
             for (final entry in entries)
               SizedBox(
@@ -316,6 +364,7 @@ class _ResistanceWrap extends StatelessWidget {
                 child: AttributeResistanceEntry(
                   label: entry.label,
                   value: entry.value,
+                  height: entryHeight,
                 ),
               ),
           ],
@@ -331,12 +380,12 @@ class _AbnormalityResistanceWrap extends StatelessWidget {
   const _AbnormalityResistanceWrap({
     required this.columns,
     required this.entries,
+    this.gap = 5,
   });
-
-  static const double _gap = 5;
 
   final int columns;
   final List<_ResistanceData> entries;
+  final double gap;
 
   @override
   Widget build(BuildContext context) {
@@ -344,11 +393,11 @@ class _AbnormalityResistanceWrap extends StatelessWidget {
       builder: (context, constraints) {
         final columnWidth = math.max(
           0.0,
-          (constraints.maxWidth - _gap * (columns - 1)) / columns,
+          (constraints.maxWidth - gap * (columns - 1)) / columns,
         );
         return Wrap(
-          spacing: _gap,
-          runSpacing: _gap,
+          spacing: gap,
+          runSpacing: gap,
           children: [
             for (final entry in entries)
               SizedBox(
