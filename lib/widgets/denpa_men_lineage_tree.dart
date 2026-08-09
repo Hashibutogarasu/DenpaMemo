@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
@@ -8,11 +10,14 @@ import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
-import 'label/outlined_title.dart';
+import 'lineage/bred_denpa_men_node.dart';
+import 'lineage/caught_denpa_men_node.dart';
+import 'lineage/qr_code_node.dart';
 
 /// Shows every saved QR code as the root of a tree: individuals caught
-/// directly under it (ordered by catch order), then any bred descendants
-/// reached by following `DenpaMen.parentIds`.
+/// directly under it (ordered by catch order, centered on the first one
+/// caught), then any bred descendants reached by following
+/// `DenpaMen.parentIds`.
 class DenpaMenLineageTree extends ConsumerWidget {
   const DenpaMenLineageTree({super.key, required this.masterData});
 
@@ -20,60 +25,96 @@ class DenpaMenLineageTree extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final t = context.t;
     final qrCodesAsync = ref.watch(qrCodeListProvider);
     final denpaMenAsync = ref.watch(denpaMenListProvider(masterData));
 
-    return qrCodesAsync.when(
-      data: (qrCodes) => denpaMenAsync.when(
-        data: (denpaMenRecords) {
-          if (qrCodes.isEmpty) {
-            return Center(child: Text(t.home.empty));
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: qrCodes.length,
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.only(bottom: 24),
-              child: _QrLineageSection(
-                qrCodeRecord: qrCodes[index],
-                denpaMenRecords: denpaMenRecords,
-              ),
-            ),
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('$error')),
-      ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stackTrace) => Center(child: Text('$error')),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return qrCodesAsync.when(
+          data: (qrCodes) => denpaMenAsync.when(
+            data: (denpaMenRecords) {
+              if (qrCodes.isEmpty) {
+                return Center(child: Text(context.t.home.empty));
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: qrCodes.length,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: _QrLineageSection(
+                    qrCodeRecord: qrCodes[index],
+                    denpaMenRecords: denpaMenRecords,
+                    viewportHeight: constraints.maxHeight,
+                  ),
+                ),
+              );
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stackTrace) => Center(child: Text('$error')),
+          ),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(child: Text('$error')),
+        );
+      },
     );
   }
+}
+
+/// Reorders [items] so the first entry ends up in the middle of the
+/// returned list, with the rest fanning out alternately to its left and
+/// right in their original order.
+List<T> _centerFirst<T>(List<T> items) {
+  final result = <T>[];
+  for (var i = 0; i < items.length; i++) {
+    if (i.isEven) {
+      result.add(items[i]);
+    } else {
+      result.insert(0, items[i]);
+    }
+  }
+  return result;
+}
+
+enum _NodeKind { qrCode, caughtDenpaMen, bredDenpaMen }
+
+class _NodeInfo {
+  const _NodeInfo({required this.kind, this.rawValue, this.catchIndex});
+
+  final _NodeKind kind;
+  final String? rawValue;
+  final int? catchIndex;
 }
 
 class _QrLineageSection extends StatelessWidget {
   const _QrLineageSection({
     required this.qrCodeRecord,
     required this.denpaMenRecords,
+    required this.viewportHeight,
   });
 
   final QrCodeRecord qrCodeRecord;
   final List<DenpaMenRecord> denpaMenRecords;
+  final double viewportHeight;
 
   @override
   Widget build(BuildContext context) {
-    final t = context.t;
     final qrCode = qrCodeRecord.qrCode;
     final graph = Graph()..isTree = true;
-    final labels = <Object, String>{};
+    final nodeInfoByKey = <Object, _NodeInfo>{};
     final visited = <String>{};
 
     final rootKey = 'qr:${qrCode.id}';
     final rootNode = Node.Id(rootKey);
     graph.addNode(rootNode);
-    labels[rootKey] = qrCode.name ?? qrCode.id;
+    nodeInfoByKey[rootKey] = _NodeInfo(
+      kind: _NodeKind.qrCode,
+      rawValue: qrCode.rawValue,
+    );
 
-    void addDescendants(Node parentNode, String parentDenpaMenId) {
+    var nodeCount = 1;
+    var maxDepth = 0;
+
+    void addDescendants(Node parentNode, String parentDenpaMenId, int depth) {
       for (final record in denpaMenRecords) {
         if (!record.denpaMen.parentIds.contains(parentDenpaMenId)) {
           continue;
@@ -82,9 +123,13 @@ class _QrLineageSection extends StatelessWidget {
           continue;
         }
         final childNode = Node.Id(record.denpaMen.id);
-        labels[record.denpaMen.id] = record.denpaMen.name;
+        nodeInfoByKey[record.denpaMen.id] = const _NodeInfo(
+          kind: _NodeKind.bredDenpaMen,
+        );
         graph.addEdge(parentNode, childNode);
-        addDescendants(childNode, record.denpaMen.id);
+        nodeCount++;
+        maxDepth = math.max(maxDepth, depth);
+        addDescendants(childNode, record.denpaMen.id, depth + 1);
       }
     }
 
@@ -98,18 +143,19 @@ class _QrLineageSection extends StatelessWidget {
             ),
           );
 
-    for (var i = 0; i < directChildren.length; i++) {
-      final record = directChildren[i];
+    for (final record in _centerFirst(directChildren)) {
       if (!visited.add(record.denpaMen.id)) {
         continue;
       }
       final childNode = Node.Id(record.denpaMen.id);
-      labels[record.denpaMen.id] = t.home.catchOrderLabel(
-        order: i + 1,
-        name: record.denpaMen.name,
+      nodeInfoByKey[record.denpaMen.id] = _NodeInfo(
+        kind: _NodeKind.caughtDenpaMen,
+        catchIndex: (record.denpaMen.catchOrder ?? 0) + 1,
       );
       graph.addEdge(rootNode, childNode);
-      addDescendants(childNode, record.denpaMen.id);
+      nodeCount++;
+      maxDepth = math.max(maxDepth, 1);
+      addDescendants(childNode, record.denpaMen.id, 2);
     }
 
     final config = BuchheimWalkerConfiguration()
@@ -118,45 +164,39 @@ class _QrLineageSection extends StatelessWidget {
       ..subtreeSeparation = 32
       ..orientation = BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: OutlinedTitleText(text: qrCode.name ?? qrCode.id),
-        ),
-        SizedBox(
-          height: 320,
-          child: InteractiveViewer(
-            constrained: false,
-            boundaryMargin: const EdgeInsets.all(64),
-            minScale: 0.2,
-            maxScale: 2,
-            child: GraphView.builder(
-              graph: graph,
-              algorithm: BuchheimWalkerAlgorithm(
-                config,
-                TreeEdgeRenderer(config),
-              ),
-              builder: (node) {
-                final label = labels[node.key!.value] ?? '${node.key!.value}';
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    border: Border.all(color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(label),
-                );
-              },
+    final canvasWidth = math.max(400.0, nodeCount * 140.0);
+    final canvasHeight = math.max(240.0, (maxDepth + 1) * 140.0);
+
+    return SizedBox(
+      height: viewportHeight,
+      child: InteractiveViewer(
+        constrained: false,
+        boundaryMargin: const EdgeInsets.all(64),
+        minScale: 0.2,
+        maxScale: 2,
+        child: SizedBox(
+          width: canvasWidth,
+          height: canvasHeight,
+          child: GraphView.builder(
+            graph: graph,
+            algorithm: BuchheimWalkerAlgorithm(
+              config,
+              TreeEdgeRenderer(config),
             ),
+            autoZoomToFit: true,
+            builder: (node) {
+              final info = nodeInfoByKey[node.key!.value];
+              return switch (info?.kind) {
+                _NodeKind.qrCode => QrCodeNode(rawValue: info!.rawValue!),
+                _NodeKind.caughtDenpaMen => CaughtDenpaMenNode(
+                  catchIndex: info!.catchIndex!,
+                ),
+                _NodeKind.bredDenpaMen || null => const BredDenpaMenNode(),
+              };
+            },
           ),
         ),
-      ],
+      ),
     );
   }
 }
