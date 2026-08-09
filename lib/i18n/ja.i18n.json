@@ -75,7 +75,19 @@
     "ring": "わっか",
     "silkHat": "シルクハット",
     "sun": "たいよう",
-    "wing": "はね"
+    "wing": "はね",
+    "triangle": "さんかく",
+    "horizontalOval": "よこまる",
+    "verticalOval": "たてまる",
+    "roundedSquare": "かどまる",
+    "soap": "せっけん",
+    "droplet": "しずく",
+    "bearCub": "こぐま",
+    "morningDew": "あまつゆ",
+    "robot": "ロボ",
+    "spike": "とんがり",
+    "battery": "でんち",
+    "egg": "たまご"
   },
   "correction": {
     "protagonist": "主人公補正"
