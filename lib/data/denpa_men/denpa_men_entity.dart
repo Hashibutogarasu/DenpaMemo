@@ -61,6 +61,8 @@ class DenpaMenEntity {
 
   List<String> correctionIds;
 
+  bool considerCorrections;
+
   int? catchOrder;
 
   String? memo;
@@ -98,6 +100,7 @@ class DenpaMenEntity {
     required this.speed,
     required this.evasionRate,
     required this.correctionIds,
+    this.considerCorrections = true,
     this.catchOrder,
     this.memo,
     required this.createdAt,

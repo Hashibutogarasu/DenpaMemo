@@ -346,6 +346,15 @@ class Translations$editableStatus$ja {
 	/// ja: 'QRコードの名前'
 	String get qrCodeName => 'QRコードの名前';
 
+	/// ja: 'QRコード'
+	String get qrCode => 'QRコード';
+
+	/// ja: '未設定'
+	String get qrCodeUnset => '未設定';
+
+	/// ja: 'キャッチ順'
+	String get catchOrder => 'キャッチ順';
+
 	/// ja: 'メモ'
 	String get memo => 'メモ';
 
@@ -414,6 +423,9 @@ extension on Translations {
 			'editableStatus.parents' => '親',
 			'editableStatus.parentUnset' => '未設定',
 			'editableStatus.qrCodeName' => 'QRコードの名前',
+			'editableStatus.qrCode' => 'QRコード',
+			'editableStatus.qrCodeUnset' => '未設定',
+			'editableStatus.catchOrder' => 'キャッチ順',
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.considerCorrections' => '補正を考慮する',
 			'headShape.circle' => 'まる',

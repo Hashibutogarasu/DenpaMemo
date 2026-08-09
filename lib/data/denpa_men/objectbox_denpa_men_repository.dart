@@ -50,7 +50,22 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
   @override
   int save(DenpaMen denpaMen, {int id = 0}) {
     final createdAt = id == 0 ? DateTime.now() : _box.get(id)!.createdAt;
-    return _box.put(denpaMen.toEntity(id: id, createdAt: createdAt));
+    final entity = denpaMen.toEntity(id: id, createdAt: createdAt);
+    final qrCodeId = denpaMen.qrCodeId;
+    if (qrCodeId != null) {
+      final query = _objectBox.qrCodeBox
+          .query(QrCodeEntity_.cuid.equals(qrCodeId))
+          .build();
+      try {
+        final qrCodeEntity = query.findFirst();
+        if (qrCodeEntity != null) {
+          entity.qrCode.target = qrCodeEntity;
+        }
+      } finally {
+        query.close();
+      }
+    }
+    return _box.put(entity);
   }
 
   @override

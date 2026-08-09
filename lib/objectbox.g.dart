@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(29, 275029249087611936),
+    lastPropertyId: const obx_int.IdUid(30, 5701588058507270646),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -203,6 +203,12 @@ final _entities = <obx_int.ModelEntity>[
         type: 6,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(30, 5701588058507270646),
+        name: 'considerCorrections',
+        type: 1,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -341,7 +347,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final parentIdsOffset = fbb.writeList(
           object.parentIds.map(fbb.writeString).toList(growable: false),
         );
-        fbb.startTable(30);
+        fbb.startTable(31);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -371,6 +377,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(26, cuidOffset);
         fbb.addOffset(27, parentIdsOffset);
         fbb.addInt64(28, object.catchOrder);
+        fbb.addBool(29, object.considerCorrections);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -497,6 +504,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fb.StringReader(asciiOptimization: true),
           lazy: false,
         ).vTableGet(buffer, rootOffset, 46, []);
+        final considerCorrectionsParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          62,
+          false,
+        );
         final catchOrderParam = const fb.Int64Reader().vTableGetNullable(
           buffer,
           rootOffset,
@@ -536,6 +549,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           speed: speedParam,
           evasionRate: evasionRateParam,
           correctionIds: correctionIdsParam,
+          considerCorrections: considerCorrectionsParam,
           catchOrder: catchOrderParam,
           memo: memoParam,
           createdAt: createdAtParam,
@@ -762,6 +776,11 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.catchOrder].
   static final catchOrder = obx.QueryIntegerProperty<DenpaMenEntity>(
     _entities[0].properties[28],
+  );
+
+  /// See [DenpaMenEntity.considerCorrections].
+  static final considerCorrections = obx.QueryBooleanProperty<DenpaMenEntity>(
+    _entities[0].properties[29],
   );
 }
 

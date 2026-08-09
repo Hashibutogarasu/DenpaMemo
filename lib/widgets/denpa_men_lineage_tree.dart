@@ -15,8 +15,10 @@ import 'lineage/qr_code_node.dart';
 /// Shows every saved QR code as the root of a tree, in a single shared
 /// canvas: individuals caught directly under it (ordered by catch order,
 /// centered on the first one caught), then any bred descendants reached by
-/// following `DenpaMen.parentIds`. Every QR code hangs off one invisible
-/// super-root so the whole forest lays out as a single connected tree.
+/// following `DenpaMen.parentIds` — connected with an edge from each of its
+/// (up to two) parents, so shared offspring visibly converge. Every QR code
+/// hangs off one invisible super-root so the whole forest lays out as a
+/// single connected diagram.
 class DenpaMenLineageTree extends ConsumerWidget {
   const DenpaMenLineageTree({super.key, required this.masterData});
 
@@ -86,39 +88,20 @@ class _LineageGraph extends StatelessWidget {
     const nodeSize = 64.0;
     const superRootKey = 'superRoot';
 
-    final graph = Graph()..isTree = true;
+    final graph = Graph();
     final nodeInfoByKey = <Object, _NodeInfo>{};
-    final visited = <String>{};
+    final addedIds = <String>{};
 
     final superRootNode = Node.Id(superRootKey);
     graph.addNode(superRootNode);
     nodeInfoByKey[superRootKey] = const _NodeInfo(kind: _NodeKind.invisible);
 
-    void addDescendants(Node parentNode, String parentDenpaMenId) {
-      for (final record in denpaMenRecords) {
-        if (!record.denpaMen.parentIds.contains(parentDenpaMenId)) {
-          continue;
-        }
-        if (!visited.add(record.denpaMen.id)) {
-          continue;
-        }
-        final childNode = Node.Id(record.denpaMen.id);
-        nodeInfoByKey[record.denpaMen.id] = _NodeInfo(
-          kind: _NodeKind.bredDenpaMen,
-          name: record.denpaMen.name,
-        );
-        graph.addEdge(parentNode, childNode);
-        addDescendants(childNode, record.denpaMen.id);
-      }
-    }
-
     for (final qrCodeRecord in qrCodes) {
       final qrCode = qrCodeRecord.qrCode;
       final rootKey = 'qr:${qrCode.id}';
-      final rootNode = Node.Id(rootKey);
       graph.addEdge(
         superRootNode,
-        rootNode,
+        Node.Id(rootKey),
         paint: Paint()..color = Colors.transparent,
       );
       nodeInfoByKey[rootKey] = _NodeInfo(
@@ -137,29 +120,55 @@ class _LineageGraph extends StatelessWidget {
             );
 
       for (final record in _centerFirst(directChildren)) {
-        if (!visited.add(record.denpaMen.id)) {
+        final id = record.denpaMen.id;
+        if (!addedIds.add(id)) {
           continue;
         }
-        final childNode = Node.Id(record.denpaMen.id);
-        nodeInfoByKey[record.denpaMen.id] = _NodeInfo(
+        nodeInfoByKey[id] = _NodeInfo(
           kind: _NodeKind.caughtDenpaMen,
           name: record.denpaMen.name,
           catchIndex: (record.denpaMen.catchOrder ?? 0) + 1,
         );
-        graph.addEdge(rootNode, childNode);
-        addDescendants(childNode, record.denpaMen.id);
+        graph.addEdge(Node.Id(rootKey), Node.Id(id));
       }
     }
 
-    final config = BuchheimWalkerConfiguration()
-      ..siblingSeparation = 32
+    var progress = true;
+    while (progress) {
+      progress = false;
+      for (final record in denpaMenRecords) {
+        final id = record.denpaMen.id;
+        final parentIds = record.denpaMen.parentIds;
+        if (addedIds.contains(id) || parentIds.isEmpty) {
+          continue;
+        }
+        if (!parentIds.every(addedIds.contains)) {
+          continue;
+        }
+        nodeInfoByKey[id] = _NodeInfo(
+          kind: _NodeKind.bredDenpaMen,
+          name: record.denpaMen.name,
+        );
+        for (final parentId in parentIds) {
+          graph.addEdge(Node.Id(parentId), Node.Id(id));
+        }
+        addedIds.add(id);
+        progress = true;
+      }
+    }
+
+    final config = SugiyamaConfiguration()
+      ..nodeSeparation = 32
       ..levelSeparation = 48
-      ..subtreeSeparation = 32
+      ..orientation = SugiyamaConfiguration.ORIENTATION_TOP_BOTTOM;
+    final edgeRendererConfig = BuchheimWalkerConfiguration()
       ..orientation = BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM;
+    final algorithm = SugiyamaAlgorithm(config)
+      ..renderer = LineageEdgeRenderer(edgeRendererConfig);
 
     return GraphView.builder(
       graph: graph,
-      algorithm: BuchheimWalkerAlgorithm(config, LineageEdgeRenderer(config)),
+      algorithm: algorithm,
       autoZoomToFit: true,
       centerGraph: true,
       builder: (node) {

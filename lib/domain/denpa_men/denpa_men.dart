@@ -42,6 +42,7 @@ abstract class DenpaMen with _$DenpaMen {
     required int speed,
     required int evasionRate,
     required List<Correction> corrections,
+    required bool considerCorrections,
     required List<String> parentIds,
     int? catchOrder,
     String? qrCodeId,

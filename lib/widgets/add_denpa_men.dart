@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/master_data.dart';
+import '../domain/qr_code/qr_code_record.dart';
 import '../theme/app_colors.dart';
 import 'denpa_men_status.dart';
 import 'editable_denpa_men_status.dart';
@@ -25,12 +26,14 @@ class AddDenpaMen extends StatefulWidget {
     required this.denpaMen,
     required this.masterData,
     required this.parentCandidates,
+    required this.qrCodeCandidates,
     required this.onChanged,
   });
 
   final DenpaMen denpaMen;
   final MasterData masterData;
   final List<DenpaMenRecord> parentCandidates;
+  final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
 
   @override
@@ -44,7 +47,6 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
 
   final PageController _pageController = PageController();
   bool _isChangingPage = false;
-  bool _considerCorrections = true;
 
   @override
   void dispose() {
@@ -84,7 +86,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
     final preview = DenpaMenStatus.fromDenpaMen(
       widget.denpaMen,
       totalAttributeCount: widget.masterData.attributes.length,
-      includeStatBonus: _considerCorrections,
+      includeStatBonus: widget.denpaMen.considerCorrections,
     );
     final editable = EditableDenpaMenStatus(
       denpaMen: widget.denpaMen,
@@ -92,10 +94,12 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       anntenas: widget.masterData.anntenas,
       corrections: widget.masterData.corrections,
       parentCandidates: widget.parentCandidates,
+      qrCodeCandidates: widget.qrCodeCandidates,
       onChanged: widget.onChanged,
-      considerCorrections: _considerCorrections,
-      onConsiderCorrectionsChanged: (value) =>
-          setState(() => _considerCorrections = value),
+      considerCorrections: widget.denpaMen.considerCorrections,
+      onConsiderCorrectionsChanged: (value) => widget.onChanged(
+        widget.denpaMen.copyWith(considerCorrections: value),
+      ),
     );
 
     return LayoutBuilder(

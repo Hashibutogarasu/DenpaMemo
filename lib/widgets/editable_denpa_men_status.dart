@@ -5,6 +5,7 @@ import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/anntena.dart';
 import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
+import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
 import 'color/color_dot.dart';
@@ -15,8 +16,10 @@ import 'dialog/antenna_selection_dialog.dart';
 import 'dialog/body_color_selection_dialog.dart';
 import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
+import 'editable_catch_order.dart';
 import 'editable_exp.dart';
 import 'editable_parents.dart';
+import 'editable_qr_code.dart';
 import 'editable_stat_grid.dart';
 import 'field/inline_text_field.dart';
 import 'field/outlined_inline_name_field.dart';
@@ -39,6 +42,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
     required this.anntenas,
     required this.corrections,
     required this.parentCandidates,
+    required this.qrCodeCandidates,
     required this.onChanged,
     required this.considerCorrections,
     required this.onConsiderCorrectionsChanged,
@@ -49,6 +53,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
   final List<Anntena> anntenas;
   final List<Correction> corrections;
   final List<DenpaMenRecord> parentCandidates;
+  final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
   final bool considerCorrections;
   final ValueChanged<bool> onConsiderCorrectionsChanged;
@@ -236,6 +241,16 @@ class EditableDenpaMenStatus extends StatelessWidget {
             candidates: parentCandidates,
             onChanged: onChanged,
           ),
+          const SizedBox(height: 8),
+          EditableQrCode(
+            denpaMen: denpaMen,
+            candidates: qrCodeCandidates,
+            onChanged: onChanged,
+          ),
+          if (denpaMen.qrCodeId != null) ...[
+            const SizedBox(height: 8),
+            EditableCatchOrder(denpaMen: denpaMen, onChanged: onChanged),
+          ],
           const SizedBox(height: 8),
           Container(
             width: double.infinity,
