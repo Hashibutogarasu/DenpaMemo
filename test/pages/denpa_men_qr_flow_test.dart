@@ -19,6 +19,9 @@ void main() {
       await tester.tap(find.byIcon(Icons.add));
       await tester.pumpAndSettle();
 
+      await tester.tap(find.text('QRコードから追加'));
+      await tester.pumpAndSettle();
+
       expect(find.text('次へ'), findsOneWidget);
       expect(find.byType(QrImageView), findsOneWidget);
 

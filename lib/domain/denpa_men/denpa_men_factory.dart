@@ -1,3 +1,5 @@
+import 'package:cuid2/cuid2.dart';
+
 import '../master_data/anntena.dart';
 import '../master_data/body_color_resistance_rule.dart';
 import '../master_data/correction.dart';
@@ -18,6 +20,7 @@ import 'denpa_men_validation_exception.dart';
 /// [DenpaMenCorrectionCalculation.applyCorrections] at display time, so
 /// repeated edits never compound them.
 DenpaMen createDenpaMen({
+  String? id,
   required String name,
   required List<String> bodyColors,
   required bool isSpColor,
@@ -40,6 +43,7 @@ DenpaMen createDenpaMen({
   int speed = 0,
   int evasionRate = 0,
   List<Correction> corrections = const [],
+  List<String> parentIds = const [],
   String? memo,
   DateTime? moveInDate,
 }) {
@@ -48,6 +52,9 @@ DenpaMen createDenpaMen({
   }
   if (isSpColor && bodyColors.length != 1) {
     throw const SpColorRequiresSingleBodyColorException();
+  }
+  if (parentIds.isNotEmpty && parentIds.length != 2) {
+    throw InvalidParentCountException(parentIds.length);
   }
 
   final rulesByColorId = {
@@ -59,6 +66,7 @@ DenpaMen createDenpaMen({
   }
 
   final draft = DenpaMen(
+    id: id == null || id.isEmpty ? cuid() : id,
     name: name,
     abnormalityResistances: const [],
     bodyColors: bodyColors,
@@ -82,6 +90,7 @@ DenpaMen createDenpaMen({
     speed: speed,
     evasionRate: evasionRate,
     corrections: corrections,
+    parentIds: parentIds,
     memo: memo == null || memo.isEmpty ? null : memo,
     moveInDate: moveInDate,
   );

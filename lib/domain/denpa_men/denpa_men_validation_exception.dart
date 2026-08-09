@@ -27,3 +27,10 @@ class UnknownBodyColorException extends DenpaMenValidationException {
 
   final String colorId;
 }
+
+class InvalidParentCountException extends DenpaMenValidationException {
+  const InvalidParentCountException(this.parentCount)
+    : super('parentIds must contain exactly 0 or 2 entries, got $parentCount');
+
+  final int parentCount;
+}

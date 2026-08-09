@@ -81,6 +81,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
   void _applyEdit(DenpaMen draft) {
     setState(() {
       _denpaMen = createDenpaMen(
+        id: draft.id,
         name: draft.name,
         bodyColors: draft.bodyColors,
         isSpColor: draft.isSpColor,
@@ -103,6 +104,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         speed: draft.speed,
         evasionRate: draft.evasionRate,
         corrections: draft.corrections,
+        parentIds: draft.parentIds,
         memo: draft.memo,
       );
     });
@@ -140,6 +142,12 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final records =
+        ref.watch(denpaMenListProvider(widget.masterData)).value ?? [];
+    final parentCandidates = [
+      for (final record in records)
+        if (record.denpaMen.id != _denpaMen.id) record,
+    ];
 
     return AppScaffold(
       title: OutlinedTitleText(
@@ -172,6 +180,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       body: AddDenpaMen(
         denpaMen: _denpaMen,
         masterData: widget.masterData,
+        parentCandidates: parentCandidates,
         onChanged: _applyEdit,
       ),
     );

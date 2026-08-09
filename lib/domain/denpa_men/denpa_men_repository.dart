@@ -20,4 +20,8 @@ abstract class DenpaMenRepository {
   int save(DenpaMen denpaMen, {int id = 0});
 
   void delete(int id);
+
+  /// Resolves [denpaMen]'s `parentIds` to the parent [DenpaMenRecord]s they
+  /// reference.
+  List<DenpaMenRecord> getChildrens(DenpaMen denpaMen, MasterData masterData);
 }

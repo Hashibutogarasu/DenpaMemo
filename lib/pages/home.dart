@@ -14,9 +14,45 @@ import '../widgets/denpa_men_accordion_tile.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/selection_floating_menu.dart';
+import 'denpa_men_editor.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
+
+  Future<void> _showAddOptions(
+    BuildContext context,
+    MasterData masterData,
+  ) async {
+    final t = context.t;
+    await showModalBottomSheet<void>(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.person_add),
+              title: Text(t.home.addSingle),
+              onTap: () {
+                Navigator.of(context).pop();
+                AddDenpaMenRoute(
+                  $extra: DenpaMenEditorArgs(masterData: masterData),
+                ).push(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.qr_code),
+              title: Text(t.home.addFromQr),
+              onTap: () {
+                Navigator.of(context).pop();
+                DenpaMenQrRoute($extra: masterData).push(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Future<void> _exportSelected(
     BuildContext context,
@@ -68,8 +104,7 @@ class Home extends ConsumerWidget {
       ),
       floatingActionButton: masterDataAsync.maybeWhen(
         data: (masterData) => FloatingActionButton(
-          onPressed: () =>
-              DenpaMenQrRoute($extra: masterData).push(context),
+          onPressed: () => _showAddOptions(context, masterData),
           child: const Icon(Icons.add),
         ),
         orElse: () => null,

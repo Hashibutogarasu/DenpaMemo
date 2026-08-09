@@ -29,7 +29,9 @@
     "exportedToClipboard": "選択した電波人間をJSONとしてコピーしました",
     "copySelected": "コピー",
     "cutSelected": "カット",
-    "searchHint": "検索"
+    "searchHint": "検索",
+    "addSingle": "単体で追加",
+    "addFromQr": "QRコードから追加"
   },
   "denpaMenStatus": {
     "level": "レベル",
@@ -53,6 +55,8 @@
     "bodyColor": "体色",
     "spColor": "SPカラー",
     "correction": "補正",
+    "parents": "親",
+    "parentUnset": "未設定",
     "memo": "メモ",
     "considerCorrections": "補正を考慮する"
   },

@@ -216,6 +216,12 @@ class Translations$home$ja {
 
 	/// ja: '検索'
 	String get searchHint => '検索';
+
+	/// ja: '単体で追加'
+	String get addSingle => '単体で追加';
+
+	/// ja: 'QRコードから追加'
+	String get addFromQr => 'QRコードから追加';
 }
 
 // Path: denpaMenStatus
@@ -295,6 +301,12 @@ class Translations$editableStatus$ja {
 	/// ja: '補正'
 	String get correction => '補正';
 
+	/// ja: '親'
+	String get parents => '親';
+
+	/// ja: '未設定'
+	String get parentUnset => '未設定';
+
 	/// ja: 'メモ'
 	String get memo => 'メモ';
 
@@ -334,6 +346,8 @@ extension on Translations {
 			'home.copySelected' => 'コピー',
 			'home.cutSelected' => 'カット',
 			'home.searchHint' => '検索',
+			'home.addSingle' => '単体で追加',
+			'home.addFromQr' => 'QRコードから追加',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
@@ -351,6 +365,8 @@ extension on Translations {
 			'editableStatus.bodyColor' => '体色',
 			'editableStatus.spColor' => 'SPカラー',
 			'editableStatus.correction' => '補正',
+			'editableStatus.parents' => '親',
+			'editableStatus.parentUnset' => '未設定',
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.considerCorrections' => '補正を考慮する',
 			'headShape.circle' => 'まる',
