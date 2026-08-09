@@ -8,8 +8,7 @@ import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
-import 'lineage/bred_denpa_men_node.dart';
-import 'lineage/caught_denpa_men_node.dart';
+import 'lineage/denpa_men_node.dart';
 import 'lineage/lineage_edge_renderer.dart';
 import 'lineage/qr_code_node.dart';
 
@@ -63,10 +62,16 @@ List<T> _centerFirst<T>(List<T> items) {
 enum _NodeKind { invisible, qrCode, caughtDenpaMen, bredDenpaMen }
 
 class _NodeInfo {
-  const _NodeInfo({required this.kind, this.rawValue, this.catchIndex});
+  const _NodeInfo({
+    required this.kind,
+    this.rawValue,
+    this.name,
+    this.catchIndex,
+  });
 
   final _NodeKind kind;
   final String? rawValue;
+  final String? name;
   final int? catchIndex;
 }
 
@@ -98,8 +103,9 @@ class _LineageGraph extends StatelessWidget {
           continue;
         }
         final childNode = Node.Id(record.denpaMen.id);
-        nodeInfoByKey[record.denpaMen.id] = const _NodeInfo(
+        nodeInfoByKey[record.denpaMen.id] = _NodeInfo(
           kind: _NodeKind.bredDenpaMen,
+          name: record.denpaMen.name,
         );
         graph.addEdge(parentNode, childNode);
         addDescendants(childNode, record.denpaMen.id);
@@ -137,6 +143,7 @@ class _LineageGraph extends StatelessWidget {
         final childNode = Node.Id(record.denpaMen.id);
         nodeInfoByKey[record.denpaMen.id] = _NodeInfo(
           kind: _NodeKind.caughtDenpaMen,
+          name: record.denpaMen.name,
           catchIndex: (record.denpaMen.catchOrder ?? 0) + 1,
         );
         graph.addEdge(rootNode, childNode);
@@ -162,11 +169,15 @@ class _LineageGraph extends StatelessWidget {
             rawValue: info!.rawValue!,
             size: nodeSize,
           ),
-          _NodeKind.caughtDenpaMen => CaughtDenpaMenNode(
-            catchIndex: info!.catchIndex!,
+          _NodeKind.caughtDenpaMen => DenpaMenNode(
+            name: info!.name!,
+            catchIndex: info.catchIndex,
             size: nodeSize,
           ),
-          _NodeKind.bredDenpaMen => BredDenpaMenNode(size: nodeSize),
+          _NodeKind.bredDenpaMen => DenpaMenNode(
+            name: info!.name!,
+            size: nodeSize,
+          ),
           _NodeKind.invisible || null => SizedBox(
             width: nodeSize,
             height: nodeSize,
