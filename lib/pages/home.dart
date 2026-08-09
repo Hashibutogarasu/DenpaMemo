@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphview/GraphView.dart';
 
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
@@ -27,6 +28,7 @@ class Home extends ConsumerStatefulWidget {
 
 class _HomeState extends ConsumerState<Home> {
   _HomeViewMode _viewMode = _HomeViewMode.list;
+  final _lineageTreeController = GraphViewController();
 
   Future<void> _exportSelected(
     BuildContext context,
@@ -79,6 +81,7 @@ class _HomeState extends ConsumerState<Home> {
                 _HomeViewMode.list => _HomeBody(masterData: masterData),
                 _HomeViewMode.tree => DenpaMenLineageTree(
                   masterData: masterData,
+                  controller: _lineageTreeController,
                 ),
               },
               loading: () => const Center(child: CircularProgressIndicator()),
@@ -114,6 +117,16 @@ class _HomeState extends ConsumerState<Home> {
               ),
             ),
           ),
+          if (_viewMode == _HomeViewMode.tree)
+            Positioned(
+              top: 64,
+              right: 16,
+              child: ElevatedButton.icon(
+                onPressed: () => _lineageTreeController.zoomToFit(),
+                icon: const Icon(Icons.center_focus_strong, size: 18),
+                label: Text(t.home.resetTreePosition),
+              ),
+            ),
         ],
       ),
       floatingActionButton: masterDataAsync.maybeWhen(

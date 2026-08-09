@@ -25,9 +25,14 @@ import 'lineage/qr_code_node.dart';
 /// hangs off one invisible super-root so the whole forest lays out as a
 /// single connected diagram.
 class DenpaMenLineageTree extends ConsumerWidget {
-  const DenpaMenLineageTree({super.key, required this.masterData});
+  const DenpaMenLineageTree({
+    super.key,
+    required this.masterData,
+    this.controller,
+  });
 
   final MasterData masterData;
+  final GraphViewController? controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -65,6 +70,7 @@ class DenpaMenLineageTree extends ConsumerWidget {
               for (final entry in iconAsyncs.entries)
                 entry.key: entry.value.value,
             },
+            controller: controller,
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -115,12 +121,14 @@ class _LineageGraph extends StatelessWidget {
     required this.denpaMenRecords,
     required this.masterData,
     required this.iconsById,
+    this.controller,
   });
 
   final List<QrCodeRecord> qrCodes;
   final List<DenpaMenRecord> denpaMenRecords;
   final MasterData masterData;
   final Map<String, File?> iconsById;
+  final GraphViewController? controller;
 
   void _showPreview(BuildContext context, DenpaMen denpaMen) {
     showDialog<void>(
@@ -220,6 +228,7 @@ class _LineageGraph extends StatelessWidget {
     return GraphView.builder(
       graph: graph,
       algorithm: algorithm,
+      controller: controller,
       autoZoomToFit: true,
       centerGraph: true,
       builder: (node) {
