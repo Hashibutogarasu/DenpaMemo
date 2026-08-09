@@ -161,7 +161,7 @@ class _HomeBody extends ConsumerWidget {
                 return Center(child: Text(context.t.home.empty));
               }
               return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
+                padding: const EdgeInsets.fromLTRB(16, 64, 16, 96),
                 itemCount: records.length,
                 itemBuilder: (context, index) {
                   final record = records[index];
