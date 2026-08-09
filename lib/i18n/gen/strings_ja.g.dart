@@ -250,6 +250,9 @@ class Translations$home$ja {
 	/// ja: 'ツリー表示'
 	String get viewModeTree => 'ツリー表示';
 
+	/// ja: '位置をリセット'
+	String get resetTreePosition => '位置をリセット';
+
 	/// ja: '${order}匹目: ${name}'
 	String catchOrderLabel({required Object order, required Object name}) => '${order}匹目: ${name}';
 }
@@ -400,6 +403,7 @@ extension on Translations {
 			'home.addFromExistingQr' => '既存のQRコードから追加',
 			'home.viewModeList' => 'リスト表示',
 			'home.viewModeTree' => 'ツリー表示',
+			'home.resetTreePosition' => '位置をリセット',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',

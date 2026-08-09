@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,15 +16,28 @@ class DenpaMenIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final iconAsync = ref.watch(denpaMenIconProvider(denpaMenId));
+    return ResolvedDenpaMenIcon(file: iconAsync.value, size: size);
+  }
+}
 
+/// Renders an already-resolved icon [file] (or a placeholder if it's
+/// null), without watching [denpaMenIconProvider] itself. Used wherever
+/// the icon has already been loaded ahead of time — e.g. lineage tree
+/// nodes, where every node's icon is resolved up front so the tree
+/// doesn't reflow node-by-node as each icon provider finishes loading.
+class ResolvedDenpaMenIcon extends StatelessWidget {
+  const ResolvedDenpaMenIcon({super.key, required this.file, required this.size});
+
+  final File? file;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
-      child: iconAsync.maybeWhen(
-        data: (file) => file == null
-            ? _placeholder()
-            : Image.file(file, width: size, height: size, fit: BoxFit.cover),
-        orElse: _placeholder,
-      ),
+      child: file == null
+          ? _placeholder()
+          : Image.file(file!, width: size, height: size, fit: BoxFit.cover),
     );
   }
 

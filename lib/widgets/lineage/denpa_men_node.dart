@@ -1,20 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
+import '../icon/denpa_men_icon.dart';
+
 /// A `DenpaMen` node in
-/// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart): an empty square
-/// where an icon will eventually go (no icon field exists on `DenpaMen`
-/// yet), with its name shown below. When [catchIndex] is set (an
-/// individual caught directly under a QR code), it's overlaid in the
-/// square's bottom-right corner; bred descendants pass null since they
-/// have no catch order of their own.
+/// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart): [iconFile]'s
+/// image (or a placeholder if it's null), with its name shown below. The
+/// icon is resolved by the caller ahead of time — rather than watched
+/// here — so the graph lays out once and doesn't reflow node-by-node as
+/// each icon finishes loading. When [catchIndex] is set (an individual
+/// caught directly under a QR code), it's overlaid in the icon's
+/// bottom-right corner; bred descendants pass null since they have no
+/// catch order of their own.
 class DenpaMenNode extends StatelessWidget {
   const DenpaMenNode({
     super.key,
+    required this.iconFile,
     required this.name,
     required this.size,
     this.catchIndex,
   });
 
+  final File? iconFile;
   final String name;
   final double size;
   final int? catchIndex;
@@ -27,15 +35,7 @@ class DenpaMenNode extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                border: Border.all(color: Theme.of(context).dividerColor),
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
+            ResolvedDenpaMenIcon(file: iconFile, size: size),
             if (catchIndex != null)
               Positioned(
                 right: 4,

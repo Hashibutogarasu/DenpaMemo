@@ -36,6 +36,7 @@
     "addFromExistingQr": "既存のQRコードから追加",
     "viewModeList": "リスト表示",
     "viewModeTree": "ツリー表示",
+    "resetTreePosition": "位置をリセット",
     "catchOrderLabel": "${order}匹目: ${name}"
   },
   "denpaMenStatus": {
