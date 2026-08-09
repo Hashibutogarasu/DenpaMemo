@@ -9,6 +9,7 @@ import '../domain/denpa_men/denpa_men_correction_calculator.dart';
 import '../domain/master_data/anntena.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
+import 'container/indented_header.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
 import 'icon/denpa_men_icon.dart';
@@ -144,45 +145,50 @@ class DenpaMenStatus extends StatelessWidget {
         ),
       ],
     );
-    final namePadding = Padding(
-      padding: const EdgeInsets.only(left: 14),
-      child: OutlinedTitleText(
-        text: name,
-        outlineColor: AppColors.accent,
-        fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
+    final nameText = OutlinedTitleText(
+      text: name,
+      outlineColor: AppColors.accent,
+      fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
+    );
+
+    final header = IndentedHeader(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (showIcon)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                DenpaMenIcon(denpaMenId: denpaMenId, size: 56),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [gaugesRow, nameText],
+                    ),
+                  ),
+                ),
+              ],
+            )
+          else ...[
+            gaugesRow,
+            nameText,
+          ],
+          Container(
+            height: 2,
+            margin: const EdgeInsets.only(top: 4, bottom: 4),
+            color: AppColors.accent,
+          ),
+        ],
       ),
     );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (showIcon)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(width: 14),
-              DenpaMenIcon(denpaMenId: denpaMenId, size: 56),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Container(
-                  color: Colors.transparent,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [gaugesRow, namePadding],
-                  ),
-                ),
-              ),
-            ],
-          )
-        else ...[
-          gaugesRow,
-          namePadding,
-        ],
-        Container(
-          height: 2,
-          margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
-          color: AppColors.accent,
-        ),
+        header,
         Row(
           children: [
             StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),

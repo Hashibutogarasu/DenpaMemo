@@ -9,6 +9,7 @@ import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
 import 'color/color_dot.dart';
+import 'container/indented_header.dart';
 import 'container/nested.dart';
 import 'container/selection_tile.dart';
 import 'container/status.dart';
@@ -77,71 +78,75 @@ class EditableDenpaMenStatus extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(width: 14),
-              EditableDenpaMenIcon(denpaMenId: denpaMen.id, size: 56),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Container(
-                  color: Colors.transparent,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: InlineGaugeLabel(
-                              label: t.denpaMenStatus.level,
-                              value: GaugeValue(
-                                current: denpaMen.level,
-                                max: denpaMen.maxLevel,
-                              ),
-                              onCurrentChanged: (value) =>
-                                  onChanged(denpaMen.copyWith(level: value)),
-                              onMaxChanged: (value) => onChanged(
-                                denpaMen.copyWith(maxLevel: value),
-                              ),
+          IndentedHeader(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    EditableDenpaMenIcon(denpaMenId: denpaMen.id, size: 56),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: InlineGaugeLabel(
+                                    label: t.denpaMenStatus.level,
+                                    value: GaugeValue(
+                                      current: denpaMen.level,
+                                      max: denpaMen.maxLevel,
+                                    ),
+                                    onCurrentChanged: (value) => onChanged(
+                                      denpaMen.copyWith(level: value),
+                                    ),
+                                    onMaxChanged: (value) => onChanged(
+                                      denpaMen.copyWith(maxLevel: value),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Flexible(
+                                  child: InlineGaugeLabel(
+                                    label: t.denpaMenStatus.happiness,
+                                    value: GaugeValue(
+                                      current: denpaMen.happiness,
+                                      max: denpaMen.maxHappiness,
+                                    ),
+                                    onCurrentChanged: (value) => onChanged(
+                                      denpaMen.copyWith(happiness: value),
+                                    ),
+                                    onMaxChanged: (value) => onChanged(
+                                      denpaMen.copyWith(maxHappiness: value),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: InlineGaugeLabel(
-                              label: t.denpaMenStatus.happiness,
-                              value: GaugeValue(
-                                current: denpaMen.happiness,
-                                max: denpaMen.maxHappiness,
-                              ),
-                              onCurrentChanged: (value) => onChanged(
-                                denpaMen.copyWith(happiness: value),
-                              ),
-                              onMaxChanged: (value) => onChanged(
-                                denpaMen.copyWith(maxHappiness: value),
-                              ),
+                            OutlinedInlineNameField(
+                              value: denpaMen.name,
+                              onChanged: (value) =>
+                                  onChanged(denpaMen.copyWith(name: value)),
                             ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 14),
-                        child: OutlinedInlineNameField(
-                          value: denpaMen.name,
-                          onChanged: (value) =>
-                              onChanged(denpaMen.copyWith(name: value)),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Container(
-            height: 2,
-            margin: const EdgeInsets.only(left: 14, top: 4, bottom: 4),
-            color: AppColors.accent,
+                Container(
+                  height: 2,
+                  margin: const EdgeInsets.only(top: 4, bottom: 4),
+                  color: AppColors.accent,
+                ),
+              ],
+            ),
           ),
           EditableExp(denpaMen: denpaMen, onChanged: onChanged),
           const SizedBox(height: 8),
