@@ -15,9 +15,13 @@ class DenpaMenEntity {
   @Id()
   int id;
 
+  String cuid;
+
   String name;
 
   List<String> bodyColors;
+
+  List<String> parentIds;
 
   bool isSpColor;
 
@@ -69,8 +73,10 @@ class DenpaMenEntity {
 
   DenpaMenEntity({
     this.id = 0,
+    required this.cuid,
     required this.name,
     required this.bodyColors,
+    required this.parentIds,
     required this.isSpColor,
     required this.headShapeId,
     required this.physiqueId,

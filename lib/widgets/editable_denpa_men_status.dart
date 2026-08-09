@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
+import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
 import '../i18n/gen/strings.g.dart';
@@ -13,6 +14,7 @@ import 'dialog/body_color_selection_dialog.dart';
 import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
 import 'editable_exp.dart';
+import 'editable_parents.dart';
 import 'editable_stat_grid.dart';
 import 'field/inline_text_field.dart';
 import 'field/outlined_inline_name_field.dart';
@@ -33,6 +35,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
     required this.denpaMen,
     required this.headShapes,
     required this.corrections,
+    required this.parentCandidates,
     required this.onChanged,
     required this.considerCorrections,
     required this.onConsiderCorrectionsChanged,
@@ -41,6 +44,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
   final DenpaMen denpaMen;
   final List<HeadShape> headShapes;
   final List<Correction> corrections;
+  final List<DenpaMenRecord> parentCandidates;
   final ValueChanged<DenpaMen> onChanged;
   final bool considerCorrections;
   final ValueChanged<bool> onConsiderCorrectionsChanged;
@@ -203,6 +207,12 @@ class EditableDenpaMenStatus extends StatelessWidget {
                   .join('、'),
               overflow: TextOverflow.ellipsis,
             ),
+          ),
+          const SizedBox(height: 8),
+          EditableParents(
+            denpaMen: denpaMen,
+            candidates: parentCandidates,
+            onChanged: onChanged,
           ),
           const SizedBox(height: 8),
           Container(

@@ -63,6 +63,18 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'silkHat': 'シルクハット',
 		'sun': 'たいよう',
 		'wing': 'はね',
+		'triangle': 'さんかく',
+		'horizontalOval': 'よこまる',
+		'verticalOval': 'たてまる',
+		'roundedSquare': 'かどまる',
+		'soap': 'せっけん',
+		'droplet': 'しずく',
+		'bearCub': 'こぐま',
+		'morningDew': 'あまつゆ',
+		'robot': 'ロボ',
+		'spike': 'とんがり',
+		'battery': 'でんち',
+		'egg': 'たまご',
 	};
 	Map<String, String> get correction => {
 		'protagonist': '主人公補正',
@@ -216,6 +228,12 @@ class Translations$home$ja {
 
 	/// ja: '検索'
 	String get searchHint => '検索';
+
+	/// ja: '単体で追加'
+	String get addSingle => '単体で追加';
+
+	/// ja: 'QRコードから追加'
+	String get addFromQr => 'QRコードから追加';
 }
 
 // Path: denpaMenStatus
@@ -295,6 +313,12 @@ class Translations$editableStatus$ja {
 	/// ja: '補正'
 	String get correction => '補正';
 
+	/// ja: '親'
+	String get parents => '親';
+
+	/// ja: '未設定'
+	String get parentUnset => '未設定';
+
 	/// ja: 'メモ'
 	String get memo => 'メモ';
 
@@ -334,6 +358,8 @@ extension on Translations {
 			'home.copySelected' => 'コピー',
 			'home.cutSelected' => 'カット',
 			'home.searchHint' => '検索',
+			'home.addSingle' => '単体で追加',
+			'home.addFromQr' => 'QRコードから追加',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
@@ -351,6 +377,8 @@ extension on Translations {
 			'editableStatus.bodyColor' => '体色',
 			'editableStatus.spColor' => 'SPカラー',
 			'editableStatus.correction' => '補正',
+			'editableStatus.parents' => '親',
+			'editableStatus.parentUnset' => '未設定',
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.considerCorrections' => '補正を考慮する',
 			'headShape.circle' => 'まる',
@@ -368,6 +396,18 @@ extension on Translations {
 			'headShape.silkHat' => 'シルクハット',
 			'headShape.sun' => 'たいよう',
 			'headShape.wing' => 'はね',
+			'headShape.triangle' => 'さんかく',
+			'headShape.horizontalOval' => 'よこまる',
+			'headShape.verticalOval' => 'たてまる',
+			'headShape.roundedSquare' => 'かどまる',
+			'headShape.soap' => 'せっけん',
+			'headShape.droplet' => 'しずく',
+			'headShape.bearCub' => 'こぐま',
+			'headShape.morningDew' => 'あまつゆ',
+			'headShape.robot' => 'ロボ',
+			'headShape.spike' => 'とんがり',
+			'headShape.battery' => 'でんち',
+			'headShape.egg' => 'たまご',
 			'correction.protagonist' => '主人公補正',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',

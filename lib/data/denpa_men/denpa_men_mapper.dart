@@ -9,8 +9,10 @@ extension DenpaMenEntityMapper on DenpaMen {
   DenpaMenEntity toEntity({int id = 0, required DateTime createdAt}) {
     return DenpaMenEntity(
       id: id,
+      cuid: this.id,
       name: name,
       bodyColors: bodyColors,
+      parentIds: parentIds,
       isSpColor: isSpColor,
       headShapeId: headShape.id,
       physiqueId: physique.id,
@@ -43,6 +45,7 @@ extension DenpaMenEntityMapper on DenpaMen {
 extension DenpaMenEntityToDomain on DenpaMenEntity {
   DenpaMen toDomain(MasterData masterData) {
     return createDenpaMen(
+      id: cuid,
       name: name,
       bodyColors: bodyColors,
       isSpColor: isSpColor,
@@ -81,6 +84,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
             ),
           )
           .toList(),
+      parentIds: parentIds,
       memo: memo,
       moveInDate: moveInDate,
     );

@@ -8,8 +8,8 @@ import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/master_data_providers.dart';
-import '../routing/app_router.dart';
 import '../theme/app_colors.dart';
+import '../widgets/add_denpa_men_fab.dart';
 import '../widgets/denpa_men_accordion_tile.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
@@ -67,11 +67,7 @@ class Home extends ConsumerWidget {
         error: (error, stackTrace) => Center(child: Text('$error')),
       ),
       floatingActionButton: masterDataAsync.maybeWhen(
-        data: (masterData) => FloatingActionButton(
-          onPressed: () =>
-              DenpaMenQrRoute($extra: masterData).push(context),
-          child: const Icon(Icons.add),
-        ),
+        data: (masterData) => AddDenpaMenFab(masterData: masterData),
         orElse: () => null,
       ),
     );

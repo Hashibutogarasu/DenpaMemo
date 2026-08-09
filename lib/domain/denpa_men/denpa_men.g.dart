@@ -7,6 +7,7 @@ part of 'denpa_men.dart';
 // **************************************************************************
 
 _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
+  id: json['id'] as String,
   name: json['name'] as String,
   abnormalityResistances: (json['abnormalityResistances'] as List<dynamic>)
       .map((e) => AbnormalityResistance.fromJson(e as Map<String, dynamic>))
@@ -40,6 +41,9 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   corrections: (json['corrections'] as List<dynamic>)
       .map((e) => Correction.fromJson(e as Map<String, dynamic>))
       .toList(),
+  parentIds: (json['parentIds'] as List<dynamic>)
+      .map((e) => e as String)
+      .toList(),
   memo: json['memo'] as String?,
   moveInDate: json['moveInDate'] == null
       ? null
@@ -47,6 +51,7 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
 );
 
 Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
+  'id': instance.id,
   'name': instance.name,
   'abnormalityResistances': instance.abnormalityResistances,
   'bodyColors': instance.bodyColors,
@@ -70,6 +75,7 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'speed': instance.speed,
   'evasionRate': instance.evasionRate,
   'corrections': instance.corrections,
+  'parentIds': instance.parentIds,
   'memo': instance.memo,
   'moveInDate': instance.moveInDate?.toIso8601String(),
 };

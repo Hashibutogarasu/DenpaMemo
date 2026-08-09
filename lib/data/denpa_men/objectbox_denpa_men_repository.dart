@@ -57,4 +57,22 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
   void delete(int id) {
     _box.remove(id);
   }
+
+  @override
+  List<DenpaMenRecord> getChildrens(DenpaMen denpaMen, MasterData masterData) {
+    if (denpaMen.parentIds.isEmpty) {
+      return const [];
+    }
+    final query = (_box.query(
+      DenpaMenEntity_.cuid.oneOf(denpaMen.parentIds),
+    )..order(DenpaMenEntity_.createdAt)).build();
+    try {
+      return [
+        for (final entity in query.find())
+          DenpaMenRecord(id: entity.id, denpaMen: entity.toDomain(masterData)),
+      ];
+    } finally {
+      query.close();
+    }
+  }
 }
