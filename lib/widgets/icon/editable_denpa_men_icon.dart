@@ -1,15 +1,18 @@
 import 'dart:io';
+import 'dart:ui' as ui;
 
+import 'package:croppy/croppy.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 import '../../providers/denpa_men_icon_providers.dart';
 import 'denpa_men_icon.dart';
 
 /// [DenpaMenIcon] that, when tapped, lets the user pick an image via
-/// `file_picker`, crop it via `image_cropper`, and save the result as the
+/// `file_picker`, crop it via `croppy`, and save the result as the
 /// `DenpaMen`'s icon.
 class EditableDenpaMenIcon extends ConsumerWidget {
   const EditableDenpaMenIcon({
@@ -21,31 +24,46 @@ class EditableDenpaMenIcon extends ConsumerWidget {
   final String denpaMenId;
   final double size;
 
-  Future<void> _pickAndSetIcon(WidgetRef ref) async {
+  Future<File> _writeUiImageToTempFile(ui.Image image) async {
+    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+    final tempDirectory = await getTemporaryDirectory();
+    final file = File(
+      path.join(tempDirectory.path, 'denpa_men_icon_${DateTime.now().microsecondsSinceEpoch}.png'),
+    );
+    await file.writeAsBytes(bytes!.buffer.asUint8List());
+    return file;
+  }
+
+  Future<void> _pickAndSetIcon(BuildContext context, WidgetRef ref) async {
     final result = await FilePicker.pickFiles(type: FileType.image);
     final pickedPath = result?.files.single.path;
     if (pickedPath == null) {
       return;
     }
-
-    final cropped = await ImageCropper().cropImage(
-      sourcePath: pickedPath,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-    );
-    if (cropped == null) {
+    if (!context.mounted) {
       return;
     }
 
+    final cropResult = await showMaterialImageCropper(
+      context,
+      imageProvider: FileImage(File(pickedPath)),
+      allowedAspectRatios: const [CropAspectRatio(width: 1, height: 1)],
+    );
+    if (cropResult == null) {
+      return;
+    }
+
+    final croppedFile = await _writeUiImageToTempFile(cropResult.uiImage);
     await ref
         .read(denpaMenIconStorageProvider)
-        .saveIcon(denpaMenId, File(cropped.path));
+        .saveIcon(denpaMenId, croppedFile);
     ref.invalidate(denpaMenIconProvider(denpaMenId));
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => _pickAndSetIcon(ref),
+      onTap: () => _pickAndSetIcon(context, ref),
       child: DenpaMenIcon(denpaMenId: denpaMenId, size: size),
     );
   }
