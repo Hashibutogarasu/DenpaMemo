@@ -23,6 +23,7 @@ import 'editable_qr_code.dart';
 import 'editable_stat_grid.dart';
 import 'field/inline_text_field.dart';
 import 'field/outlined_inline_name_field.dart';
+import 'icon/editable_denpa_men_icon.dart';
 import 'label/gauge_value.dart';
 import 'label/inline_gauge_label.dart';
 
@@ -77,44 +78,65 @@ class EditableDenpaMenStatus extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Flexible(
-                child: InlineGaugeLabel(
-                  label: t.denpaMenStatus.level,
-                  value: GaugeValue(
-                    current: denpaMen.level,
-                    max: denpaMen.maxLevel,
-                  ),
-                  onCurrentChanged: (value) =>
-                      onChanged(denpaMen.copyWith(level: value)),
-                  onMaxChanged: (value) =>
-                      onChanged(denpaMen.copyWith(maxLevel: value)),
-                ),
-              ),
+              const SizedBox(width: 14),
+              EditableDenpaMenIcon(denpaMenId: denpaMen.id, size: 56),
               const SizedBox(width: 8),
-              Flexible(
-                child: InlineGaugeLabel(
-                  label: t.denpaMenStatus.happiness,
-                  value: GaugeValue(
-                    current: denpaMen.happiness,
-                    max: denpaMen.maxHappiness,
+              Expanded(
+                child: Container(
+                  color: Colors.transparent,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: InlineGaugeLabel(
+                              label: t.denpaMenStatus.level,
+                              value: GaugeValue(
+                                current: denpaMen.level,
+                                max: denpaMen.maxLevel,
+                              ),
+                              onCurrentChanged: (value) =>
+                                  onChanged(denpaMen.copyWith(level: value)),
+                              onMaxChanged: (value) => onChanged(
+                                denpaMen.copyWith(maxLevel: value),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: InlineGaugeLabel(
+                              label: t.denpaMenStatus.happiness,
+                              value: GaugeValue(
+                                current: denpaMen.happiness,
+                                max: denpaMen.maxHappiness,
+                              ),
+                              onCurrentChanged: (value) => onChanged(
+                                denpaMen.copyWith(happiness: value),
+                              ),
+                              onMaxChanged: (value) => onChanged(
+                                denpaMen.copyWith(maxHappiness: value),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 14),
+                        child: OutlinedInlineNameField(
+                          value: denpaMen.name,
+                          onChanged: (value) =>
+                              onChanged(denpaMen.copyWith(name: value)),
+                        ),
+                      ),
+                    ],
                   ),
-                  onCurrentChanged: (value) =>
-                      onChanged(denpaMen.copyWith(happiness: value)),
-                  onMaxChanged: (value) =>
-                      onChanged(denpaMen.copyWith(maxHappiness: value)),
                 ),
               ),
             ],
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.only(left: 14),
-            child: OutlinedInlineNameField(
-              value: denpaMen.name,
-              onChanged: (value) => onChanged(denpaMen.copyWith(name: value)),
-            ),
           ),
           Container(
             height: 2,

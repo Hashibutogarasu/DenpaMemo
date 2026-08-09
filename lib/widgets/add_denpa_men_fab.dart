@@ -9,17 +9,20 @@ import '../routing/app_router.dart';
 /// tapped, morphs into a close icon and reveals two mini FABs stacked above
 /// it for "add a single individual" and "add via the QR-code group flow".
 class AddDenpaMenFab extends StatefulWidget {
-  const AddDenpaMenFab({super.key, required this.masterData});
+  const AddDenpaMenFab({
+    super.key,
+    required this.masterData,
+    this.animationDuration = const Duration(milliseconds: 200),
+  });
 
   final MasterData masterData;
+  final Duration animationDuration;
 
   @override
   State<AddDenpaMenFab> createState() => _AddDenpaMenFabState();
 }
 
 class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
-  static const _duration = Duration(milliseconds: 200);
-
   bool _open = false;
 
   void _toggle() => setState(() => _open = !_open);
@@ -49,11 +52,11 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
     return IgnorePointer(
       ignoring: !_open,
       child: AnimatedSlide(
-        duration: _duration,
+        duration: widget.animationDuration,
         curve: Curves.easeOutCubic,
         offset: _open ? Offset.zero : const Offset(0, 0.3),
         child: AnimatedOpacity(
-          duration: _duration,
+          duration: widget.animationDuration,
           curve: Curves.easeOutCubic,
           opacity: _open ? 1 : 0,
           child: Padding(
@@ -118,7 +121,7 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
           heroTag: null,
           onPressed: _toggle,
           child: AnimatedRotation(
-            duration: _duration,
+            duration: widget.animationDuration,
             turns: _open ? 0.125 : 0,
             child: const Icon(Icons.add),
           ),

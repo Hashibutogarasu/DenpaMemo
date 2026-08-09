@@ -4,17 +4,15 @@ import '../../i18n/gen/strings.g.dart';
 import '../color/body_color_palette.dart';
 import 'bottom_slide_dialog.dart';
 
-const int _maxSelectableColors = 2;
-
 /// Result of [showBodyColorSelectionDialog]: the chosen body color ids and
 /// whether they should be treated as an SP color (only ever valid for a
 /// single selected color, see `createDenpaMen`'s validation).
 typedef BodyColorSelectionResult = ({List<String> bodyColors, bool isSpColor});
 
-/// Shows [BottomSlideDialog] letting the user pick up to
-/// [_maxSelectableColors] body color ids from a grid of round swatches, plus
-/// an SP color switch enabled only while a single color is selected. At
-/// least one color must remain selected to confirm.
+/// Shows [BottomSlideDialog] letting the user pick up to two body color ids
+/// from a grid of round swatches, plus an SP color switch enabled only
+/// while a single color is selected. At least one color must remain
+/// selected to confirm.
 Future<BodyColorSelectionResult?> showBodyColorSelectionDialog(
   BuildContext context, {
   required List<String> selected,
@@ -33,10 +31,12 @@ class _BodyColorSelectionDialog extends StatefulWidget {
   const _BodyColorSelectionDialog({
     required this.initial,
     required this.initialIsSpColor,
+    this.maxSelectableColors = 2,
   });
 
   final List<String> initial;
   final bool initialIsSpColor;
+  final int maxSelectableColors;
 
   @override
   State<_BodyColorSelectionDialog> createState() =>
@@ -54,7 +54,7 @@ class _BodyColorSelectionDialogState
     setState(() {
       if (_selected.contains(colorId)) {
         _selected.remove(colorId);
-      } else if (_selected.length < _maxSelectableColors) {
+      } else if (_selected.length < widget.maxSelectableColors) {
         _selected.add(colorId);
       }
       if (!_canBeSpColor) {
@@ -112,14 +112,14 @@ class _ColorSwatch extends StatelessWidget {
     required this.label,
     required this.selected,
     required this.onTap,
+    this.diameter = 32,
   });
-
-  static const double _diameter = 32;
 
   final String colorId;
   final String label;
   final bool selected;
   final VoidCallback onTap;
+  final double diameter;
 
   @override
   Widget build(BuildContext context) {
@@ -134,8 +134,8 @@ class _ColorSwatch extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: _diameter,
-              height: _diameter,
+              width: diameter,
+              height: diameter,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: color,

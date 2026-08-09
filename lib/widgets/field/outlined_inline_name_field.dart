@@ -14,12 +14,12 @@ class OutlinedInlineNameField extends StatelessWidget {
     super.key,
     required this.value,
     required this.onChanged,
+    this.outlineWidth = 3,
   });
 
   final String value;
   final ValueChanged<String> onChanged;
-
-  static const double _outlineWidth = 3;
+  final double outlineWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class OutlinedInlineNameField extends StatelessWidget {
             style: baseStyle.copyWith(
               foreground: Paint()
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = _outlineWidth
+                ..strokeWidth = outlineWidth
                 ..color = AppColors.accent,
             ),
           ),

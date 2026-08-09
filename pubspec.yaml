@@ -25,6 +25,8 @@ dependencies:
   cuid2: ^4.1.0
   crypto: ^3.0.7
   graphview: ^1.5.1
+  file_picker: ^11.0.3
+  image_cropper: ^12.2.1
 
 dev_dependencies:
   flutter_test:
