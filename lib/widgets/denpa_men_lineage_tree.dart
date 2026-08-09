@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
+import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/master_data.dart';
 import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
+import 'dialog/denpa_men_preview_dialog.dart';
 import 'lineage/denpa_men_node.dart';
 import 'lineage/lineage_edge_renderer.dart';
 import 'lineage/qr_code_node.dart';
@@ -35,7 +37,11 @@ class DenpaMenLineageTree extends ConsumerWidget {
           if (qrCodes.isEmpty) {
             return Center(child: Text(context.t.home.empty));
           }
-          return _LineageGraph(qrCodes: qrCodes, denpaMenRecords: denpaMenRecords);
+          return _LineageGraph(
+            qrCodes: qrCodes,
+            denpaMenRecords: denpaMenRecords,
+            masterData: masterData,
+          );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('$error')),
@@ -69,19 +75,36 @@ class _NodeInfo {
     this.rawValue,
     this.name,
     this.catchIndex,
+    this.denpaMen,
   });
 
   final _NodeKind kind;
   final String? rawValue;
   final String? name;
   final int? catchIndex;
+  final DenpaMen? denpaMen;
 }
 
 class _LineageGraph extends StatelessWidget {
-  const _LineageGraph({required this.qrCodes, required this.denpaMenRecords});
+  const _LineageGraph({
+    required this.qrCodes,
+    required this.denpaMenRecords,
+    required this.masterData,
+  });
 
   final List<QrCodeRecord> qrCodes;
   final List<DenpaMenRecord> denpaMenRecords;
+  final MasterData masterData;
+
+  void _showPreview(BuildContext context, DenpaMen denpaMen) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => DenpaMenPreviewDialog(
+        denpaMen: denpaMen,
+        totalAttributeCount: masterData.attributes.length,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +151,7 @@ class _LineageGraph extends StatelessWidget {
           kind: _NodeKind.caughtDenpaMen,
           name: record.denpaMen.name,
           catchIndex: (record.denpaMen.catchOrder ?? 0) + 1,
+          denpaMen: record.denpaMen,
         );
         graph.addEdge(Node.Id(rootKey), Node.Id(id));
       }
@@ -148,6 +172,7 @@ class _LineageGraph extends StatelessWidget {
         nodeInfoByKey[id] = _NodeInfo(
           kind: _NodeKind.bredDenpaMen,
           name: record.denpaMen.name,
+          denpaMen: record.denpaMen,
         );
         for (final parentId in parentIds) {
           graph.addEdge(Node.Id(parentId), Node.Id(id));
@@ -178,14 +203,17 @@ class _LineageGraph extends StatelessWidget {
             rawValue: info!.rawValue!,
             size: nodeSize,
           ),
-          _NodeKind.caughtDenpaMen => DenpaMenNode(
-            name: info!.name!,
-            catchIndex: info.catchIndex,
-            size: nodeSize,
+          _NodeKind.caughtDenpaMen => GestureDetector(
+            onTap: () => _showPreview(context, info.denpaMen!),
+            child: DenpaMenNode(
+              name: info!.name!,
+              catchIndex: info.catchIndex,
+              size: nodeSize,
+            ),
           ),
-          _NodeKind.bredDenpaMen => DenpaMenNode(
-            name: info!.name!,
-            size: nodeSize,
+          _NodeKind.bredDenpaMen => GestureDetector(
+            onTap: () => _showPreview(context, info.denpaMen!),
+            child: DenpaMenNode(name: info!.name!, size: nodeSize),
           ),
           _NodeKind.invisible || null => SizedBox(
             width: nodeSize,
