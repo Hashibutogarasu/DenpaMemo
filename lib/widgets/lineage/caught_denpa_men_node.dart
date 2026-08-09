@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 /// where an icon will eventually go (no icon field exists on `DenpaMen`
 /// yet), with its catch order shown in the bottom-right corner.
 class CaughtDenpaMenNode extends StatelessWidget {
-  const CaughtDenpaMenNode({super.key, required this.catchIndex});
+  const CaughtDenpaMenNode({
+    super.key,
+    required this.catchIndex,
+    required this.size,
+  });
 
   final int catchIndex;
-
-  static const double size = 64;
+  final double size;
 
   @override
   Widget build(BuildContext context) {

@@ -5,11 +5,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 /// section: the QR code itself, rendered as its actual QR image rather
 /// than its name/id as text.
 class QrCodeNode extends StatelessWidget {
-  const QrCodeNode({super.key, required this.rawValue});
+  const QrCodeNode({super.key, required this.rawValue, required this.size});
 
   final String rawValue;
-
-  static const double size = 72;
+  final double size;
 
   @override
   Widget build(BuildContext context) {

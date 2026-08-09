@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 /// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart), reached by
 /// following `DenpaMen.parentIds`, with no catch order of its own.
 class BredDenpaMenNode extends StatelessWidget {
-  const BredDenpaMenNode({super.key});
+  const BredDenpaMenNode({super.key, required this.size});
 
-  static const double size = 64;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
