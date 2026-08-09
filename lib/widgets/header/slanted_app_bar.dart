@@ -50,7 +50,7 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Row(
                     children: [
                       if (title != null) Expanded(child: title!),
-                      if (actions != null) ...actions!,
+                      ...?actions,
                     ],
                   ),
                 ),
