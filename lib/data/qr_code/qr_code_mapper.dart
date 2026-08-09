@@ -6,9 +6,11 @@ extension QrCodeEntityMapper on QrCode {
   QrCodeEntity toEntity({int id = 0}) {
     return QrCodeEntity(
       id: id,
+      cuid: this.id,
       rawValue: rawValue,
       hash: hash,
       createdAt: createdAt,
+      name: name,
     );
   }
 }
@@ -16,6 +18,12 @@ extension QrCodeEntityMapper on QrCode {
 /// Rebuilds the domain [QrCode] from a persisted [QrCodeEntity].
 extension QrCodeEntityToDomain on QrCodeEntity {
   QrCode toDomain() {
-    return QrCode(rawValue: rawValue, hash: hash, createdAt: createdAt);
+    return QrCode(
+      id: cuid,
+      rawValue: rawValue,
+      hash: hash,
+      createdAt: createdAt,
+      name: name,
+    );
   }
 }

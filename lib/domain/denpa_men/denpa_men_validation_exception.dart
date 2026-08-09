@@ -34,3 +34,8 @@ class InvalidParentCountException extends DenpaMenValidationException {
 
   final int parentCount;
 }
+
+class CatchOrderRequiresNoParentsException extends DenpaMenValidationException {
+  const CatchOrderRequiresNoParentsException()
+    : super('catchOrder can only be set when parentIds is empty');
+}

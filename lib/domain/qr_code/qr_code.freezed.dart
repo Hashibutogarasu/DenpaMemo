@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$QrCode {
 
- String get rawValue; String get hash; DateTime get createdAt;
+ String get id; String get rawValue; String get hash; DateTime get createdAt; String? get name;
 /// Create a copy of QrCode
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $QrCodeCopyWith<QrCode> get copyWith => _$QrCodeCopyWithImpl<QrCode>(this as QrC
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QrCode&&(identical(other.rawValue, rawValue) || other.rawValue == rawValue)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QrCode&&(identical(other.id, id) || other.id == id)&&(identical(other.rawValue, rawValue) || other.rawValue == rawValue)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,rawValue,hash,createdAt);
+int get hashCode => Object.hash(runtimeType,id,rawValue,hash,createdAt,name);
 
 @override
 String toString() {
-  return 'QrCode(rawValue: $rawValue, hash: $hash, createdAt: $createdAt)';
+  return 'QrCode(id: $id, rawValue: $rawValue, hash: $hash, createdAt: $createdAt, name: $name)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $QrCodeCopyWith<$Res>  {
   factory $QrCodeCopyWith(QrCode value, $Res Function(QrCode) _then) = _$QrCodeCopyWithImpl;
 @useResult
 $Res call({
- String rawValue, String hash, DateTime createdAt
+ String id, String rawValue, String hash, DateTime createdAt, String? name
 });
 
 
@@ -65,12 +65,14 @@ class _$QrCodeCopyWithImpl<$Res>
 
 /// Create a copy of QrCode
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? rawValue = null,Object? hash = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? rawValue = null,Object? hash = null,Object? createdAt = null,Object? name = freezed,}) {
   return _then(_self.copyWith(
-rawValue: null == rawValue ? _self.rawValue : rawValue // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,rawValue: null == rawValue ? _self.rawValue : rawValue // ignore: cast_nullable_to_non_nullable
 as String,hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -155,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String rawValue,  String hash,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String rawValue,  String hash,  DateTime createdAt,  String? name)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _QrCode() when $default != null:
-return $default(_that.rawValue,_that.hash,_that.createdAt);case _:
+return $default(_that.id,_that.rawValue,_that.hash,_that.createdAt,_that.name);case _:
   return orElse();
 
 }
@@ -176,10 +178,10 @@ return $default(_that.rawValue,_that.hash,_that.createdAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String rawValue,  String hash,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String rawValue,  String hash,  DateTime createdAt,  String? name)  $default,) {final _that = this;
 switch (_that) {
 case _QrCode():
-return $default(_that.rawValue,_that.hash,_that.createdAt);case _:
+return $default(_that.id,_that.rawValue,_that.hash,_that.createdAt,_that.name);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +198,10 @@ return $default(_that.rawValue,_that.hash,_that.createdAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String rawValue,  String hash,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String rawValue,  String hash,  DateTime createdAt,  String? name)?  $default,) {final _that = this;
 switch (_that) {
 case _QrCode() when $default != null:
-return $default(_that.rawValue,_that.hash,_that.createdAt);case _:
+return $default(_that.id,_that.rawValue,_that.hash,_that.createdAt,_that.name);case _:
   return null;
 
 }
@@ -211,12 +213,14 @@ return $default(_that.rawValue,_that.hash,_that.createdAt);case _:
 @JsonSerializable()
 
 class _QrCode implements QrCode {
-  const _QrCode({required this.rawValue, required this.hash, required this.createdAt});
+  const _QrCode({required this.id, required this.rawValue, required this.hash, required this.createdAt, this.name});
   factory _QrCode.fromJson(Map<String, dynamic> json) => _$QrCodeFromJson(json);
 
+@override final  String id;
 @override final  String rawValue;
 @override final  String hash;
 @override final  DateTime createdAt;
+@override final  String? name;
 
 /// Create a copy of QrCode
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QrCode&&(identical(other.rawValue, rawValue) || other.rawValue == rawValue)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QrCode&&(identical(other.id, id) || other.id == id)&&(identical(other.rawValue, rawValue) || other.rawValue == rawValue)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.name, name) || other.name == name));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,rawValue,hash,createdAt);
+int get hashCode => Object.hash(runtimeType,id,rawValue,hash,createdAt,name);
 
 @override
 String toString() {
-  return 'QrCode(rawValue: $rawValue, hash: $hash, createdAt: $createdAt)';
+  return 'QrCode(id: $id, rawValue: $rawValue, hash: $hash, createdAt: $createdAt, name: $name)';
 }
 
 
@@ -251,7 +255,7 @@ abstract mixin class _$QrCodeCopyWith<$Res> implements $QrCodeCopyWith<$Res> {
   factory _$QrCodeCopyWith(_QrCode value, $Res Function(_QrCode) _then) = __$QrCodeCopyWithImpl;
 @override @useResult
 $Res call({
- String rawValue, String hash, DateTime createdAt
+ String id, String rawValue, String hash, DateTime createdAt, String? name
 });
 
 
@@ -268,12 +272,14 @@ class __$QrCodeCopyWithImpl<$Res>
 
 /// Create a copy of QrCode
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? rawValue = null,Object? hash = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? rawValue = null,Object? hash = null,Object? createdAt = null,Object? name = freezed,}) {
   return _then(_QrCode(
-rawValue: null == rawValue ? _self.rawValue : rawValue // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,rawValue: null == rawValue ? _self.rawValue : rawValue // ignore: cast_nullable_to_non_nullable
 as String,hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

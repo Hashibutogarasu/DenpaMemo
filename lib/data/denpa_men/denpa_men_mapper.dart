@@ -32,6 +32,7 @@ extension DenpaMenEntityMapper on DenpaMen {
       speed: speed,
       evasionRate: evasionRate,
       correctionIds: corrections.map((correction) => correction.id).toList(),
+      catchOrder: catchOrder,
       memo: memo,
       createdAt: createdAt,
       moveInDate: moveInDate,
@@ -85,6 +86,8 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
           )
           .toList(),
       parentIds: parentIds,
+      catchOrder: catchOrder,
+      qrCodeId: qrCode.target?.cuid,
       memo: memo,
       moveInDate: moveInDate,
     );

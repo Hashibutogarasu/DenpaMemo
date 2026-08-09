@@ -11,6 +11,7 @@ List<RouteBase> get $appRoutes => [
   $settingsRoute,
   $addDenpaMenRoute,
   $denpaMenQrRoute,
+  $qrCodeSelectionRoute,
 ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -110,6 +111,37 @@ mixin $DenpaMenQrRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/add/qr');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $qrCodeSelectionRoute => GoRouteData.$route(
+  path: '/add/qr-select',
+  hasOverriddenOnExit: false,
+  factory: $QrCodeSelectionRoute._fromState,
+);
+
+mixin $QrCodeSelectionRoute on GoRouteData {
+  static QrCodeSelectionRoute _fromState(GoRouterState state) =>
+      QrCodeSelectionRoute($extra: state.extra as MasterData?);
+
+  QrCodeSelectionRoute get _self => this as QrCodeSelectionRoute;
+
+  @override
+  String get location => GoRouteData.$location('/add/qr-select');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);

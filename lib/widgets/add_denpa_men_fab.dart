@@ -36,6 +36,11 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
     DenpaMenQrRoute($extra: widget.masterData).push(context);
   }
 
+  void _addFromExistingQr() {
+    setState(() => _open = false);
+    QrCodeSelectionRoute($extra: widget.masterData).push(context);
+  }
+
   Widget _miniOption({
     required String label,
     required IconData icon,
@@ -94,6 +99,11 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        _miniOption(
+          label: t.home.addFromExistingQr,
+          icon: Icons.qr_code_scanner,
+          onPressed: _addFromExistingQr,
+        ),
         _miniOption(
           label: t.home.addFromQr,
           icon: Icons.qr_code,
