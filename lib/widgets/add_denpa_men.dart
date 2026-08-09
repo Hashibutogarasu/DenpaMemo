@@ -89,6 +89,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
     final editable = EditableDenpaMenStatus(
       denpaMen: widget.denpaMen,
       headShapes: widget.masterData.headShapes,
+      anntenas: widget.masterData.anntenas,
       corrections: widget.masterData.corrections,
       parentCandidates: widget.parentCandidates,
       onChanged: widget.onChanged,

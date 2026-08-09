@@ -6,6 +6,7 @@ import '../domain/denpa_men/abnormality_resistance.dart';
 import '../domain/denpa_men/attribute_resistance.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_correction_calculator.dart';
+import '../domain/master_data/anntena.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
 import 'container/nested.dart';
@@ -28,6 +29,7 @@ class DenpaMenStatus extends StatelessWidget {
     required this.expProgress,
     required this.attributeResistances,
     required this.abnormalityResistances,
+    required this.anntena,
     required this.hp,
     required this.ap,
     required this.attack,
@@ -67,6 +69,7 @@ class DenpaMenStatus extends StatelessWidget {
           : null,
       attributeResistances: corrected.attributeResistance,
       abnormalityResistances: corrected.abnormalityResistances,
+      anntena: corrected.anntena,
       hp: corrected.hp,
       ap: corrected.ap,
       attack: corrected.attack,
@@ -85,6 +88,7 @@ class DenpaMenStatus extends StatelessWidget {
   final double? expProgress;
   final List<AttributeResistance> attributeResistances;
   final List<AbnormalityResistance> abnormalityResistances;
+  final Anntena anntena;
   final int hp;
   final int ap;
   final int attack;
@@ -156,6 +160,11 @@ class DenpaMenStatus extends StatelessWidget {
           child: _StatWrap(
             columns: 2,
             entries: [
+              _StatData(
+                label: t.stat.antenna,
+                textValue: t.antenna[anntena.id] ?? anntena.id,
+                span: 2,
+              ),
               _StatData(label: t.stat.hp, value: hp),
               _StatData(label: t.stat.ap, value: ap),
               _StatData(label: t.stat.attack, value: attack),
@@ -219,10 +228,17 @@ class DenpaMenStatus extends StatelessWidget {
 }
 
 class _StatData {
-  const _StatData({required this.label, required this.value});
+  const _StatData({
+    required this.label,
+    this.value,
+    this.textValue,
+    this.span = 1,
+  }) : assert(value != null || textValue != null);
 
   final String label;
-  final int value;
+  final int? value;
+  final String? textValue;
+  final int span;
 }
 
 /// Lays growth stats out left-packed with a fixed 5dp gap in both
@@ -249,10 +265,10 @@ class _StatWrap extends StatelessWidget {
           children: [
             for (final entry in entries)
               SizedBox(
-                width: columnWidth,
+                width: columnWidth * entry.span + _gap * (entry.span - 1),
                 child: StatValueLabel(
                   label: entry.label,
-                  value: Text('${entry.value}'),
+                  value: Text(entry.textValue ?? '${entry.value}'),
                 ),
               ),
           ],

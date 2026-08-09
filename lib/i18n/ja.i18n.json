@@ -41,6 +41,7 @@
     "noAttributeResistance": "ぞくせいたいせいなし"
   },
   "stat": {
+    "antenna": "アンテナ",
     "hp": "HP",
     "ap": "AP",
     "attack": "こうげきりょく",
@@ -54,6 +55,7 @@
     "headShape": "頭の形",
     "bodyColor": "体色",
     "spColor": "SPカラー",
+    "antenna": "アンテナ",
     "correction": "補正",
     "parents": "親",
     "parentUnset": "未設定",
@@ -91,6 +93,9 @@
   },
   "correction": {
     "protagonist": "主人公補正"
+  },
+  "antenna": {
+    "none": "アンテナなし"
   },
   "bodyColor": {
     "red": "あか",

@@ -79,6 +79,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	Map<String, String> get correction => {
 		'protagonist': '主人公補正',
 	};
+	Map<String, String> get antenna => {
+		'none': 'アンテナなし',
+	};
 	Map<String, String> get bodyColor => {
 		'red': 'あか',
 		'blue': 'あお',
@@ -268,6 +271,9 @@ class Translations$stat$ja {
 
 	// Translations
 
+	/// ja: 'アンテナ'
+	String get antenna => 'アンテナ';
+
 	/// ja: 'HP'
 	String get hp => 'HP';
 
@@ -309,6 +315,9 @@ class Translations$editableStatus$ja {
 
 	/// ja: 'SPカラー'
 	String get spColor => 'SPカラー';
+
+	/// ja: 'アンテナ'
+	String get antenna => 'アンテナ';
 
 	/// ja: '補正'
 	String get correction => '補正';
@@ -365,6 +374,7 @@ extension on Translations {
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
 			'denpaMenStatus.max' => 'MAX',
 			'denpaMenStatus.noAttributeResistance' => 'ぞくせいたいせいなし',
+			'stat.antenna' => 'アンテナ',
 			'stat.hp' => 'HP',
 			'stat.ap' => 'AP',
 			'stat.attack' => 'こうげきりょく',
@@ -376,6 +386,7 @@ extension on Translations {
 			'editableStatus.headShape' => '頭の形',
 			'editableStatus.bodyColor' => '体色',
 			'editableStatus.spColor' => 'SPカラー',
+			'editableStatus.antenna' => 'アンテナ',
 			'editableStatus.correction' => '補正',
 			'editableStatus.parents' => '親',
 			'editableStatus.parentUnset' => '未設定',
@@ -409,6 +420,7 @@ extension on Translations {
 			'headShape.battery' => 'でんち',
 			'headShape.egg' => 'たまご',
 			'correction.protagonist' => '主人公補正',
+			'antenna.none' => 'アンテナなし',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',
 			'bodyColor.yellow' => 'きいろ',

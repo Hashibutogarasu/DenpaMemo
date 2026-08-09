@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
+import '../domain/master_data/anntena.dart';
 import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
 import '../i18n/gen/strings.g.dart';
@@ -10,6 +11,7 @@ import 'color/color_dot.dart';
 import 'container/nested.dart';
 import 'container/selection_tile.dart';
 import 'container/status.dart';
+import 'dialog/antenna_selection_dialog.dart';
 import 'dialog/body_color_selection_dialog.dart';
 import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
@@ -34,6 +36,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
     super.key,
     required this.denpaMen,
     required this.headShapes,
+    required this.anntenas,
     required this.corrections,
     required this.parentCandidates,
     required this.onChanged,
@@ -43,6 +46,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
 
   final DenpaMen denpaMen;
   final List<HeadShape> headShapes;
+  final List<Anntena> anntenas;
   final List<Correction> corrections;
   final List<DenpaMenRecord> parentCandidates;
   final ValueChanged<DenpaMen> onChanged;
@@ -187,6 +191,24 @@ class EditableDenpaMenStatus extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 8),
+          SelectionTile(
+            label: t.editableStatus.antenna,
+            onTap: () async {
+              final selected = await showAntennaSelectionDialog(
+                context,
+                anntenas: anntenas,
+                selected: denpaMen.anntena,
+              );
+              if (selected != null) {
+                onChanged(denpaMen.copyWith(anntena: selected));
+              }
+            },
+            child: Text(
+              t.antenna[denpaMen.anntena.id] ?? denpaMen.anntena.id,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(height: 8),
           SelectionTile(
