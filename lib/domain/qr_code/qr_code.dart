@@ -1,21 +1,18 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../denpa_men/denpa_men.dart';
-
 part 'qr_code.freezed.dart';
 part 'qr_code.g.dart';
 
+/// Instances must be created through `createQrCode` in
+/// `qr_code_factory.dart`, which derives [hash] from [rawValue].
 @freezed
-abstract class QRCode with _$QRCode {
-  const factory QRCode({
-    required String rawString,
-    @Default([]) List<DenpaMen> denpaMens,
-    String? memo,
+abstract class QrCode with _$QrCode {
+  const factory QrCode({
+    required String rawValue,
+    required String hash,
     required DateTime createdAt,
-    DateTime? updatedAt,
-    DateTime? deletedAt,
-  }) = _QRCode;
+  }) = _QrCode;
 
-  factory QRCode.fromJson(Map<String, dynamic> json) =>
-      _$QRCodeFromJson(json);
+  factory QrCode.fromJson(Map<String, dynamic> json) =>
+      _$QrCodeFromJson(json);
 }

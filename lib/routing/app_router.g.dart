@@ -10,6 +10,7 @@ List<RouteBase> get $appRoutes => [
   $homeRoute,
   $settingsRoute,
   $addDenpaMenRoute,
+  $denpaMenQrRoute,
 ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -78,6 +79,37 @@ mixin $AddDenpaMenRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/add');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $denpaMenQrRoute => GoRouteData.$route(
+  path: '/add/qr',
+  hasOverriddenOnExit: false,
+  factory: $DenpaMenQrRoute._fromState,
+);
+
+mixin $DenpaMenQrRoute on GoRouteData {
+  static DenpaMenQrRoute _fromState(GoRouterState state) =>
+      DenpaMenQrRoute($extra: state.extra as MasterData?);
+
+  DenpaMenQrRoute get _self => this as DenpaMenQrRoute;
+
+  @override
+  String get location => GoRouteData.$location('/add/qr');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);

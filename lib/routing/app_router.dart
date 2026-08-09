@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../domain/master_data/master_data.dart';
 import '../pages/denpa_men_editor.dart';
+import '../pages/denpa_men_qr.dart';
 import '../pages/home.dart';
 import '../pages/settings.dart';
 
@@ -28,7 +30,10 @@ class SettingsRoute extends GoRouteData with $SettingsRoute {
 /// Pushed (never `go`-navigated to) so it lands on top of the page stack,
 /// which is what makes [AppScaffold]'s `context.canPop()` check show a back
 /// button here. [$extra] carries the [MasterData] / [DenpaMenRecord] this
-/// needs, since neither can round-trip through a URL.
+/// needs, since neither can round-trip through a URL. The "complete" action
+/// in a session (see [DenpaMenEditorArgs.sessionMode]) is the one exception
+/// that navigates with `go` straight back to [HomeRoute], unwinding this
+/// route and [DenpaMenQrRoute] together.
 @TypedGoRoute<AddDenpaMenRoute>(path: '/add')
 class AddDenpaMenRoute extends GoRouteData with $AddDenpaMenRoute {
   const AddDenpaMenRoute({this.$extra});
@@ -39,5 +44,21 @@ class AddDenpaMenRoute extends GoRouteData with $AddDenpaMenRoute {
   Widget build(BuildContext context, GoRouterState state) => DenpaMenEditor(
     masterData: $extra!.masterData,
     initial: $extra!.initial,
+    sessionMode: $extra!.sessionMode,
   );
+}
+
+/// Pushed before [AddDenpaMenRoute] when adding new individuals: shows the
+/// session's QR code and, once "next" is pressed, hands off to
+/// [DenpaMenEditor] in session mode. [$extra] carries the [MasterData]
+/// needed to build a blank [DenpaMen].
+@TypedGoRoute<DenpaMenQrRoute>(path: '/add/qr')
+class DenpaMenQrRoute extends GoRouteData with $DenpaMenQrRoute {
+  const DenpaMenQrRoute({this.$extra});
+
+  final MasterData? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      DenpaMenQrPage(masterData: $extra!);
 }

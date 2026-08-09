@@ -147,6 +147,12 @@ class Translations$common$ja {
 
 	/// ja: '戻る'
 	String get back => '戻る';
+
+	/// ja: '次へ'
+	String get next => '次へ';
+
+	/// ja: '完了'
+	String get complete => '完了';
 }
 
 // Path: page
@@ -168,6 +174,12 @@ class Translations$page$ja {
 
 	/// ja: '電波人間を編集'
 	String get editDenpaMen => '電波人間を編集';
+
+	/// ja: '電波人間を追加'
+	String get addDenpaMenGroup => '電波人間を追加';
+
+	/// ja: '再生成'
+	String get qrRegenerate => '再生成';
 }
 
 // Path: home
@@ -305,10 +317,14 @@ extension on Translations {
 			'common.edit' => '編集',
 			'common.delete' => '削除',
 			'common.back' => '戻る',
+			'common.next' => '次へ',
+			'common.complete' => '完了',
 			'page.home' => 'ホーム',
 			'page.settings' => '設定',
 			'page.addDenpaMen' => '電波人間を追加',
 			'page.editDenpaMen' => '電波人間を編集',
+			'page.addDenpaMenGroup' => '電波人間を追加',
+			'page.qrRegenerate' => '再生成',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

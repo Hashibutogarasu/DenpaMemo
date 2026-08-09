@@ -8,13 +8,17 @@
     "save": "保存",
     "edit": "編集",
     "delete": "削除",
-    "back": "戻る"
+    "back": "戻る",
+    "next": "次へ",
+    "complete": "完了"
   },
   "page": {
     "home": "ホーム",
     "settings": "設定",
     "addDenpaMen": "電波人間を追加",
-    "editDenpaMen": "電波人間を編集"
+    "editDenpaMen": "電波人間を編集",
+    "addDenpaMenGroup": "電波人間を追加",
+    "qrRegenerate": "再生成"
   },
   "home": {
     "empty": "電波人間が登録されていません",

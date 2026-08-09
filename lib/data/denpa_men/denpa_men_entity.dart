@@ -1,5 +1,7 @@
 import 'package:objectbox/objectbox.dart';
 
+import '../qr_code/qr_code_entity.dart';
+
 /// Persisted representation of a [DenpaMen](../../domain/denpa_men/denpa_men.dart).
 ///
 /// Master data fields ([DenpaMen.headShape], [DenpaMen.physique],
@@ -62,6 +64,8 @@ class DenpaMenEntity {
 
   @Property(type: PropertyType.date)
   DateTime? moveInDate;
+
+  final qrCode = ToOne<QrCodeEntity>();
 
   DenpaMenEntity({
     this.id = 0,
