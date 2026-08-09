@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "29:275029249087611936",
+      "lastPropertyId": "30:5701588058507270646",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -156,6 +156,11 @@
           "id": "29:275029249087611936",
           "name": "catchOrder",
           "type": 6
+        },
+        {
+          "id": "30:5701588058507270646",
+          "name": "considerCorrections",
+          "type": 1
         }
       ],
       "relations": []

@@ -47,7 +47,6 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
 
   final PageController _pageController = PageController();
   bool _isChangingPage = false;
-  bool _considerCorrections = true;
 
   @override
   void dispose() {
@@ -87,7 +86,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
     final preview = DenpaMenStatus.fromDenpaMen(
       widget.denpaMen,
       totalAttributeCount: widget.masterData.attributes.length,
-      includeStatBonus: _considerCorrections,
+      includeStatBonus: widget.denpaMen.considerCorrections,
     );
     final editable = EditableDenpaMenStatus(
       denpaMen: widget.denpaMen,
@@ -97,9 +96,10 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       parentCandidates: widget.parentCandidates,
       qrCodeCandidates: widget.qrCodeCandidates,
       onChanged: widget.onChanged,
-      considerCorrections: _considerCorrections,
-      onConsiderCorrectionsChanged: (value) =>
-          setState(() => _considerCorrections = value),
+      considerCorrections: widget.denpaMen.considerCorrections,
+      onConsiderCorrectionsChanged: (value) => widget.onChanged(
+        widget.denpaMen.copyWith(considerCorrections: value),
+      ),
     );
 
     return LayoutBuilder(

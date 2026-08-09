@@ -39,6 +39,7 @@ void main() {
     'save() keeps the qrCode link intact when re-saving an edited individual',
     () {
       final objectBox = ObjectBox.createInMemory();
+      addTearDown(objectBox.store.close);
       final denpaMenRepository = ObjectBoxDenpaMenRepository(objectBox);
       final qrCodeRepository = ObjectBoxQrCodeRepository(objectBox);
 
@@ -59,18 +60,54 @@ void main() {
       final qrCode = createQrCode('raw-value', name: 'group-name');
       qrCodeRepository.saveWithDenpaMens(qrCode, [denpaMen], masterData);
 
-      final saved = denpaMenRepository.getAll(masterData).single;
+      final saved = denpaMenRepository
+          .getAll(masterData)
+          .firstWhere((record) => record.denpaMen.id == denpaMen.id);
       expect(saved.denpaMen.qrCodeId, qrCode.id);
 
-      // Simulate editing the individual (e.g. renaming it) and saving again
-      // through the plain single-edit path, which previously dropped the
-      // qrCode ToOne relation since it always builds a fresh entity.
       final edited = saved.denpaMen.copyWith(name: 'renamed');
       denpaMenRepository.save(edited, id: saved.id);
 
-      final resaved = denpaMenRepository.getAll(masterData).single;
+      final resaved = denpaMenRepository
+          .getAll(masterData)
+          .firstWhere((record) => record.denpaMen.id == denpaMen.id);
       expect(resaved.denpaMen.name, 'renamed');
       expect(resaved.denpaMen.qrCodeId, qrCode.id);
     },
   );
+
+  test('save() persists considerCorrections across reloads', () {
+    final objectBox = ObjectBox.createInMemory();
+    addTearDown(objectBox.store.close);
+    final denpaMenRepository = ObjectBoxDenpaMenRepository(objectBox);
+
+    final denpaMen = createDenpaMen(
+      name: 'test-denpa-men',
+      bodyColors: [colorId],
+      isSpColor: false,
+      headShape: headShape,
+      physique: physique,
+      personality: personality,
+      pattern: pattern,
+      anntena: anntena,
+      masterData: masterData,
+      maxHappiness: 0,
+      maxLevel: 1,
+      considerCorrections: false,
+    );
+    final id = denpaMenRepository.save(denpaMen);
+
+    final reloaded = denpaMenRepository
+        .getAll(masterData)
+        .firstWhere((record) => record.id == id);
+    expect(reloaded.denpaMen.considerCorrections, isFalse);
+
+    final edited = reloaded.denpaMen.copyWith(name: 'renamed');
+    denpaMenRepository.save(edited, id: reloaded.id);
+
+    final resaved = denpaMenRepository
+        .getAll(masterData)
+        .firstWhere((record) => record.id == id);
+    expect(resaved.denpaMen.considerCorrections, isFalse);
+  });
 }
