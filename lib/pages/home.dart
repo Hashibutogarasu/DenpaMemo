@@ -11,12 +11,22 @@ import '../providers/master_data_providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
 import '../widgets/denpa_men_accordion_tile.dart';
+import '../widgets/denpa_men_lineage_tree.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/selection_floating_menu.dart';
 
-class Home extends ConsumerWidget {
+enum _HomeViewMode { list, tree }
+
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
+
+  @override
+  ConsumerState<Home> createState() => _HomeState();
+}
+
+class _HomeState extends ConsumerState<Home> {
+  _HomeViewMode _viewMode = _HomeViewMode.list;
 
   Future<void> _exportSelected(
     BuildContext context,
@@ -39,7 +49,7 @@ class Home extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final masterDataAsync = ref.watch(masterDataProvider);
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
@@ -61,10 +71,50 @@ class Home extends ConsumerWidget {
           ],
         ),
       ],
-      body: masterDataAsync.when(
-        data: (masterData) => _HomeBody(masterData: masterData),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('$error')),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: masterDataAsync.when(
+              data: (masterData) => switch (_viewMode) {
+                _HomeViewMode.list => _HomeBody(masterData: masterData),
+                _HomeViewMode.tree => DenpaMenLineageTree(
+                  masterData: masterData,
+                ),
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) => Center(child: Text('$error')),
+            ),
+          ),
+          Positioned(
+            top: 16,
+            right: 16,
+            child: Material(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              elevation: 4,
+              borderRadius: BorderRadius.circular(4),
+              child: ToggleButtons(
+                isSelected: [
+                  _viewMode == _HomeViewMode.list,
+                  _viewMode == _HomeViewMode.tree,
+                ],
+                onPressed: (index) =>
+                    setState(() => _viewMode = _HomeViewMode.values[index]),
+                borderRadius: BorderRadius.circular(4),
+                constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                children: [
+                  Tooltip(
+                    message: t.home.viewModeList,
+                    child: const Icon(Icons.view_list, size: 20),
+                  ),
+                  Tooltip(
+                    message: t.home.viewModeTree,
+                    child: const Icon(Icons.account_tree, size: 20),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: masterDataAsync.maybeWhen(
         data: (masterData) => AddDenpaMenFab(masterData: masterData),

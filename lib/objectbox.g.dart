@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(28, 6232781287230050291),
+    lastPropertyId: const obx_int.IdUid(29, 275029249087611936),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -197,6 +197,12 @@ final _entities = <obx_int.ModelEntity>[
         type: 30,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(29, 275029249087611936),
+        name: 'catchOrder',
+        type: 6,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -204,7 +210,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(2, 7586720445347852204),
     name: 'QrCodeEntity',
-    lastPropertyId: const obx_int.IdUid(4, 5963905535047034243),
+    lastPropertyId: const obx_int.IdUid(6, 9075432342033460347),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -230,6 +236,18 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(4, 5963905535047034243),
         name: 'createdAt',
         type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 4503194552387054123),
+        name: 'cuid',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 9075432342033460347),
+        name: 'name',
+        type: 9,
         flags: 0,
       ),
     ],
@@ -323,7 +341,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final parentIdsOffset = fbb.writeList(
           object.parentIds.map(fbb.writeString).toList(growable: false),
         );
-        fbb.startTable(29);
+        fbb.startTable(30);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -352,6 +370,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(25, object.qrCode.targetId);
         fbb.addOffset(26, cuidOffset);
         fbb.addOffset(27, parentIdsOffset);
+        fbb.addInt64(28, object.catchOrder);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -478,6 +497,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fb.StringReader(asciiOptimization: true),
           lazy: false,
         ).vTableGet(buffer, rootOffset, 46, []);
+        final catchOrderParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          60,
+        );
         final memoParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 48);
@@ -512,6 +536,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           speed: speedParam,
           evasionRate: evasionRateParam,
           correctionIds: correctionIdsParam,
+          catchOrder: catchOrderParam,
           memo: memoParam,
           createdAt: createdAtParam,
           moveInDate: moveInDateParam,
@@ -537,11 +562,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
       objectToFB: (QrCodeEntity object, fb.Builder fbb) {
         final rawValueOffset = fbb.writeString(object.rawValue);
         final hashOffset = fbb.writeString(object.hash);
-        fbb.startTable(5);
+        final cuidOffset = fbb.writeString(object.cuid);
+        final nameOffset = object.name == null
+            ? null
+            : fbb.writeString(object.name!);
+        fbb.startTable(7);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, rawValueOffset);
         fbb.addOffset(2, hashOffset);
         fbb.addInt64(3, object.createdAt.millisecondsSinceEpoch);
+        fbb.addOffset(4, cuidOffset);
+        fbb.addOffset(5, nameOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -554,6 +585,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
           4,
           0,
         );
+        final cuidParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 12, '');
         final rawValueParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 6, '');
@@ -563,11 +597,16 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
           const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
         );
+        final nameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 14);
         final object = QrCodeEntity(
           id: idParam,
+          cuid: cuidParam,
           rawValue: rawValueParam,
           hash: hashParam,
           createdAt: createdAtParam,
+          name: nameParam,
         );
 
         return object;
@@ -719,6 +758,11 @@ class DenpaMenEntity_ {
   static final parentIds = obx.QueryStringVectorProperty<DenpaMenEntity>(
     _entities[0].properties[27],
   );
+
+  /// See [DenpaMenEntity.catchOrder].
+  static final catchOrder = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[28],
+  );
 }
 
 /// [QrCodeEntity] entity fields to define ObjectBox queries.
@@ -741,5 +785,15 @@ class QrCodeEntity_ {
   /// See [QrCodeEntity.createdAt].
   static final createdAt = obx.QueryDateProperty<QrCodeEntity>(
     _entities[1].properties[3],
+  );
+
+  /// See [QrCodeEntity.cuid].
+  static final cuid = obx.QueryStringProperty<QrCodeEntity>(
+    _entities[1].properties[4],
+  );
+
+  /// See [QrCodeEntity.name].
+  static final name = obx.QueryStringProperty<QrCodeEntity>(
+    _entities[1].properties[5],
   );
 }

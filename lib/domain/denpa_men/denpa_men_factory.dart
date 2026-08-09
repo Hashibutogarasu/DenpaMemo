@@ -44,6 +44,8 @@ DenpaMen createDenpaMen({
   int evasionRate = 0,
   List<Correction> corrections = const [],
   List<String> parentIds = const [],
+  int? catchOrder,
+  String? qrCodeId,
   String? memo,
   DateTime? moveInDate,
 }) {
@@ -55,6 +57,9 @@ DenpaMen createDenpaMen({
   }
   if (parentIds.isNotEmpty && parentIds.length != 2) {
     throw InvalidParentCountException(parentIds.length);
+  }
+  if (catchOrder != null && parentIds.isNotEmpty) {
+    throw const CatchOrderRequiresNoParentsException();
   }
 
   final rulesByColorId = {
@@ -91,6 +96,8 @@ DenpaMen createDenpaMen({
     evasionRate: evasionRate,
     corrections: corrections,
     parentIds: parentIds,
+    catchOrder: catchOrder,
+    qrCodeId: qrCodeId,
     memo: memo == null || memo.isEmpty ? null : memo,
     moveInDate: moveInDate,
   );

@@ -1,10 +1,12 @@
 import '../../domain/denpa_men/denpa_men.dart';
 import '../../domain/master_data/master_data.dart';
 import '../../domain/qr_code/qr_code.dart';
+import '../../domain/qr_code/qr_code_record.dart';
 import '../../domain/qr_code/qr_code_repository.dart';
 import '../../objectbox.g.dart';
 import '../denpa_men/denpa_men_mapper.dart';
 import '../objectbox/objectbox.dart';
+import 'qr_code_entity.dart';
 import 'qr_code_mapper.dart';
 
 /// [QrCodeRepository] backed by ObjectBox, saving the [QrCode] and its
@@ -14,14 +16,43 @@ class ObjectBoxQrCodeRepository implements QrCodeRepository {
 
   final ObjectBox _objectBox;
 
+  QueryBuilder<QrCodeEntity> _orderedQuery() =>
+      _objectBox.qrCodeBox.query()..order(QrCodeEntity_.createdAt);
+
+  @override
+  List<QrCodeRecord> getAll() {
+    final query = _orderedQuery().build();
+    try {
+      return [
+        for (final entity in query.find())
+          QrCodeRecord(id: entity.id, qrCode: entity.toDomain()),
+      ];
+    } finally {
+      query.close();
+    }
+  }
+
+  @override
+  Stream<List<QrCodeRecord>> watchAll() {
+    return _orderedQuery()
+        .watch(triggerImmediately: true)
+        .map(
+          (query) => [
+            for (final entity in query.find())
+              QrCodeRecord(id: entity.id, qrCode: entity.toDomain()),
+          ],
+        );
+  }
+
   @override
   void saveWithDenpaMens(
     QrCode qrCode,
     List<DenpaMen> denpaMens,
-    MasterData masterData,
-  ) {
+    MasterData masterData, {
+    int id = 0,
+  }) {
     _objectBox.store.runInTransaction(TxMode.write, () {
-      final qrCodeId = _objectBox.qrCodeBox.put(qrCode.toEntity());
+      final qrCodeId = _objectBox.qrCodeBox.put(qrCode.toEntity(id: id));
       final now = DateTime.now();
       final entities = [
         for (final denpaMen in denpaMens)

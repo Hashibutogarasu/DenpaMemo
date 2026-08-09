@@ -43,6 +43,8 @@ abstract class DenpaMen with _$DenpaMen {
     required int evasionRate,
     required List<Correction> corrections,
     required List<String> parentIds,
+    int? catchOrder,
+    String? qrCodeId,
     String? memo,
     DateTime? moveInDate,
   }) = _DenpaMen;

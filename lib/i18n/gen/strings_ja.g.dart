@@ -195,6 +195,9 @@ class Translations$page$ja {
 
 	/// ja: '再生成'
 	String get qrRegenerate => '再生成';
+
+	/// ja: 'QRコードを選ぶ'
+	String get selectQrCode => 'QRコードを選ぶ';
 }
 
 // Path: home
@@ -237,6 +240,18 @@ class Translations$home$ja {
 
 	/// ja: 'QRコードから追加'
 	String get addFromQr => 'QRコードから追加';
+
+	/// ja: '既存のQRコードから追加'
+	String get addFromExistingQr => '既存のQRコードから追加';
+
+	/// ja: 'リスト表示'
+	String get viewModeList => 'リスト表示';
+
+	/// ja: 'ツリー表示'
+	String get viewModeTree => 'ツリー表示';
+
+	/// ja: '${order}匹目: ${name}'
+	String catchOrderLabel({required Object order, required Object name}) => '${order}匹目: ${name}';
 }
 
 // Path: denpaMenStatus
@@ -328,6 +343,9 @@ class Translations$editableStatus$ja {
 	/// ja: '未設定'
 	String get parentUnset => '未設定';
 
+	/// ja: 'QRコードの名前'
+	String get qrCodeName => 'QRコードの名前';
+
 	/// ja: 'メモ'
 	String get memo => 'メモ';
 
@@ -358,6 +376,7 @@ extension on Translations {
 			'page.editDenpaMen' => '電波人間を編集',
 			'page.addDenpaMenGroup' => '電波人間を追加',
 			'page.qrRegenerate' => '再生成',
+			'page.selectQrCode' => 'QRコードを選ぶ',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
@@ -369,6 +388,10 @@ extension on Translations {
 			'home.searchHint' => '検索',
 			'home.addSingle' => '単体で追加',
 			'home.addFromQr' => 'QRコードから追加',
+			'home.addFromExistingQr' => '既存のQRコードから追加',
+			'home.viewModeList' => 'リスト表示',
+			'home.viewModeTree' => 'ツリー表示',
+			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
@@ -390,6 +413,7 @@ extension on Translations {
 			'editableStatus.correction' => '補正',
 			'editableStatus.parents' => '親',
 			'editableStatus.parentUnset' => '未設定',
+			'editableStatus.qrCodeName' => 'QRコードの名前',
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.considerCorrections' => '補正を考慮する',
 			'headShape.circle' => 'まる',

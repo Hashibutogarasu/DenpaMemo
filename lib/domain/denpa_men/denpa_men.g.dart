@@ -44,6 +44,8 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   parentIds: (json['parentIds'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
+  catchOrder: (json['catchOrder'] as num?)?.toInt(),
+  qrCodeId: json['qrCodeId'] as String?,
   memo: json['memo'] as String?,
   moveInDate: json['moveInDate'] == null
       ? null
@@ -76,6 +78,8 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'evasionRate': instance.evasionRate,
   'corrections': instance.corrections,
   'parentIds': instance.parentIds,
+  'catchOrder': instance.catchOrder,
+  'qrCodeId': instance.qrCodeId,
   'memo': instance.memo,
   'moveInDate': instance.moveInDate?.toIso8601String(),
 };

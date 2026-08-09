@@ -61,6 +61,8 @@ class DenpaMenEntity {
 
   List<String> correctionIds;
 
+  int? catchOrder;
+
   String? memo;
 
   @Property(type: PropertyType.date)
@@ -96,6 +98,7 @@ class DenpaMenEntity {
     required this.speed,
     required this.evasionRate,
     required this.correctionIds,
+    this.catchOrder,
     this.memo,
     required this.createdAt,
     this.moveInDate,

@@ -18,7 +18,8 @@
     "addDenpaMen": "電波人間を追加",
     "editDenpaMen": "電波人間を編集",
     "addDenpaMenGroup": "電波人間を追加",
-    "qrRegenerate": "再生成"
+    "qrRegenerate": "再生成",
+    "selectQrCode": "QRコードを選ぶ"
   },
   "home": {
     "empty": "電波人間が登録されていません",
@@ -31,7 +32,11 @@
     "cutSelected": "カット",
     "searchHint": "検索",
     "addSingle": "単体で追加",
-    "addFromQr": "QRコードから追加"
+    "addFromQr": "QRコードから追加",
+    "addFromExistingQr": "既存のQRコードから追加",
+    "viewModeList": "リスト表示",
+    "viewModeTree": "ツリー表示",
+    "catchOrderLabel": "${order}匹目: ${name}"
   },
   "denpaMenStatus": {
     "level": "レベル",
@@ -59,6 +64,7 @@
     "correction": "補正",
     "parents": "親",
     "parentUnset": "未設定",
+    "qrCodeName": "QRコードの名前",
     "memo": "メモ",
     "considerCorrections": "補正を考慮する"
   },

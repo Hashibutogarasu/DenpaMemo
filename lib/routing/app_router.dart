@@ -5,6 +5,7 @@ import '../domain/master_data/master_data.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
 import '../pages/home.dart';
+import '../pages/qr_code_selection.dart';
 import '../pages/settings.dart';
 
 part 'app_router.g.dart';
@@ -61,4 +62,20 @@ class DenpaMenQrRoute extends GoRouteData with $DenpaMenQrRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       DenpaMenQrPage(masterData: $extra!);
+}
+
+/// Pushed before [AddDenpaMenRoute] when adding to an already-saved QR code:
+/// lets the user pick which one, then hands off straight to [DenpaMenEditor]
+/// in session mode (skipping [DenpaMenQrRoute], since an existing QR code's
+/// raw value must not be regenerated). [$extra] carries the [MasterData]
+/// needed to build a blank [DenpaMen].
+@TypedGoRoute<QrCodeSelectionRoute>(path: '/add/qr-select')
+class QrCodeSelectionRoute extends GoRouteData with $QrCodeSelectionRoute {
+  const QrCodeSelectionRoute({this.$extra});
+
+  final MasterData? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      QrCodeSelectionPage(masterData: $extra!);
 }

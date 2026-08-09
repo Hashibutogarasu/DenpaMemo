@@ -117,8 +117,24 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     context.pop();
   }
 
+  DenpaMen _withCatchOrder(DenpaMen denpaMen, DenpaMenSession session) {
+    if (denpaMen.parentIds.isNotEmpty) {
+      return denpaMen;
+    }
+    return denpaMen.copyWith(
+      catchOrder:
+          session.existingDenpaMenCount + session.completedDenpaMens.length,
+    );
+  }
+
   void _next() {
-    ref.read(denpaMenSessionProvider.notifier).addDraft(_denpaMen);
+    final session = ref.read(denpaMenSessionProvider);
+    if (session == null) {
+      return;
+    }
+    ref
+        .read(denpaMenSessionProvider.notifier)
+        .addDraft(_withCatchOrder(_denpaMen, session));
     setState(() {
       _denpaMen = _createDefaultDenpaMen(widget.masterData);
     });
@@ -129,13 +145,24 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     if (session == null) {
       return;
     }
-    final denpaMens = [...session.completedDenpaMens, _denpaMen];
-    final qrCode = createQrCode(session.cuid);
+    final denpaMens = [
+      ...session.completedDenpaMens,
+      _withCatchOrder(_denpaMen, session),
+    ];
+    final qrCode =
+        session.existingQrCode ??
+        createQrCode(session.cuid, id: session.cuid, name: session.name);
     ref
         .read(qrCodeRepositoryProvider)
-        .saveWithDenpaMens(qrCode, denpaMens, widget.masterData);
+        .saveWithDenpaMens(
+          qrCode,
+          denpaMens,
+          widget.masterData,
+          id: session.qrCodeEntityId,
+        );
     ref.read(denpaMenSessionProvider.notifier).clear();
     ref.invalidate(denpaMenListProvider(widget.masterData));
+    ref.invalidate(qrCodeListProvider);
     const HomeRoute().go(context);
   }
 

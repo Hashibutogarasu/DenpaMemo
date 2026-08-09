@@ -24,6 +24,8 @@ class DenpaMenQrPage extends ConsumerStatefulWidget {
 }
 
 class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
+  final _nameController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -34,8 +36,20 @@ class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
   void _regenerate() {
     ref.read(denpaMenSessionProvider.notifier).regenerateCuid(cuid());
+  }
+
+  void _onNameChanged(String value) {
+    ref
+        .read(denpaMenSessionProvider.notifier)
+        .setName(value.isEmpty ? null : value);
   }
 
   void _next() {
@@ -74,6 +88,19 @@ class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
                     QrImageView(data: rawValue, size: 240),
                     const SizedBox(height: 16),
                     Text(rawValue),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 240,
+                      child: TextField(
+                        controller: _nameController,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          hintText: rawValue,
+                          labelText: t.editableStatus.qrCodeName,
+                        ),
+                        onChanged: _onNameChanged,
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     OutlinedButton(
                       onPressed: _regenerate,
