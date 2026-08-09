@@ -224,33 +224,35 @@ class _LineageGraph extends StatelessWidget {
       centerGraph: true,
       builder: (node) {
         final info = nodeInfoByKey[node.key!.value];
-        return switch (info?.kind) {
-          _NodeKind.qrCode => QrCodeNode(
-            rawValue: info!.rawValue!,
-            size: nodeSize,
-          ),
-          _NodeKind.caughtDenpaMen => GestureDetector(
-            onTap: () => _showPreview(context, info.denpaMen!),
-            child: DenpaMenNode(
-              iconFile: iconsById[info!.denpaMen!.id],
-              name: info.name!,
-              catchIndex: info.catchIndex,
+        return RepaintBoundary(
+          child: switch (info?.kind) {
+            _NodeKind.qrCode => QrCodeNode(
+              rawValue: info!.rawValue!,
               size: nodeSize,
             ),
-          ),
-          _NodeKind.bredDenpaMen => GestureDetector(
-            onTap: () => _showPreview(context, info.denpaMen!),
-            child: DenpaMenNode(
-              iconFile: iconsById[info!.denpaMen!.id],
-              name: info.name!,
-              size: nodeSize,
+            _NodeKind.caughtDenpaMen => GestureDetector(
+              onTap: () => _showPreview(context, info.denpaMen!),
+              child: DenpaMenNode(
+                iconFile: iconsById[info!.denpaMen!.id],
+                name: info.name!,
+                catchIndex: info.catchIndex,
+                size: nodeSize,
+              ),
             ),
-          ),
-          _NodeKind.invisible || null => SizedBox(
-            width: nodeSize,
-            height: nodeSize,
-          ),
-        };
+            _NodeKind.bredDenpaMen => GestureDetector(
+              onTap: () => _showPreview(context, info.denpaMen!),
+              child: DenpaMenNode(
+                iconFile: iconsById[info!.denpaMen!.id],
+                name: info.name!,
+                size: nodeSize,
+              ),
+            ),
+            _NodeKind.invisible || null => SizedBox(
+              width: nodeSize,
+              height: nodeSize,
+            ),
+          },
+        );
       },
     );
   }
