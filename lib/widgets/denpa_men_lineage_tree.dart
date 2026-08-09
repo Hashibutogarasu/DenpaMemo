@@ -10,6 +10,7 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
 import 'lineage/bred_denpa_men_node.dart';
 import 'lineage/caught_denpa_men_node.dart';
+import 'lineage/lineage_edge_renderer.dart';
 import 'lineage/qr_code_node.dart';
 
 /// Shows every saved QR code as the root of a tree, in a single shared
@@ -109,7 +110,11 @@ class _LineageGraph extends StatelessWidget {
       final qrCode = qrCodeRecord.qrCode;
       final rootKey = 'qr:${qrCode.id}';
       final rootNode = Node.Id(rootKey);
-      graph.addEdge(superRootNode, rootNode);
+      graph.addEdge(
+        superRootNode,
+        rootNode,
+        paint: Paint()..color = Colors.transparent,
+      );
       nodeInfoByKey[rootKey] = _NodeInfo(
         kind: _NodeKind.qrCode,
         rawValue: qrCode.rawValue,
@@ -147,7 +152,7 @@ class _LineageGraph extends StatelessWidget {
 
     return GraphView.builder(
       graph: graph,
-      algorithm: BuchheimWalkerAlgorithm(config, TreeEdgeRenderer(config)),
+      algorithm: BuchheimWalkerAlgorithm(config, LineageEdgeRenderer(config)),
       autoZoomToFit: true,
       centerGraph: true,
       builder: (node) {
