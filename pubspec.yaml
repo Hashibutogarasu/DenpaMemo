@@ -42,6 +42,7 @@ flutter:
 
   assets:
     - assets/data/
+    - assets/data/antennas/
     - assets/data/antennas/attack/
     - assets/data/antennas/support/
     - assets/data/antennas/other/

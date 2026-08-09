@@ -7,13 +7,14 @@ void main() {
   test('loads every antenna file from attack/support/other subdirectories', () async {
     final masterData = await JsonMasterDataRepository().load();
 
-    expect(masterData.anntenas, hasLength(34));
+    expect(masterData.anntenas, hasLength(35));
 
     final ids = masterData.anntenas.map((a) => a.id).toSet();
     expect(ids, contains('revive'));
     expect(ids, contains('fireball'));
     expect(ids, contains('antennaRoot'));
-    expect(ids.length, 34);
+    expect(ids, contains('none'));
+    expect(ids.length, 35);
   });
 
   test('fireball deals fire damage', () async {
