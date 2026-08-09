@@ -26,7 +26,7 @@ dependencies:
   crypto: ^3.0.7
   graphview: ^1.5.1
   file_picker: ^11.0.3
-  image_cropper: ^12.2.1
+  croppy: ^1.4.1
 
 dev_dependencies:
   flutter_test:
