@@ -19,7 +19,8 @@
     "editDenpaMen": "電波人間を編集",
     "addDenpaMenGroup": "電波人間を追加",
     "qrRegenerate": "再生成",
-    "selectQrCode": "QRコードを選ぶ"
+    "selectQrCode": "QRコードを選ぶ",
+    "birthGuide": "出生ガイド"
   },
   "home": {
     "empty": "電波人間が登録されていません",
@@ -37,7 +38,17 @@
     "viewModeList": "リスト表示",
     "viewModeTree": "ツリー表示",
     "resetTreePosition": "位置をリセット",
-    "catchOrderLabel": "${order}匹目: ${name}"
+    "catchOrderLabel": "${order}匹目: ${name}",
+    "birthGuideAction": "出生ガイド"
+  },
+  "birthGuide": {
+    "catchQrInstruction": "このQRコードから個体をキャッチしてください",
+    "catchIndividualInstruction": "この個体をキャッチしてください",
+    "breedParentInstruction": "この個体を用意してください",
+    "confirmInstruction": "出生後、この個体と同じものが出てきたか確認してください",
+    "finish": "終了",
+    "errorTitle": "エラー",
+    "errorMessage": "系譜データの読み込みに失敗しました"
   },
   "denpaMenStatus": {
     "level": "レベル",

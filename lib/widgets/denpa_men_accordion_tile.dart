@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
+import '../pages/birth_guide.dart';
 import '../pages/denpa_men_editor.dart';
 import '../providers/denpa_men_providers.dart';
 import '../routing/app_router.dart';
@@ -62,7 +63,7 @@ class DenpaMenAccordionTile extends ConsumerStatefulWidget {
       _DenpaMenAccordionTileState();
 }
 
-enum _TileAction { edit, delete }
+enum _TileAction { edit, birthGuide, delete }
 
 class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
   bool _expanded = false;
@@ -98,6 +99,13 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
           $extra: DenpaMenEditorArgs(
             masterData: widget.masterData,
             initial: widget.record,
+          ),
+        ).push(context);
+      case _TileAction.birthGuide:
+        BirthGuideRoute(
+          $extra: BirthGuideArgs(
+            masterData: widget.masterData,
+            target: widget.record,
           ),
         ).push(context);
       case _TileAction.delete:
@@ -184,6 +192,11 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                     value: _TileAction.edit,
                     child: Text(t.common.edit),
                   ),
+                  if (denpaMen.parentIds.isNotEmpty)
+                    PopupMenuItem(
+                      value: _TileAction.birthGuide,
+                      child: Text(t.home.birthGuideAction),
+                    ),
                   PopupMenuItem(
                     value: _TileAction.delete,
                     child: Text(t.common.delete),

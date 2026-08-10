@@ -12,6 +12,7 @@ List<RouteBase> get $appRoutes => [
   $addDenpaMenRoute,
   $denpaMenQrRoute,
   $qrCodeSelectionRoute,
+  $birthGuideRoute,
 ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
@@ -142,6 +143,37 @@ mixin $QrCodeSelectionRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/add/qr-select');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $birthGuideRoute => GoRouteData.$route(
+  path: '/birth-guide',
+  hasOverriddenOnExit: false,
+  factory: $BirthGuideRoute._fromState,
+);
+
+mixin $BirthGuideRoute on GoRouteData {
+  static BirthGuideRoute _fromState(GoRouterState state) =>
+      BirthGuideRoute($extra: state.extra as BirthGuideArgs?);
+
+  BirthGuideRoute get _self => this as BirthGuideRoute;
+
+  @override
+  String get location => GoRouteData.$location('/birth-guide');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);
