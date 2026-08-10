@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../domain/denpa_men/birth_guide.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
@@ -28,10 +29,14 @@ class BirthGuidePage extends ConsumerStatefulWidget {
     super.key,
     required this.masterData,
     required this.target,
+    this.buttonInset = 16,
+    this.buttonGap = 8,
   });
 
   final MasterData masterData;
   final DenpaMenRecord target;
+  final double buttonInset;
+  final double buttonGap;
 
   @override
   ConsumerState<BirthGuidePage> createState() => _BirthGuidePageState();
@@ -66,6 +71,13 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
 
   void _finish() {
     const HomeRoute().go(context);
+  }
+
+  void _goToPreviousSlide() {
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+    );
   }
 
   void _advance(int slideCount) {
@@ -175,32 +187,60 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
         ? t.common.confirm
         : t.common.next;
 
-    return AppScaffold(
-      title: OutlinedTitleText(text: t.page.birthGuide),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _advance(slides.length),
-        label: Text(buttonLabel),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: BirthGuideProgressBar(
-              current: _currentIndex + 1,
-              total: slides.length,
+    return PopScope(
+      canPop: _currentIndex == 0,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _goToPreviousSlide();
+        }
+      },
+      child: AppScaffold(
+        title: OutlinedTitleText(text: t.page.birthGuide),
+        buttonInset: widget.buttonInset,
+        onBackPressed: _currentIndex == 0 ? null : _goToPreviousSlide,
+        floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'birthGuideAdvance',
+          onPressed: () => _advance(slides.length),
+          label: Text(buttonLabel),
+        ),
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    child: BirthGuideProgressBar(
+                      current: _currentIndex + 1,
+                      total: slides.length,
+                    ),
+                  ),
+                  Expanded(
+                    child: PageView(
+                      controller: _pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      onPageChanged: (index) =>
+                          setState(() => _currentIndex = index),
+                      children: slides,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (index) =>
-                  setState(() => _currentIndex = index),
-              children: slides,
-            ),
-          ),
-        ],
+            if (context.canPop())
+              Positioned(
+                left: widget.buttonInset,
+                bottom: widget.buttonInset + 56 + widget.buttonGap,
+                child: FloatingActionButton.extended(
+                  heroTag: 'birthGuideHome',
+                  onPressed: _finish,
+                  icon: const Icon(Icons.home),
+                  label: Text(t.page.home),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

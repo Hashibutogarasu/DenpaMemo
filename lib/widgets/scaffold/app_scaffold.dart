@@ -27,6 +27,7 @@ class AppScaffold extends ConsumerWidget {
     this.floatingActionButton,
     this.actions,
     this.buttonInset = 16,
+    this.onBackPressed,
   });
 
   final Widget title;
@@ -34,6 +35,7 @@ class AppScaffold extends ConsumerWidget {
   final Widget? floatingActionButton;
   final List<Widget>? actions;
   final double buttonInset;
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +52,7 @@ class AppScaffold extends ConsumerWidget {
               ref.read(searchOverlayOpenProvider.notifier).state = false
         else if (canPop)
           const SingleActivator(LogicalKeyboardKey.escape): () =>
-              context.pop(),
+              (onBackPressed ?? () => context.pop())(),
       },
       child: Focus(
         autofocus: true,
@@ -63,7 +65,7 @@ class AppScaffold extends ConsumerWidget {
                 Positioned(
                   left: buttonInset,
                   bottom: buttonInset,
-                  child: const AppBackButton(),
+                  child: AppBackButton(onPressed: onBackPressed),
                 ),
               if (floatingActionButton != null)
                 Positioned(
