@@ -44,6 +44,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
+	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
 	late final Translations$editableStatus$ja editableStatus = Translations$editableStatus$ja.internal(_root);
@@ -198,6 +199,9 @@ class Translations$page$ja {
 
 	/// ja: 'QRコードを選ぶ'
 	String get selectQrCode => 'QRコードを選ぶ';
+
+	/// ja: '出生ガイド'
+	String get birthGuide => '出生ガイド';
 }
 
 // Path: home
@@ -255,6 +259,39 @@ class Translations$home$ja {
 
 	/// ja: '${order}匹目: ${name}'
 	String catchOrderLabel({required Object order, required Object name}) => '${order}匹目: ${name}';
+
+	/// ja: '出生ガイド'
+	String get birthGuideAction => '出生ガイド';
+}
+
+// Path: birthGuide
+class Translations$birthGuide$ja {
+	Translations$birthGuide$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'このQRコードから個体をキャッチしてください'
+	String get catchQrInstruction => 'このQRコードから個体をキャッチしてください';
+
+	/// ja: 'この個体をキャッチしてください'
+	String get catchIndividualInstruction => 'この個体をキャッチしてください';
+
+	/// ja: 'この個体を用意してください'
+	String get breedParentInstruction => 'この個体を用意してください';
+
+	/// ja: '出生後、この個体と同じものが出てきたか確認してください'
+	String get confirmInstruction => '出生後、この個体と同じものが出てきたか確認してください';
+
+	/// ja: '終了'
+	String get finish => '終了';
+
+	/// ja: 'エラー'
+	String get errorTitle => 'エラー';
+
+	/// ja: '系譜データの読み込みに失敗しました'
+	String get errorMessage => '系譜データの読み込みに失敗しました';
 }
 
 // Path: denpaMenStatus
@@ -389,6 +426,7 @@ extension on Translations {
 			'page.addDenpaMenGroup' => '電波人間を追加',
 			'page.qrRegenerate' => '再生成',
 			'page.selectQrCode' => 'QRコードを選ぶ',
+			'page.birthGuide' => '出生ガイド',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
@@ -405,6 +443,14 @@ extension on Translations {
 			'home.viewModeTree' => 'ツリー表示',
 			'home.resetTreePosition' => '位置をリセット',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
+			'home.birthGuideAction' => '出生ガイド',
+			'birthGuide.catchQrInstruction' => 'このQRコードから個体をキャッチしてください',
+			'birthGuide.catchIndividualInstruction' => 'この個体をキャッチしてください',
+			'birthGuide.breedParentInstruction' => 'この個体を用意してください',
+			'birthGuide.confirmInstruction' => '出生後、この個体と同じものが出てきたか確認してください',
+			'birthGuide.finish' => '終了',
+			'birthGuide.errorTitle' => 'エラー',
+			'birthGuide.errorMessage' => '系譜データの読み込みに失敗しました',
 			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.happiness' => '幸福度',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',

@@ -8,13 +8,15 @@ import '../../i18n/gen/strings.g.dart';
 /// (e.g. the save button on `DenpaMenEditor`) so it lines up with them when
 /// placed in the same [Stack] — see `AppScaffold`.
 class AppBackButton extends StatelessWidget {
-  const AppBackButton({super.key});
+  const AppBackButton({super.key, this.onPressed});
+
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       heroTag: 'appBackButton',
-      onPressed: () => context.pop(),
+      onPressed: onPressed ?? () => context.pop(),
       label: Text(context.t.common.back),
     );
   }

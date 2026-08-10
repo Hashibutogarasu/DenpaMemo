@@ -4,12 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
-import '../pages/denpa_men_editor.dart';
-import '../providers/denpa_men_providers.dart';
-import '../routing/app_router.dart';
 import '../theme/app_colors.dart';
 import 'container/status.dart';
 import 'denpa_men_status.dart';
+import 'dialog/denpa_men_action_menu.dart';
 import 'icon/denpa_men_icon.dart';
 import 'label/gauge_label.dart';
 import 'label/gauge_value.dart';
@@ -62,48 +60,8 @@ class DenpaMenAccordionTile extends ConsumerStatefulWidget {
       _DenpaMenAccordionTileState();
 }
 
-enum _TileAction { edit, delete }
-
 class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
   bool _expanded = false;
-
-  Future<void> _delete(BuildContext context) async {
-    final t = context.t;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.home.deleteConfirmTitle),
-        content: Text(t.home.deleteConfirmMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(t.common.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(t.common.delete),
-          ),
-        ],
-      ),
-    );
-    if (confirmed ?? false) {
-      ref.read(denpaMenRepositoryProvider).delete(widget.record.id);
-    }
-  }
-
-  void _handleAction(BuildContext context, _TileAction action) {
-    switch (action) {
-      case _TileAction.edit:
-        AddDenpaMenRoute(
-          $extra: DenpaMenEditorArgs(
-            masterData: widget.masterData,
-            initial: widget.record,
-          ),
-        ).push(context);
-      case _TileAction.delete:
-        _delete(context);
-    }
-  }
 
   void _handleTap() {
     if (widget.selectionMode) {
@@ -176,19 +134,19 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                   ),
                 ),
               ),
-              PopupMenuButton<_TileAction>(
+              PopupMenuButton<DenpaMenAction>(
                 icon: const Icon(Icons.more_vert, color: AppColors.accent),
-                onSelected: (action) => _handleAction(context, action),
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: _TileAction.edit,
-                    child: Text(t.common.edit),
-                  ),
-                  PopupMenuItem(
-                    value: _TileAction.delete,
-                    child: Text(t.common.delete),
-                  ),
-                ],
+                onSelected: (action) => handleDenpaMenAction(
+                  context,
+                  ref,
+                  action,
+                  record: widget.record,
+                  masterData: widget.masterData,
+                ),
+                itemBuilder: (context) => denpaMenActionMenuItems(
+                  context,
+                  hasParents: denpaMen.parentIds.isNotEmpty,
+                ),
               ),
               InkWell(
                 borderRadius: BorderRadius.circular(20),
