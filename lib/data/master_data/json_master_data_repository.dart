@@ -51,6 +51,7 @@ class JsonMasterDataRepository implements MasterDataRepository {
       bundle: _bundle,
       directoryPath: _antennasDirectoryPath,
       fromJson: Anntena.fromJson,
+      listPerFile: true,
     );
     final attributes = await _loadList(
       _attributesAssetPath,

@@ -1,5 +1,8 @@
-{
-  "id": "staticElectricity",
-  "dealsDamage": true,
-  "attackAttributeId": "thunder"
-}
+[
+  {
+    "id": "staticElectricity",
+    "dealsDamage": true,
+    "attackAttributeId": "thunder",
+    "category": "attack"
+  }
+]

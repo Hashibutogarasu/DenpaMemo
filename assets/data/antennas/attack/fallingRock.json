@@ -1,5 +1,8 @@
-{
-  "id": "fallingRock",
-  "dealsDamage": true,
-  "attackAttributeId": "earth"
-}
+[
+  {
+    "id": "fallingRock",
+    "dealsDamage": true,
+    "attackAttributeId": "earth",
+    "category": "attack"
+  }
+]

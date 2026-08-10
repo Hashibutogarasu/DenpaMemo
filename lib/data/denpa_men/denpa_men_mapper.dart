@@ -1,6 +1,7 @@
 import '../../domain/denpa_men/denpa_men.dart';
 import '../../domain/denpa_men/denpa_men_factory.dart';
 import '../../domain/master_data/master_data.dart';
+import '../master_data/legacy_antenna_id_migrations.dart';
 import 'denpa_men_entity.dart';
 
 /// Converts a domain [DenpaMen] to its persisted [DenpaMenEntity] form,
@@ -45,7 +46,10 @@ extension DenpaMenEntityMapper on DenpaMen {
 /// resolving its master-data id references against [masterData], the same
 /// way `createDenpaMen` derives resistances for a freshly-edited entry.
 extension DenpaMenEntityToDomain on DenpaMenEntity {
-  DenpaMen toDomain(MasterData masterData) {
+  DenpaMen toDomain(
+    MasterData masterData, {
+    AntennaIdMigrator antennaIdMigrator = const LegacyAntennaIdMigrator(),
+  }) {
     return createDenpaMen(
       id: cuid,
       name: name,
@@ -64,7 +68,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
         (pattern) => pattern.id == patternId,
       ),
       anntena: masterData.anntenas.firstWhere(
-        (anntena) => anntena.id == anntenaId,
+        (anntena) => anntena.id == antennaIdMigrator.migrate(anntenaId),
       ),
       masterData: masterData,
       happiness: happiness,

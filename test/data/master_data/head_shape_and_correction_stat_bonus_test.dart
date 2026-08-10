@@ -16,7 +16,7 @@ void main() {
       final protagonist = masterData.corrections.firstWhere(
         (c) => c.id == 'protagonist',
       );
-      final anntena = const Anntena(id: 'anntena-a');
+      final anntena = const Anntena(id: 'anntena-a', category: AnntenaCategory.other);
 
       final denpaMen = createDenpaMen(
         maxHappiness: 0,
@@ -54,7 +54,7 @@ void main() {
     () async {
       final masterData = await JsonMasterDataRepository().load();
       final wing = masterData.headShapes.firstWhere((h) => h.id == 'wing');
-      final anntena = const Anntena(id: 'anntena-a');
+      final anntena = const Anntena(id: 'anntena-a', category: AnntenaCategory.other);
 
       final denpaMen = createDenpaMen(
         maxHappiness: 0,

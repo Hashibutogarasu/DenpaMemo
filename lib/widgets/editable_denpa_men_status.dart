@@ -232,6 +232,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
                 context,
                 anntenas: anntenas,
                 selected: denpaMen.anntena,
+                level: denpaMen.level,
               );
               if (selected != null) {
                 onChanged(denpaMen.copyWith(anntena: selected));

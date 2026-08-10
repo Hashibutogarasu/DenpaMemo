@@ -7,21 +7,21 @@ void main() {
   test('loads every antenna file from attack/support/other subdirectories', () async {
     final masterData = await JsonMasterDataRepository().load();
 
-    expect(masterData.anntenas, hasLength(35));
+    expect(masterData.anntenas, hasLength(44));
 
     final ids = masterData.anntenas.map((a) => a.id).toSet();
     expect(ids, contains('revive'));
-    expect(ids, contains('fireball'));
+    expect(ids, contains('fireball_all'));
     expect(ids, contains('antennaRoot'));
     expect(ids, contains('none'));
-    expect(ids.length, 35);
+    expect(ids.length, 44);
   });
 
   test('fireball deals fire damage', () async {
     final masterData = await JsonMasterDataRepository().load();
 
     final fireball = masterData.anntenas.firstWhere(
-      (a) => a.id == 'fireball',
+      (a) => a.id == 'fireball_all',
     );
     expect(fireball.dealsDamage, isTrue);
     expect(fireball.attackAttributeId, 'fire');
@@ -30,8 +30,10 @@ void main() {
   test('heal deals no damage and has no attack attribute', () async {
     final masterData = await JsonMasterDataRepository().load();
 
-    final heal = masterData.anntenas.firstWhere((a) => a.id == 'heal');
+    final heal = masterData.anntenas.firstWhere((a) => a.id == 'heal_solo_1');
     expect(heal.dealsDamage, isFalse);
     expect(heal.attackAttributeId, isNull);
+    expect(heal.maxLevel, 9);
+    expect(heal.evolvesToId, 'heal_solo_2');
   });
 }

@@ -1,5 +1,8 @@
-{
-  "id": "sharpIce",
-  "dealsDamage": true,
-  "attackAttributeId": "ice"
-}
+[
+  {
+    "id": "sharpIce",
+    "dealsDamage": true,
+    "attackAttributeId": "ice",
+    "category": "attack"
+  }
+]

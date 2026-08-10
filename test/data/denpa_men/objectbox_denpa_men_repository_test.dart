@@ -14,7 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   final headShape = const HeadShape(id: 'head-a');
-  final anntena = const Anntena(id: 'anntena-a');
+  final anntena = const Anntena(id: 'anntena-a', category: AnntenaCategory.other);
   final physique = const Physique(id: 'physique-a');
   final personality = const Personality(id: 'personality-a');
   final pattern = const Pattern(id: 'pattern-a');
