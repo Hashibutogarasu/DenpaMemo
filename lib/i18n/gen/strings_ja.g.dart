@@ -99,6 +99,12 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'revive_solo_2': 'そこそこふっかつ',
 		'revive_all_1': 'みんなちょっとふっかつ',
 		'revive_all_2': 'みんなそこそこふっかつ',
+		'excite_solo_1': 'すこしこうふん',
+		'excite_solo_2': 'こうふん',
+		'excite_solo_3': 'ながくこうふん',
+		'excite_all_1': 'みんなすこしこうふん',
+		'excite_all_2': 'みんなこうふん',
+		'excite_all_3': 'みんなながくこうふん',
 	};
 	Map<String, String> get bodyColor => {
 		'red': 'あか',
@@ -448,6 +454,9 @@ class Translations$editableStatus$ja {
 	/// ja: '効果範囲'
 	String get antennaTargetScope => '効果範囲';
 
+	/// ja: '効果時間'
+	String get antennaEffectDuration => '効果時間';
+
 	/// ja: 'レベル'
 	String get antennaPlusLevel => 'レベル';
 
@@ -544,6 +553,7 @@ extension on Translations {
 			'editableStatus.antennaCategoryOther' => 'その他',
 			'editableStatus.antennaLevel' => 'レベル',
 			'editableStatus.antennaTargetScope' => '効果範囲',
+			'editableStatus.antennaEffectDuration' => '効果時間',
 			'editableStatus.antennaPlusLevel' => 'レベル',
 			'editableStatus.antennaPlusLevelValue' => ({required Object plusLevel}) => '+${plusLevel}',
 			'editableStatus.antennaNameWithPlusLevel' => ({required Object name, required Object plusLevel}) => '${name}+${plusLevel}',
@@ -593,6 +603,12 @@ extension on Translations {
 			'antenna.revive_solo_2' => 'そこそこふっかつ',
 			'antenna.revive_all_1' => 'みんなちょっとふっかつ',
 			'antenna.revive_all_2' => 'みんなそこそこふっかつ',
+			'antenna.excite_solo_1' => 'すこしこうふん',
+			'antenna.excite_solo_2' => 'こうふん',
+			'antenna.excite_solo_3' => 'ながくこうふん',
+			'antenna.excite_all_1' => 'みんなすこしこうふん',
+			'antenna.excite_all_2' => 'みんなこうふん',
+			'antenna.excite_all_3' => 'みんなながくこうふん',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',
 			'bodyColor.yellow' => 'きいろ',

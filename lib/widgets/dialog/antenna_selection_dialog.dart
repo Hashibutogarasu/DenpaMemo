@@ -93,6 +93,70 @@ int _patternIndexContaining(
   return 0;
 }
 
+bool _isDurationBased(Anntena root) =>
+    root.maxLevel == null && root.evolvesToId != null;
+
+Anntena _resolveAtDuration(
+  Anntena root,
+  int durationIndex,
+  Map<String, Anntena> byId,
+) {
+  var current = root;
+  for (var i = 0; i < durationIndex; i++) {
+    final nextId = current.evolvesToId;
+    if (nextId == null) {
+      break;
+    }
+    current = byId[nextId]!;
+  }
+  return current;
+}
+
+int _durationChainLength(Anntena root, Map<String, Anntena> byId) {
+  var current = root;
+  var length = 1;
+  while (current.evolvesToId != null) {
+    current = byId[current.evolvesToId]!;
+    length++;
+  }
+  return length;
+}
+
+int _durationIndexContaining(
+  String leafId,
+  Anntena root,
+  Map<String, Anntena> byId,
+) {
+  var current = root;
+  var index = 0;
+  while (true) {
+    if (current.id == leafId) {
+      return index;
+    }
+    final nextId = current.evolvesToId;
+    if (nextId == null) {
+      return 0;
+    }
+    current = byId[nextId]!;
+    index++;
+  }
+}
+
+_LevelResolution _resolveTile(
+  Anntena root,
+  int level,
+  int durationIndex,
+  Map<String, Anntena> byId,
+) {
+  if (_isDurationBased(root)) {
+    return _LevelResolution(
+      leaf: _resolveAtDuration(root, durationIndex, byId),
+      inTierLevel: 0,
+    );
+  }
+  return _resolveAtLevel(root, level, byId);
+}
+
 class _AntennaSelectionDialog extends StatefulWidget {
   const _AntennaSelectionDialog({
     required this.anntenas,
@@ -131,6 +195,16 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
     _patternRootsOf(widget.anntenas, _selectedFamilyId),
     _byId,
   );
+  late int _durationIndex = _initialDurationIndex();
+
+  int _initialDurationIndex() {
+    final patternRoots = _patternRootsOf(widget.anntenas, _selectedFamilyId);
+    final root = patternRoots[_patternIndex.clamp(0, patternRoots.length - 1)];
+    if (!_isDurationBased(root)) {
+      return 0;
+    }
+    return _durationIndexContaining(widget.initial.id, root, _byId);
+  }
 
   @override
   void dispose() {
@@ -149,6 +223,7 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
     setState(() {
       _selectedFamilyId = familyId;
       _patternIndex = patternIndex;
+      _durationIndex = 0;
     });
   }
 
@@ -183,7 +258,12 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
         ? _patternIndex.clamp(0, patternRoots.length - 1)
         : 0;
     final patternRoot = patternRoots[patternIndex];
-    final resolution = _resolveAtLevel(patternRoot, _level, _byId);
+    final resolution = _resolveTile(
+      patternRoot,
+      _level,
+      isSelected ? _durationIndex : 0,
+      _byId,
+    );
 
     return ListTile(
       key: ValueKey(familyId),
@@ -202,18 +282,24 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
       _selectedFamilyId,
     );
     final selectedPatternRoot = selectedPatternRoots[_patternIndex];
-    final resolvedSelected = _resolveAtLevel(
+    final isDurationBased = _isDurationBased(selectedPatternRoot);
+    final resolvedSelected = _resolveTile(
       selectedPatternRoot,
       _level,
+      _durationIndex,
       _byId,
     );
     final maxLevel = math.max(_maxLevelFor(selectedPatternRoot), widget.level);
+    final durationChainLength = isDurationBased
+        ? _durationChainLength(selectedPatternRoot, _byId)
+        : 1;
+    final resolvedLevel = isDurationBased ? 0 : _level;
 
     return BottomSlideDialog(
       title: t.editableStatus.antenna,
       onConfirm: () => Navigator.of(
         context,
-      ).pop((anntena: resolvedSelected.leaf, level: _level)),
+      ).pop((anntena: resolvedSelected.leaf, level: resolvedLevel)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -248,24 +334,47 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
             ),
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(child: Text(t.editableStatus.antennaLevel)),
-              Expanded(
-                flex: 3,
-                child: Slider(
-                  value: _level.toDouble(),
-                  min: 0,
-                  max: maxLevel.toDouble(),
-                  divisions: maxLevel,
-                  label: t.editableStatus.antennaPlusLevelValue(
-                    plusLevel: _level,
+          if (isDurationBased)
+            if (durationChainLength > 1)
+              Row(
+                children: [
+                  Expanded(child: Text(t.editableStatus.antennaEffectDuration)),
+                  Expanded(
+                    flex: 3,
+                    child: Slider(
+                      value: _durationIndex.toDouble(),
+                      min: 0,
+                      max: (durationChainLength - 1).toDouble(),
+                      divisions: durationChainLength - 1,
+                      label: _displayName(t, resolvedSelected),
+                      onChanged: (value) =>
+                          setState(() => _durationIndex = value.round()),
+                    ),
                   ),
-                  onChanged: (value) => setState(() => _level = value.round()),
+                ],
+              )
+            else
+              const SizedBox.shrink()
+          else
+            Row(
+              children: [
+                Expanded(child: Text(t.editableStatus.antennaLevel)),
+                Expanded(
+                  flex: 3,
+                  child: Slider(
+                    value: _level.toDouble(),
+                    min: 0,
+                    max: maxLevel.toDouble(),
+                    divisions: maxLevel,
+                    label: t.editableStatus.antennaPlusLevelValue(
+                      plusLevel: _level,
+                    ),
+                    onChanged: (value) =>
+                        setState(() => _level = value.round()),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
           if (selectedPatternRoots.length > 1)
             Row(
               children: [
@@ -277,14 +386,7 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
                     min: 0,
                     max: (selectedPatternRoots.length - 1).toDouble(),
                     divisions: selectedPatternRoots.length - 1,
-                    label: _displayName(
-                      t,
-                      _resolveAtLevel(
-                        selectedPatternRoots[_patternIndex],
-                        _level,
-                        _byId,
-                      ),
-                    ),
+                    label: _displayName(t, resolvedSelected),
                     onChanged: (value) =>
                         setState(() => _patternIndex = value.round()),
                   ),

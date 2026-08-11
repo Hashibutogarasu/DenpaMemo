@@ -92,6 +92,7 @@
     "antennaCategoryOther": "その他",
     "antennaLevel": "レベル",
     "antennaTargetScope": "効果範囲",
+    "antennaEffectDuration": "効果時間",
     "antennaPlusLevel": "レベル",
     "antennaPlusLevelValue": "+${plusLevel}",
     "antennaNameWithPlusLevel": "${name}+${plusLevel}"
@@ -146,7 +147,13 @@
     "revive_solo_1": "ちょっとふっかつ",
     "revive_solo_2": "そこそこふっかつ",
     "revive_all_1": "みんなちょっとふっかつ",
-    "revive_all_2": "みんなそこそこふっかつ"
+    "revive_all_2": "みんなそこそこふっかつ",
+    "excite_solo_1": "すこしこうふん",
+    "excite_solo_2": "こうふん",
+    "excite_solo_3": "ながくこうふん",
+    "excite_all_1": "みんなすこしこうふん",
+    "excite_all_2": "みんなこうふん",
+    "excite_all_3": "みんなながくこうふん"
   },
   "bodyColor": {
     "red": "あか",
