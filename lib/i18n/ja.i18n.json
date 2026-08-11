@@ -131,6 +131,7 @@
   },
   "antenna": {
     "none": "アンテナなし",
+    "antennaRoot": "アンテナなし",
     "waterGun_1": "バケツの水",
     "waterGun_3": "たかなみ",
     "waterGun_all": "みずでっぽう",
