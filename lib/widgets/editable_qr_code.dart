@@ -14,11 +14,13 @@ class EditableQrCode extends StatelessWidget {
     required this.denpaMen,
     required this.candidates,
     required this.onChanged,
+    this.enabled = true,
   });
 
   final DenpaMen denpaMen;
   final List<QrCodeRecord> candidates;
   final ValueChanged<DenpaMen> onChanged;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +35,20 @@ class EditableQrCode extends StatelessWidget {
 
     return SelectionTile(
       label: t.editableStatus.qrCode,
-      onTap: () async {
-        final result = await showQrCodeSelectionDialog(
-          context,
-          candidates: candidates,
-          selected: selected,
-        );
-        if (result != null) {
-          onChanged(denpaMen.copyWith(qrCodeId: result.record?.qrCode.id));
-        }
-      },
+      onTap: !enabled
+          ? null
+          : () async {
+              final result = await showQrCodeSelectionDialog(
+                context,
+                candidates: candidates,
+                selected: selected,
+              );
+              if (result != null) {
+                onChanged(
+                  denpaMen.copyWith(qrCodeId: result.record?.qrCode.id),
+                );
+              }
+            },
       child: Text(
         selected == null
             ? t.editableStatus.qrCodeUnset

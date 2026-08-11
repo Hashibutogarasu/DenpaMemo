@@ -28,6 +28,7 @@ class AddDenpaMen extends StatefulWidget {
     required this.parentCandidates,
     required this.qrCodeCandidates,
     required this.onChanged,
+    this.qrCodeEditable = true,
     this.minPaneWidth = 360,
     this.paneGap = 16,
     this.wheelPageChangeThreshold = 20,
@@ -38,6 +39,7 @@ class AddDenpaMen extends StatefulWidget {
   final List<DenpaMenRecord> parentCandidates;
   final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
+  final bool qrCodeEditable;
   final double minPaneWidth;
   final double paneGap;
   final double wheelPageChangeThreshold;
@@ -99,6 +101,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       parentCandidates: widget.parentCandidates,
       qrCodeCandidates: widget.qrCodeCandidates,
       onChanged: widget.onChanged,
+      qrCodeEditable: widget.qrCodeEditable,
       considerCorrections: widget.denpaMen.considerCorrections,
       onConsiderCorrectionsChanged: (value) => widget.onChanged(
         widget.denpaMen.copyWith(considerCorrections: value),
@@ -129,8 +132,14 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
                 child: PageView(
                   controller: _pageController,
                   children: [
-                    _AddDenpaMenPane(minWidth: widget.minPaneWidth, child: preview),
-                    _AddDenpaMenPane(minWidth: widget.minPaneWidth, child: editable),
+                    _AddDenpaMenPane(
+                      minWidth: widget.minPaneWidth,
+                      child: preview,
+                    ),
+                    _AddDenpaMenPane(
+                      minWidth: widget.minPaneWidth,
+                      child: editable,
+                    ),
                   ],
                 ),
               ),

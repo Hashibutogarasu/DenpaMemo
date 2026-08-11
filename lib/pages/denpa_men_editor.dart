@@ -7,6 +7,7 @@ import '../domain/denpa_men/denpa_men_factory.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/master_data.dart';
 import '../domain/qr_code/qr_code_factory.dart';
+import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
@@ -59,6 +60,24 @@ class DenpaMenEditor extends ConsumerStatefulWidget {
 class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
   late DenpaMen _denpaMen =
       widget.initial?.denpaMen ?? _createDefaultDenpaMen(widget.masterData);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initial == null && widget.sessionMode) {
+      _denpaMen = _withSessionQrCode(_denpaMen);
+    }
+  }
+
+  DenpaMen _withSessionQrCode(DenpaMen denpaMen) {
+    final session = ref.read(denpaMenSessionProvider);
+    if (session == null) {
+      return denpaMen;
+    }
+    return denpaMen.copyWith(
+      qrCodeId: session.existingQrCode?.id ?? session.cuid,
+    );
+  }
 
   static DenpaMen _createDefaultDenpaMen(MasterData masterData) {
     return createDenpaMen(
@@ -141,7 +160,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         .read(denpaMenSessionProvider.notifier)
         .addDraft(_withCatchOrder(_denpaMen, session));
     setState(() {
-      _denpaMen = _createDefaultDenpaMen(widget.masterData);
+      _denpaMen = _withSessionQrCode(_createDefaultDenpaMen(widget.masterData));
     });
   }
 
@@ -180,13 +199,25 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       for (final record in records)
         if (record.denpaMen.id != _denpaMen.id) record,
     ];
-    final qrCodeCandidates = ref.watch(qrCodeListProvider).value ?? [];
+    final session = ref.watch(denpaMenSessionProvider);
+    final qrCodeCandidates = <QrCodeRecord>[
+      ...ref.watch(qrCodeListProvider).value ?? [],
+      if (widget.sessionMode &&
+          session != null &&
+          session.existingQrCode == null)
+        QrCodeRecord(
+          id: session.qrCodeEntityId,
+          qrCode: createQrCode(
+            session.cuid,
+            id: session.cuid,
+            name: session.name,
+          ),
+        ),
+    ];
 
     return AppScaffold(
       title: OutlinedTitleText(
-        text: widget.initial == null
-            ? t.page.addDenpaMen
-            : t.page.editDenpaMen,
+        text: widget.initial == null ? t.page.addDenpaMen : t.page.editDenpaMen,
       ),
       floatingActionButton: widget.sessionMode
           ? Row(
@@ -216,6 +247,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         parentCandidates: parentCandidates,
         qrCodeCandidates: qrCodeCandidates,
         onChanged: _applyEdit,
+        qrCodeEditable: !widget.sessionMode,
       ),
     );
   }

@@ -14,7 +14,7 @@ class SelectionTile extends StatelessWidget {
 
   final String label;
   final Widget child;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
