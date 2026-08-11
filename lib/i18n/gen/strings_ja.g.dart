@@ -82,6 +82,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	};
 	Map<String, String> get antenna => {
 		'none': 'アンテナなし',
+		'antennaRoot': 'アンテナなし',
 		'waterGun_1': 'バケツの水',
 		'waterGun_3': 'たかなみ',
 		'waterGun_all': 'みずでっぽう',
@@ -586,6 +587,7 @@ extension on Translations {
 			'headShape.egg' => 'たまご',
 			'correction.protagonist' => '主人公補正',
 			'antenna.none' => 'アンテナなし',
+			'antenna.antennaRoot' => 'アンテナなし',
 			'antenna.waterGun_1' => 'バケツの水',
 			'antenna.waterGun_3' => 'たかなみ',
 			'antenna.waterGun_all' => 'みずでっぽう',
