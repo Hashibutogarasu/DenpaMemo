@@ -87,7 +87,8 @@
     "antennaCategoryOther": "その他",
     "antennaLevel": "レベル",
     "antennaPattern": "種類",
-    "antennaPlusLevel": "+N",
+    "antennaPlusLevel": "レベル",
+    "antennaPlusLevelValue": "レベル${plusLevel}",
     "antennaNameWithPlusLevel": "${name}+${plusLevel}"
   },
   "headShape": {

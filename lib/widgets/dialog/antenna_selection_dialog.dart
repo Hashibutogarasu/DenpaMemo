@@ -267,7 +267,9 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
                     min: 0,
                     max: resolvedSelected.maxLevel!.toDouble(),
                     divisions: resolvedSelected.maxLevel,
-                    label: '+$_plusLevel',
+                    label: t.editableStatus.antennaPlusLevelValue(
+                      plusLevel: _plusLevel,
+                    ),
                     onChanged: (value) =>
                         setState(() => _plusLevel = value.round()),
                   ),
