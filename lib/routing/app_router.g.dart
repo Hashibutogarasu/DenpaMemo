@@ -106,7 +106,7 @@ RouteBase get $denpaMenQrRoute => GoRouteData.$route(
 
 mixin $DenpaMenQrRoute on GoRouteData {
   static DenpaMenQrRoute _fromState(GoRouterState state) =>
-      DenpaMenQrRoute($extra: state.extra as MasterData?);
+      DenpaMenQrRoute($extra: state.extra as DenpaMenQrPageArgs?);
 
   DenpaMenQrRoute get _self => this as DenpaMenQrRoute;
 

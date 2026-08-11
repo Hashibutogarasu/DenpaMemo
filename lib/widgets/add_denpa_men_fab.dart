@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../domain/master_data/master_data.dart';
+import '../domain/qr_code/qr_code_image_decoder.dart';
 import '../i18n/gen/strings.g.dart';
 import '../pages/denpa_men_editor.dart';
+import '../pages/denpa_men_qr.dart';
 import '../routing/app_router.dart';
+import 'fab/mini_fab_option.dart';
 
 /// Home screen's add button: a plus [FloatingActionButton] that, when
 /// tapped, morphs into a close icon and reveals two mini FABs stacked above
@@ -36,7 +42,9 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
 
   void _addFromQr() {
     setState(() => _open = false);
-    DenpaMenQrRoute($extra: widget.masterData).push(context);
+    DenpaMenQrRoute(
+      $extra: DenpaMenQrPageArgs(masterData: widget.masterData),
+    ).push(context);
   }
 
   void _addFromExistingQr() {
@@ -44,54 +52,31 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
     QrCodeSelectionRoute($extra: widget.masterData).push(context);
   }
 
-  Widget _miniOption({
-    required String label,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
-    return IgnorePointer(
-      ignoring: !_open,
-      child: AnimatedSlide(
-        duration: widget.animationDuration,
-        curve: Curves.easeOutCubic,
-        offset: _open ? Offset.zero : const Offset(0, 0.3),
-        child: AnimatedOpacity(
-          duration: widget.animationDuration,
-          curve: Curves.easeOutCubic,
-          opacity: _open ? 1 : 0,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Material(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  elevation: 4,
-                  borderRadius: BorderRadius.circular(8),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: onPressed,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      child: Text(label),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                FloatingActionButton.small(
-                  heroTag: null,
-                  onPressed: onPressed,
-                  child: Icon(icon),
-                ),
-              ],
-            ),
-          ),
-        ),
+  Future<void> _addFromQrFile() async {
+    setState(() => _open = false);
+    final result = await FilePicker.pickFiles(type: FileType.image);
+    final pickedPath = result?.files.single.path;
+    if (pickedPath == null) {
+      return;
+    }
+    final bytes = await File(pickedPath).readAsBytes();
+    final rawValue = decodeQrCodeImage(bytes);
+    if (!mounted) {
+      return;
+    }
+    if (rawValue == null) {
+      final t = context.t;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(t.home.addFromQrFileInvalid)));
+      return;
+    }
+    DenpaMenQrRoute(
+      $extra: DenpaMenQrPageArgs(
+        masterData: widget.masterData,
+        initialRawValue: rawValue,
       ),
-    );
+    ).push(context);
   }
 
   @override
@@ -102,20 +87,33 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _miniOption(
+        MiniFabOption(
           label: t.home.addFromExistingQr,
           icon: Icons.qr_code_scanner,
           onPressed: _addFromExistingQr,
+          open: _open,
+          animationDuration: widget.animationDuration,
         ),
-        _miniOption(
+        MiniFabOption(
+          label: t.home.addFromQrFile,
+          icon: Icons.upload_file,
+          onPressed: _addFromQrFile,
+          open: _open,
+          animationDuration: widget.animationDuration,
+        ),
+        MiniFabOption(
           label: t.home.addFromQr,
           icon: Icons.qr_code,
           onPressed: _addFromQr,
+          open: _open,
+          animationDuration: widget.animationDuration,
         ),
-        _miniOption(
+        MiniFabOption(
           label: t.home.addSingle,
           icon: Icons.person_add,
           onPressed: _addSingle,
+          open: _open,
+          animationDuration: widget.animationDuration,
         ),
         FloatingActionButton(
           heroTag: null,
