@@ -135,26 +135,29 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
     });
   }
 
-  String _displayName(Translations t, Anntena leaf, {required bool withPlus}) {
-    final name = t.antenna[leaf.id] ?? leaf.id;
-    if (withPlus && leaf.maxLevel != null && _plusLevel > 0) {
+  String _displayName(Translations t, Anntena leaf) {
+    final translated = t.antenna[leaf.id];
+    if (translated == null) {
+      return leaf.id;
+    }
+    if (leaf.maxLevel != null && _plusLevel > 0) {
       return t.editableStatus.antennaNameWithPlusLevel(
-        name: name,
+        name: translated,
         plusLevel: _plusLevel,
       );
     }
-    return name;
+    return translated;
   }
 
   Widget _buildTile(Translations t, String familyId) {
     final patternRoots = _patternRootsOf(widget.anntenas, familyId);
-    final isSelected = familyId == _selectedFamilyId;
-    final patternRoot = patternRoots[isSelected ? _patternIndex : 0];
+    final patternIndex = _patternIndex.clamp(0, patternRoots.length - 1);
+    final patternRoot = patternRoots[patternIndex];
     final resolved = _resolveAtLevel(patternRoot, _level, _byId);
-    final label = _displayName(t, resolved, withPlus: isSelected);
+    final isSelected = familyId == _selectedFamilyId;
 
     return ListTile(
-      title: Text(label),
+      title: Text(_displayName(t, resolved)),
       selected: isSelected,
       trailing: isSelected ? const Icon(Icons.check) : null,
       onTap: () => _selectFamily(familyId),
@@ -246,7 +249,6 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
                         _level,
                         _byId,
                       ),
-                      withPlus: false,
                     ),
                     onChanged: (value) =>
                         setState(() => _patternIndex = value.round()),
