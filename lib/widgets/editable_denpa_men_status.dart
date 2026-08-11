@@ -49,6 +49,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
     required this.onChanged,
     required this.considerCorrections,
     required this.onConsiderCorrectionsChanged,
+    this.qrCodeEditable = true,
   });
 
   final DenpaMen denpaMen;
@@ -60,6 +61,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
   final ValueChanged<DenpaMen> onChanged;
   final bool considerCorrections;
   final ValueChanged<bool> onConsiderCorrectionsChanged;
+  final bool qrCodeEditable;
 
   @override
   Widget build(BuildContext context) {
@@ -287,6 +289,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
             denpaMen: denpaMen,
             candidates: qrCodeCandidates,
             onChanged: onChanged,
+            enabled: qrCodeEditable,
           ),
           if (denpaMen.qrCodeId != null) ...[
             const SizedBox(height: 8),
