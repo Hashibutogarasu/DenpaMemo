@@ -20,7 +20,7 @@ class DenpaMenPreviewDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 420, maxHeight: 640),
+        constraints: const BoxConstraints(maxWidth: 520, maxHeight: 760),
         child: SingleChildScrollView(
           child: DenpaMenStatus.fromDenpaMen(
             denpaMen,
