@@ -1,6 +1,7 @@
 [
   {
     "id": "stealth",
-    "category": "support"
+    "category": "support",
+    "targetCount": 1
   }
 ]

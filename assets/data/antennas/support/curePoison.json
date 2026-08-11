@@ -1,6 +1,7 @@
 [
   {
     "id": "curePoison",
-    "category": "support"
+    "category": "support",
+    "targetCount": 1
   }
 ]

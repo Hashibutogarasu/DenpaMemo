@@ -18,6 +18,7 @@
   {
     "id": "waterGun_all",
     "category": "attack",
+    "targetsAll": true,
     "dealsDamage": true,
     "attackAttributeId": "water",
     "variantGroupId": "waterGun"

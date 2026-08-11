@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Anntena {
 
- String get id; AnntenaCategory get category; int? get targetCount; bool get dealsDamage; String? get attackAttributeId; bool get isInheritable; String? get evolvesToId; int? get maxLevel; String? get variantGroupId;
+ String get id; AnntenaCategory get category; int? get targetCount; bool get targetsAll; bool get dealsDamage; String? get attackAttributeId; bool get isInheritable; String? get evolvesToId; int? get maxLevel; String? get variantGroupId;
 /// Create a copy of Anntena
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AnntenaCopyWith<Anntena> get copyWith => _$AnntenaCopyWithImpl<Anntena>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Anntena&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.targetCount, targetCount) || other.targetCount == targetCount)&&(identical(other.dealsDamage, dealsDamage) || other.dealsDamage == dealsDamage)&&(identical(other.attackAttributeId, attackAttributeId) || other.attackAttributeId == attackAttributeId)&&(identical(other.isInheritable, isInheritable) || other.isInheritable == isInheritable)&&(identical(other.evolvesToId, evolvesToId) || other.evolvesToId == evolvesToId)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.variantGroupId, variantGroupId) || other.variantGroupId == variantGroupId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Anntena&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.targetCount, targetCount) || other.targetCount == targetCount)&&(identical(other.targetsAll, targetsAll) || other.targetsAll == targetsAll)&&(identical(other.dealsDamage, dealsDamage) || other.dealsDamage == dealsDamage)&&(identical(other.attackAttributeId, attackAttributeId) || other.attackAttributeId == attackAttributeId)&&(identical(other.isInheritable, isInheritable) || other.isInheritable == isInheritable)&&(identical(other.evolvesToId, evolvesToId) || other.evolvesToId == evolvesToId)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.variantGroupId, variantGroupId) || other.variantGroupId == variantGroupId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,category,targetCount,dealsDamage,attackAttributeId,isInheritable,evolvesToId,maxLevel,variantGroupId);
+int get hashCode => Object.hash(runtimeType,id,category,targetCount,targetsAll,dealsDamage,attackAttributeId,isInheritable,evolvesToId,maxLevel,variantGroupId);
 
 @override
 String toString() {
-  return 'Anntena(id: $id, category: $category, targetCount: $targetCount, dealsDamage: $dealsDamage, attackAttributeId: $attackAttributeId, isInheritable: $isInheritable, evolvesToId: $evolvesToId, maxLevel: $maxLevel, variantGroupId: $variantGroupId)';
+  return 'Anntena(id: $id, category: $category, targetCount: $targetCount, targetsAll: $targetsAll, dealsDamage: $dealsDamage, attackAttributeId: $attackAttributeId, isInheritable: $isInheritable, evolvesToId: $evolvesToId, maxLevel: $maxLevel, variantGroupId: $variantGroupId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AnntenaCopyWith<$Res>  {
   factory $AnntenaCopyWith(Anntena value, $Res Function(Anntena) _then) = _$AnntenaCopyWithImpl;
 @useResult
 $Res call({
- String id, AnntenaCategory category, int? targetCount, bool dealsDamage, String? attackAttributeId, bool isInheritable, String? evolvesToId, int? maxLevel, String? variantGroupId
+ String id, AnntenaCategory category, int? targetCount, bool targetsAll, bool dealsDamage, String? attackAttributeId, bool isInheritable, String? evolvesToId, int? maxLevel, String? variantGroupId
 });
 
 
@@ -65,12 +65,13 @@ class _$AnntenaCopyWithImpl<$Res>
 
 /// Create a copy of Anntena
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? category = null,Object? targetCount = freezed,Object? dealsDamage = null,Object? attackAttributeId = freezed,Object? isInheritable = null,Object? evolvesToId = freezed,Object? maxLevel = freezed,Object? variantGroupId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? category = null,Object? targetCount = freezed,Object? targetsAll = null,Object? dealsDamage = null,Object? attackAttributeId = freezed,Object? isInheritable = null,Object? evolvesToId = freezed,Object? maxLevel = freezed,Object? variantGroupId = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as AnntenaCategory,targetCount: freezed == targetCount ? _self.targetCount : targetCount // ignore: cast_nullable_to_non_nullable
-as int?,dealsDamage: null == dealsDamage ? _self.dealsDamage : dealsDamage // ignore: cast_nullable_to_non_nullable
+as int?,targetsAll: null == targetsAll ? _self.targetsAll : targetsAll // ignore: cast_nullable_to_non_nullable
+as bool,dealsDamage: null == dealsDamage ? _self.dealsDamage : dealsDamage // ignore: cast_nullable_to_non_nullable
 as bool,attackAttributeId: freezed == attackAttributeId ? _self.attackAttributeId : attackAttributeId // ignore: cast_nullable_to_non_nullable
 as String?,isInheritable: null == isInheritable ? _self.isInheritable : isInheritable // ignore: cast_nullable_to_non_nullable
 as bool,evolvesToId: freezed == evolvesToId ? _self.evolvesToId : evolvesToId // ignore: cast_nullable_to_non_nullable
@@ -161,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  AnntenaCategory category,  int? targetCount,  bool dealsDamage,  String? attackAttributeId,  bool isInheritable,  String? evolvesToId,  int? maxLevel,  String? variantGroupId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  AnntenaCategory category,  int? targetCount,  bool targetsAll,  bool dealsDamage,  String? attackAttributeId,  bool isInheritable,  String? evolvesToId,  int? maxLevel,  String? variantGroupId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Anntena() when $default != null:
-return $default(_that.id,_that.category,_that.targetCount,_that.dealsDamage,_that.attackAttributeId,_that.isInheritable,_that.evolvesToId,_that.maxLevel,_that.variantGroupId);case _:
+return $default(_that.id,_that.category,_that.targetCount,_that.targetsAll,_that.dealsDamage,_that.attackAttributeId,_that.isInheritable,_that.evolvesToId,_that.maxLevel,_that.variantGroupId);case _:
   return orElse();
 
 }
@@ -182,10 +183,10 @@ return $default(_that.id,_that.category,_that.targetCount,_that.dealsDamage,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  AnntenaCategory category,  int? targetCount,  bool dealsDamage,  String? attackAttributeId,  bool isInheritable,  String? evolvesToId,  int? maxLevel,  String? variantGroupId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  AnntenaCategory category,  int? targetCount,  bool targetsAll,  bool dealsDamage,  String? attackAttributeId,  bool isInheritable,  String? evolvesToId,  int? maxLevel,  String? variantGroupId)  $default,) {final _that = this;
 switch (_that) {
 case _Anntena():
-return $default(_that.id,_that.category,_that.targetCount,_that.dealsDamage,_that.attackAttributeId,_that.isInheritable,_that.evolvesToId,_that.maxLevel,_that.variantGroupId);case _:
+return $default(_that.id,_that.category,_that.targetCount,_that.targetsAll,_that.dealsDamage,_that.attackAttributeId,_that.isInheritable,_that.evolvesToId,_that.maxLevel,_that.variantGroupId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +203,10 @@ return $default(_that.id,_that.category,_that.targetCount,_that.dealsDamage,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  AnntenaCategory category,  int? targetCount,  bool dealsDamage,  String? attackAttributeId,  bool isInheritable,  String? evolvesToId,  int? maxLevel,  String? variantGroupId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  AnntenaCategory category,  int? targetCount,  bool targetsAll,  bool dealsDamage,  String? attackAttributeId,  bool isInheritable,  String? evolvesToId,  int? maxLevel,  String? variantGroupId)?  $default,) {final _that = this;
 switch (_that) {
 case _Anntena() when $default != null:
-return $default(_that.id,_that.category,_that.targetCount,_that.dealsDamage,_that.attackAttributeId,_that.isInheritable,_that.evolvesToId,_that.maxLevel,_that.variantGroupId);case _:
+return $default(_that.id,_that.category,_that.targetCount,_that.targetsAll,_that.dealsDamage,_that.attackAttributeId,_that.isInheritable,_that.evolvesToId,_that.maxLevel,_that.variantGroupId);case _:
   return null;
 
 }
@@ -217,12 +218,13 @@ return $default(_that.id,_that.category,_that.targetCount,_that.dealsDamage,_tha
 @JsonSerializable()
 
 class _Anntena implements Anntena {
-  const _Anntena({required this.id, required this.category, this.targetCount, this.dealsDamage = false, this.attackAttributeId, this.isInheritable = false, this.evolvesToId, this.maxLevel, this.variantGroupId});
+  const _Anntena({required this.id, required this.category, this.targetCount, this.targetsAll = false, this.dealsDamage = false, this.attackAttributeId, this.isInheritable = false, this.evolvesToId, this.maxLevel, this.variantGroupId});
   factory _Anntena.fromJson(Map<String, dynamic> json) => _$AnntenaFromJson(json);
 
 @override final  String id;
 @override final  AnntenaCategory category;
 @override final  int? targetCount;
+@override@JsonKey() final  bool targetsAll;
 @override@JsonKey() final  bool dealsDamage;
 @override final  String? attackAttributeId;
 @override@JsonKey() final  bool isInheritable;
@@ -243,16 +245,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Anntena&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.targetCount, targetCount) || other.targetCount == targetCount)&&(identical(other.dealsDamage, dealsDamage) || other.dealsDamage == dealsDamage)&&(identical(other.attackAttributeId, attackAttributeId) || other.attackAttributeId == attackAttributeId)&&(identical(other.isInheritable, isInheritable) || other.isInheritable == isInheritable)&&(identical(other.evolvesToId, evolvesToId) || other.evolvesToId == evolvesToId)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.variantGroupId, variantGroupId) || other.variantGroupId == variantGroupId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Anntena&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.targetCount, targetCount) || other.targetCount == targetCount)&&(identical(other.targetsAll, targetsAll) || other.targetsAll == targetsAll)&&(identical(other.dealsDamage, dealsDamage) || other.dealsDamage == dealsDamage)&&(identical(other.attackAttributeId, attackAttributeId) || other.attackAttributeId == attackAttributeId)&&(identical(other.isInheritable, isInheritable) || other.isInheritable == isInheritable)&&(identical(other.evolvesToId, evolvesToId) || other.evolvesToId == evolvesToId)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.variantGroupId, variantGroupId) || other.variantGroupId == variantGroupId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,category,targetCount,dealsDamage,attackAttributeId,isInheritable,evolvesToId,maxLevel,variantGroupId);
+int get hashCode => Object.hash(runtimeType,id,category,targetCount,targetsAll,dealsDamage,attackAttributeId,isInheritable,evolvesToId,maxLevel,variantGroupId);
 
 @override
 String toString() {
-  return 'Anntena(id: $id, category: $category, targetCount: $targetCount, dealsDamage: $dealsDamage, attackAttributeId: $attackAttributeId, isInheritable: $isInheritable, evolvesToId: $evolvesToId, maxLevel: $maxLevel, variantGroupId: $variantGroupId)';
+  return 'Anntena(id: $id, category: $category, targetCount: $targetCount, targetsAll: $targetsAll, dealsDamage: $dealsDamage, attackAttributeId: $attackAttributeId, isInheritable: $isInheritable, evolvesToId: $evolvesToId, maxLevel: $maxLevel, variantGroupId: $variantGroupId)';
 }
 
 
@@ -263,7 +265,7 @@ abstract mixin class _$AnntenaCopyWith<$Res> implements $AnntenaCopyWith<$Res> {
   factory _$AnntenaCopyWith(_Anntena value, $Res Function(_Anntena) _then) = __$AnntenaCopyWithImpl;
 @override @useResult
 $Res call({
- String id, AnntenaCategory category, int? targetCount, bool dealsDamage, String? attackAttributeId, bool isInheritable, String? evolvesToId, int? maxLevel, String? variantGroupId
+ String id, AnntenaCategory category, int? targetCount, bool targetsAll, bool dealsDamage, String? attackAttributeId, bool isInheritable, String? evolvesToId, int? maxLevel, String? variantGroupId
 });
 
 
@@ -280,12 +282,13 @@ class __$AnntenaCopyWithImpl<$Res>
 
 /// Create a copy of Anntena
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? category = null,Object? targetCount = freezed,Object? dealsDamage = null,Object? attackAttributeId = freezed,Object? isInheritable = null,Object? evolvesToId = freezed,Object? maxLevel = freezed,Object? variantGroupId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? category = null,Object? targetCount = freezed,Object? targetsAll = null,Object? dealsDamage = null,Object? attackAttributeId = freezed,Object? isInheritable = null,Object? evolvesToId = freezed,Object? maxLevel = freezed,Object? variantGroupId = freezed,}) {
   return _then(_Anntena(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as AnntenaCategory,targetCount: freezed == targetCount ? _self.targetCount : targetCount // ignore: cast_nullable_to_non_nullable
-as int?,dealsDamage: null == dealsDamage ? _self.dealsDamage : dealsDamage // ignore: cast_nullable_to_non_nullable
+as int?,targetsAll: null == targetsAll ? _self.targetsAll : targetsAll // ignore: cast_nullable_to_non_nullable
+as bool,dealsDamage: null == dealsDamage ? _self.dealsDamage : dealsDamage // ignore: cast_nullable_to_non_nullable
 as bool,attackAttributeId: freezed == attackAttributeId ? _self.attackAttributeId : attackAttributeId // ignore: cast_nullable_to_non_nullable
 as String?,isInheritable: null == isInheritable ? _self.isInheritable : isInheritable // ignore: cast_nullable_to_non_nullable
 as bool,evolvesToId: freezed == evolvesToId ? _self.evolvesToId : evolvesToId // ignore: cast_nullable_to_non_nullable

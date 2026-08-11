@@ -31,248 +31,134 @@ const _healSolo2 = Anntena(
 );
 
 void main() {
-  testWidgets(
-    'picking a level via the antenna dialog updates both anntena and '
-    'antennaLevel through onChanged',
-    (WidgetTester tester) async {
-      final headShape = HeadShape(
-        id: 'head-a',
-        abnormalityResistanceBonuses: const {},
-      );
-      const physique = Physique(id: 'physique-a');
-      const personality = Personality(id: 'personality-a');
-      const pattern = Pattern(id: 'pattern-a');
-      const colorId = 'color-a';
+  testWidgets('picking a level via the antenna dialog updates both anntena and '
+      'antennaLevel through onChanged', (WidgetTester tester) async {
+    final headShape = HeadShape(
+      id: 'head-a',
+      abnormalityResistanceBonuses: const {},
+    );
+    const physique = Physique(id: 'physique-a');
+    const personality = Personality(id: 'personality-a');
+    const pattern = Pattern(id: 'pattern-a');
+    const colorId = 'color-a';
 
-      final masterData = MasterData(
-        headShapes: [headShape],
-        anntenas: const [_healSolo1, _healSolo2],
-        attributes: const [],
-        abnormalityTypes: const [],
-        physiques: const [physique],
-        personalities: const [personality],
-        patterns: const [pattern],
-        bodyColorResistanceRules: const [
-          BodyColorResistanceRule(
-            colorId: colorId,
-            attributeResistanceBonuses: {},
-          ),
-        ],
-        bodyColorAbnormalityResistanceRules: const [],
-        corrections: const [],
-      );
+    final masterData = MasterData(
+      headShapes: [headShape],
+      anntenas: const [_healSolo1, _healSolo2],
+      attributes: const [],
+      abnormalityTypes: const [],
+      physiques: const [physique],
+      personalities: const [personality],
+      patterns: const [pattern],
+      bodyColorResistanceRules: const [
+        BodyColorResistanceRule(
+          colorId: colorId,
+          attributeResistanceBonuses: {},
+        ),
+      ],
+      bodyColorAbnormalityResistanceRules: const [],
+      corrections: const [],
+    );
 
-      final denpaMen = createDenpaMen(
-        name: 'test',
-        bodyColors: const [colorId],
-        isSpColor: false,
-        headShape: headShape,
-        physique: physique,
-        personality: personality,
-        pattern: pattern,
-        anntena: _healSolo1,
-        antennaLevel: 3,
-        masterData: masterData,
-        maxHappiness: 0,
-        maxLevel: 1,
-      );
+    final denpaMen = createDenpaMen(
+      name: 'test',
+      bodyColors: const [colorId],
+      isSpColor: false,
+      headShape: headShape,
+      physique: physique,
+      personality: personality,
+      pattern: pattern,
+      anntena: _healSolo1,
+      antennaLevel: 3,
+      masterData: masterData,
+      maxHappiness: 0,
+      maxLevel: 1,
+    );
 
-      DenpaMen? changed;
+    DenpaMen? changed;
 
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            denpaMenIconProvider.overrideWith((ref, id) async => null),
-          ],
-          child: TranslationProvider(
-            child: MaterialApp(
-              home: Scaffold(
-                body: SingleChildScrollView(
-                  child: EditableDenpaMenStatus(
-                    denpaMen: denpaMen,
-                    headShapes: masterData.headShapes,
-                    anntenas: masterData.anntenas,
-                    corrections: masterData.corrections,
-                    parentCandidates: const [],
-                    qrCodeCandidates: const [],
-                    onChanged: (value) => changed = value,
-                    considerCorrections: true,
-                    onConsiderCorrectionsChanged: (_) {},
-                  ),
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
+        child: TranslationProvider(
+          child: MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: EditableDenpaMenStatus(
+                  denpaMen: denpaMen,
+                  headShapes: masterData.headShapes,
+                  anntenas: masterData.anntenas,
+                  corrections: masterData.corrections,
+                  parentCandidates: const [],
+                  qrCodeCandidates: const [],
+                  onChanged: (value) => changed = value,
+                  considerCorrections: true,
+                  onConsiderCorrectionsChanged: (_) {},
                 ),
               ),
             ),
           ),
         ),
-      );
-      await tester.pumpAndSettle();
+      ),
+    );
+    await tester.pumpAndSettle();
 
-      expect(find.text('ちょっとかいふく+3'), findsOneWidget);
+    expect(find.text('ちょっとかいふく+3'), findsOneWidget);
 
-      await tester.tap(find.text('ちょっとかいふく+3'));
-      await tester.pumpAndSettle();
+    await tester.tap(find.text('ちょっとかいふく+3'));
+    await tester.pumpAndSettle();
 
-      expect(find.text('ちょっとかいふく+3'), findsWidgets);
+    expect(find.text('ちょっとかいふく+3'), findsWidgets);
 
-      final slider = tester.widgetList<Slider>(find.byType(Slider)).first;
-      slider.onChanged!(9);
-      await tester.pumpAndSettle();
-      expect(find.text('ちょっとかいふく+9'), findsWidgets);
+    final slider = tester.widgetList<Slider>(find.byType(Slider)).first;
+    slider.onChanged!(9);
+    await tester.pumpAndSettle();
+    expect(find.text('ちょっとかいふく+9'), findsWidgets);
 
-      await tester.tap(find.text('決定'));
-      await tester.pumpAndSettle();
+    await tester.tap(find.text('決定'));
+    await tester.pumpAndSettle();
 
-      expect(changed, isNotNull);
-      expect(changed!.anntena.id, 'heal_solo_1');
-      expect(changed!.antennaLevel, 9);
+    expect(changed, isNotNull);
+    expect(changed!.anntena.id, 'heal_solo_1');
+    expect(changed!.antennaLevel, 9);
 
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            denpaMenIconProvider.overrideWith((ref, id) async => null),
-          ],
-          child: TranslationProvider(
-            child: MaterialApp(
-              home: Scaffold(
-                body: SingleChildScrollView(
-                  child: EditableDenpaMenStatus(
-                    denpaMen: changed!,
-                    headShapes: masterData.headShapes,
-                    anntenas: masterData.anntenas,
-                    corrections: masterData.corrections,
-                    parentCandidates: const [],
-                    qrCodeCandidates: const [],
-                    onChanged: (value) => changed = value,
-                    considerCorrections: true,
-                    onConsiderCorrectionsChanged: (_) {},
-                  ),
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
+        child: TranslationProvider(
+          child: MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: EditableDenpaMenStatus(
+                  denpaMen: changed!,
+                  headShapes: masterData.headShapes,
+                  anntenas: masterData.anntenas,
+                  corrections: masterData.corrections,
+                  parentCandidates: const [],
+                  qrCodeCandidates: const [],
+                  onChanged: (value) => changed = value,
+                  considerCorrections: true,
+                  onConsiderCorrectionsChanged: (_) {},
                 ),
               ),
             ),
           ),
         ),
-      );
-      await tester.pumpAndSettle();
+      ),
+    );
+    await tester.pumpAndSettle();
 
-      expect(find.text('ちょっとかいふく+9'), findsOneWidget);
+    expect(find.text('ちょっとかいふく+9'), findsOneWidget);
 
-      await tester.tap(find.text('ちょっとかいふく+9'));
-      await tester.pumpAndSettle();
+    await tester.tap(find.text('ちょっとかいふく+9'));
+    await tester.pumpAndSettle();
 
-      expect(find.text('ちょっとかいふく+9'), findsWidgets);
-      final reopenedSlider = tester
-          .widgetList<Slider>(find.byType(Slider))
-          .first;
-      expect(reopenedSlider.value, 9);
-    },
-  );
+    expect(find.text('ちょっとかいふく+9'), findsWidgets);
+    final reopenedSlider = tester.widgetList<Slider>(find.byType(Slider)).first;
+    expect(reopenedSlider.value, 9);
+  });
 
-  testWidgets(
-    'setting the level to +3 and reopening keeps it at 3, not 0',
-    (WidgetTester tester) async {
-      final headShape = HeadShape(
-        id: 'head-a',
-        abnormalityResistanceBonuses: const {},
-      );
-      const physique = Physique(id: 'physique-a');
-      const personality = Personality(id: 'personality-a');
-      const pattern = Pattern(id: 'pattern-a');
-      const colorId = 'color-a';
-
-      final masterData = MasterData(
-        headShapes: [headShape],
-        anntenas: const [_healSolo1, _healSolo2],
-        attributes: const [],
-        abnormalityTypes: const [],
-        physiques: const [physique],
-        personalities: const [personality],
-        patterns: const [pattern],
-        bodyColorResistanceRules: const [
-          BodyColorResistanceRule(
-            colorId: colorId,
-            attributeResistanceBonuses: {},
-          ),
-        ],
-        bodyColorAbnormalityResistanceRules: const [],
-        corrections: const [],
-      );
-
-      final denpaMen = createDenpaMen(
-        name: 'test',
-        bodyColors: const [colorId],
-        isSpColor: false,
-        headShape: headShape,
-        physique: physique,
-        personality: personality,
-        pattern: pattern,
-        anntena: _healSolo1,
-        masterData: masterData,
-        maxHappiness: 0,
-        maxLevel: 1,
-      );
-
-      DenpaMen? changed;
-
-      Widget buildApp(DenpaMen current) {
-        return ProviderScope(
-          overrides: [
-            denpaMenIconProvider.overrideWith((ref, id) async => null),
-          ],
-          child: TranslationProvider(
-            child: MaterialApp(
-              home: Scaffold(
-                body: SingleChildScrollView(
-                  child: EditableDenpaMenStatus(
-                    denpaMen: current,
-                    headShapes: masterData.headShapes,
-                    anntenas: masterData.anntenas,
-                    corrections: masterData.corrections,
-                    parentCandidates: const [],
-                    qrCodeCandidates: const [],
-                    onChanged: (value) => changed = value,
-                    considerCorrections: true,
-                    onConsiderCorrectionsChanged: (_) {},
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      }
-
-      await tester.pumpWidget(buildApp(denpaMen));
-      await tester.pumpAndSettle();
-
-      expect(find.text('ちょっとかいふく'), findsOneWidget);
-      await tester.tap(find.text('ちょっとかいふく'));
-      await tester.pumpAndSettle();
-
-      tester.widgetList<Slider>(find.byType(Slider)).first.onChanged!(3);
-      await tester.pumpAndSettle();
-      expect(find.text('ちょっとかいふく+3'), findsOneWidget);
-
-      await tester.tap(find.text('決定'));
-      await tester.pumpAndSettle();
-
-      expect(changed, isNotNull);
-      expect(changed!.antennaLevel, 3);
-
-      await tester.pumpWidget(buildApp(changed!));
-      await tester.pumpAndSettle();
-
-      expect(find.text('ちょっとかいふく+3'), findsOneWidget);
-      await tester.tap(find.text('ちょっとかいふく+3'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('ちょっとかいふく+3'), findsWidgets);
-      final reopenedSlider = tester
-          .widgetList<Slider>(find.byType(Slider))
-          .first;
-      expect(reopenedSlider.value, 3);
-    },
-  );
-
-  testWidgets('the level slider ranges from 0 to 9', (
+  testWidgets('setting the level to +3 and reopening keeps it at 3, not 0', (
     WidgetTester tester,
   ) async {
     final headShape = HeadShape(
@@ -293,7 +179,110 @@ void main() {
       personalities: const [personality],
       patterns: const [pattern],
       bodyColorResistanceRules: const [
-        BodyColorResistanceRule(colorId: colorId, attributeResistanceBonuses: {}),
+        BodyColorResistanceRule(
+          colorId: colorId,
+          attributeResistanceBonuses: {},
+        ),
+      ],
+      bodyColorAbnormalityResistanceRules: const [],
+      corrections: const [],
+    );
+
+    final denpaMen = createDenpaMen(
+      name: 'test',
+      bodyColors: const [colorId],
+      isSpColor: false,
+      headShape: headShape,
+      physique: physique,
+      personality: personality,
+      pattern: pattern,
+      anntena: _healSolo1,
+      masterData: masterData,
+      maxHappiness: 0,
+      maxLevel: 1,
+    );
+
+    DenpaMen? changed;
+
+    Widget buildApp(DenpaMen current) {
+      return ProviderScope(
+        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
+        child: TranslationProvider(
+          child: MaterialApp(
+            home: Scaffold(
+              body: SingleChildScrollView(
+                child: EditableDenpaMenStatus(
+                  denpaMen: current,
+                  headShapes: masterData.headShapes,
+                  anntenas: masterData.anntenas,
+                  corrections: masterData.corrections,
+                  parentCandidates: const [],
+                  qrCodeCandidates: const [],
+                  onChanged: (value) => changed = value,
+                  considerCorrections: true,
+                  onConsiderCorrectionsChanged: (_) {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    await tester.pumpWidget(buildApp(denpaMen));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ちょっとかいふく'), findsOneWidget);
+    await tester.tap(find.text('ちょっとかいふく'));
+    await tester.pumpAndSettle();
+
+    tester.widgetList<Slider>(find.byType(Slider)).first.onChanged!(3);
+    await tester.pumpAndSettle();
+    expect(find.text('ちょっとかいふく+3'), findsOneWidget);
+
+    await tester.tap(find.text('決定'));
+    await tester.pumpAndSettle();
+
+    expect(changed, isNotNull);
+    expect(changed!.antennaLevel, 3);
+
+    await tester.pumpWidget(buildApp(changed!));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ちょっとかいふく+3'), findsOneWidget);
+    await tester.tap(find.text('ちょっとかいふく+3'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('ちょっとかいふく+3'), findsWidgets);
+    final reopenedSlider = tester.widgetList<Slider>(find.byType(Slider)).first;
+    expect(reopenedSlider.value, 3);
+  });
+
+  testWidgets('the level slider ranges from 0 to the next evolution tier', (
+    WidgetTester tester,
+  ) async {
+    final headShape = HeadShape(
+      id: 'head-a',
+      abnormalityResistanceBonuses: const {},
+    );
+    const physique = Physique(id: 'physique-a');
+    const personality = Personality(id: 'personality-a');
+    const pattern = Pattern(id: 'pattern-a');
+    const colorId = 'color-a';
+
+    final masterData = MasterData(
+      headShapes: [headShape],
+      anntenas: const [_healSolo1, _healSolo2],
+      attributes: const [],
+      abnormalityTypes: const [],
+      physiques: const [physique],
+      personalities: const [personality],
+      patterns: const [pattern],
+      bodyColorResistanceRules: const [
+        BodyColorResistanceRule(
+          colorId: colorId,
+          attributeResistanceBonuses: {},
+        ),
       ],
       bodyColorAbnormalityResistanceRules: const [],
       corrections: const [],
@@ -316,9 +305,7 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          denpaMenIconProvider.overrideWith((ref, id) async => null),
-        ],
+        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
         child: TranslationProvider(
           child: MaterialApp(
             home: Scaffold(
@@ -347,6 +334,6 @@ void main() {
 
     final slider = tester.widgetList<Slider>(find.byType(Slider)).first;
     expect(slider.min, 0);
-    expect(slider.max, 9);
+    expect(slider.max, 18);
   });
 }

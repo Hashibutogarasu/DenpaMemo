@@ -22,6 +22,7 @@ const _healSolo2 = Anntena(
 const _healAll1 = Anntena(
   id: 'heal_all_1',
   category: AnntenaCategory.support,
+  targetsAll: true,
   maxLevel: 9,
   evolvesToId: 'heal_all_2',
   variantGroupId: 'heal',
@@ -29,12 +30,14 @@ const _healAll1 = Anntena(
 const _healAll2 = Anntena(
   id: 'heal_all_2',
   category: AnntenaCategory.support,
+  targetsAll: true,
   variantGroupId: 'heal',
 );
 
 const _guardAll = Anntena(
   id: 'guard_all',
   category: AnntenaCategory.support,
+  targetsAll: true,
   variantGroupId: 'guard',
 );
 const _guard1 = Anntena(
@@ -63,6 +66,7 @@ const _waterGun3 = Anntena(
 const _waterGunAll = Anntena(
   id: 'waterGun_all',
   category: AnntenaCategory.attack,
+  targetsAll: true,
   dealsDamage: true,
   attackAttributeId: 'water',
   variantGroupId: 'waterGun',
@@ -168,14 +172,13 @@ void main() {
     (WidgetTester tester) async {
       await _pumpDialog(tester, level: 0, selected: _healSolo1);
 
-      final patternSlider =
-          tester.widgetList<Slider>(find.byType(Slider)).last;
+      final patternSlider = tester.widgetList<Slider>(find.byType(Slider)).last;
       patternSlider.onChanged!(1);
       await tester.pumpAndSettle();
-      expect(find.text('ちょっとかいふく'), findsOneWidget);
+      expect(find.text('みんなちょっとかいふく'), findsOneWidget);
 
-      expect(find.text('guard_all'), findsOneWidget);
-      expect(find.text('guard_1'), findsNothing);
+      expect(find.text('guard_1'), findsOneWidget);
+      expect(find.text('guard_all'), findsNothing);
     },
   );
 
@@ -185,58 +188,81 @@ void main() {
     (WidgetTester tester) async {
       await _pumpDialog(tester, level: 0, selected: _healSolo1);
 
-      await tester.tap(find.text('guard_all'));
+      await tester.tap(find.text('guard_1'));
       await tester.pumpAndSettle();
 
-      final patternSlider =
-          tester.widgetList<Slider>(find.byType(Slider)).last;
+      final patternSlider = tester.widgetList<Slider>(find.byType(Slider)).last;
       patternSlider.onChanged!(1);
       await tester.pumpAndSettle();
-      expect(find.text('guard_1'), findsOneWidget);
+      expect(find.text('guard_all'), findsOneWidget);
 
       await tester.tap(find.text('決定'));
       await tester.pumpAndSettle();
 
-      expect(_result?.anntena.id, 'guard_1');
+      expect(_result?.anntena.id, 'guard_all');
     },
   );
 
+  testWidgets('an attack antenna with no maxLevel still gets a live +N suffix, '
+      'e.g. バケツの水+9 / たかなみ+3', (WidgetTester tester) async {
+    await _pumpDialog(tester, level: 3, selected: _healSolo1);
+
+    await tester.tap(find.text('攻撃'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('バケツの水+3'), findsOneWidget);
+
+    await tester.tap(find.text('バケツの水+3'));
+    await tester.pumpAndSettle();
+
+    _levelSlider(tester).onChanged!(9);
+    await tester.pumpAndSettle();
+
+    expect(find.text('バケツの水+9'), findsOneWidget);
+
+    final patternSlider = tester.widgetList<Slider>(find.byType(Slider)).last;
+    patternSlider.onChanged!(1);
+    await tester.pumpAndSettle();
+
+    expect(find.text('たかなみ+9'), findsOneWidget);
+
+    _levelSlider(tester).onChanged!(3);
+    await tester.pumpAndSettle();
+
+    expect(find.text('たかなみ+3'), findsOneWidget);
+
+    await tester.tap(find.text('決定'));
+    await tester.pumpAndSettle();
+
+    expect(_result?.anntena.id, 'waterGun_3');
+    expect(_result?.level, 3);
+  });
+
   testWidgets(
-    'an attack antenna with no maxLevel still gets a live +N suffix, '
-    'e.g. みずでっぽう+9 / たかなみ+3',
+    'adjusting the effect-range slider to the all-target variant raises the '
+    "level slider max enough to reach that variant's next evolution tier, "
+    'not just its first tier',
     (WidgetTester tester) async {
-      await _pumpDialog(tester, level: 3, selected: _healSolo1);
+      await _pumpDialog(tester, level: 0, selected: _healSolo1);
 
-      await tester.tap(find.text('攻撃'));
+      final rangeSlider = tester.widgetList<Slider>(find.byType(Slider)).last;
+      rangeSlider.onChanged!(1);
+      await tester.pumpAndSettle();
+      expect(find.text('みんなちょっとかいふく'), findsOneWidget);
+
+      final levelSlider = tester.widgetList<Slider>(find.byType(Slider)).first;
+      expect(
+        levelSlider.max,
+        greaterThan(_healAll1.maxLevel!),
+        reason:
+            'the all-target variant has its own evolution past level 9, so '
+            'the level slider must be able to reach it',
+      );
+
+      levelSlider.onChanged!(levelSlider.max);
       await tester.pumpAndSettle();
 
-      expect(find.text('みずでっぽう+3'), findsOneWidget);
-
-      await tester.tap(find.text('みずでっぽう+3'));
-      await tester.pumpAndSettle();
-
-      _levelSlider(tester).onChanged!(9);
-      await tester.pumpAndSettle();
-
-      expect(find.text('みずでっぽう+9'), findsOneWidget);
-
-      final patternSlider =
-          tester.widgetList<Slider>(find.byType(Slider)).last;
-      patternSlider.onChanged!(1);
-      await tester.pumpAndSettle();
-
-      expect(find.text('バケツの水+9'), findsOneWidget);
-
-      _levelSlider(tester).onChanged!(3);
-      await tester.pumpAndSettle();
-
-      expect(find.text('バケツの水+3'), findsOneWidget);
-
-      await tester.tap(find.text('決定'));
-      await tester.pumpAndSettle();
-
-      expect(_result?.anntena.id, 'waterGun_1');
-      expect(_result?.level, 3);
+      expect(find.text('みんなそこそこかいふく+9'), findsOneWidget);
     },
   );
 }

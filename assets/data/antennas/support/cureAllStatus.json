@@ -1,6 +1,7 @@
 [
   {
     "id": "cureAllStatus",
-    "category": "support"
+    "category": "support",
+    "targetCount": 1
   }
 ]

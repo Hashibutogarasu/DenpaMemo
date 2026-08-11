@@ -1,6 +1,7 @@
 [
   {
     "id": "invincible",
-    "category": "support"
+    "category": "support",
+    "targetCount": 1
   }
 ]

@@ -16,6 +16,7 @@
   {
     "id": "heal_all_1",
     "category": "support",
+    "targetsAll": true,
     "maxLevel": 9,
     "evolvesToId": "heal_all_2",
     "variantGroupId": "heal"
@@ -23,6 +24,7 @@
   {
     "id": "heal_all_2",
     "category": "support",
+    "targetsAll": true,
     "variantGroupId": "heal"
   }
 ]

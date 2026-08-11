@@ -86,7 +86,7 @@
     "antennaCategorySupport": "サポート",
     "antennaCategoryOther": "その他",
     "antennaLevel": "レベル",
-    "antennaPattern": "種類",
+    "antennaTargetScope": "効果範囲",
     "antennaPlusLevel": "レベル",
     "antennaPlusLevelValue": "+${plusLevel}",
     "antennaNameWithPlusLevel": "${name}+${plusLevel}"

@@ -14,6 +14,7 @@ abstract class Anntena with _$Anntena {
     required String id,
     required AnntenaCategory category,
     int? targetCount,
+    @Default(false) bool targetsAll,
     @Default(false) bool dealsDamage,
     String? attackAttributeId,
     @Default(false) bool isInheritable,

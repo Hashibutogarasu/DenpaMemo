@@ -36,12 +36,13 @@ List<Anntena> _rootsOf(List<Anntena> anntenas) {
   return anntenas.where((a) => !evolvedIds.contains(a.id)).toList();
 }
 
+int _targetScopeSortKey(Anntena a) =>
+    a.targetsAll ? 1 << 30 : (a.targetCount ?? 0);
+
 List<Anntena> _patternRootsOf(List<Anntena> anntenas, String familyId) {
-  final members = anntenas
-      .where((a) => _familyIdOf(a) == familyId)
-      .toList();
+  final members = anntenas.where((a) => _familyIdOf(a) == familyId).toList();
   final roots = _rootsOf(members)
-    ..sort((a, b) => (a.targetCount ?? 0).compareTo(b.targetCount ?? 0));
+    ..sort((a, b) => _targetScopeSortKey(a).compareTo(_targetScopeSortKey(b)));
   return roots;
 }
 
@@ -123,10 +124,6 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
   late final List<String> _familyIds = {
     for (final a in widget.anntenas) _familyIdOf(a),
   }.toList();
-  late final int _maxLevel = math.max(
-    widget.maxSelectableLevel,
-    widget.level,
-  );
   late int _level = widget.level;
   late String _selectedFamilyId = _familyIdOf(widget.initial);
   late int _patternIndex = _patternIndexContaining(
@@ -153,6 +150,16 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
       _selectedFamilyId = familyId;
       _patternIndex = patternIndex;
     });
+  }
+
+  int _maxLevelFor(Anntena root) {
+    var current = root;
+    var total = 0;
+    while (current.maxLevel != null && current.evolvesToId != null) {
+      total += current.maxLevel!;
+      current = _byId[current.evolvesToId]!;
+    }
+    return total + widget.maxSelectableLevel;
   }
 
   String _displayName(Translations t, _LevelResolution resolution) {
@@ -200,13 +207,13 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
       _level,
       _byId,
     );
+    final maxLevel = math.max(_maxLevelFor(selectedPatternRoot), widget.level);
 
     return BottomSlideDialog(
       title: t.editableStatus.antenna,
-      onConfirm: () => Navigator.of(context).pop((
-        anntena: resolvedSelected.leaf,
-        level: _level,
-      )),
+      onConfirm: () => Navigator.of(
+        context,
+      ).pop((anntena: resolvedSelected.leaf, level: _level)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -228,9 +235,10 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
                     children: [
                       for (final familyId in _familyIds.where(
                         (familyId) =>
-                            _patternRootsOf(widget.anntenas, familyId)
-                                .first
-                                .category ==
+                            _patternRootsOf(
+                              widget.anntenas,
+                              familyId,
+                            ).first.category ==
                             category,
                       ))
                         _buildTile(t, familyId),
@@ -248,13 +256,12 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
                 child: Slider(
                   value: _level.toDouble(),
                   min: 0,
-                  max: _maxLevel.toDouble(),
-                  divisions: _maxLevel,
+                  max: maxLevel.toDouble(),
+                  divisions: maxLevel,
                   label: t.editableStatus.antennaPlusLevelValue(
                     plusLevel: _level,
                   ),
-                  onChanged: (value) =>
-                      setState(() => _level = value.round()),
+                  onChanged: (value) => setState(() => _level = value.round()),
                 ),
               ),
             ],
@@ -262,7 +269,7 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
           if (selectedPatternRoots.length > 1)
             Row(
               children: [
-                Expanded(child: Text(t.editableStatus.antennaPattern)),
+                Expanded(child: Text(t.editableStatus.antennaTargetScope)),
                 Expanded(
                   flex: 3,
                   child: Slider(

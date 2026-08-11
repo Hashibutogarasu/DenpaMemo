@@ -18,6 +18,7 @@
   {
     "id": "fireball_all",
     "category": "attack",
+    "targetsAll": true,
     "dealsDamage": true,
     "attackAttributeId": "fire",
     "variantGroupId": "fireball"

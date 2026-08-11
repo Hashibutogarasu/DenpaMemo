@@ -1,6 +1,7 @@
 [
   {
     "id": "revive",
-    "category": "support"
+    "category": "support",
+    "targetCount": 1
   }
 ]

@@ -3,6 +3,7 @@
     "id": "staticElectricity",
     "dealsDamage": true,
     "attackAttributeId": "thunder",
-    "category": "attack"
+    "category": "attack",
+    "targetCount": 1
   }
 ]

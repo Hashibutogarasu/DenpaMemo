@@ -3,6 +3,7 @@
     "id": "sharpIce",
     "dealsDamage": true,
     "attackAttributeId": "ice",
-    "category": "attack"
+    "category": "attack",
+    "targetCount": 1
   }
 ]

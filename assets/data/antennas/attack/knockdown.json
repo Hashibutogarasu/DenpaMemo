@@ -1,6 +1,7 @@
 [
   {
     "id": "knockdown",
-    "category": "attack"
+    "category": "attack",
+    "targetCount": 1
   }
 ]

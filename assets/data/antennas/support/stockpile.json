@@ -1,6 +1,7 @@
 [
   {
     "id": "stockpile",
-    "category": "support"
+    "category": "support",
+    "targetCount": 1
   }
 ]

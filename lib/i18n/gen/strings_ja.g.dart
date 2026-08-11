@@ -426,8 +426,8 @@ class Translations$editableStatus$ja {
 	/// ja: 'レベル'
 	String get antennaLevel => 'レベル';
 
-	/// ja: '種類'
-	String get antennaPattern => '種類';
+	/// ja: '効果範囲'
+	String get antennaTargetScope => '効果範囲';
 
 	/// ja: 'レベル'
 	String get antennaPlusLevel => 'レベル';
@@ -519,7 +519,7 @@ extension on Translations {
 			'editableStatus.antennaCategorySupport' => 'サポート',
 			'editableStatus.antennaCategoryOther' => 'その他',
 			'editableStatus.antennaLevel' => 'レベル',
-			'editableStatus.antennaPattern' => '種類',
+			'editableStatus.antennaTargetScope' => '効果範囲',
 			'editableStatus.antennaPlusLevel' => 'レベル',
 			'editableStatus.antennaPlusLevelValue' => ({required Object plusLevel}) => '+${plusLevel}',
 			'editableStatus.antennaNameWithPlusLevel' => ({required Object name, required Object plusLevel}) => '${name}+${plusLevel}',

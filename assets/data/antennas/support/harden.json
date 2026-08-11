@@ -1,6 +1,7 @@
 [
   {
     "id": "harden",
-    "category": "support"
+    "category": "support",
+    "targetCount": 1
   }
 ]

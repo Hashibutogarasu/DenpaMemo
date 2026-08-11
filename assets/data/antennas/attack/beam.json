@@ -16,6 +16,7 @@
   {
     "id": "beam_all",
     "category": "attack",
+    "targetsAll": true,
     "dealsDamage": true,
     "variantGroupId": "beam"
   }
