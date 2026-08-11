@@ -10,13 +10,14 @@ import '../../domain/master_data/master_data.dart';
 import '../../domain/qr_code/qr_code_record.dart';
 import '../dialog/denpa_men_action_menu.dart';
 import '../dialog/denpa_men_preview_dialog.dart';
+import '../dialog/qr_code_image_dialog.dart';
 import 'center_first.dart';
 import 'denpa_men_node.dart';
 import 'lineage_edge_renderer.dart';
 import 'node_info.dart';
 import 'qr_code_node.dart';
 
-class LineageGraph extends ConsumerWidget {
+class LineageGraph extends ConsumerStatefulWidget {
   const LineageGraph({
     super.key,
     required this.qrCodes,
@@ -32,18 +33,36 @@ class LineageGraph extends ConsumerWidget {
   final Map<String, File?> iconsById;
   final GraphViewController? controller;
 
+  @override
+  ConsumerState<LineageGraph> createState() => _LineageGraphState();
+}
+
+class _LineageGraphState extends ConsumerState<LineageGraph> {
+  bool _qrDialogOpen = false;
+
   void _showPreview(BuildContext context, DenpaMen denpaMen) {
     showDialog<void>(
       context: context,
       builder: (context) => DenpaMenPreviewDialog(
         denpaMen: denpaMen,
-        totalAttributeCount: masterData.attributes.length,
+        totalAttributeCount: widget.masterData.attributes.length,
       ),
     );
   }
 
+  Future<void> _showQrCodeImage(BuildContext context, String rawValue) async {
+    setState(() => _qrDialogOpen = true);
+    await showDialog<void>(
+      context: context,
+      builder: (context) => QrCodeImageDialog(rawValue: rawValue),
+    );
+    if (mounted) {
+      setState(() => _qrDialogOpen = false);
+    }
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     const nodeSize = 64.0;
     const superRootKey = 'superRoot';
 
@@ -55,7 +74,7 @@ class LineageGraph extends ConsumerWidget {
     graph.addNode(superRootNode);
     nodeInfoByKey[superRootKey] = const NodeInfo(kind: NodeKind.invisible);
 
-    for (final qrCodeRecord in qrCodes) {
+    for (final qrCodeRecord in widget.qrCodes) {
       final qrCode = qrCodeRecord.qrCode;
       final rootKey = 'qr:${qrCode.id}';
       graph.addEdge(
@@ -69,7 +88,7 @@ class LineageGraph extends ConsumerWidget {
       );
 
       final directChildren =
-          denpaMenRecords
+          widget.denpaMenRecords
               .where((record) => record.denpaMen.qrCodeId == qrCode.id)
               .toList()
             ..sort(
@@ -96,7 +115,7 @@ class LineageGraph extends ConsumerWidget {
     var progress = true;
     while (progress) {
       progress = false;
-      for (final record in denpaMenRecords) {
+      for (final record in widget.denpaMenRecords) {
         final id = record.denpaMen.id;
         final parentIds = record.denpaMen.parentIds;
         if (addedIds.contains(id) || parentIds.isEmpty) {
@@ -130,24 +149,29 @@ class LineageGraph extends ConsumerWidget {
     return GraphView.builder(
       graph: graph,
       algorithm: algorithm,
-      controller: controller,
+      controller: widget.controller,
       autoZoomToFit: true,
       centerGraph: true,
       builder: (node) {
         final info = nodeInfoByKey[node.key!.value];
         return RepaintBoundary(
           child: switch (info?.kind) {
-            NodeKind.qrCode => QrCodeNode(
-              rawValue: info!.rawValue!,
-              size: nodeSize,
-            ),
+            NodeKind.qrCode => _qrDialogOpen
+                ? SizedBox(width: nodeSize, height: nodeSize)
+                : GestureDetector(
+                    onTap: () => _showQrCodeImage(context, info.rawValue!),
+                    child: QrCodeNode(
+                      rawValue: info!.rawValue!,
+                      size: nodeSize,
+                    ),
+                  ),
             NodeKind.caughtDenpaMen => DenpaMenContextMenuArea(
               record: info!.record!,
-              masterData: masterData,
+              masterData: widget.masterData,
               child: GestureDetector(
                 onTap: () => _showPreview(context, info.record!.denpaMen),
                 child: DenpaMenNode(
-                  iconFile: iconsById[info.record!.denpaMen.id],
+                  iconFile: widget.iconsById[info.record!.denpaMen.id],
                   name: info.name!,
                   catchIndex: info.catchIndex,
                   size: nodeSize,
@@ -156,11 +180,11 @@ class LineageGraph extends ConsumerWidget {
             ),
             NodeKind.bredDenpaMen => DenpaMenContextMenuArea(
               record: info!.record!,
-              masterData: masterData,
+              masterData: widget.masterData,
               child: GestureDetector(
                 onTap: () => _showPreview(context, info.record!.denpaMen),
                 child: DenpaMenNode(
-                  iconFile: iconsById[info.record!.denpaMen.id],
+                  iconFile: widget.iconsById[info.record!.denpaMen.id],
                   name: info.name!,
                   size: nodeSize,
                 ),
