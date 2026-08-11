@@ -29,6 +29,7 @@ dependencies:
   croppy: ^1.4.1
   zxing2: ^0.2.4
   image: ^4.8.0
+  collection: ^1.19.1
 
 dev_dependencies:
   flutter_test:

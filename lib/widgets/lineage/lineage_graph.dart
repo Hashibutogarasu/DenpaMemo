@@ -14,6 +14,7 @@ import '../dialog/qr_code_image_dialog.dart';
 import 'center_first.dart';
 import 'denpa_men_node.dart';
 import 'lineage_edge_renderer.dart';
+import 'lineage_graph_data_snapshot.dart';
 import 'node_info.dart';
 import 'qr_code_node.dart';
 
@@ -39,6 +40,30 @@ class LineageGraph extends ConsumerStatefulWidget {
 
 class _LineageGraphState extends ConsumerState<LineageGraph> {
   bool _qrDialogOpen = false;
+  int _generation = 0;
+  late List<Object?> _dataSnapshotValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _dataSnapshotValue = lineageDataSnapshot(
+      widget.qrCodes,
+      widget.denpaMenRecords,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant LineageGraph oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newSnapshot = lineageDataSnapshot(
+      widget.qrCodes,
+      widget.denpaMenRecords,
+    );
+    if (!lineageDataSnapshotsEqual(newSnapshot, _dataSnapshotValue)) {
+      _dataSnapshotValue = newSnapshot;
+      _generation++;
+    }
+  }
 
   void _showPreview(BuildContext context, DenpaMen denpaMen) {
     showDialog<void>(
@@ -147,6 +172,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
       ..renderer = LineageEdgeRenderer(edgeRendererConfig);
 
     return GraphView.builder(
+      key: ValueKey(_generation),
       graph: graph,
       algorithm: algorithm,
       controller: widget.controller,
