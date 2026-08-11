@@ -1,7 +1,48 @@
 [
   {
-    "id": "excite",
+    "id": "excite_solo_1",
     "category": "support",
-    "targetCount": 1
+    "targetCount": 1,
+    "maxLevel": null,
+    "evolvesToId": "excite_solo_2",
+    "variantGroupId": "excite"
+  },
+  {
+    "id": "excite_solo_2",
+    "category": "support",
+    "targetCount": 1,
+    "maxLevel": null,
+    "evolvesToId": "excite_solo_3",
+    "variantGroupId": "excite"
+  },
+  {
+    "id": "excite_solo_3",
+    "category": "support",
+    "targetCount": 1,
+    "maxLevel": null,
+    "variantGroupId": "excite"
+  },
+  {
+    "id": "excite_all_1",
+    "category": "support",
+    "targetsAll": true,
+    "maxLevel": null,
+    "evolvesToId": "excite_all_2",
+    "variantGroupId": "excite"
+  },
+  {
+    "id": "excite_all_2",
+    "category": "support",
+    "targetsAll": true,
+    "maxLevel": null,
+    "evolvesToId": "excite_all_3",
+    "variantGroupId": "excite"
+  },
+  {
+    "id": "excite_all_3",
+    "category": "support",
+    "targetsAll": true,
+    "maxLevel": null,
+    "variantGroupId": "excite"
   }
 ]
