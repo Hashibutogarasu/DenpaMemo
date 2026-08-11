@@ -6,8 +6,8 @@ import 'package:denpa_memo/main.dart';
 
 void main() {
   testWidgets(
-    'adding via the QR-code flow already links the new individual to the '
-    'session\'s QR code, and the QR code field is disabled',
+    'adding a single individual (not via the QR-code flow) leaves the QR '
+    'code field unset and tappable',
     (WidgetTester tester) async {
       final objectBox = ObjectBox.createInMemory();
       addTearDown(objectBox.store.close);
@@ -17,10 +17,7 @@ void main() {
       await tester.tap(find.byIcon(Icons.add));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('QRコードから追加'));
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('次へ'));
+      await tester.tap(find.text('単体で追加'));
       await tester.pumpAndSettle();
 
       final qrCodeTile = find.widgetWithText(InkWell, 'QRコード');
@@ -32,13 +29,13 @@ void main() {
 
       expect(
         find.descendant(of: qrCodeTile, matching: find.text('未設定')),
-        findsNothing,
+        findsOneWidget,
       );
 
       await tester.tap(qrCodeTile);
       await tester.pumpAndSettle();
 
-      expect(find.text('決定'), findsNothing);
+      expect(find.text('決定'), findsOneWidget);
     },
   );
 }
