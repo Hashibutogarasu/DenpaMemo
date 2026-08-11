@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(30, 5701588058507270646),
+    lastPropertyId: const obx_int.IdUid(31, 2946344687157787876),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -209,6 +209,12 @@ final _entities = <obx_int.ModelEntity>[
         type: 1,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(31, 2946344687157787876),
+        name: 'antennaLevel',
+        type: 6,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -347,7 +353,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final parentIdsOffset = fbb.writeList(
           object.parentIds.map(fbb.writeString).toList(growable: false),
         );
-        fbb.startTable(31);
+        fbb.startTable(32);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -378,6 +384,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(27, parentIdsOffset);
         fbb.addInt64(28, object.catchOrder);
         fbb.addBool(29, object.considerCorrections);
+        fbb.addInt64(30, object.antennaLevel);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -430,6 +437,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final anntenaIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 20, '');
+        final antennaLevelParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          64,
+          0,
+        );
         final happinessParam = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
@@ -536,6 +549,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           personalityId: personalityIdParam,
           patternId: patternIdParam,
           anntenaId: anntenaIdParam,
+          antennaLevel: antennaLevelParam,
           happiness: happinessParam,
           maxHappiness: maxHappinessParam,
           level: levelParam,
@@ -781,6 +795,11 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.considerCorrections].
   static final considerCorrections = obx.QueryBooleanProperty<DenpaMenEntity>(
     _entities[0].properties[29],
+  );
+
+  /// See [DenpaMenEntity.antennaLevel].
+  static final antennaLevel = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[30],
   );
 }
 

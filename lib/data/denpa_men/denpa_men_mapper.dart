@@ -20,6 +20,7 @@ extension DenpaMenEntityMapper on DenpaMen {
       personalityId: personality.id,
       patternId: pattern.id,
       anntenaId: anntena.id,
+      antennaLevel: antennaLevel,
       happiness: happiness,
       maxHappiness: maxHappiness,
       level: level,
@@ -70,6 +71,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
       anntena: masterData.anntenas.firstWhere(
         (anntena) => anntena.id == antennaIdMigrator.migrate(anntenaId),
       ),
+      antennaLevel: antennaLevel,
       masterData: masterData,
       happiness: happiness,
       maxHappiness: maxHappiness,

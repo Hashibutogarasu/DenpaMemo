@@ -6,14 +6,16 @@ import '../../domain/master_data/anntena.dart';
 import '../../i18n/gen/strings.g.dart';
 import 'bottom_slide_dialog.dart';
 
-Future<Anntena?> showAntennaSelectionDialog(
+typedef AntennaSelectionResult = ({Anntena anntena, int level});
+
+Future<AntennaSelectionResult?> showAntennaSelectionDialog(
   BuildContext context, {
   required List<Anntena> anntenas,
   required Anntena selected,
   required int level,
   int maxSelectableLevel = 9,
 }) {
-  return showBottomSlideDialog<Anntena>(
+  return showBottomSlideDialog<AntennaSelectionResult>(
     context: context,
     builder: (context) => _AntennaSelectionDialog(
       anntenas: anntenas,
@@ -43,14 +45,30 @@ List<Anntena> _patternRootsOf(List<Anntena> anntenas, String familyId) {
   return roots;
 }
 
-Anntena _resolveAtLevel(Anntena root, int level, Map<String, Anntena> byId) {
+class _LevelResolution {
+  const _LevelResolution({required this.leaf, required this.inTierLevel});
+
+  final Anntena leaf;
+  final int inTierLevel;
+}
+
+_LevelResolution _resolveAtLevel(
+  Anntena root,
+  int level,
+  Map<String, Anntena> byId,
+) {
   var current = root;
+  var previousCap = 0;
   while (current.maxLevel != null &&
       level > current.maxLevel! &&
       current.evolvesToId != null) {
+    previousCap = current.maxLevel!;
     current = byId[current.evolvesToId]!;
   }
-  return current;
+  final inTierLevel = current.maxLevel == null
+      ? math.max(0, level - previousCap)
+      : (level - previousCap).clamp(0, current.maxLevel!);
+  return _LevelResolution(leaf: current, inTierLevel: inTierLevel);
 }
 
 int _patternIndexContaining(
@@ -97,6 +115,7 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
   late final TabController _tabController = TabController(
     length: AnntenaCategory.values.length,
     vsync: this,
+    initialIndex: AnntenaCategory.values.indexOf(widget.initial.category),
   );
   late final Map<String, Anntena> _byId = {
     for (final a in widget.anntenas) a.id: a,
@@ -104,7 +123,10 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
   late final List<String> _familyIds = {
     for (final a in widget.anntenas) _familyIdOf(a),
   }.toList();
-  late final int _maxLevel = math.max(widget.maxSelectableLevel, widget.level);
+  late final int _maxLevel = math.max(
+    widget.maxSelectableLevel,
+    widget.level,
+  );
   late int _level = widget.level;
   late String _selectedFamilyId = _familyIdOf(widget.initial);
   late int _patternIndex = _patternIndexContaining(
@@ -112,7 +134,6 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
     _patternRootsOf(widget.anntenas, _selectedFamilyId),
     _byId,
   );
-  int _plusLevel = 0;
 
   @override
   void dispose() {
@@ -127,23 +148,22 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
         AnntenaCategory.other => t.editableStatus.antennaCategoryOther,
       };
 
-  void _selectFamily(String familyId) {
+  void _selectFamily(String familyId, int patternIndex) {
     setState(() {
       _selectedFamilyId = familyId;
-      _patternIndex = 0;
-      _plusLevel = 0;
+      _patternIndex = patternIndex;
     });
   }
 
-  String _displayName(Translations t, Anntena leaf) {
-    final translated = t.antenna[leaf.id];
+  String _displayName(Translations t, _LevelResolution resolution) {
+    final translated = t.antenna[resolution.leaf.id];
     if (translated == null) {
-      return leaf.id;
+      return resolution.leaf.id;
     }
-    if (leaf.maxLevel != null && _plusLevel > 0) {
+    if (resolution.inTierLevel > 0) {
       return t.editableStatus.antennaNameWithPlusLevel(
         name: translated,
-        plusLevel: _plusLevel,
+        plusLevel: resolution.inTierLevel,
       );
     }
     return translated;
@@ -151,16 +171,19 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
 
   Widget _buildTile(Translations t, String familyId) {
     final patternRoots = _patternRootsOf(widget.anntenas, familyId);
-    final patternIndex = _patternIndex.clamp(0, patternRoots.length - 1);
-    final patternRoot = patternRoots[patternIndex];
-    final resolved = _resolveAtLevel(patternRoot, _level, _byId);
     final isSelected = familyId == _selectedFamilyId;
+    final patternIndex = isSelected
+        ? _patternIndex.clamp(0, patternRoots.length - 1)
+        : 0;
+    final patternRoot = patternRoots[patternIndex];
+    final resolution = _resolveAtLevel(patternRoot, _level, _byId);
 
     return ListTile(
-      title: Text(_displayName(t, resolved)),
+      key: ValueKey(familyId),
+      title: Text(_displayName(t, resolution)),
       selected: isSelected,
       trailing: isSelected ? const Icon(Icons.check) : null,
-      onTap: () => _selectFamily(familyId),
+      onTap: () => _selectFamily(familyId, patternIndex),
     );
   }
 
@@ -180,7 +203,10 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
 
     return BottomSlideDialog(
       title: t.editableStatus.antenna,
-      onConfirm: () => Navigator.of(context).pop(resolvedSelected),
+      onConfirm: () => Navigator.of(context).pop((
+        anntena: resolvedSelected.leaf,
+        level: _level,
+      )),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -220,11 +246,13 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
               Expanded(
                 flex: 3,
                 child: Slider(
-                  value: _level.toDouble().clamp(1, _maxLevel.toDouble()),
-                  min: 1,
+                  value: _level.toDouble(),
+                  min: 0,
                   max: _maxLevel.toDouble(),
-                  divisions: _maxLevel - 1,
-                  label: '$_level',
+                  divisions: _maxLevel,
+                  label: t.editableStatus.antennaPlusLevelValue(
+                    plusLevel: _level,
+                  ),
                   onChanged: (value) =>
                       setState(() => _level = value.round()),
                 ),
@@ -252,26 +280,6 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
                     ),
                     onChanged: (value) =>
                         setState(() => _patternIndex = value.round()),
-                  ),
-                ),
-              ],
-            ),
-          if (resolvedSelected.maxLevel != null)
-            Row(
-              children: [
-                Expanded(child: Text(t.editableStatus.antennaPlusLevel)),
-                Expanded(
-                  flex: 3,
-                  child: Slider(
-                    value: _plusLevel.toDouble(),
-                    min: 0,
-                    max: resolvedSelected.maxLevel!.toDouble(),
-                    divisions: resolvedSelected.maxLevel,
-                    label: t.editableStatus.antennaPlusLevelValue(
-                      plusLevel: _plusLevel,
-                    ),
-                    onChanged: (value) =>
-                        setState(() => _plusLevel = value.round()),
                   ),
                 ),
               ],

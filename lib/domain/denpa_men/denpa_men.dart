@@ -28,6 +28,7 @@ abstract class DenpaMen with _$DenpaMen {
     required Pattern pattern,
     required HeadShape headShape,
     required Anntena anntena,
+    @Default(0) int antennaLevel,
     required bool isSpColor,
     required int happiness,
     required int maxHappiness,

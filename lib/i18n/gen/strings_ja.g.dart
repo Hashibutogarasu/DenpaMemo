@@ -432,8 +432,8 @@ class Translations$editableStatus$ja {
 	/// ja: 'レベル'
 	String get antennaPlusLevel => 'レベル';
 
-	/// ja: 'レベル${plusLevel}'
-	String antennaPlusLevelValue({required Object plusLevel}) => 'レベル${plusLevel}';
+	/// ja: '+${plusLevel}'
+	String antennaPlusLevelValue({required Object plusLevel}) => '+${plusLevel}';
 
 	/// ja: '${name}+${plusLevel}'
 	String antennaNameWithPlusLevel({required Object name, required Object plusLevel}) => '${name}+${plusLevel}';
@@ -521,7 +521,7 @@ extension on Translations {
 			'editableStatus.antennaLevel' => 'レベル',
 			'editableStatus.antennaPattern' => '種類',
 			'editableStatus.antennaPlusLevel' => 'レベル',
-			'editableStatus.antennaPlusLevelValue' => ({required Object plusLevel}) => 'レベル${plusLevel}',
+			'editableStatus.antennaPlusLevelValue' => ({required Object plusLevel}) => '+${plusLevel}',
 			'editableStatus.antennaNameWithPlusLevel' => ({required Object name, required Object plusLevel}) => '${name}+${plusLevel}',
 			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',

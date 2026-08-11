@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/anntena.dart';
+import '../domain/master_data/antenna_display_name.dart';
 import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
 import '../domain/qr_code/qr_code_record.dart';
@@ -228,18 +229,23 @@ class EditableDenpaMenStatus extends StatelessWidget {
           SelectionTile(
             label: t.editableStatus.antenna,
             onTap: () async {
-              final selected = await showAntennaSelectionDialog(
+              final result = await showAntennaSelectionDialog(
                 context,
                 anntenas: anntenas,
                 selected: denpaMen.anntena,
-                level: denpaMen.level,
+                level: denpaMen.antennaLevel,
               );
-              if (selected != null) {
-                onChanged(denpaMen.copyWith(anntena: selected));
+              if (result != null) {
+                onChanged(
+                  denpaMen.copyWith(
+                    anntena: result.anntena,
+                    antennaLevel: result.level,
+                  ),
+                );
               }
             },
             child: Text(
-              t.antenna[denpaMen.anntena.id] ?? denpaMen.anntena.id,
+              antennaDisplayName(t, denpaMen.anntena, denpaMen.antennaLevel),
               overflow: TextOverflow.ellipsis,
             ),
           ),
