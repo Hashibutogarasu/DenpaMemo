@@ -13,7 +13,7 @@ void main() {
     () async {
       final masterData = await JsonMasterDataRepository().load();
       final headShape = const HeadShape(id: 'head-a');
-      final anntena = const Anntena(id: 'anntena-a');
+      final anntena = const Anntena(id: 'anntena-a', category: AnntenaCategory.other);
       final protagonist = masterData.corrections.firstWhere(
         (c) => c.id == 'protagonist',
       );

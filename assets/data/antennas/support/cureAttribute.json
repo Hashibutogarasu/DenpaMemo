@@ -1,3 +1,7 @@
-{
-  "id": "cureAttribute"
-}
+[
+  {
+    "id": "cureAttribute",
+    "category": "support",
+    "targetCount": 1
+  }
+]

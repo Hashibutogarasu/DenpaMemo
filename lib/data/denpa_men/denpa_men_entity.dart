@@ -35,6 +35,8 @@ class DenpaMenEntity {
 
   String anntenaId;
 
+  int antennaLevel;
+
   int happiness;
 
   int maxHappiness;
@@ -87,6 +89,7 @@ class DenpaMenEntity {
     required this.personalityId,
     required this.patternId,
     required this.anntenaId,
+    this.antennaLevel = 0,
     required this.happiness,
     required this.maxHappiness,
     required this.level,

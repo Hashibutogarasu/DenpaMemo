@@ -1,3 +1,7 @@
-{
-  "id": "revive"
-}
+[
+  {
+    "id": "revive",
+    "category": "support",
+    "targetCount": 1
+  }
+]

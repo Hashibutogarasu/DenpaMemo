@@ -82,6 +82,19 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	};
 	Map<String, String> get antenna => {
 		'none': 'アンテナなし',
+		'waterGun_1': 'バケツの水',
+		'waterGun_3': 'たかなみ',
+		'waterGun_all': 'みずでっぽう',
+		'beam_1': 'スポットライト',
+		'beam_3': 'ふゆのひざし',
+		'beam_all': 'よわいこうせん',
+		'fireball_1': 'ばくはつ',
+		'fireball_3': 'やまかじ',
+		'fireball_all': 'ひのたま',
+		'heal_solo_1': 'ちょっとかいふく',
+		'heal_solo_2': 'そこそこかいふく',
+		'heal_all_1': 'みんなちょっとかいふく',
+		'heal_all_2': 'みんなそこそこかいふく',
 	};
 	Map<String, String> get bodyColor => {
 		'red': 'あか',
@@ -400,6 +413,30 @@ class Translations$editableStatus$ja {
 
 	/// ja: '補正を考慮する'
 	String get considerCorrections => '補正を考慮する';
+
+	/// ja: '攻撃'
+	String get antennaCategoryAttack => '攻撃';
+
+	/// ja: 'サポート'
+	String get antennaCategorySupport => 'サポート';
+
+	/// ja: 'その他'
+	String get antennaCategoryOther => 'その他';
+
+	/// ja: 'レベル'
+	String get antennaLevel => 'レベル';
+
+	/// ja: '効果範囲'
+	String get antennaTargetScope => '効果範囲';
+
+	/// ja: 'レベル'
+	String get antennaPlusLevel => 'レベル';
+
+	/// ja: '+${plusLevel}'
+	String antennaPlusLevelValue({required Object plusLevel}) => '+${plusLevel}';
+
+	/// ja: '${name}+${plusLevel}'
+	String antennaNameWithPlusLevel({required Object name, required Object plusLevel}) => '${name}+${plusLevel}';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -478,6 +515,14 @@ extension on Translations {
 			'editableStatus.catchOrder' => 'キャッチ順',
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.considerCorrections' => '補正を考慮する',
+			'editableStatus.antennaCategoryAttack' => '攻撃',
+			'editableStatus.antennaCategorySupport' => 'サポート',
+			'editableStatus.antennaCategoryOther' => 'その他',
+			'editableStatus.antennaLevel' => 'レベル',
+			'editableStatus.antennaTargetScope' => '効果範囲',
+			'editableStatus.antennaPlusLevel' => 'レベル',
+			'editableStatus.antennaPlusLevelValue' => ({required Object plusLevel}) => '+${plusLevel}',
+			'editableStatus.antennaNameWithPlusLevel' => ({required Object name, required Object plusLevel}) => '${name}+${plusLevel}',
 			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',
 			'headShape.bread' => 'しょくぱん',
@@ -507,6 +552,19 @@ extension on Translations {
 			'headShape.egg' => 'たまご',
 			'correction.protagonist' => '主人公補正',
 			'antenna.none' => 'アンテナなし',
+			'antenna.waterGun_1' => 'バケツの水',
+			'antenna.waterGun_3' => 'たかなみ',
+			'antenna.waterGun_all' => 'みずでっぽう',
+			'antenna.beam_1' => 'スポットライト',
+			'antenna.beam_3' => 'ふゆのひざし',
+			'antenna.beam_all' => 'よわいこうせん',
+			'antenna.fireball_1' => 'ばくはつ',
+			'antenna.fireball_3' => 'やまかじ',
+			'antenna.fireball_all' => 'ひのたま',
+			'antenna.heal_solo_1' => 'ちょっとかいふく',
+			'antenna.heal_solo_2' => 'そこそこかいふく',
+			'antenna.heal_all_1' => 'みんなちょっとかいふく',
+			'antenna.heal_all_2' => 'みんなそこそこかいふく',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',
 			'bodyColor.yellow' => 'きいろ',

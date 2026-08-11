@@ -1,3 +1,7 @@
-{
-  "id": "knockdown"
-}
+[
+  {
+    "id": "knockdown",
+    "category": "attack",
+    "targetCount": 1
+  }
+]

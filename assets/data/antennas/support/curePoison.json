@@ -1,3 +1,7 @@
-{
-  "id": "curePoison"
-}
+[
+  {
+    "id": "curePoison",
+    "category": "support",
+    "targetCount": 1
+  }
+]

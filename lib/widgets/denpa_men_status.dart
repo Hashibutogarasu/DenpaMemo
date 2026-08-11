@@ -7,6 +7,7 @@ import '../domain/denpa_men/attribute_resistance.dart';
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_correction_calculator.dart';
 import '../domain/master_data/anntena.dart';
+import '../domain/master_data/antenna_display_name.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
 import 'container/indented_header.dart';
@@ -33,6 +34,7 @@ class DenpaMenStatus extends StatelessWidget {
     required this.attributeResistances,
     required this.abnormalityResistances,
     required this.anntena,
+    this.antennaLevel = 0,
     required this.hp,
     required this.ap,
     required this.attack,
@@ -78,6 +80,7 @@ class DenpaMenStatus extends StatelessWidget {
       attributeResistances: corrected.attributeResistance,
       abnormalityResistances: corrected.abnormalityResistances,
       anntena: corrected.anntena,
+      antennaLevel: corrected.antennaLevel,
       hp: corrected.hp,
       ap: corrected.ap,
       attack: corrected.attack,
@@ -99,6 +102,7 @@ class DenpaMenStatus extends StatelessWidget {
   final List<AttributeResistance> attributeResistances;
   final List<AbnormalityResistance> abnormalityResistances;
   final Anntena anntena;
+  final int antennaLevel;
   final int hp;
   final int ap;
   final int attack;
@@ -203,7 +207,7 @@ class DenpaMenStatus extends StatelessWidget {
             entries: [
               _StatData(
                 label: t.stat.antenna,
-                textValue: t.antenna[anntena.id] ?? anntena.id,
+                textValue: antennaDisplayName(t, anntena, antennaLevel),
                 span: 2,
               ),
               _StatData(label: t.stat.hp, value: hp),

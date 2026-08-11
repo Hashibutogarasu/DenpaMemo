@@ -8,6 +8,7 @@ Future<List<T>> loadJsonEntitiesFromDirectory<T>({
   required AssetBundle bundle,
   required String directoryPath,
   required T Function(Map<String, dynamic> json) fromJson,
+  bool listPerFile = false,
 }) async {
   final manifest = await AssetManifest.loadFromAssetBundle(bundle);
   final assetPaths =
@@ -22,7 +23,14 @@ Future<List<T>> loadJsonEntitiesFromDirectory<T>({
   final entities = <T>[];
   for (final path in assetPaths) {
     final raw = await bundle.loadString(path);
-    entities.add(fromJson(jsonDecode(raw) as Map<String, dynamic>));
+    final decoded = jsonDecode(raw);
+    if (listPerFile) {
+      entities.addAll(
+        (decoded as List).map((e) => fromJson(e as Map<String, dynamic>)),
+      );
+    } else {
+      entities.add(fromJson(decoded as Map<String, dynamic>));
+    }
   }
   return entities;
 }

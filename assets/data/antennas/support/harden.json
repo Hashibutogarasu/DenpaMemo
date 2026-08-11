@@ -1,3 +1,7 @@
-{
-  "id": "harden"
-}
+[
+  {
+    "id": "harden",
+    "category": "support",
+    "targetCount": 1
+  }
+]

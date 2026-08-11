@@ -27,7 +27,7 @@ void main() {
       physique: masterData.physiques.first,
       personality: masterData.personalities.first,
       pattern: masterData.patterns.first,
-      anntena: const Anntena(id: 'anntena-a'),
+      anntena: const Anntena(id: 'anntena-a', category: AnntenaCategory.other),
       masterData: masterData,
     );
   }

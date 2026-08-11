@@ -26,7 +26,7 @@ DenpaMen _denpaMen({
     personality: const Personality(id: 'personality'),
     pattern: const Pattern(id: 'pattern'),
     headShape: const HeadShape(id: 'head', abnormalityResistanceBonuses: {}),
-    anntena: const Anntena(id: 'anntena'),
+    anntena: const Anntena(id: 'anntena', category: AnntenaCategory.other),
     isSpColor: false,
     happiness: 0,
     maxHappiness: 0,

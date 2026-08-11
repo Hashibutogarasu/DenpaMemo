@@ -1,3 +1,7 @@
-{
-  "id": "footGuard"
-}
+[
+  {
+    "id": "footGuard",
+    "category": "support",
+    "targetCount": 1
+  }
+]

@@ -81,7 +81,15 @@
     "qrCodeUnset": "未設定",
     "catchOrder": "キャッチ順",
     "memo": "メモ",
-    "considerCorrections": "補正を考慮する"
+    "considerCorrections": "補正を考慮する",
+    "antennaCategoryAttack": "攻撃",
+    "antennaCategorySupport": "サポート",
+    "antennaCategoryOther": "その他",
+    "antennaLevel": "レベル",
+    "antennaTargetScope": "効果範囲",
+    "antennaPlusLevel": "レベル",
+    "antennaPlusLevelValue": "+${plusLevel}",
+    "antennaNameWithPlusLevel": "${name}+${plusLevel}"
   },
   "headShape": {
     "circle": "まる",
@@ -116,7 +124,20 @@
     "protagonist": "主人公補正"
   },
   "antenna": {
-    "none": "アンテナなし"
+    "none": "アンテナなし",
+    "waterGun_1": "バケツの水",
+    "waterGun_3": "たかなみ",
+    "waterGun_all": "みずでっぽう",
+    "beam_1": "スポットライト",
+    "beam_3": "ふゆのひざし",
+    "beam_all": "よわいこうせん",
+    "fireball_1": "ばくはつ",
+    "fireball_3": "やまかじ",
+    "fireball_all": "ひのたま",
+    "heal_solo_1": "ちょっとかいふく",
+    "heal_solo_2": "そこそこかいふく",
+    "heal_all_1": "みんなちょっとかいふく",
+    "heal_all_2": "みんなそこそこかいふく"
   },
   "bodyColor": {
     "red": "あか",

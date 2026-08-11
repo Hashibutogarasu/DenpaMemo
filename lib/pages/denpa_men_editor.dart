@@ -90,6 +90,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         personality: draft.personality,
         pattern: draft.pattern,
         anntena: draft.anntena,
+        antennaLevel: draft.antennaLevel,
         masterData: widget.masterData,
         happiness: draft.happiness,
         maxHappiness: draft.maxHappiness,
