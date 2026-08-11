@@ -95,6 +95,10 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'heal_solo_2': 'そこそこかいふく',
 		'heal_all_1': 'みんなちょっとかいふく',
 		'heal_all_2': 'みんなそこそこかいふく',
+		'revive_solo_1': 'ちょっとふっかつ',
+		'revive_solo_2': 'そこそこふっかつ',
+		'revive_all_1': 'みんなちょっとふっかつ',
+		'revive_all_2': 'みんなそこそこふっかつ',
 	};
 	Map<String, String> get bodyColor => {
 		'red': 'あか',
@@ -577,6 +581,10 @@ extension on Translations {
 			'antenna.heal_solo_2' => 'そこそこかいふく',
 			'antenna.heal_all_1' => 'みんなちょっとかいふく',
 			'antenna.heal_all_2' => 'みんなそこそこかいふく',
+			'antenna.revive_solo_1' => 'ちょっとふっかつ',
+			'antenna.revive_solo_2' => 'そこそこふっかつ',
+			'antenna.revive_all_1' => 'みんなちょっとふっかつ',
+			'antenna.revive_all_2' => 'みんなそこそこふっかつ',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',
 			'bodyColor.yellow' => 'きいろ',
