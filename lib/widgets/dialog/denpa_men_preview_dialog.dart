@@ -22,10 +22,10 @@ class DenpaMenPreviewDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 420, maxHeight: 640),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
           child: DenpaMenStatus.fromDenpaMen(
             denpaMen,
             totalAttributeCount: totalAttributeCount,
+            showIcon: true,
           ),
         ),
       ),
