@@ -15,6 +15,11 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   bodyColors: (json['bodyColors'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
+  bodyColorShades:
+      (json['bodyColorShades'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList() ??
+      const <int>[],
   attributeResistance: (json['attributeResistance'] as List<dynamic>)
       .map((e) => AttributeResistance.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -59,6 +64,7 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'name': instance.name,
   'abnormalityResistances': instance.abnormalityResistances,
   'bodyColors': instance.bodyColors,
+  'bodyColorShades': instance.bodyColorShades,
   'attributeResistance': instance.attributeResistance,
   'physique': instance.physique,
   'personality': instance.personality,

@@ -13,6 +13,7 @@ extension DenpaMenEntityMapper on DenpaMen {
       cuid: this.id,
       name: name,
       bodyColors: bodyColors,
+      bodyColorShades: bodyColorShades,
       parentIds: parentIds,
       isSpColor: isSpColor,
       headShapeId: headShape.id,
@@ -55,6 +56,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
       id: cuid,
       name: name,
       bodyColors: bodyColors,
+      bodyColorShades: bodyColorShades,
       isSpColor: isSpColor,
       headShape: masterData.headShapes.firstWhere(
         (headShape) => headShape.id == headShapeId,

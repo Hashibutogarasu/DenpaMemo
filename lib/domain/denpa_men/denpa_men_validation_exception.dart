@@ -15,6 +15,16 @@ class InvalidBodyColorCountException extends DenpaMenValidationException {
   final int bodyColorCount;
 }
 
+class InvalidBodyColorShadeCountException extends DenpaMenValidationException {
+  const InvalidBodyColorShadeCountException(this.bodyColorShadeCount)
+    : super(
+        'bodyColorShades must be empty or match bodyColors in length, '
+        'got $bodyColorShadeCount',
+      );
+
+  final int bodyColorShadeCount;
+}
+
 class SpColorRequiresSingleBodyColorException
     extends DenpaMenValidationException {
   const SpColorRequiresSingleBodyColorException()

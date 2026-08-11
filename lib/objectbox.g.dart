@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(31, 2946344687157787876),
+    lastPropertyId: const obx_int.IdUid(32, 4619165505260223847),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -215,6 +215,12 @@ final _entities = <obx_int.ModelEntity>[
         type: 6,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(32, 4619165505260223847),
+        name: 'bodyColorShades',
+        type: 27,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -353,7 +359,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final parentIdsOffset = fbb.writeList(
           object.parentIds.map(fbb.writeString).toList(growable: false),
         );
-        fbb.startTable(32);
+        final bodyColorShadesOffset = fbb.writeListInt64(
+          object.bodyColorShades,
+        );
+        fbb.startTable(33);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -385,6 +394,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(28, object.catchOrder);
         fbb.addBool(29, object.considerCorrections);
         fbb.addInt64(30, object.antennaLevel);
+        fbb.addOffset(31, bodyColorShadesOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -412,6 +422,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fb.StringReader(asciiOptimization: true),
           lazy: false,
         ).vTableGet(buffer, rootOffset, 8, []);
+        final bodyColorShadesParam = const fb.ListReader<int>(
+          fb.Int64Reader(),
+          lazy: false,
+        ).vTableGet(buffer, rootOffset, 66, []);
         final parentIdsParam = const fb.ListReader<String>(
           fb.StringReader(asciiOptimization: true),
           lazy: false,
@@ -542,6 +556,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           cuid: cuidParam,
           name: nameParam,
           bodyColors: bodyColorsParam,
+          bodyColorShades: bodyColorShadesParam,
           parentIds: parentIdsParam,
           isSpColor: isSpColorParam,
           headShapeId: headShapeIdParam,
@@ -800,6 +815,11 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.antennaLevel].
   static final antennaLevel = obx.QueryIntegerProperty<DenpaMenEntity>(
     _entities[0].properties[30],
+  );
+
+  /// See [DenpaMenEntity.bodyColorShades].
+  static final bodyColorShades = obx.QueryIntegerVectorProperty<DenpaMenEntity>(
+    _entities[0].properties[31],
   );
 }
 

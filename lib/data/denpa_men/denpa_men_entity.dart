@@ -21,6 +21,8 @@ class DenpaMenEntity {
 
   List<String> bodyColors;
 
+  List<int> bodyColorShades;
+
   List<String> parentIds;
 
   bool isSpColor;
@@ -82,6 +84,7 @@ class DenpaMenEntity {
     required this.cuid,
     required this.name,
     required this.bodyColors,
+    this.bodyColorShades = const [],
     required this.parentIds,
     required this.isSpColor,
     required this.headShapeId,

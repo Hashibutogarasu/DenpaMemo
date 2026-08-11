@@ -384,6 +384,15 @@ class Translations$editableStatus$ja {
 	/// ja: 'SPカラー'
 	String get spColor => 'SPカラー';
 
+	/// ja: '薄い'
+	String get bodyColorShadeThin => '薄い';
+
+	/// ja: '通常'
+	String get bodyColorShadeNormal => '通常';
+
+	/// ja: '濃い'
+	String get bodyColorShadeDark => '濃い';
+
 	/// ja: 'アンテナ'
 	String get antenna => 'アンテナ';
 
@@ -505,6 +514,9 @@ extension on Translations {
 			'editableStatus.headShape' => '頭の形',
 			'editableStatus.bodyColor' => '体色',
 			'editableStatus.spColor' => 'SPカラー',
+			'editableStatus.bodyColorShadeThin' => '薄い',
+			'editableStatus.bodyColorShadeNormal' => '通常',
+			'editableStatus.bodyColorShadeDark' => '濃い',
 			'editableStatus.antenna' => 'アンテナ',
 			'editableStatus.correction' => '補正',
 			'editableStatus.parents' => '親',
