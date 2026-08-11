@@ -11,13 +11,25 @@ import 'denpa_men_editor.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 
+class DenpaMenQrPageArgs {
+  const DenpaMenQrPageArgs({required this.masterData, this.initialRawValue});
+
+  final MasterData masterData;
+  final String? initialRawValue;
+}
+
 /// Shown before [DenpaMenEditor] when adding individuals: generates a cuid
 /// for the current session's QR code and carries it forward once "next" is
 /// pressed. Backing out discards the session entirely.
 class DenpaMenQrPage extends ConsumerStatefulWidget {
-  const DenpaMenQrPage({super.key, required this.masterData});
+  const DenpaMenQrPage({
+    super.key,
+    required this.masterData,
+    this.initialRawValue,
+  });
 
   final MasterData masterData;
+  final String? initialRawValue;
 
   @override
   ConsumerState<DenpaMenQrPage> createState() => _DenpaMenQrPageState();
@@ -31,7 +43,9 @@ class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        ref.read(denpaMenSessionProvider.notifier).start(cuid());
+        ref
+            .read(denpaMenSessionProvider.notifier)
+            .start(widget.initialRawValue ?? cuid());
       }
     });
   }

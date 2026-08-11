@@ -265,6 +265,12 @@ class Translations$home$ja {
 	/// ja: '既存のQRコードから追加'
 	String get addFromExistingQr => '既存のQRコードから追加';
 
+	/// ja: 'QRコードファイルから追加'
+	String get addFromQrFile => 'QRコードファイルから追加';
+
+	/// ja: 'QRコードを読み取れませんでした'
+	String get addFromQrFileInvalid => 'QRコードを読み取れませんでした';
+
 	/// ja: 'リスト表示'
 	String get viewModeList => 'リスト表示';
 
@@ -489,6 +495,8 @@ extension on Translations {
 			'home.addSingle' => '単体で追加',
 			'home.addFromQr' => 'QRコードから追加',
 			'home.addFromExistingQr' => '既存のQRコードから追加',
+			'home.addFromQrFile' => 'QRコードファイルから追加',
+			'home.addFromQrFileInvalid' => 'QRコードを読み取れませんでした',
 			'home.viewModeList' => 'リスト表示',
 			'home.viewModeTree' => 'ツリー表示',
 			'home.resetTreePosition' => '位置をリセット',

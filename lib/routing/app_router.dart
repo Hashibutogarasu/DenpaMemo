@@ -53,16 +53,19 @@ class AddDenpaMenRoute extends GoRouteData with $AddDenpaMenRoute {
 /// Pushed before [AddDenpaMenRoute] when adding new individuals: shows the
 /// session's QR code and, once "next" is pressed, hands off to
 /// [DenpaMenEditor] in session mode. [$extra] carries the [MasterData]
-/// needed to build a blank [DenpaMen].
+/// needed to build a blank [DenpaMen], plus an optional raw value decoded
+/// from an imported QR code image so the regenerated code matches it.
 @TypedGoRoute<DenpaMenQrRoute>(path: '/add/qr')
 class DenpaMenQrRoute extends GoRouteData with $DenpaMenQrRoute {
   const DenpaMenQrRoute({this.$extra});
 
-  final MasterData? $extra;
+  final DenpaMenQrPageArgs? $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      DenpaMenQrPage(masterData: $extra!);
+  Widget build(BuildContext context, GoRouterState state) => DenpaMenQrPage(
+    masterData: $extra!.masterData,
+    initialRawValue: $extra!.initialRawValue,
+  );
 }
 
 /// Pushed before [AddDenpaMenRoute] when adding to an already-saved QR code:
