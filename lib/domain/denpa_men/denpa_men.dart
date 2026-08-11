@@ -22,6 +22,7 @@ abstract class DenpaMen with _$DenpaMen {
     required String name,
     required List<AbnormalityResistance> abnormalityResistances,
     required List<String> bodyColors,
+    @Default(<int>[]) List<int> bodyColorShades,
     required List<AttributeResistance> attributeResistance,
     required Physique physique,
     required Personality personality,

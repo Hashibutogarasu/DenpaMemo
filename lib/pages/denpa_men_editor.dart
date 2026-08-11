@@ -84,6 +84,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         id: draft.id,
         name: draft.name,
         bodyColors: draft.bodyColors,
+        bodyColorShades: draft.bodyColorShades,
         isSpColor: draft.isSpColor,
         headShape: draft.headShape,
         physique: draft.physique,

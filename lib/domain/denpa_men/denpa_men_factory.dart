@@ -23,6 +23,7 @@ DenpaMen createDenpaMen({
   String? id,
   required String name,
   required List<String> bodyColors,
+  List<int> bodyColorShades = const [],
   required bool isSpColor,
   required HeadShape headShape,
   required Physique physique,
@@ -54,6 +55,9 @@ DenpaMen createDenpaMen({
   if (bodyColors.length != 1 && bodyColors.length != 2) {
     throw InvalidBodyColorCountException(bodyColors.length);
   }
+  if (bodyColorShades.isNotEmpty && bodyColorShades.length != bodyColors.length) {
+    throw InvalidBodyColorShadeCountException(bodyColorShades.length);
+  }
   if (isSpColor && bodyColors.length != 1) {
     throw const SpColorRequiresSingleBodyColorException();
   }
@@ -77,6 +81,9 @@ DenpaMen createDenpaMen({
     name: name,
     abnormalityResistances: const [],
     bodyColors: bodyColors,
+    bodyColorShades: bodyColorShades.isEmpty
+        ? List.filled(bodyColors.length, 0)
+        : bodyColorShades,
     attributeResistance: const [],
     physique: physique,
     personality: personality,

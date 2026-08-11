@@ -200,12 +200,14 @@ class EditableDenpaMenStatus extends StatelessWidget {
                     final result = await showBodyColorSelectionDialog(
                       context,
                       selected: denpaMen.bodyColors,
+                      shades: denpaMen.bodyColorShades,
                       isSpColor: denpaMen.isSpColor,
                     );
                     if (result != null) {
                       onChanged(
                         denpaMen.copyWith(
                           bodyColors: result.bodyColors,
+                          bodyColorShades: result.bodyColorShades,
                           isSpColor: result.isSpColor,
                         ),
                       );
@@ -214,10 +216,15 @@ class EditableDenpaMenStatus extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      for (final colorId in denpaMen.bodyColors)
+                      for (var i = 0; i < denpaMen.bodyColors.length; i++)
                         Padding(
                           padding: const EdgeInsets.only(right: 4),
-                          child: ColorDot(colorId: colorId),
+                          child: ColorDot(
+                            colorId: denpaMen.bodyColors[i],
+                            shadeLevel: i < denpaMen.bodyColorShades.length
+                                ? denpaMen.bodyColorShades[i]
+                                : 0,
+                          ),
                         ),
                     ],
                   ),
