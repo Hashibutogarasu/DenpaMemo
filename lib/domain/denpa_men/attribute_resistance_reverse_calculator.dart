@@ -38,7 +38,7 @@ extension AttributeResistanceReverseLookup on List<AttributeResistance> {
 }
 
 Map<String, int> _toMap(List<AttributeResistance> list) => {
-  for (final resistance in list) resistance.attributeId: resistance.value,
+  for (final resistance in list) resistance.attribute.id: resistance.value,
 };
 
 bool _mapEquals(Map<String, int> a, Map<String, int> b) {

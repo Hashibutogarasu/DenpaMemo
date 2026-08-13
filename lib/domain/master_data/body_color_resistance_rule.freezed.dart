@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BodyColorResistanceRule {
 
- String get colorId; Map<String, int> get attributeResistanceBonuses;
+ String get colorId;@JsonKey(includeFromJson: false, includeToJson: false) List<AttributeBonus> get attributeResistanceBonuses;
 /// Create a copy of BodyColorResistanceRule
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $BodyColorResistanceRuleCopyWith<$Res>  {
   factory $BodyColorResistanceRuleCopyWith(BodyColorResistanceRule value, $Res Function(BodyColorResistanceRule) _then) = _$BodyColorResistanceRuleCopyWithImpl;
 @useResult
 $Res call({
- String colorId, Map<String, int> attributeResistanceBonuses
+ String colorId,@JsonKey(includeFromJson: false, includeToJson: false) List<AttributeBonus> attributeResistanceBonuses
 });
 
 
@@ -69,7 +69,7 @@ class _$BodyColorResistanceRuleCopyWithImpl<$Res>
   return _then(_self.copyWith(
 colorId: null == colorId ? _self.colorId : colorId // ignore: cast_nullable_to_non_nullable
 as String,attributeResistanceBonuses: null == attributeResistanceBonuses ? _self.attributeResistanceBonuses : attributeResistanceBonuses // ignore: cast_nullable_to_non_nullable
-as Map<String, int>,
+as List<AttributeBonus>,
   ));
 }
 
@@ -154,7 +154,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String colorId,  Map<String, int> attributeResistanceBonuses)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String colorId, @JsonKey(includeFromJson: false, includeToJson: false)  List<AttributeBonus> attributeResistanceBonuses)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BodyColorResistanceRule() when $default != null:
 return $default(_that.colorId,_that.attributeResistanceBonuses);case _:
@@ -175,7 +175,7 @@ return $default(_that.colorId,_that.attributeResistanceBonuses);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String colorId,  Map<String, int> attributeResistanceBonuses)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String colorId, @JsonKey(includeFromJson: false, includeToJson: false)  List<AttributeBonus> attributeResistanceBonuses)  $default,) {final _that = this;
 switch (_that) {
 case _BodyColorResistanceRule():
 return $default(_that.colorId,_that.attributeResistanceBonuses);case _:
@@ -195,7 +195,7 @@ return $default(_that.colorId,_that.attributeResistanceBonuses);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String colorId,  Map<String, int> attributeResistanceBonuses)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String colorId, @JsonKey(includeFromJson: false, includeToJson: false)  List<AttributeBonus> attributeResistanceBonuses)?  $default,) {final _that = this;
 switch (_that) {
 case _BodyColorResistanceRule() when $default != null:
 return $default(_that.colorId,_that.attributeResistanceBonuses);case _:
@@ -210,15 +210,15 @@ return $default(_that.colorId,_that.attributeResistanceBonuses);case _:
 @JsonSerializable()
 
 class _BodyColorResistanceRule implements BodyColorResistanceRule {
-  const _BodyColorResistanceRule({required this.colorId, final  Map<String, int> attributeResistanceBonuses = const {}}): _attributeResistanceBonuses = attributeResistanceBonuses;
+  const _BodyColorResistanceRule({required this.colorId, @JsonKey(includeFromJson: false, includeToJson: false) final  List<AttributeBonus> attributeResistanceBonuses = const <AttributeBonus>[]}): _attributeResistanceBonuses = attributeResistanceBonuses;
   factory _BodyColorResistanceRule.fromJson(Map<String, dynamic> json) => _$BodyColorResistanceRuleFromJson(json);
 
 @override final  String colorId;
- final  Map<String, int> _attributeResistanceBonuses;
-@override@JsonKey() Map<String, int> get attributeResistanceBonuses {
-  if (_attributeResistanceBonuses is EqualUnmodifiableMapView) return _attributeResistanceBonuses;
+ final  List<AttributeBonus> _attributeResistanceBonuses;
+@override@JsonKey(includeFromJson: false, includeToJson: false) List<AttributeBonus> get attributeResistanceBonuses {
+  if (_attributeResistanceBonuses is EqualUnmodifiableListView) return _attributeResistanceBonuses;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(_attributeResistanceBonuses);
+  return EqualUnmodifiableListView(_attributeResistanceBonuses);
 }
 
 
@@ -255,7 +255,7 @@ abstract mixin class _$BodyColorResistanceRuleCopyWith<$Res> implements $BodyCol
   factory _$BodyColorResistanceRuleCopyWith(_BodyColorResistanceRule value, $Res Function(_BodyColorResistanceRule) _then) = __$BodyColorResistanceRuleCopyWithImpl;
 @override @useResult
 $Res call({
- String colorId, Map<String, int> attributeResistanceBonuses
+ String colorId,@JsonKey(includeFromJson: false, includeToJson: false) List<AttributeBonus> attributeResistanceBonuses
 });
 
 
@@ -276,7 +276,7 @@ class __$BodyColorResistanceRuleCopyWithImpl<$Res>
   return _then(_BodyColorResistanceRule(
 colorId: null == colorId ? _self.colorId : colorId // ignore: cast_nullable_to_non_nullable
 as String,attributeResistanceBonuses: null == attributeResistanceBonuses ? _self._attributeResistanceBonuses : attributeResistanceBonuses // ignore: cast_nullable_to_non_nullable
-as Map<String, int>,
+as List<AttributeBonus>,
   ));
 }
 

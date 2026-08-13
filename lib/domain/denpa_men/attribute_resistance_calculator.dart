@@ -1,3 +1,4 @@
+import '../master_data/attribute_bonus.dart';
 import '../master_data/master_data.dart';
 import 'attribute_resistance.dart';
 
@@ -20,8 +21,12 @@ extension AttributeResistanceCalculation on BodyColorSelection {
       for (final colorId in bodyColors) rulesByColorId[colorId]!,
     ];
     final attributeIdList = masterData.attributes
+        .where((attribute) => attribute.isElemental)
         .map((attribute) => attribute.id)
         .toList();
+    final attributeById = {
+      for (final attribute in masterData.attributes) attribute.id: attribute,
+    };
 
     final isSameColorPair =
         bodyColors.length == 2 && bodyColors[0] == bodyColors[1];
@@ -31,12 +36,15 @@ extension AttributeResistanceCalculation on BodyColorSelection {
     final totals = <String, int>{};
     if (isDistinctColorPair) {
       for (final rule in ruleForColor) {
-        rule.attributeResistanceBonuses.forEach((attributeId, bonus) {
-          totals[attributeId] = (totals[attributeId] ?? 0) + bonus;
-        });
+        for (final bonus in rule.attributeResistanceBonuses) {
+          totals[bonus.attribute.id] =
+              (totals[bonus.attribute.id] ?? 0) + bonus.bonus;
+        }
       }
     } else {
-      totals.addAll(baseRule!.attributeResistanceBonuses);
+      for (final bonus in baseRule!.attributeResistanceBonuses) {
+        totals[bonus.attribute.id] = bonus.bonus;
+      }
     }
 
     if (baseRule != null) {
@@ -56,14 +64,17 @@ extension AttributeResistanceCalculation on BodyColorSelection {
     return [
       for (final entry in totals.entries)
         if (entry.value != 0)
-          AttributeResistance(attributeId: entry.key, value: entry.value),
+          AttributeResistance(
+            attribute: attributeById[entry.key]!,
+            value: entry.value,
+          ),
     ];
   }
 }
 
 void _applySoloOrPairEffects({
   required Map<String, int> totals,
-  required Map<String, int> ownBonuses,
+  required List<AttributeBonus> ownBonuses,
   required List<String> attributeIdList,
   required bool isSpColor,
   required bool isSameColorPair,
@@ -77,7 +88,7 @@ void _applySoloOrPairEffects({
     return;
   }
 
-  final hasOwnStrength = ownBonuses.values.any((v) => v > 0);
+  final hasOwnStrength = ownBonuses.any((bonus) => bonus.bonus > 0);
   final isFullNegativeCoverage =
       !hasOwnStrength && ownBonuses.length == attributeIdList.length;
 

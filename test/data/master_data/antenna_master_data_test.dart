@@ -9,7 +9,7 @@ void main() {
     () async {
       final masterData = await JsonMasterDataRepository().load();
 
-      expect(masterData.anntenas, hasLength(52));
+      expect(masterData.anntenas, hasLength(62));
 
       final ids = masterData.anntenas.map((a) => a.id).toSet();
       expect(ids, contains('revive_solo_1'));
@@ -17,7 +17,19 @@ void main() {
       expect(ids, contains('fireball_all'));
       expect(ids, contains('antennaRoot'));
       expect(ids, contains('none'));
-      expect(ids.length, 52);
+      expect(ids, contains('darkBall_1'));
+      expect(ids, contains('darkBall_3'));
+      expect(ids, contains('darkBall_all'));
+      expect(ids, contains('whirlwind_1'));
+      expect(ids, contains('whirlwind_3'));
+      expect(ids, contains('whirlwind_all'));
+      expect(ids, contains('staticElectricity_1'));
+      expect(ids, contains('staticElectricity_3'));
+      expect(ids, contains('staticElectricity_all'));
+      expect(ids, contains('sharpIce_1'));
+      expect(ids, contains('sharpIce_3'));
+      expect(ids, contains('sharpIce_all'));
+      expect(ids.length, 62);
     },
   );
 
@@ -28,7 +40,7 @@ void main() {
       (a) => a.id == 'fireball_all',
     );
     expect(fireball.dealsDamage, isTrue);
-    expect(fireball.attackAttributeId, 'fire');
+    expect(fireball.attackAttributes.map((a) => a.id), ['fire']);
   });
 
   test('heal deals no damage and has no attack attribute', () async {
@@ -36,7 +48,7 @@ void main() {
 
     final heal = masterData.anntenas.firstWhere((a) => a.id == 'heal_solo_1');
     expect(heal.dealsDamage, isFalse);
-    expect(heal.attackAttributeId, isNull);
+    expect(heal.attackAttributes, isEmpty);
     expect(heal.maxLevel, 9);
     expect(heal.evolvesToId, 'heal_solo_2');
   });

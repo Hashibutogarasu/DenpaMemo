@@ -24,7 +24,10 @@ void main() {
       masterData: masterData,
     );
 
-    expect(denpaMen.attributeResistance, hasLength(masterData.attributes.length));
+    expect(
+      denpaMen.attributeResistance,
+      hasLength(masterData.attributes.where((a) => a.isElemental).length),
+    );
     for (final resistance in denpaMen.attributeResistance) {
       expect(resistance.value, -1);
     }

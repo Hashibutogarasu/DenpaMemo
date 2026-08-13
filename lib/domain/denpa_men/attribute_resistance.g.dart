@@ -8,13 +8,13 @@ part of 'attribute_resistance.dart';
 
 _AttributeResistance _$AttributeResistanceFromJson(Map<String, dynamic> json) =>
     _AttributeResistance(
-      attributeId: json['attributeId'] as String,
+      attribute: Attribute.fromJson(json['attribute'] as Map<String, dynamic>),
       value: (json['value'] as num).toInt(),
     );
 
 Map<String, dynamic> _$AttributeResistanceToJson(
   _AttributeResistance instance,
 ) => <String, dynamic>{
-  'attributeId': instance.attributeId,
+  'attribute': instance.attribute,
   'value': instance.value,
 };

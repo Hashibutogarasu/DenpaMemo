@@ -2,7 +2,7 @@
   {
     "id": "fallingRock",
     "dealsDamage": true,
-    "attackAttributeId": "earth",
+    "attackAttributeIds": ["earth"],
     "category": "attack",
     "targetCount": 1
   }

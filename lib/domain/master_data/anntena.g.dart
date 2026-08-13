@@ -12,7 +12,11 @@ _Anntena _$AnntenaFromJson(Map<String, dynamic> json) => _Anntena(
   targetCount: (json['targetCount'] as num?)?.toInt(),
   targetsAll: json['targetsAll'] as bool? ?? false,
   dealsDamage: json['dealsDamage'] as bool? ?? false,
-  attackAttributeId: json['attackAttributeId'] as String?,
+  attackAttributes:
+      (json['attackAttributes'] as List<dynamic>?)
+          ?.map((e) => Attribute.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <Attribute>[],
   isInheritable: json['isInheritable'] as bool? ?? false,
   evolvesToId: json['evolvesToId'] as String?,
   maxLevel: (json['maxLevel'] as num?)?.toInt(),
@@ -25,7 +29,7 @@ Map<String, dynamic> _$AnntenaToJson(_Anntena instance) => <String, dynamic>{
   'targetCount': instance.targetCount,
   'targetsAll': instance.targetsAll,
   'dealsDamage': instance.dealsDamage,
-  'attackAttributeId': instance.attackAttributeId,
+  'attackAttributes': instance.attackAttributes,
   'isInheritable': instance.isInheritable,
   'evolvesToId': instance.evolvesToId,
   'maxLevel': instance.maxLevel,
