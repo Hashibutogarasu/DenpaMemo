@@ -88,7 +88,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       physique: masterData.physiques.first,
       personality: masterData.personalities.first,
       pattern: masterData.patterns.first,
-      anntena: masterData.anntenas.first,
+      anntena: masterData.anntenas.firstWhere((a) => a.id == 'none'),
       masterData: masterData,
       maxHappiness: 0,
       level: 1,
