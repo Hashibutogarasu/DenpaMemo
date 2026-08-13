@@ -54,3 +54,5 @@ flutter:
     - assets/data/antennas/support/
     - assets/data/antennas/other/
     - assets/data/head_shapes/
+    - assets/data/attributes/elemental/
+    - assets/data/attributes/special/

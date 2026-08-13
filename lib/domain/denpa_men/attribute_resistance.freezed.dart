@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AttributeResistance {
 
- String get attributeId; int get value;
+ Attribute get attribute; int get value;
 /// Create a copy of AttributeResistance
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AttributeResistanceCopyWith<AttributeResistance> get copyWith => _$AttributeRes
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttributeResistance&&(identical(other.attributeId, attributeId) || other.attributeId == attributeId)&&(identical(other.value, value) || other.value == value));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttributeResistance&&(identical(other.attribute, attribute) || other.attribute == attribute)&&(identical(other.value, value) || other.value == value));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,attributeId,value);
+int get hashCode => Object.hash(runtimeType,attribute,value);
 
 @override
 String toString() {
-  return 'AttributeResistance(attributeId: $attributeId, value: $value)';
+  return 'AttributeResistance(attribute: $attribute, value: $value)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $AttributeResistanceCopyWith<$Res>  {
   factory $AttributeResistanceCopyWith(AttributeResistance value, $Res Function(AttributeResistance) _then) = _$AttributeResistanceCopyWithImpl;
 @useResult
 $Res call({
- String attributeId, int value
+ Attribute attribute, int value
 });
 
 
-
+$AttributeCopyWith<$Res> get attribute;
 
 }
 /// @nodoc
@@ -65,14 +65,23 @@ class _$AttributeResistanceCopyWithImpl<$Res>
 
 /// Create a copy of AttributeResistance
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? attributeId = null,Object? value = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? attribute = null,Object? value = null,}) {
   return _then(_self.copyWith(
-attributeId: null == attributeId ? _self.attributeId : attributeId // ignore: cast_nullable_to_non_nullable
-as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+attribute: null == attribute ? _self.attribute : attribute // ignore: cast_nullable_to_non_nullable
+as Attribute,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
-
+/// Create a copy of AttributeResistance
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AttributeCopyWith<$Res> get attribute {
+  
+  return $AttributeCopyWith<$Res>(_self.attribute, (value) {
+    return _then(_self.copyWith(attribute: value));
+  });
+}
 }
 
 
@@ -154,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String attributeId,  int value)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Attribute attribute,  int value)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttributeResistance() when $default != null:
-return $default(_that.attributeId,_that.value);case _:
+return $default(_that.attribute,_that.value);case _:
   return orElse();
 
 }
@@ -175,10 +184,10 @@ return $default(_that.attributeId,_that.value);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String attributeId,  int value)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Attribute attribute,  int value)  $default,) {final _that = this;
 switch (_that) {
 case _AttributeResistance():
-return $default(_that.attributeId,_that.value);case _:
+return $default(_that.attribute,_that.value);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +204,10 @@ return $default(_that.attributeId,_that.value);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String attributeId,  int value)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Attribute attribute,  int value)?  $default,) {final _that = this;
 switch (_that) {
 case _AttributeResistance() when $default != null:
-return $default(_that.attributeId,_that.value);case _:
+return $default(_that.attribute,_that.value);case _:
   return null;
 
 }
@@ -210,10 +219,10 @@ return $default(_that.attributeId,_that.value);case _:
 @JsonSerializable()
 
 class _AttributeResistance implements AttributeResistance {
-  const _AttributeResistance({required this.attributeId, required this.value});
+  const _AttributeResistance({required this.attribute, required this.value});
   factory _AttributeResistance.fromJson(Map<String, dynamic> json) => _$AttributeResistanceFromJson(json);
 
-@override final  String attributeId;
+@override final  Attribute attribute;
 @override final  int value;
 
 /// Create a copy of AttributeResistance
@@ -229,16 +238,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttributeResistance&&(identical(other.attributeId, attributeId) || other.attributeId == attributeId)&&(identical(other.value, value) || other.value == value));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttributeResistance&&(identical(other.attribute, attribute) || other.attribute == attribute)&&(identical(other.value, value) || other.value == value));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,attributeId,value);
+int get hashCode => Object.hash(runtimeType,attribute,value);
 
 @override
 String toString() {
-  return 'AttributeResistance(attributeId: $attributeId, value: $value)';
+  return 'AttributeResistance(attribute: $attribute, value: $value)';
 }
 
 
@@ -249,11 +258,11 @@ abstract mixin class _$AttributeResistanceCopyWith<$Res> implements $AttributeRe
   factory _$AttributeResistanceCopyWith(_AttributeResistance value, $Res Function(_AttributeResistance) _then) = __$AttributeResistanceCopyWithImpl;
 @override @useResult
 $Res call({
- String attributeId, int value
+ Attribute attribute, int value
 });
 
 
-
+@override $AttributeCopyWith<$Res> get attribute;
 
 }
 /// @nodoc
@@ -266,15 +275,24 @@ class __$AttributeResistanceCopyWithImpl<$Res>
 
 /// Create a copy of AttributeResistance
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? attributeId = null,Object? value = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? attribute = null,Object? value = null,}) {
   return _then(_AttributeResistance(
-attributeId: null == attributeId ? _self.attributeId : attributeId // ignore: cast_nullable_to_non_nullable
-as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+attribute: null == attribute ? _self.attribute : attribute // ignore: cast_nullable_to_non_nullable
+as Attribute,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
 
-
+/// Create a copy of AttributeResistance
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AttributeCopyWith<$Res> get attribute {
+  
+  return $AttributeCopyWith<$Res>(_self.attribute, (value) {
+    return _then(_self.copyWith(attribute: value));
+  });
+}
 }
 
 // dart format on

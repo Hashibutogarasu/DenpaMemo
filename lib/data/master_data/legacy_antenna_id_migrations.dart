@@ -10,6 +10,8 @@ class LegacyAntennaIdMigrator implements AntennaIdMigrator {
     'beam': 'beam_all',
     'fireball': 'fireball_all',
     'heal': 'heal_solo_1',
+    'staticElectricity': 'staticElectricity_all',
+    'sharpIce': 'sharpIce_all',
   };
 
   @override

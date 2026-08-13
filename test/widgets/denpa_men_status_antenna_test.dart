@@ -45,7 +45,7 @@ void main() {
         bodyColorResistanceRules: const [
           BodyColorResistanceRule(
             colorId: colorId,
-            attributeResistanceBonuses: {},
+            attributeResistanceBonuses: [],
           ),
         ],
         bodyColorAbnormalityResistanceRules: const [],

@@ -30,20 +30,24 @@ extension DenpaMenResistanceCalculation on DenpaMen {
     final attributeTotals = <String, int>{
       for (final resistance
           in colorSelection.calculateAttributeResistance(masterData))
-        resistance.attributeId: resistance.value,
+        resistance.attribute.id: resistance.value,
     };
 
     headShape.abnormalityResistanceBonuses.forEach((abnormalityId, bonus) {
       abnormalityTotals[abnormalityId] =
           (abnormalityTotals[abnormalityId] ?? 0) + bonus;
     });
-    headShape.attributeResistanceBonuses.forEach((attributeId, bonus) {
-      attributeTotals[attributeId] = (attributeTotals[attributeId] ?? 0) + bonus;
-    });
+    for (final bonus in headShape.attributeResistanceBonuses) {
+      attributeTotals[bonus.attribute.id] =
+          (attributeTotals[bonus.attribute.id] ?? 0) + bonus.bonus;
+    }
 
     final attributeIndexById = {
       for (final attribute in masterData.attributes)
         attribute.id: attribute.index,
+    };
+    final attributeById = {
+      for (final attribute in masterData.attributes) attribute.id: attribute,
     };
 
     return (
@@ -59,10 +63,13 @@ extension DenpaMenResistanceCalculation on DenpaMen {
           [
             for (final entry in attributeTotals.entries)
               if (entry.value != 0)
-                AttributeResistance(attributeId: entry.key, value: entry.value),
+                AttributeResistance(
+                  attribute: attributeById[entry.key]!,
+                  value: entry.value,
+                ),
           ]..sort(
-            (a, b) => (attributeIndexById[a.attributeId] ?? 0).compareTo(
-              attributeIndexById[b.attributeId] ?? 0,
+            (a, b) => (attributeIndexById[a.attribute.id] ?? 0).compareTo(
+              attributeIndexById[b.attribute.id] ?? 0,
             ),
           ),
     );

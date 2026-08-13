@@ -26,7 +26,7 @@ void main() {
 
     expect(denpaMen.attributeResistance, hasLength(1));
     final water = denpaMen.attributeResistance.single;
-    expect(water.attributeId, 'water');
+    expect(water.attribute.id, 'water');
     expect(water.value, 2);
   });
 }

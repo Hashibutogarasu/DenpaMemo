@@ -29,7 +29,7 @@ void main() {
     personalities: [personality],
     patterns: [pattern],
     bodyColorResistanceRules: [
-      BodyColorResistanceRule(colorId: colorId, attributeResistanceBonuses: const {}),
+      BodyColorResistanceRule(colorId: colorId, attributeResistanceBonuses: const []),
     ],
     bodyColorAbnormalityResistanceRules: const [],
     corrections: const [],

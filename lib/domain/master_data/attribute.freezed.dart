@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Attribute {
 
- String get id; int get index;
+ String get id; int get index; bool get isElemental; List<Attribute> get resistantTo; List<Attribute> get weakTo;
 /// Create a copy of Attribute
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AttributeCopyWith<Attribute> get copyWith => _$AttributeCopyWithImpl<Attribute>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.index, index) || other.index == index));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.index, index) || other.index == index)&&(identical(other.isElemental, isElemental) || other.isElemental == isElemental)&&const DeepCollectionEquality().equals(other.resistantTo, resistantTo)&&const DeepCollectionEquality().equals(other.weakTo, weakTo));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,index);
+int get hashCode => Object.hash(runtimeType,id,index,isElemental,const DeepCollectionEquality().hash(resistantTo),const DeepCollectionEquality().hash(weakTo));
 
 @override
 String toString() {
-  return 'Attribute(id: $id, index: $index)';
+  return 'Attribute(id: $id, index: $index, isElemental: $isElemental, resistantTo: $resistantTo, weakTo: $weakTo)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AttributeCopyWith<$Res>  {
   factory $AttributeCopyWith(Attribute value, $Res Function(Attribute) _then) = _$AttributeCopyWithImpl;
 @useResult
 $Res call({
- String id, int index
+ String id, int index, bool isElemental, List<Attribute> resistantTo, List<Attribute> weakTo
 });
 
 
@@ -65,11 +65,14 @@ class _$AttributeCopyWithImpl<$Res>
 
 /// Create a copy of Attribute
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? index = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? index = null,Object? isElemental = null,Object? resistantTo = null,Object? weakTo = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
-as int,
+as int,isElemental: null == isElemental ? _self.isElemental : isElemental // ignore: cast_nullable_to_non_nullable
+as bool,resistantTo: null == resistantTo ? _self.resistantTo : resistantTo // ignore: cast_nullable_to_non_nullable
+as List<Attribute>,weakTo: null == weakTo ? _self.weakTo : weakTo // ignore: cast_nullable_to_non_nullable
+as List<Attribute>,
   ));
 }
 
@@ -154,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int index)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int index,  bool isElemental,  List<Attribute> resistantTo,  List<Attribute> weakTo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Attribute() when $default != null:
-return $default(_that.id,_that.index);case _:
+return $default(_that.id,_that.index,_that.isElemental,_that.resistantTo,_that.weakTo);case _:
   return orElse();
 
 }
@@ -175,10 +178,10 @@ return $default(_that.id,_that.index);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int index)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int index,  bool isElemental,  List<Attribute> resistantTo,  List<Attribute> weakTo)  $default,) {final _that = this;
 switch (_that) {
 case _Attribute():
-return $default(_that.id,_that.index);case _:
+return $default(_that.id,_that.index,_that.isElemental,_that.resistantTo,_that.weakTo);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +198,10 @@ return $default(_that.id,_that.index);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int index)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int index,  bool isElemental,  List<Attribute> resistantTo,  List<Attribute> weakTo)?  $default,) {final _that = this;
 switch (_that) {
 case _Attribute() when $default != null:
-return $default(_that.id,_that.index);case _:
+return $default(_that.id,_that.index,_that.isElemental,_that.resistantTo,_that.weakTo);case _:
   return null;
 
 }
@@ -210,11 +213,26 @@ return $default(_that.id,_that.index);case _:
 @JsonSerializable()
 
 class _Attribute implements Attribute {
-  const _Attribute({required this.id, required this.index});
+  const _Attribute({required this.id, required this.index, this.isElemental = true, final  List<Attribute> resistantTo = const <Attribute>[], final  List<Attribute> weakTo = const <Attribute>[]}): _resistantTo = resistantTo,_weakTo = weakTo;
   factory _Attribute.fromJson(Map<String, dynamic> json) => _$AttributeFromJson(json);
 
 @override final  String id;
 @override final  int index;
+@override@JsonKey() final  bool isElemental;
+ final  List<Attribute> _resistantTo;
+@override@JsonKey() List<Attribute> get resistantTo {
+  if (_resistantTo is EqualUnmodifiableListView) return _resistantTo;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_resistantTo);
+}
+
+ final  List<Attribute> _weakTo;
+@override@JsonKey() List<Attribute> get weakTo {
+  if (_weakTo is EqualUnmodifiableListView) return _weakTo;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_weakTo);
+}
+
 
 /// Create a copy of Attribute
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.index, index) || other.index == index));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Attribute&&(identical(other.id, id) || other.id == id)&&(identical(other.index, index) || other.index == index)&&(identical(other.isElemental, isElemental) || other.isElemental == isElemental)&&const DeepCollectionEquality().equals(other._resistantTo, _resistantTo)&&const DeepCollectionEquality().equals(other._weakTo, _weakTo));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,index);
+int get hashCode => Object.hash(runtimeType,id,index,isElemental,const DeepCollectionEquality().hash(_resistantTo),const DeepCollectionEquality().hash(_weakTo));
 
 @override
 String toString() {
-  return 'Attribute(id: $id, index: $index)';
+  return 'Attribute(id: $id, index: $index, isElemental: $isElemental, resistantTo: $resistantTo, weakTo: $weakTo)';
 }
 
 
@@ -249,7 +267,7 @@ abstract mixin class _$AttributeCopyWith<$Res> implements $AttributeCopyWith<$Re
   factory _$AttributeCopyWith(_Attribute value, $Res Function(_Attribute) _then) = __$AttributeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, int index
+ String id, int index, bool isElemental, List<Attribute> resistantTo, List<Attribute> weakTo
 });
 
 
@@ -266,11 +284,14 @@ class __$AttributeCopyWithImpl<$Res>
 
 /// Create a copy of Attribute
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? index = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? index = null,Object? isElemental = null,Object? resistantTo = null,Object? weakTo = null,}) {
   return _then(_Attribute(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
-as int,
+as int,isElemental: null == isElemental ? _self.isElemental : isElemental // ignore: cast_nullable_to_non_nullable
+as bool,resistantTo: null == resistantTo ? _self._resistantTo : resistantTo // ignore: cast_nullable_to_non_nullable
+as List<Attribute>,weakTo: null == weakTo ? _self._weakTo : weakTo // ignore: cast_nullable_to_non_nullable
+as List<Attribute>,
   ));
 }
 

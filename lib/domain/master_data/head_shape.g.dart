@@ -13,11 +13,6 @@ _HeadShape _$HeadShapeFromJson(Map<String, dynamic> json) => _HeadShape(
         (k, e) => MapEntry(k, (e as num).toInt()),
       ) ??
       const {},
-  attributeResistanceBonuses:
-      (json['attributeResistanceBonuses'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, (e as num).toInt()),
-      ) ??
-      const {},
   hpBonus: (json['hpBonus'] as num?)?.toInt() ?? 0,
   apBonus: (json['apBonus'] as num?)?.toInt() ?? 0,
   attackBonus: (json['attackBonus'] as num?)?.toInt() ?? 0,
@@ -30,7 +25,6 @@ Map<String, dynamic> _$HeadShapeToJson(_HeadShape instance) =>
     <String, dynamic>{
       'id': instance.id,
       'abnormalityResistanceBonuses': instance.abnormalityResistanceBonuses,
-      'attributeResistanceBonuses': instance.attributeResistanceBonuses,
       'hpBonus': instance.hpBonus,
       'apBonus': instance.apBonus,
       'attackBonus': instance.attackBonus,

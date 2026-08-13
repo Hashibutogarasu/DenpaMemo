@@ -35,10 +35,10 @@ void main() {
     final denpaMen = buildSpColor('gold');
 
     final fire = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == 'fire',
+      (r) => r.attribute.id == 'fire',
     );
     final dark = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == 'dark',
+      (r) => r.attribute.id == 'dark',
     );
     expect(fire.value, -2);
     expect(dark.value, -2);
@@ -48,10 +48,10 @@ void main() {
     final denpaMen = buildSpColor('silver');
 
     final thunder = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == 'thunder',
+      (r) => r.attribute.id == 'thunder',
     );
     final water = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == 'water',
+      (r) => r.attribute.id == 'water',
     );
     expect(thunder.value, -2);
     expect(water.value, -2);

@@ -1,5 +1,6 @@
 import 'package:cuid2/cuid2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -37,10 +38,12 @@ class DenpaMenQrPage extends ConsumerStatefulWidget {
 
 class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
   final _nameController = TextEditingController();
+  final _nameFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
+    HardwareKeyboard.instance.addHandler(_handleKeyEvent);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         ref
@@ -52,8 +55,22 @@ class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
 
   @override
   void dispose() {
+    HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
     _nameController.dispose();
+    _nameFocusNode.dispose();
     super.dispose();
+  }
+
+  /// Handles the "R" key to regenerate the QR code, ignoring the key while
+  /// the name field has focus so typing "r" there is not intercepted.
+  bool _handleKeyEvent(KeyEvent event) {
+    if (event is KeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.keyR &&
+        FocusManager.instance.primaryFocus != _nameFocusNode) {
+      _regenerate();
+      return true;
+    }
+    return false;
   }
 
   void _regenerate() {
@@ -107,6 +124,7 @@ class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
                       width: 240,
                       child: TextField(
                         controller: _nameController,
+                        focusNode: _nameFocusNode,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           hintText: rawValue,

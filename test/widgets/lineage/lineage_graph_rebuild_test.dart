@@ -37,7 +37,7 @@ final _masterData = MasterData(
   personalities: const [_personality],
   patterns: const [_pattern],
   bodyColorResistanceRules: const [
-    BodyColorResistanceRule(colorId: _colorId, attributeResistanceBonuses: {}),
+    BodyColorResistanceRule(colorId: _colorId, attributeResistanceBonuses: []),
   ],
   bodyColorAbnormalityResistanceRules: const [],
   corrections: const [],

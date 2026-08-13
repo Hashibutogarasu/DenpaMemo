@@ -4,7 +4,7 @@
     "category": "attack",
     "targetCount": 1,
     "dealsDamage": true,
-    "attackAttributeId": "water",
+    "attackAttributeIds": ["water"],
     "variantGroupId": "waterGun"
   },
   {
@@ -12,7 +12,7 @@
     "category": "attack",
     "targetCount": 3,
     "dealsDamage": true,
-    "attackAttributeId": "water",
+    "attackAttributeIds": ["water"],
     "variantGroupId": "waterGun"
   },
   {
@@ -20,7 +20,7 @@
     "category": "attack",
     "targetsAll": true,
     "dealsDamage": true,
-    "attackAttributeId": "water",
+    "attackAttributeIds": ["water"],
     "variantGroupId": "waterGun"
   }
 ]

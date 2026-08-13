@@ -27,12 +27,12 @@ void main() {
       );
 
       final byAttribute = {
-        for (final r in denpaMen.attributeResistance) r.attributeId: r.value,
+        for (final r in denpaMen.attributeResistance) r.attribute.id: r.value,
       };
 
       expect(byAttribute.containsKey('fire'), isFalse);
       expect(byAttribute['water'], -2);
-      for (final attribute in masterData.attributes) {
+      for (final attribute in masterData.attributes.where((a) => a.isElemental)) {
         if (attribute.id == 'fire' || attribute.id == 'water') continue;
         expect(byAttribute[attribute.id], -1);
       }
