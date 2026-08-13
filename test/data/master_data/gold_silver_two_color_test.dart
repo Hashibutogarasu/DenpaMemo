@@ -27,7 +27,7 @@ void main() {
       );
 
       final byAttribute = {
-        for (final r in denpaMen.attributeResistance) r.attributeId: r.value,
+        for (final r in denpaMen.attributeResistance) r.attribute.id: r.value,
       };
 
       expect(byAttribute, {

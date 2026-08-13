@@ -131,7 +131,7 @@
   },
   "antenna": {
     "none": "アンテナなし",
-    "antennaRoot": "アンテナなし",
+    "antennaRoot": "アンテナのねっこ",
     "waterGun_1": "バケツの水",
     "waterGun_3": "たかなみ",
     "waterGun_all": "みずでっぽう",
@@ -154,7 +154,19 @@
     "excite_solo_3": "ながくこうふん",
     "excite_all_1": "みんなすこしこうふん",
     "excite_all_2": "みんなこうふん",
-    "excite_all_3": "みんなながくこうふん"
+    "excite_all_3": "みんなながくこうふん",
+    "darkBall_1": "おどかす",
+    "darkBall_3": "ダークボール",
+    "darkBall_all": "くろいきり",
+    "whirlwind_1": "つむじかぜ",
+    "whirlwind_3": "ビルかぜ",
+    "whirlwind_all": "かまいたち",
+    "staticElectricity_1": "せいでんき",
+    "staticElectricity_3": "いなずま",
+    "staticElectricity_all": "ひゃくボルト",
+    "sharpIce_1": "とがったこおり",
+    "sharpIce_3": "ロックアイス",
+    "sharpIce_all": "あられ"
   },
   "bodyColor": {
     "red": "あか",
@@ -178,7 +190,9 @@
     "ice": "氷",
     "wind": "風",
     "light": "光",
-    "dark": "闇"
+    "dark": "闇",
+    "physical": "物理",
+    "suddenDeath": "突然死"
   },
   "abnormality": {
     "poison": "どく",

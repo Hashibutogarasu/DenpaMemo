@@ -35,34 +35,37 @@ void main() {
   }
 
   Map<String, int> attributeByAttribute(DenpaMen denpaMen) => {
-    for (final r in denpaMen.attributeResistance) r.attributeId: r.value,
+    for (final r in denpaMen.attributeResistance) r.attribute.id: r.value,
   };
+
+  Iterable<String> elementalAttributeIds() =>
+      masterData.attributes.where((a) => a.isElemental).map((a) => a.id);
 
   test('bowlCut grants +1 to every attribute', () {
     final result = attributeByAttribute(build(headShapeById('bowlCut')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 1);
+    for (final attributeId in elementalAttributeIds()) {
+      expect(result[attributeId], 1);
     }
   });
 
   test('light grants +2 to every attribute', () {
     final result = attributeByAttribute(build(headShapeById('light')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 2);
+    for (final attributeId in elementalAttributeIds()) {
+      expect(result[attributeId], 2);
     }
   });
 
   test('fin grants +2 to every attribute', () {
     final result = attributeByAttribute(build(headShapeById('fin')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 2);
+    for (final attributeId in elementalAttributeIds()) {
+      expect(result[attributeId], 2);
     }
   });
 
   test('moon grants +1 to every attribute', () {
     final result = attributeByAttribute(build(headShapeById('moon')));
-    for (final attribute in masterData.attributes) {
-      expect(result[attribute.id], 1);
+    for (final attributeId in elementalAttributeIds()) {
+      expect(result[attributeId], 1);
     }
   });
 

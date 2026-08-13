@@ -44,10 +44,10 @@ void main() {
     ).attributeResistance;
 
     final targetByAttribute = {
-      for (final r in target) r.attributeId: r.value,
+      for (final r in target) r.attribute.id: r.value,
     };
     final reconstructedByAttribute = {
-      for (final r in reconstructed) r.attributeId: r.value,
+      for (final r in reconstructed) r.attribute.id: r.value,
     };
     expect(reconstructedByAttribute, targetByAttribute);
   }

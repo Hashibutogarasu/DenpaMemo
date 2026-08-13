@@ -233,8 +233,8 @@ class DenpaMenStatus extends StatelessWidget {
                       for (final resistance in attributeResistances)
                         _ResistanceData(
                           label:
-                              t.attribute[resistance.attributeId] ??
-                              resistance.attributeId,
+                              t.attribute[resistance.attribute.id] ??
+                              resistance.attribute.id,
                           value: resistance.value,
                         ),
                     ],

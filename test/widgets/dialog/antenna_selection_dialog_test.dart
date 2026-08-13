@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:denpa_memo/data/master_data/json_master_data_repository.dart';
 import 'package:denpa_memo/domain/master_data/anntena.dart';
+import 'package:denpa_memo/domain/master_data/attribute.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/widgets/dialog/antenna_selection_dialog.dart';
+
+const _water = Attribute(id: 'water', index: 5);
 
 const _healSolo1 = Anntena(
   id: 'heal_solo_1',
@@ -52,7 +56,7 @@ const _waterGun1 = Anntena(
   category: AnntenaCategory.attack,
   targetCount: 1,
   dealsDamage: true,
-  attackAttributeId: 'water',
+  attackAttributes: [_water],
   variantGroupId: 'waterGun',
 );
 const _waterGun3 = Anntena(
@@ -60,7 +64,7 @@ const _waterGun3 = Anntena(
   category: AnntenaCategory.attack,
   targetCount: 3,
   dealsDamage: true,
-  attackAttributeId: 'water',
+  attackAttributes: [_water],
   variantGroupId: 'waterGun',
 );
 const _waterGunAll = Anntena(
@@ -68,7 +72,7 @@ const _waterGunAll = Anntena(
   category: AnntenaCategory.attack,
   targetsAll: true,
   dealsDamage: true,
-  attackAttributeId: 'water',
+  attackAttributes: [_water],
   variantGroupId: 'waterGun',
 );
 
@@ -120,6 +124,42 @@ Slider _levelSlider(WidgetTester tester) =>
     tester.widgetList<Slider>(find.byType(Slider)).first;
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets(
+    'the "no antenna" entry appears exactly once in the other-category tab',
+    (WidgetTester tester) async {
+      final masterData = await JsonMasterDataRepository().load();
+      final none = masterData.anntenas.firstWhere((a) => a.id == 'none');
+
+      await tester.pumpWidget(
+        TranslationProvider(
+          child: MaterialApp(
+            home: Scaffold(
+              body: Builder(
+                builder: (context) => ElevatedButton(
+                  onPressed: () async {
+                    await showAntennaSelectionDialog(
+                      context,
+                      anntenas: masterData.anntenas,
+                      selected: none,
+                      level: 0,
+                    );
+                  },
+                  child: const Text('open'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('アンテナなし'), findsOneWidget);
+    },
+  );
+
   testWidgets(
     'opens directly on the support tab for a support-category selection, '
     'without having to switch tabs',

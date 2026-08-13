@@ -44,7 +44,7 @@ void main() {
   }
 
   Map<String, int> attributeByAttribute(DenpaMen denpaMen) => {
-    for (final r in denpaMen.attributeResistance) r.attributeId: r.value,
+    for (final r in denpaMen.attributeResistance) r.attribute.id: r.value,
   };
 
   Map<String, int> abnormalityByAttribute(DenpaMen denpaMen) => {

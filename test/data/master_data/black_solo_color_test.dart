@@ -49,7 +49,7 @@ void main() {
 
     expect(
       denpaMen.attributeResistance,
-      hasLength(masterData.attributes.length),
+      hasLength(masterData.attributes.where((a) => a.isElemental).length),
     );
     for (final resistance in denpaMen.attributeResistance) {
       expect(resistance.value, 1);

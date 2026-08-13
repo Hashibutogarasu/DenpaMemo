@@ -9,6 +9,8 @@ void main() {
     expect(migrator.migrate('beam'), 'beam_all');
     expect(migrator.migrate('fireball'), 'fireball_all');
     expect(migrator.migrate('heal'), 'heal_solo_1');
+    expect(migrator.migrate('staticElectricity'), 'staticElectricity_all');
+    expect(migrator.migrate('sharpIce'), 'sharpIce_all');
   });
 
   test('leaves unaffected ids unchanged', () {

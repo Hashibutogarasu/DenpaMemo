@@ -28,13 +28,13 @@ void main() {
   final personality = const Personality(id: 'personality-a');
   final pattern = const Pattern(id: 'pattern-a');
 
+  final attributeA = Attribute(id: attributeIdA, index: 0);
+  final attributeB = Attribute(id: attributeIdB, index: 1);
+
   final masterData = MasterData(
     headShapes: [headShape],
     anntenas: [anntena],
-    attributes: [
-      Attribute(id: attributeIdA, index: 0),
-      Attribute(id: attributeIdB, index: 1),
-    ],
+    attributes: [attributeA, attributeB],
     abnormalityTypes: [],
     physiques: [physique],
     personalities: [personality],
@@ -42,19 +42,25 @@ void main() {
     bodyColorResistanceRules: [
       BodyColorResistanceRule(
         colorId: soloColorId,
-        attributeResistanceBonuses: {attributeIdA: 2},
+        attributeResistanceBonuses: [(attribute: attributeA, bonus: 2)],
       ),
       BodyColorResistanceRule(
         colorId: secondColorId,
-        attributeResistanceBonuses: {attributeIdA: 4, attributeIdB: 2},
+        attributeResistanceBonuses: [
+          (attribute: attributeA, bonus: 4),
+          (attribute: attributeB, bonus: 2),
+        ],
       ),
       BodyColorResistanceRule(
         colorId: soloAllBonusColorId,
-        attributeResistanceBonuses: const {},
+        attributeResistanceBonuses: const [],
       ),
       BodyColorResistanceRule(
         colorId: weaknessColorId,
-        attributeResistanceBonuses: {attributeIdA: 2, attributeIdB: -2},
+        attributeResistanceBonuses: [
+          (attribute: attributeA, bonus: 2),
+          (attribute: attributeB, bonus: -2),
+        ],
       ),
     ],
     bodyColorAbnormalityResistanceRules: const [],
@@ -163,7 +169,7 @@ void main() {
 
     expect(
       denpaMen.attributeResistance.where(
-        (r) => r.attributeId == attributeIdA || r.attributeId == attributeIdB,
+        (r) => r.attribute.id == attributeIdA || r.attribute.id == attributeIdB,
       ),
       isEmpty,
     );
@@ -185,10 +191,10 @@ void main() {
     );
 
     final resistanceA = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == attributeIdA,
+      (r) => r.attribute.id == attributeIdA,
     );
     final resistanceB = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == attributeIdB,
+      (r) => r.attribute.id == attributeIdB,
     );
     expect(resistanceA.value, 1);
     expect(resistanceB.value, 1);
@@ -212,11 +218,11 @@ void main() {
       );
 
       expect(
-        denpaMen.attributeResistance.where((r) => r.attributeId == attributeIdB),
+        denpaMen.attributeResistance.where((r) => r.attribute.id == attributeIdB),
         isEmpty,
       );
       final resistanceA = denpaMen.attributeResistance.firstWhere(
-        (r) => r.attributeId == attributeIdA,
+        (r) => r.attribute.id == attributeIdA,
       );
       expect(resistanceA.value, 2);
       expect(denpaMen.attributeResistance, hasLength(1));
@@ -239,10 +245,10 @@ void main() {
     );
 
     final a = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == attributeIdA,
+      (r) => r.attribute.id == attributeIdA,
     );
     final b = denpaMen.attributeResistance.firstWhere(
-      (r) => r.attributeId == attributeIdB,
+      (r) => r.attribute.id == attributeIdB,
     );
     expect(a.value, 3);
     expect(b.value, 1);

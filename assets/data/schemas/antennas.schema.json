@@ -21,13 +21,18 @@
         "type": ["integer", "null"],
         "description": "Number of targets this antenna's move hits, or null/omitted if it hits every opposing target instead of a fixed count."
       },
+      "targetsAll": {
+        "type": "boolean",
+        "description": "Whether this antenna's move hits every opposing target instead of a fixed count. Defaults to false."
+      },
       "dealsDamage": {
         "type": "boolean",
         "description": "Whether this antenna's move deals damage. Defaults to false."
       },
-      "attackAttributeId": {
-        "type": ["string", "null"],
-        "description": "Attribute id (see attributes.json) of the damage this antenna deals, or null/omitted if it deals no attribute-typed damage."
+      "attackAttributeIds": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Attribute ids (see assets/data/attributes/) of the damage this antenna deals. Empty/omitted if it deals no attribute-typed damage. May contain more than one id."
       },
       "isInheritable": {
         "type": "boolean",
