@@ -12,7 +12,7 @@
       "url": "./assets/data/schemas/head_shapes.schema.json"
     },
     {
-      "fileMatch": ["/assets/data/antennas/attack/*.json", "/assets/data/antennas/support/*.json", "/assets/data/antennas/other/*.json"],
+      "fileMatch": ["/assets/data/antennas/attack/*.json", "/assets/data/antennas/support/*.json", "/assets/data/antennas/other/*.json", "/assets/data/antennas/*.json"],
       "url": "./assets/data/schemas/antennas.schema.json"
     },
     {

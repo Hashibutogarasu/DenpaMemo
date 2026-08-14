@@ -96,6 +96,8 @@ int _patternIndexContaining(
 bool _isDurationBased(Anntena root) =>
     root.maxLevel == null && root.evolvesToId != null;
 
+bool _hasNoLevel(Anntena root) => !root.hasLevel;
+
 Anntena _resolveAtDuration(
   Anntena root,
   int durationIndex,
@@ -153,6 +155,9 @@ _LevelResolution _resolveTile(
       leaf: _resolveAtDuration(root, durationIndex, byId),
       inTierLevel: 0,
     );
+  }
+  if (_hasNoLevel(root)) {
+    return _LevelResolution(leaf: root, inTierLevel: 0);
   }
   return _resolveAtLevel(root, level, byId);
 }
@@ -283,6 +288,7 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
     );
     final selectedPatternRoot = selectedPatternRoots[_patternIndex];
     final isDurationBased = _isDurationBased(selectedPatternRoot);
+    final hasNoLevel = _hasNoLevel(selectedPatternRoot);
     final resolvedSelected = _resolveTile(
       selectedPatternRoot,
       _level,
@@ -293,7 +299,7 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
     final durationChainLength = isDurationBased
         ? _durationChainLength(selectedPatternRoot, _byId)
         : 1;
-    final resolvedLevel = isDurationBased ? 0 : _level;
+    final resolvedLevel = (isDurationBased || hasNoLevel) ? 0 : _level;
 
     return BottomSlideDialog(
       title: t.editableStatus.antenna,
@@ -355,6 +361,8 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
               )
             else
               const SizedBox.shrink()
+          else if (hasNoLevel)
+            const SizedBox.shrink()
           else
             Row(
               children: [
