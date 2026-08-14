@@ -49,6 +49,10 @@
       "variantGroupId": {
         "type": ["string", "null"],
         "description": "Groups this variant together with its sibling target-pattern variants (e.g. 1-target/3-target/all-target of the same base move), selectable via a separate pattern slider in the selection dialog. Null/omitted if this antenna has only one pattern."
+      },
+      "hasLevel": {
+        "type": "boolean",
+        "description": "Whether this antenna exposes a level slider (\"+N\" suffix) in the selection dialog. Defaults to true; set to false for antennas with no upgradeable level, such as antennaRoot."
       }
     }
   }

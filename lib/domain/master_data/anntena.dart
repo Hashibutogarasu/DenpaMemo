@@ -27,6 +27,7 @@ abstract class Anntena with _$Anntena {
     String? evolvesToId,
     int? maxLevel,
     String? variantGroupId,
+    @Default(true) bool hasLevel,
   }) = _Anntena;
 
   factory Anntena.fromJson(Map<String, dynamic> json) =>

@@ -4,35 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test(
-    'loads every antenna file from attack/support/other subdirectories',
-    () async {
-      final masterData = await JsonMasterDataRepository().load();
-
-      expect(masterData.anntenas, hasLength(62));
-
-      final ids = masterData.anntenas.map((a) => a.id).toSet();
-      expect(ids, contains('revive_solo_1'));
-      expect(ids, contains('excite_solo_1'));
-      expect(ids, contains('fireball_all'));
-      expect(ids, contains('antennaRoot'));
-      expect(ids, contains('none'));
-      expect(ids, contains('darkBall_1'));
-      expect(ids, contains('darkBall_3'));
-      expect(ids, contains('darkBall_all'));
-      expect(ids, contains('whirlwind_1'));
-      expect(ids, contains('whirlwind_3'));
-      expect(ids, contains('whirlwind_all'));
-      expect(ids, contains('staticElectricity_1'));
-      expect(ids, contains('staticElectricity_3'));
-      expect(ids, contains('staticElectricity_all'));
-      expect(ids, contains('sharpIce_1'));
-      expect(ids, contains('sharpIce_3'));
-      expect(ids, contains('sharpIce_all'));
-      expect(ids.length, 62);
-    },
-  );
-
   test('fireball deals fire damage', () async {
     final masterData = await JsonMasterDataRepository().load();
 

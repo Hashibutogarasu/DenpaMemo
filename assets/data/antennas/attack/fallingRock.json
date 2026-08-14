@@ -1,9 +1,26 @@
 [
   {
-    "id": "fallingRock",
+    "id": "fallingRock_1",
+    "category": "attack",
+    "targetCount": 1,
     "dealsDamage": true,
     "attackAttributeIds": ["earth"],
+    "variantGroupId": "fallingRock"
+  },
+  {
+    "id": "fallingRock_3",
     "category": "attack",
-    "targetCount": 1
+    "targetCount": 3,
+    "dealsDamage": true,
+    "attackAttributeIds": ["earth"],
+    "variantGroupId": "fallingRock"
+  },
+  {
+    "id": "fallingRock_all",
+    "category": "attack",
+    "targetsAll": true,
+    "dealsDamage": true,
+    "attackAttributeIds": ["earth"],
+    "variantGroupId": "fallingRock"
   }
 ]

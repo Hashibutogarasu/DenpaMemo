@@ -21,6 +21,7 @@ _Anntena _$AnntenaFromJson(Map<String, dynamic> json) => _Anntena(
   evolvesToId: json['evolvesToId'] as String?,
   maxLevel: (json['maxLevel'] as num?)?.toInt(),
   variantGroupId: json['variantGroupId'] as String?,
+  hasLevel: json['hasLevel'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$AnntenaToJson(_Anntena instance) => <String, dynamic>{
@@ -34,6 +35,7 @@ Map<String, dynamic> _$AnntenaToJson(_Anntena instance) => <String, dynamic>{
   'evolvesToId': instance.evolvesToId,
   'maxLevel': instance.maxLevel,
   'variantGroupId': instance.variantGroupId,
+  'hasLevel': instance.hasLevel,
 };
 
 const _$AnntenaCategoryEnumMap = {

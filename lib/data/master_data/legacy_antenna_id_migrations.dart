@@ -12,6 +12,8 @@ class LegacyAntennaIdMigrator implements AntennaIdMigrator {
     'heal': 'heal_solo_1',
     'staticElectricity': 'staticElectricity_all',
     'sharpIce': 'sharpIce_all',
+    'fallingRock': 'fallingRock_all',
+    'knockdown': 'knockdown_solo_1',
   };
 
   @override

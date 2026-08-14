@@ -76,6 +76,12 @@ const _waterGunAll = Anntena(
   variantGroupId: 'waterGun',
 );
 
+const _antennaRoot = Anntena(
+  id: 'antennaRoot',
+  category: AnntenaCategory.other,
+  hasLevel: false,
+);
+
 const _allAnntenas = [
   _healSolo1,
   _healSolo2,
@@ -86,6 +92,7 @@ const _allAnntenas = [
   _waterGun1,
   _waterGun3,
   _waterGunAll,
+  _antennaRoot,
 ];
 
 AntennaSelectionResult? _result;
@@ -244,32 +251,32 @@ void main() {
   );
 
   testWidgets('an attack antenna with no maxLevel still gets a live +N suffix, '
-      'e.g. バケツの水+9 / たかなみ+3', (WidgetTester tester) async {
+      'e.g. みずでっぽう+9 / バケツのみず+3', (WidgetTester tester) async {
     await _pumpDialog(tester, level: 3, selected: _healSolo1);
 
     await tester.tap(find.text('攻撃'));
     await tester.pumpAndSettle();
 
-    expect(find.text('バケツの水+3'), findsOneWidget);
+    expect(find.text('みずでっぽう+3'), findsOneWidget);
 
-    await tester.tap(find.text('バケツの水+3'));
+    await tester.tap(find.text('みずでっぽう+3'));
     await tester.pumpAndSettle();
 
     _levelSlider(tester).onChanged!(9);
     await tester.pumpAndSettle();
 
-    expect(find.text('バケツの水+9'), findsOneWidget);
+    expect(find.text('みずでっぽう+9'), findsOneWidget);
 
     final patternSlider = tester.widgetList<Slider>(find.byType(Slider)).last;
     patternSlider.onChanged!(1);
     await tester.pumpAndSettle();
 
-    expect(find.text('たかなみ+9'), findsOneWidget);
+    expect(find.text('バケツのみず+9'), findsOneWidget);
 
     _levelSlider(tester).onChanged!(3);
     await tester.pumpAndSettle();
 
-    expect(find.text('たかなみ+3'), findsOneWidget);
+    expect(find.text('バケツのみず+3'), findsOneWidget);
 
     await tester.tap(find.text('決定'));
     await tester.pumpAndSettle();
@@ -277,6 +284,19 @@ void main() {
     expect(_result?.anntena.id, 'waterGun_3');
     expect(_result?.level, 3);
   });
+
+  testWidgets(
+    'an antenna with hasLevel false shows no level slider at all',
+    (WidgetTester tester) async {
+      await _pumpDialog(tester, level: 0, selected: _antennaRoot);
+
+      await tester.tap(find.text('その他'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('アンテナのねっこ'), findsOneWidget);
+      expect(find.byType(Slider), findsNothing);
+    },
+  );
 
   testWidgets(
     'adjusting the effect-range slider to the all-target variant raises the '

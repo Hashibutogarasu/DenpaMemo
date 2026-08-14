@@ -1,6 +1,7 @@
 [
   {
     "id": "antennaRoot",
-    "category": "other"
+    "category": "other",
+    "hasLevel": false
   }
 ]
