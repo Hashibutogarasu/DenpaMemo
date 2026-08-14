@@ -10,7 +10,8 @@
     "delete": "削除",
     "back": "戻る",
     "next": "次へ",
-    "complete": "完了"
+    "complete": "完了",
+    "unset": "未設定"
   },
   "page": {
     "home": "ホーム",
@@ -80,10 +81,8 @@
     "antenna": "アンテナ",
     "correction": "補正",
     "parents": "親",
-    "parentUnset": "未設定",
     "qrCodeName": "QRコードの名前",
     "qrCode": "QRコード",
-    "qrCodeUnset": "未設定",
     "catchOrder": "キャッチ順",
     "memo": "メモ",
     "considerCorrections": "補正を考慮する",

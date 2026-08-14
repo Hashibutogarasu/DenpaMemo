@@ -5,6 +5,7 @@ import '../domain/denpa_men/denpa_men_record.dart';
 import '../i18n/gen/strings.g.dart';
 import 'container/selection_tile.dart';
 import 'dialog/parent_denpa_men_selection_dialog.dart';
+import 'label/joined_labels_text.dart';
 
 /// Field for picking [DenpaMen.parentIds]: either empty or exactly 2 parents,
 /// chosen from [candidates] (existing individuals, self already excluded) via
@@ -45,11 +46,8 @@ class EditableParents extends StatelessWidget {
           );
         }
       },
-      child: Text(
-        selected.isEmpty
-            ? t.editableStatus.parentUnset
-            : selected.map((record) => record.denpaMen.name).join('、'),
-        overflow: TextOverflow.ellipsis,
+      child: JoinedLabelsText(
+        labels: [for (final record in selected) record.denpaMen.name],
       ),
     );
   }

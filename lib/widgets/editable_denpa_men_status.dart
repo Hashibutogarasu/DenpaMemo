@@ -28,6 +28,7 @@ import 'field/outlined_inline_name_field.dart';
 import 'icon/editable_denpa_men_icon.dart';
 import 'label/gauge_value.dart';
 import 'label/inline_gauge_label.dart';
+import 'label/joined_labels_text.dart';
 
 /// Right-hand desktop pane letting the user edit [denpaMen] in place. Name
 /// and numeric stats are edited inline; head shape, body color, and
@@ -271,11 +272,10 @@ class EditableDenpaMenStatus extends StatelessWidget {
                 onChanged(denpaMen.copyWith(corrections: selected));
               }
             },
-            child: Text(
-              denpaMen.corrections
-                  .map((c) => t.correction[c.id] ?? c.id)
-                  .join('、'),
-              overflow: TextOverflow.ellipsis,
+            child: JoinedLabelsText(
+              labels: [
+                for (final c in denpaMen.corrections) t.correction[c.id] ?? c.id,
+              ],
             ),
           ),
           const SizedBox(height: 8),
