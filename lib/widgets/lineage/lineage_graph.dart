@@ -66,13 +66,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
   }
 
   void _showPreview(BuildContext context, DenpaMen denpaMen) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => DenpaMenPreviewDialog(
-        denpaMen: denpaMen,
-        totalAttributeCount: widget.masterData.attributes.length,
-      ),
-    );
+    DenpaMenPreviewDialog.show(context, denpaMen: denpaMen);
   }
 
   Future<void> _showQrCodeImage(BuildContext context, String rawValue) async {

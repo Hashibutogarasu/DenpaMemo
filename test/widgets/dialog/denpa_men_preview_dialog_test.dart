@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:denpa_memo/domain/denpa_men/denpa_men_factory.dart';
 import 'package:denpa_memo/domain/master_data/anntena.dart';
+import 'package:denpa_memo/domain/master_data/attribute.dart';
 import 'package:denpa_memo/domain/master_data/body_color_resistance_rule.dart';
 import 'package:denpa_memo/domain/master_data/head_shape.dart';
 import 'package:denpa_memo/domain/master_data/master_data.dart';
@@ -12,6 +13,7 @@ import 'package:denpa_memo/domain/master_data/personality.dart';
 import 'package:denpa_memo/domain/master_data/physique.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
+import 'package:denpa_memo/providers/master_data_providers.dart';
 import 'package:denpa_memo/widgets/dialog/denpa_men_preview_dialog.dart';
 import 'package:denpa_memo/widgets/icon/denpa_men_icon.dart';
 
@@ -34,7 +36,7 @@ void main() {
       final masterData = MasterData(
         headShapes: [headShape],
         anntenas: const [_anntena],
-        attributes: const [],
+        attributes: const [Attribute(id: 'fire', index: 0)],
         abnormalityTypes: const [],
         physiques: const [physique],
         personalities: const [personality],
@@ -67,13 +69,11 @@ void main() {
         ProviderScope(
           overrides: [
             denpaMenIconProvider.overrideWith((ref, id) async => null),
+            masterDataProvider.overrideWithValue(AsyncData(masterData)),
           ],
           child: TranslationProvider(
             child: MaterialApp(
-              home: DenpaMenPreviewDialog(
-                denpaMen: denpaMen,
-                totalAttributeCount: 1,
-              ),
+              home: DenpaMenPreviewDialog(denpaMen: denpaMen),
             ),
           ),
         ),
@@ -100,7 +100,7 @@ void main() {
       final masterData = MasterData(
         headShapes: [headShape],
         anntenas: const [_anntena],
-        attributes: const [],
+        attributes: const [Attribute(id: 'fire', index: 0)],
         abnormalityTypes: const [],
         physiques: const [physique],
         personalities: const [personality],
@@ -133,13 +133,11 @@ void main() {
         ProviderScope(
           overrides: [
             denpaMenIconProvider.overrideWith((ref, id) async => null),
+            masterDataProvider.overrideWithValue(AsyncData(masterData)),
           ],
           child: TranslationProvider(
             child: MaterialApp(
-              home: DenpaMenPreviewDialog(
-                denpaMen: denpaMen,
-                totalAttributeCount: 1,
-              ),
+              home: DenpaMenPreviewDialog(denpaMen: denpaMen),
             ),
           ),
         ),
