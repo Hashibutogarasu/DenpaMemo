@@ -272,9 +272,11 @@ class EditableDenpaMenStatus extends StatelessWidget {
               }
             },
             child: Text(
-              denpaMen.corrections
-                  .map((c) => t.correction[c.id] ?? c.id)
-                  .join('、'),
+              denpaMen.corrections.isEmpty
+                  ? t.common.unset
+                  : denpaMen.corrections
+                        .map((c) => t.correction[c.id] ?? c.id)
+                        .join('、'),
               overflow: TextOverflow.ellipsis,
             ),
           ),

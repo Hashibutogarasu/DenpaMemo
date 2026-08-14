@@ -56,7 +56,7 @@ class _QrCodeSelectionDialogState extends State<_QrCodeSelectionDialog> {
         shrinkWrap: true,
         children: [
           ListTile(
-            title: Text(t.editableStatus.qrCodeUnset),
+            title: Text(t.common.unset),
             selected: _selected == null,
             trailing: _selected == null ? const Icon(Icons.check) : null,
             onTap: () => setState(() => _selected = null),

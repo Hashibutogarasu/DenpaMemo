@@ -217,6 +217,9 @@ class Translations$common$ja {
 
 	/// ja: '完了'
 	String get complete => '完了';
+
+	/// ja: '未設定'
+	String get unset => '未設定';
 }
 
 // Path: page
@@ -443,17 +446,11 @@ class Translations$editableStatus$ja {
 	/// ja: '親'
 	String get parents => '親';
 
-	/// ja: '未設定'
-	String get parentUnset => '未設定';
-
 	/// ja: 'QRコードの名前'
 	String get qrCodeName => 'QRコードの名前';
 
 	/// ja: 'QRコード'
 	String get qrCode => 'QRコード';
-
-	/// ja: '未設定'
-	String get qrCodeUnset => '未設定';
 
 	/// ja: 'キャッチ順'
 	String get catchOrder => 'キャッチ順';
@@ -509,6 +506,7 @@ extension on Translations {
 			'common.back' => '戻る',
 			'common.next' => '次へ',
 			'common.complete' => '完了',
+			'common.unset' => '未設定',
 			'page.home' => 'ホーム',
 			'page.settings' => '設定',
 			'page.addDenpaMen' => '電波人間を追加',
@@ -566,10 +564,8 @@ extension on Translations {
 			'editableStatus.antenna' => 'アンテナ',
 			'editableStatus.correction' => '補正',
 			'editableStatus.parents' => '親',
-			'editableStatus.parentUnset' => '未設定',
 			'editableStatus.qrCodeName' => 'QRコードの名前',
 			'editableStatus.qrCode' => 'QRコード',
-			'editableStatus.qrCodeUnset' => '未設定',
 			'editableStatus.catchOrder' => 'キャッチ順',
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.considerCorrections' => '補正を考慮する',

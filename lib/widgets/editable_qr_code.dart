@@ -51,7 +51,7 @@ class EditableQrCode extends StatelessWidget {
             },
       child: Text(
         selected == null
-            ? t.editableStatus.qrCodeUnset
+            ? t.common.unset
             : selected.qrCode.name ?? selected.qrCode.id,
         overflow: TextOverflow.ellipsis,
       ),

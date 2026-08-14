@@ -47,7 +47,7 @@ class EditableParents extends StatelessWidget {
       },
       child: Text(
         selected.isEmpty
-            ? t.editableStatus.parentUnset
+            ? t.common.unset
             : selected.map((record) => record.denpaMen.name).join('、'),
         overflow: TextOverflow.ellipsis,
       ),
