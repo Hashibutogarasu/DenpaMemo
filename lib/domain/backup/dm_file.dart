@@ -95,7 +95,6 @@ abstract class DMFile with _$DMFile {
     required Future<File?> Function(String denpaMenId) loadIcon,
     required String dataVersion,
     required void Function(double? progress) onProgress,
-    String? copyToPath,
   }) async {
     final context = DmExportContext(
       candidates: candidates,
@@ -104,7 +103,6 @@ abstract class DMFile with _$DMFile {
       loadIcon: loadIcon,
       dataVersion: dataVersion,
       onProgress: onProgress,
-      copyToPath: copyToPath,
     );
     final steps = <DmExportStep>[
       FilterConsistentIndividualsStep(),
@@ -112,7 +110,6 @@ abstract class DMFile with _$DMFile {
       WriteEntriesJsonStep(),
       CopyIconsStep(),
       WriteZipStep(),
-      if (copyToPath != null) CopyZipToPathStep(),
       ReadZipBytesStep(),
     ];
     await steps.runAll(context);

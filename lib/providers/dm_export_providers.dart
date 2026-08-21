@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../domain/backup/dm_file.dart';
 import '../domain/backup/export_result.dart';
@@ -40,17 +36,6 @@ class DmExportController {
         if (selectedIds.contains(record.id)) record.denpaMen,
     ];
 
-    final fileName = DMFile.defaultExportFileName(
-      exportedAt: DateTime.now(),
-      individualCount: candidates.length,
-    );
-
-    String? copyToPath;
-    if (Platform.isAndroid) {
-      final documentsDirectory = await getApplicationDocumentsDirectory();
-      copyToPath = path.join(documentsDirectory.path, fileName);
-    }
-
     try {
       final packageInfo = await PackageInfo.fromPlatform();
       final qrCodes = _ref.read(qrCodeRepositoryProvider).getAll();
@@ -62,16 +47,14 @@ class DmExportController {
         loadIcon: storage.loadIcon,
         dataVersion: packageInfo.version,
         onProgress: (value) => progress.state = value,
-        copyToPath: copyToPath,
       );
-
-      if (copyToPath != null) {
-        return result;
-      }
 
       final savePath = await FilePicker.saveFile(
         dialogTitle: dialogTitle,
-        fileName: fileName,
+        fileName: DMFile.defaultExportFileName(
+          exportedAt: DateTime.now(),
+          individualCount: candidates.length,
+        ),
         type: FileType.custom,
         allowedExtensions: [DMFile.extension],
         bytes: zipBytes,

@@ -156,15 +156,3 @@ class ReadZipBytesStep extends DmExportStep {
     reportProgress();
   }
 }
-
-/// Copies the finished zip to `context.copyToPath` before its temp file is
-/// cleaned up. Only runs when `copyToPath` is set.
-class CopyZipToPathStep extends DmExportStep {
-  @override
-  Future<void> run(DmExportContext context) async {
-    final destination = File(context.copyToPath!);
-    await destination.parent.create(recursive: true);
-    await context.zipFile!.copy(destination.path);
-    reportProgress();
-  }
-}

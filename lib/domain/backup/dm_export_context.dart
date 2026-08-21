@@ -18,7 +18,6 @@ class DmExportContext {
     required this.loadIcon,
     required this.dataVersion,
     required this.onProgress,
-    this.copyToPath,
   });
 
   final List<DenpaMen> candidates;
@@ -27,8 +26,6 @@ class DmExportContext {
   final Future<File?> Function(String denpaMenId) loadIcon;
   final String dataVersion;
   final void Function(double? progress) onProgress;
-
-  final String? copyToPath;
 
   List<DenpaMen>? consistent;
   ExportResult? exportResult;
