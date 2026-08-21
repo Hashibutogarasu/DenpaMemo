@@ -19,6 +19,9 @@ abstract class DenpaMenRepository {
   /// existing record with that id. Returns the resulting record id.
   int save(DenpaMen denpaMen, {int id = 0});
 
+  /// Finds the persisted record whose [DenpaMen.id] matches [cuid], or null.
+  DenpaMenRecord? findByCuid(String cuid, MasterData masterData);
+
   void delete(int id);
 
   /// Resolves [denpaMen]'s `parentIds` to the parent [DenpaMenRecord]s they

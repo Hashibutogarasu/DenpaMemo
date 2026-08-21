@@ -69,6 +69,19 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
   }
 
   @override
+  DenpaMenRecord? findByCuid(String cuid, MasterData masterData) {
+    final query = _box.query(DenpaMenEntity_.cuid.equals(cuid)).build();
+    try {
+      final entity = query.findFirst();
+      return entity == null
+          ? null
+          : DenpaMenRecord(id: entity.id, denpaMen: entity.toDomain(masterData));
+    } finally {
+      query.close();
+    }
+  }
+
+  @override
   void delete(int id) {
     _box.remove(id);
   }

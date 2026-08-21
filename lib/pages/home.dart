@@ -1,18 +1,42 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
+import '../domain/backup/dm_duplicate_detection.dart';
+import '../domain/backup/dm_export_validation.dart';
+import '../domain/backup/dm_file.dart';
+import '../domain/backup/dm_import_error.dart';
+import '../domain/backup/dm_progress.dart';
+import '../domain/backup/dm_zip_io.dart';
+import '../domain/backup/export_result.dart';
+import '../domain/backup/import_result.dart';
+import '../domain/backup/import_result_builder.dart';
+import '../domain/denpa_men/denpa_men.dart';
+import '../domain/denpa_men/denpa_men_backup_builder.dart';
+import '../domain/denpa_men/denpa_men_backup_codec.dart';
+import '../domain/denpa_men/denpa_men_backup_merge.dart';
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
+import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
+import '../providers/import_export_progress_providers.dart';
 import '../providers/master_data_providers.dart';
+import '../providers/qr_code_providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
 import '../widgets/denpa_men_accordion_tile.dart';
 import '../widgets/denpa_men_lineage_tree.dart';
+import '../widgets/dialog/denpa_men_selection_dialog.dart';
+import '../widgets/dialog/error_dialog.dart';
+import '../widgets/dialog/export_complete_dialog.dart';
+import '../widgets/dialog/import_complete_dialog.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/selection_floating_menu.dart';
@@ -36,17 +60,286 @@ class _HomeState extends ConsumerState<Home> {
     MasterData masterData,
   ) async {
     final t = context.t;
-    final records = ref.read(denpaMenListProvider(masterData)).value ?? [];
-    final selectedIds = ref.read(selectedDenpaMenIdsProvider);
-    final selected = [
-      for (final record in records)
-        if (selectedIds.contains(record.id)) record.denpaMen.toJson(),
-    ];
-    await Clipboard.setData(ClipboardData(text: jsonEncode(selected)));
+    const totalSteps = 9;
+    final progress = ref.read(importExportProgressProvider.notifier);
+    progress.state = stepProgress(1, totalSteps);
+
+    final savePath = await FilePicker.saveFile(
+      dialogTitle: t.home.exportDialogTitle,
+      fileName: 'denpa_memo_export.${DMFile.extension}',
+      type: FileType.custom,
+      allowedExtensions: [DMFile.extension],
+    );
+    if (savePath == null) {
+      progress.state = null;
+      return;
+    }
+
+    late final ExportResult exportResult;
+    try {
+      final records = ref.read(denpaMenListProvider(masterData)).value ?? [];
+      final selectedIds = ref.read(selectedDenpaMenIdsProvider);
+      final qrCodes = ref.read(qrCodeListProvider).value ?? [];
+
+      final candidates = [
+        for (final record in records)
+          if (selectedIds.contains(record.id)) record.denpaMen,
+      ];
+      final consistent = <DenpaMen>[];
+      for (var i = 0; i < candidates.length; i++) {
+        if (isDenpaMenConsistentWithMasterData(candidates[i], masterData)) {
+          consistent.add(candidates[i]);
+        }
+        progress.state = stepProgressWithinEntries(2, totalSteps, i, candidates.length);
+      }
+
+      final exportedIds = {for (final d in consistent) d.id};
+      exportResult = ExportResult(
+        exported: consistent,
+        orphaned: [
+          for (final denpaMen in consistent)
+            if (isDenpaMenOrphanedInExport(denpaMen, exportedIds)) denpaMen,
+        ],
+      );
+
+      final entries = buildDenpaMenBackupEntries(
+        consistent,
+        [for (final r in qrCodes) r.qrCode],
+      );
+
+      final tempRoot = await getTemporaryDirectory();
+      final workDirectory = Directory(
+        path.join(tempRoot.path, 'dm_export_${DateTime.now().microsecondsSinceEpoch}'),
+      );
+      await workDirectory.create(recursive: true);
+      progress.state = stepProgress(3, totalSteps);
+
+      try {
+        final entriesFile = File(path.join(workDirectory.path, 'entries.json'));
+        await entriesFile.writeAsString(jsonEncode(encodeDenpaMenBackup(entries)));
+        progress.state = stepProgress(4, totalSteps);
+
+        final storage = ref.read(denpaMenIconStorageProvider);
+        for (var i = 0; i < entries.length; i++) {
+          final denpaMenId = entries[i].denpaMen.id;
+          final iconFile = await storage.loadIcon(denpaMenId);
+          if (iconFile != null) {
+            final iconDirectory = Directory(
+              path.join(workDirectory.path, 'icons', 'denpamens', denpaMenId),
+            );
+            await iconDirectory.create(recursive: true);
+            final destName = 'icon${path.extension(iconFile.path)}';
+            await iconFile.copy(path.join(iconDirectory.path, destName));
+            await File(
+              path.join(iconDirectory.path, 'metadata.json'),
+            ).writeAsString(jsonEncode({'fileName': destName}));
+          }
+          progress.state = stepProgressWithinEntries(5, totalSteps, i, entries.length);
+        }
+
+        final packageInfo = await PackageInfo.fromPlatform();
+        final header = DMFile(dataVersion: packageInfo.version).encodeHeader();
+        final zipFile = File(
+          path.join(tempRoot.path, 'dm_export_output.${DMFile.extension}'),
+        );
+        await writeDmZip(
+          sourceDirectory: workDirectory,
+          outputFile: zipFile,
+          headerComment: header,
+        );
+        progress.state = stepProgress(7, totalSteps);
+
+        await zipFile.copy(savePath);
+        progress.state = stepProgress(8, totalSteps);
+      } finally {
+        if (await workDirectory.exists()) {
+          await workDirectory.delete(recursive: true);
+        }
+        final outputZip = File(
+          path.join(tempRoot.path, 'dm_export_output.${DMFile.extension}'),
+        );
+        if (await outputZip.exists()) {
+          await outputZip.delete();
+        }
+      }
+    } finally {
+      progress.state = null;
+    }
+
     if (context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(t.home.exportedToClipboard)));
+      await ExportCompleteDialog.show(context, result: exportResult);
+    }
+  }
+
+  Future<void> _importFromFile(BuildContext context, WidgetRef ref) async {
+    final t = context.t;
+    const totalSteps = 11;
+    final progress = ref.read(importExportProgressProvider.notifier);
+    late final ImportResult importResult;
+
+    final result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [DMFile.extension],
+    );
+    final pickedPath = result?.files.single.path;
+    if (pickedPath == null) {
+      return;
+    }
+
+    progress.state = stepProgress(1, totalSteps);
+    final tempRoot = await getTemporaryDirectory();
+    final extractDirectory = Directory(
+      path.join(tempRoot.path, 'dm_import_${DateTime.now().microsecondsSinceEpoch}'),
+    );
+
+    try {
+      final readResult = await readDmZip(
+        inputFile: File(pickedPath),
+        outputDirectory: extractDirectory,
+      );
+      progress.state = stepProgress(4, totalSteps);
+
+      try {
+        DMFile.decodeHeader(readResult.headerComment);
+      } on DmImportError catch (error) {
+        if (context.mounted) {
+          await ErrorDialog.show(context, error: error);
+        }
+        return;
+      }
+      progress.state = stepProgress(3, totalSteps);
+
+      final entriesFile = File(path.join(extractDirectory.path, 'entries.json'));
+      if (!await entriesFile.exists()) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
+        }
+        return;
+      }
+      final decodeResult = decodeDenpaMenBackup(await entriesFile.readAsString());
+      if (decodeResult == null ||
+          (decodeResult.entries.isEmpty && decodeResult.failed.isEmpty)) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
+        }
+        return;
+      }
+      final entries = decodeResult.entries;
+      final failedEntries = decodeResult.failed;
+      progress.state = stepProgress(5, totalSteps);
+
+      final iconsByDenpaMenId = <String, File>{};
+      for (final entry in entries) {
+        final iconDirectory = Directory(
+          path.join(extractDirectory.path, 'icons', 'denpamens', entry.denpaMen.id),
+        );
+        final metadataFile = File(path.join(iconDirectory.path, 'metadata.json'));
+        if (await metadataFile.exists()) {
+          final metadata =
+              jsonDecode(await metadataFile.readAsString()) as Map<String, dynamic>;
+          final fileName = metadata['fileName'] as String?;
+          if (fileName != null) {
+            final iconFile = File(path.join(iconDirectory.path, fileName));
+            if (await iconFile.exists()) {
+              iconsByDenpaMenId[entry.denpaMen.id] = iconFile;
+            }
+          }
+        }
+      }
+      progress.state = stepProgress(6, totalSteps);
+
+      if (!context.mounted) {
+        return;
+      }
+      final masterData = ref.read(masterDataProvider).value;
+      if (masterData == null) {
+        return;
+      }
+      final denpaMenRepository = ref.read(denpaMenRepositoryProvider);
+
+      final candidates = [for (final e in entries) e.denpaMen];
+      final List<DenpaMen> toImport;
+      if (hasAnyDuplicateDenpaMen(candidates, denpaMenRepository, masterData)) {
+        final selected = await DenpaMenSelectionDialog.show(
+          context,
+          title: t.home.importMergeConfirmTitle,
+          candidates: candidates,
+          initial: candidates,
+        );
+        if (selected == null || selected.isEmpty) {
+          return;
+        }
+        toImport = selected;
+      } else {
+        toImport = candidates;
+      }
+      progress.state = stepProgress(8, totalSteps);
+
+      final toImportIds = {for (final d in toImport) d.id};
+      final selectedEntries = [
+        for (final e in entries)
+          if (toImportIds.contains(e.denpaMen.id)) e,
+      ];
+
+      final qrCodeRepository = ref.read(qrCodeRepositoryProvider);
+      final mergeResults = <DenpaMenMergeResult>[];
+      for (var i = 0; i < selectedEntries.length; i++) {
+        mergeResults.addAll(
+          mergeDenpaMenBackupEntries(
+            [selectedEntries[i]],
+            denpaMenRepository: denpaMenRepository,
+            qrCodeRepository: qrCodeRepository,
+            masterData: masterData,
+          ),
+        );
+        progress.state = stepProgressWithinEntries(
+          9,
+          totalSteps,
+          i,
+          selectedEntries.length,
+        );
+      }
+
+      final storage = ref.read(denpaMenIconStorageProvider);
+      for (final entry in selectedEntries) {
+        final iconFile = iconsByDenpaMenId[entry.denpaMen.id];
+        if (iconFile != null) {
+          await storage.saveIcon(entry.denpaMen.id, iconFile);
+          ref.invalidate(denpaMenIconProvider(entry.denpaMen.id));
+        }
+      }
+
+      for (final entry in selectedEntries) {
+        final record = denpaMenRepository.findByCuid(entry.denpaMen.id, masterData);
+        if (record == null) {
+          continue;
+        }
+        final expectsIcon = iconsByDenpaMenId.containsKey(entry.denpaMen.id);
+        if (expectsIcon) {
+          await storage.loadIcon(entry.denpaMen.id);
+        }
+      }
+      progress.state = stepProgress(10, totalSteps);
+
+      importResult = buildImportResult(
+        mergeResults,
+        failedEntries,
+        repository: denpaMenRepository,
+        masterData: masterData,
+      );
+    } finally {
+      if (await extractDirectory.exists()) {
+        await extractDirectory.delete(recursive: true);
+      }
+      progress.state = null;
+    }
+
+    if (context.mounted) {
+      await ImportCompleteDialog.show(context, result: importResult);
     }
   }
 
@@ -69,6 +362,12 @@ class _HomeState extends ConsumerState<Home> {
                   ? null
                   : () => _exportSelected(context, ref, masterData),
               child: Text(t.home.exportSelected),
+            ),
+            PopupMenuItem(
+              onTap: masterData == null
+                  ? null
+                  : () => _importFromFile(context, ref),
+              child: Text(t.home.importFromFile),
             ),
           ],
         ),

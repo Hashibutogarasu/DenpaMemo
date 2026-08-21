@@ -45,6 +45,17 @@ class ObjectBoxQrCodeRepository implements QrCodeRepository {
   }
 
   @override
+  QrCodeRecord? findByHash(String hash) {
+    final query = _objectBox.qrCodeBox.query(QrCodeEntity_.hash.equals(hash)).build();
+    try {
+      final entity = query.findFirst();
+      return entity == null ? null : QrCodeRecord(id: entity.id, qrCode: entity.toDomain());
+    } finally {
+      query.close();
+    }
+  }
+
+  @override
   void saveWithDenpaMens(
     QrCode qrCode,
     List<DenpaMen> denpaMens,

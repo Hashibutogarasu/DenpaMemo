@@ -110,4 +110,89 @@ void main() {
         .firstWhere((record) => record.id == id);
     expect(resaved.denpaMen.considerCorrections, isFalse);
   });
+
+  test('findByCuid() returns the matching record, or null', () {
+    final objectBox = ObjectBox.createInMemory();
+    addTearDown(objectBox.store.close);
+    final denpaMenRepository = ObjectBoxDenpaMenRepository(objectBox);
+
+    final denpaMen = createDenpaMen(
+      name: 'test-denpa-men',
+      bodyColors: [colorId],
+      isSpColor: false,
+      headShape: headShape,
+      physique: physique,
+      personality: personality,
+      pattern: pattern,
+      anntena: anntena,
+      masterData: masterData,
+      maxHappiness: 0,
+      maxLevel: 1,
+    );
+    final id = denpaMenRepository.save(denpaMen);
+
+    final found = denpaMenRepository.findByCuid(denpaMen.id, masterData);
+    expect(found?.id, id);
+    expect(found?.denpaMen.id, denpaMen.id);
+
+    expect(denpaMenRepository.findByCuid('unknown-cuid', masterData), isNull);
+  });
+
+  test(
+    'watchAll() emits an update after a QR-code-linked individual is saved '
+    'via the two-step saveWithDenpaMens(empty) + save() sequence used by '
+    'mergeDenpaMenBackupEntries',
+    () async {
+      final objectBox = ObjectBox.createInMemory();
+      addTearDown(objectBox.store.close);
+      final denpaMenRepository = ObjectBoxDenpaMenRepository(objectBox);
+      final qrCodeRepository = ObjectBoxQrCodeRepository(objectBox);
+
+      final emissions = <List<int>>[];
+      final subscription = denpaMenRepository
+          .watchAll(masterData)
+          .listen((records) => emissions.add([for (final r in records) r.id]));
+      await pumpEventQueue();
+      expect(emissions, hasLength(1), reason: 'the initial watch must emit once');
+      final beforeIds = emissions.single.toSet();
+
+      final qrCode = createQrCode('raw-value-watch-all', name: 'group');
+      qrCodeRepository.saveWithDenpaMens(qrCode, const [], masterData);
+      final denpaMen = createDenpaMen(
+        name: 'watch-all-individual',
+        bodyColors: [colorId],
+        isSpColor: false,
+        headShape: headShape,
+        physique: physique,
+        personality: personality,
+        pattern: pattern,
+        anntena: anntena,
+        masterData: masterData,
+        maxHappiness: 0,
+        maxLevel: 1,
+      ).copyWith(qrCodeId: qrCode.id);
+      final id = denpaMenRepository.save(denpaMen);
+      await pumpEventQueue();
+
+      await subscription.cancel();
+
+      expect(
+        emissions.length,
+        greaterThan(1),
+        reason: 'watchAll() must emit again after '
+            'saveWithDenpaMens(qrCode, const [], masterData) followed by '
+            'save(denpaMen) — the exact sequence mergeDenpaMenBackupEntries '
+            'uses when importing a new QR code.',
+      );
+      expect(
+        emissions.last.toSet(),
+        {...beforeIds, id},
+        reason: 'the latest emission must include the newly-linked '
+            'individual alongside whatever was already present',
+      );
+
+      final savedRecord = denpaMenRepository.findByCuid(denpaMen.id, masterData);
+      expect(savedRecord!.denpaMen.qrCodeId, qrCode.id);
+    },
+  );
 }

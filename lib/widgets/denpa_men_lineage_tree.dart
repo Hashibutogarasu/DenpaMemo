@@ -38,29 +38,15 @@ class DenpaMenLineageTree extends ConsumerWidget {
             return Center(child: Text(context.t.home.empty));
           }
 
-          final iconAsyncs = {
-            for (final record in denpaMenRecords)
-              record.denpaMen.id: ref.watch(
-                denpaMenIconProvider(record.denpaMen.id),
-              ),
-          };
-          if (iconAsyncs.values.any((icon) => icon.isLoading)) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (iconAsyncs.values.any((icon) => icon.hasError)) {
-            final erroredIcon = iconAsyncs.values.firstWhere(
-              (icon) => icon.hasError,
-            );
-            return Center(child: Text('${erroredIcon.error}'));
-          }
-
           return LineageGraph(
             qrCodes: qrCodes,
             denpaMenRecords: denpaMenRecords,
             masterData: masterData,
             iconsById: {
-              for (final entry in iconAsyncs.entries)
-                entry.key: entry.value.value,
+              for (final record in denpaMenRecords)
+                record.denpaMen.id: ref
+                    .watch(denpaMenIconProvider(record.denpaMen.id))
+                    .value,
             },
             controller: controller,
           );
