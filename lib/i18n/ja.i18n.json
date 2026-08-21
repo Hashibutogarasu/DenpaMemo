@@ -215,7 +215,13 @@
     "invincible_all_3": "みんなながくむてき",
     "hardToDodge_all_1": "みんなすこしよけにくい",
     "hardToDodge_all_2": "みんなよけにくい",
-    "hardToDodge_all_3": "みんなすごくよけにくい"
+    "hardToDodge_all_3": "みんなすごくよけにくい",
+    "speedUp_solo_1": "すこしはやくなれ",
+    "speedUp_solo_2": "はやくなれ",
+    "speedUp_solo_3": "かぜになれ",
+    "speedUp_all_1": "みんなすこしはやくなれ",
+    "speedUp_all_2": "みんなはやくなれ",
+    "speedUp_all_3": "みんなかぜになれ"
   },
   "bodyColor": {
     "red": "あか",
