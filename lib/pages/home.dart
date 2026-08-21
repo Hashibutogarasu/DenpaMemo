@@ -382,7 +382,9 @@ class _HomeBody extends ConsumerWidget {
       ids.remove(id);
     }
     ref.read(selectedDenpaMenIdsProvider.notifier).state = ids;
-    ref.read(selectionModeProvider.notifier).state = ids.isNotEmpty;
+    if (ids.isNotEmpty) {
+      ref.read(selectionModeProvider.notifier).state = true;
+    }
   }
 
   @override

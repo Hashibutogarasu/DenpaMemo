@@ -300,6 +300,12 @@ class Translations$home$ja {
 	/// ja: 'カット'
 	String get cutSelected => 'カット';
 
+	/// ja: '全選択'
+	String get selectAll => '全選択';
+
+	/// ja: '全選択解除'
+	String get deselectAll => '全選択解除';
+
 	/// ja: '検索'
 	String get searchHint => '検索';
 
@@ -588,6 +594,8 @@ extension on Translations {
 			'home.importInvalidFile' => 'ファイルを読み込めませんでした',
 			'home.copySelected' => 'コピー',
 			'home.cutSelected' => 'カット',
+			'home.selectAll' => '全選択',
+			'home.deselectAll' => '全選択解除',
 			'home.searchHint' => '検索',
 			'home.addSingle' => '単体で追加',
 			'home.addFromQr' => 'QRコードから追加',

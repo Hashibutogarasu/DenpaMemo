@@ -36,6 +36,8 @@
     "importInvalidFile": "ファイルを読み込めませんでした",
     "copySelected": "コピー",
     "cutSelected": "カット",
+    "selectAll": "全選択",
+    "deselectAll": "全選択解除",
     "searchHint": "検索",
     "addSingle": "単体で追加",
     "addFromQr": "QRコードから追加",
