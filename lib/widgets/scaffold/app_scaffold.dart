@@ -75,7 +75,11 @@ class AppScaffold extends ConsumerWidget {
       child: Focus(
         autofocus: true,
         child: Scaffold(
-          appBar: SlantedAppBar(title: title, actions: actions),
+          appBar: SlantedAppBar(
+            title: title,
+            actions: actions,
+            topSafeAreaInset: MediaQuery.paddingOf(context).top,
+          ),
           bottomNavigationBar: const ImportExportProgressBar(),
           body: Stack(
             children: [

@@ -22,6 +22,7 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.height = 56,
     this.borderWidth = 6,
     this.angleDegrees = 10,
+    this.topSafeAreaInset = 0,
   });
 
   final Widget? title;
@@ -30,10 +31,19 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double borderWidth;
   final double angleDegrees;
 
+  /// Extra height reserved above [height] for the device's top safe area
+  /// (status bar/notch), so [SafeArea] below has room to inset the content
+  /// without shrinking the space actually available to [title]/[actions].
+  /// Callers read this from `MediaQuery.paddingOf(context)` — [SlantedAppBar]
+  /// itself can't, since [Scaffold] reads [preferredSize] before [build] runs.
+  final double topSafeAreaInset;
+
+  double get _contentHeight => height + topSafeAreaInset;
+
   double get _slant => height * math.tan(angleDegrees * math.pi / 180);
 
   @override
-  Size get preferredSize => Size.fromHeight(height + _slant);
+  Size get preferredSize => Size.fromHeight(_contentHeight + _slant);
 
   @override
   Widget build(BuildContext context) {

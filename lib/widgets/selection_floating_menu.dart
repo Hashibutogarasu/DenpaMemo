@@ -112,6 +112,11 @@ class SelectionFloatingMenu extends ConsumerWidget {
                     tooltip: t.common.delete,
                     onPressed: () => _delete(context, ref),
                   ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: AppColors.accent),
+                    tooltip: t.common.cancel,
+                    onPressed: () => _clearSelection(ref),
+                  ),
                 ],
               ),
             ),

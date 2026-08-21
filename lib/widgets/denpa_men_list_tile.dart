@@ -70,9 +70,15 @@ class DenpaMenListTile extends ConsumerWidget {
       leading: onSelectedChanged == null
           ? leadingIcon
           : selectionMode
-          ? Checkbox(
-              value: selected,
-              onChanged: (value) => onSelectedChanged!(value ?? false),
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Checkbox(
+                  value: selected,
+                  onChanged: (value) => onSelectedChanged!(value ?? false),
+                ),
+                leadingIcon,
+              ],
             )
           : InkWell(
               customBorder: const CircleBorder(),
