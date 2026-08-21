@@ -48,17 +48,19 @@ class DenpaMenContainer extends StatelessWidget {
             }
           : null,
       child: Stack(
+        alignment: Alignment.center,
         children: [
           DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
           if (selected)
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withValues(alpha: 0.4),
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.check_box,
-                  color: Colors.white,
-                  size: size * 0.4,
+            SizedBox(
+              width: size,
+              height: size,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  alignment: Alignment.center,
+                  child: const Checkbox(value: true, onChanged: null),
                 ),
               ),
             ),
