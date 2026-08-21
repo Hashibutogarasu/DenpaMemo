@@ -47,10 +47,7 @@ class DmImportController {
       return null;
     }
 
-    final masterData = _ref.read(masterDataProvider).value;
-    if (masterData == null) {
-      return null;
-    }
+    final masterData = _ref.read(masterDataProvider).value!;
 
     final progress = _ref.read(importExportProgressProvider.notifier);
     progress.state = 0;
