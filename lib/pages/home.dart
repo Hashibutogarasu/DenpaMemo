@@ -1,33 +1,15 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
-import '../domain/backup/dm_duplicate_detection.dart';
-import '../domain/backup/dm_file.dart';
-import '../domain/backup/dm_import_error.dart';
-import '../domain/backup/dm_zip_io.dart';
-import '../domain/backup/import_result.dart';
-import '../domain/backup/import_result_builder.dart';
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_backup_codec.dart';
-import '../domain/denpa_men/denpa_men_backup_merge.dart';
 import '../domain/master_data/master_data.dart';
-import '../domain/step_progress.dart';
 import '../i18n/gen/strings.g.dart';
-import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/dm_export_providers.dart';
+import '../providers/dm_import_providers.dart';
 import '../providers/home_view_providers.dart';
-import '../providers/import_export_progress_providers.dart';
 import '../providers/master_data_providers.dart';
-import '../providers/qr_code_providers.dart';
 import '../providers/responsive_providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
@@ -36,8 +18,6 @@ import '../widgets/denpa_men_accordion_tile.dart';
 import '../widgets/denpa_men_lineage_tree.dart';
 import '../widgets/denpa_men_list_tile.dart';
 import '../widgets/dialog/denpa_men_preview_dialog.dart';
-import '../widgets/dialog/denpa_men_selection_dialog.dart';
-import '../widgets/dialog/error_dialog.dart';
 import '../widgets/dialog/export_complete_dialog.dart';
 import '../widgets/dialog/import_complete_dialog.dart';
 import '../widgets/home/toggle_button_group.dart';
@@ -70,192 +50,11 @@ class _HomeState extends ConsumerState<Home> {
   }
 
   Future<void> _importFromFile(BuildContext context, WidgetRef ref) async {
-    final t = context.t;
-    const totalSteps = 11;
-    final progress = ref.read(importExportProgressProvider.notifier);
-    late final ImportResult importResult;
-
-    final result = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: [DMFile.extension],
-    );
-    final pickedPath = result?.files.single.path;
-    if (pickedPath == null) {
-      return;
-    }
-
-    progress.state = stepProgress(1, totalSteps);
-    final tempRoot = await getTemporaryDirectory();
-    final extractDirectory = Directory(
-      path.join(
-        tempRoot.path,
-        'dm_import_${DateTime.now().microsecondsSinceEpoch}',
-      ),
-    );
-
-    try {
-      final readResult = await readDmZip(
-        inputFile: File(pickedPath),
-        outputDirectory: extractDirectory,
-      );
-      progress.state = stepProgress(4, totalSteps);
-
-      try {
-        DMFile.decodeHeader(readResult.headerComment);
-      } on DmImportError catch (error) {
-        if (context.mounted) {
-          await ErrorDialog.show(context, error: error);
-        }
-        return;
-      }
-      progress.state = stepProgress(3, totalSteps);
-
-      final entriesFile = File(
-        path.join(extractDirectory.path, 'entries.json'),
-      );
-      if (!await entriesFile.exists()) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
-        }
-        return;
-      }
-      final decodeResult = decodeDenpaMenBackup(
-        await entriesFile.readAsString(),
-      );
-      if (decodeResult == null ||
-          (decodeResult.entries.isEmpty && decodeResult.failed.isEmpty)) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
-        }
-        return;
-      }
-      final entries = decodeResult.entries;
-      final failedEntries = decodeResult.failed;
-      progress.state = stepProgress(5, totalSteps);
-
-      final iconsByDenpaMenId = <String, File>{};
-      for (final entry in entries) {
-        final iconDirectory = Directory(
-          path.join(
-            extractDirectory.path,
-            'icons',
-            'denpamens',
-            entry.denpaMen.id,
-          ),
-        );
-        final metadataFile = File(
-          path.join(iconDirectory.path, 'metadata.json'),
-        );
-        if (await metadataFile.exists()) {
-          final metadata =
-              jsonDecode(await metadataFile.readAsString())
-                  as Map<String, dynamic>;
-          final fileName = metadata['fileName'] as String?;
-          if (fileName != null) {
-            final iconFile = File(path.join(iconDirectory.path, fileName));
-            if (await iconFile.exists()) {
-              iconsByDenpaMenId[entry.denpaMen.id] = iconFile;
-            }
-          }
-        }
-      }
-      progress.state = stepProgress(6, totalSteps);
-
-      if (!context.mounted) {
-        return;
-      }
-      final masterData = ref.read(masterDataProvider).value;
-      if (masterData == null) {
-        return;
-      }
-      final denpaMenRepository = ref.read(denpaMenRepositoryProvider);
-
-      final candidates = [for (final e in entries) e.denpaMen];
-      final List<DenpaMen> toImport;
-      if (hasAnyDuplicateDenpaMen(candidates, denpaMenRepository, masterData)) {
-        final selected = await DenpaMenSelectionDialog.show(
-          context,
-          title: t.home.importMergeConfirmTitle,
-          candidates: candidates,
-          initial: candidates,
-        );
-        if (selected == null || selected.isEmpty) {
-          return;
-        }
-        toImport = selected;
-      } else {
-        toImport = candidates;
-      }
-      progress.state = stepProgress(8, totalSteps);
-
-      final toImportIds = {for (final d in toImport) d.id};
-      final selectedEntries = [
-        for (final e in entries)
-          if (toImportIds.contains(e.denpaMen.id)) e,
-      ];
-
-      final qrCodeRepository = ref.read(qrCodeRepositoryProvider);
-      final mergeResults = <DenpaMenMergeResult>[];
-      for (var i = 0; i < selectedEntries.length; i++) {
-        mergeResults.addAll(
-          mergeDenpaMenBackupEntries(
-            [selectedEntries[i]],
-            denpaMenRepository: denpaMenRepository,
-            qrCodeRepository: qrCodeRepository,
-            masterData: masterData,
-          ),
-        );
-        progress.state = stepProgressWithinEntries(
-          9,
-          totalSteps,
-          i,
-          selectedEntries.length,
-        );
-      }
-
-      final storage = ref.read(denpaMenIconStorageProvider);
-      for (final entry in selectedEntries) {
-        final iconFile = iconsByDenpaMenId[entry.denpaMen.id];
-        if (iconFile != null) {
-          await storage.saveIcon(entry.denpaMen.id, iconFile);
-          ref.invalidate(denpaMenIconProvider(entry.denpaMen.id));
-        }
-      }
-
-      for (final entry in selectedEntries) {
-        final record = denpaMenRepository.findByCuid(
-          entry.denpaMen.id,
-          masterData,
-        );
-        if (record == null) {
-          continue;
-        }
-        final expectsIcon = iconsByDenpaMenId.containsKey(entry.denpaMen.id);
-        if (expectsIcon) {
-          await storage.loadIcon(entry.denpaMen.id);
-        }
-      }
-      progress.state = stepProgress(10, totalSteps);
-
-      importResult = buildImportResult(
-        mergeResults,
-        failedEntries,
-        repository: denpaMenRepository,
-        masterData: masterData,
-      );
-    } finally {
-      if (await extractDirectory.exists()) {
-        await extractDirectory.delete(recursive: true);
-      }
-      progress.state = null;
-    }
-
-    if (context.mounted) {
-      await ImportCompleteDialog.show(context, result: importResult);
+    final result = await ref
+        .read(dmImportControllerProvider)
+        .importFromFile(context);
+    if (result != null && context.mounted) {
+      await ImportCompleteDialog.show(context, result: result);
     }
   }
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import '../denpa_men/denpa_men.dart';
 import '../denpa_men/denpa_men_backup_entry.dart';
@@ -15,18 +16,19 @@ class DmExportContext {
     required this.masterData,
     required this.qrCodes,
     required this.loadIcon,
-    required this.savePath,
     required this.dataVersion,
     required this.onProgress,
+    this.copyToPath,
   });
 
   final List<DenpaMen> candidates;
   final MasterData masterData;
   final List<QrCode> qrCodes;
   final Future<File?> Function(String denpaMenId) loadIcon;
-  final String savePath;
   final String dataVersion;
   final void Function(double? progress) onProgress;
+
+  final String? copyToPath;
 
   List<DenpaMen>? consistent;
   ExportResult? exportResult;
@@ -34,4 +36,5 @@ class DmExportContext {
   Directory? tempRoot;
   Directory? workDirectory;
   File? zipFile;
+  Uint8List? zipBytes;
 }

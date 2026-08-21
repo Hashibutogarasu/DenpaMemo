@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as path;
 
 import '../domain/backup/dm_file.dart';
 import '../domain/backup/export_result.dart';
@@ -36,33 +39,52 @@ class DmExportController {
         if (selectedIds.contains(record.id)) record.denpaMen,
     ];
 
-    final savePath = await FilePicker.saveFile(
-      dialogTitle: dialogTitle,
-      fileName: DMFile.defaultExportFileName(
-        exportedAt: DateTime.now(),
-        individualCount: candidates.length,
-      ),
-      type: FileType.custom,
-      allowedExtensions: [DMFile.extension],
+    final fileName = DMFile.defaultExportFileName(
+      exportedAt: DateTime.now(),
+      individualCount: candidates.length,
     );
-    if (savePath == null) {
-      progress.state = null;
-      return null;
+
+    String? copyToPath;
+    if (Platform.isAndroid) {
+      final directoryPath = await FilePicker.getDirectoryPath(
+        dialogTitle: dialogTitle,
+      );
+      if (directoryPath == null) {
+        progress.state = null;
+        return null;
+      }
+      copyToPath = path.join(directoryPath, fileName);
     }
 
     try {
       final packageInfo = await PackageInfo.fromPlatform();
       final qrCodes = _ref.read(qrCodeRepositoryProvider).getAll();
       final storage = _ref.read(denpaMenIconStorageProvider);
-      return await DMFile.writeExport(
+      final (result, zipBytes) = await DMFile.writeExport(
         candidates: candidates,
         masterData: masterData,
         qrCodes: [for (final record in qrCodes) record.qrCode],
         loadIcon: storage.loadIcon,
-        savePath: savePath,
         dataVersion: packageInfo.version,
         onProgress: (value) => progress.state = value,
+        copyToPath: copyToPath,
       );
+
+      if (copyToPath != null) {
+        return result;
+      }
+
+      final savePath = await FilePicker.saveFile(
+        dialogTitle: dialogTitle,
+        fileName: fileName,
+        type: FileType.custom,
+        allowedExtensions: [DMFile.extension],
+        bytes: zipBytes,
+      );
+      if (savePath == null) {
+        return null;
+      }
+      return result;
     } finally {
       progress.state = null;
     }
