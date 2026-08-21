@@ -1,9 +1,12 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
+import '../pages/denpa_men_editor.dart';
 import '../providers/denpa_men_providers.dart';
+import '../routing/app_router.dart';
 import '../theme/app_colors.dart';
 
 /// Rounded floating action bar shown above the home list while the list is
@@ -18,6 +21,22 @@ class SelectionFloatingMenu extends ConsumerWidget {
 
   final MasterData masterData;
   final Duration duration;
+
+  void _edit(BuildContext context, WidgetRef ref) {
+    final records = ref.read(denpaMenListProvider(masterData)).value ?? [];
+    final selectedIds = ref.read(selectedDenpaMenIdsProvider);
+    if (selectedIds.length != 1) {
+      return;
+    }
+    final record = records.firstWhereOrNull(
+      (record) => record.id == selectedIds.single,
+    );
+    if (record != null) {
+      AddDenpaMenRoute(
+        $extra: DenpaMenEditorArgs(masterData: masterData, initial: record),
+      ).push(context);
+    }
+  }
 
   void _copy(WidgetRef ref) {
     final records = ref.read(denpaMenListProvider(masterData)).value ?? [];
@@ -114,6 +133,13 @@ class SelectionFloatingMenu extends ConsumerWidget {
                             .state = allSelected
                         ? {}
                         : {for (final record in records) record.id},
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit, color: AppColors.accent),
+                    tooltip: t.common.edit,
+                    onPressed: selectedIds.length == 1
+                        ? () => _edit(context, ref)
+                        : null,
                   ),
                   IconButton(
                     icon: const Icon(Icons.copy, color: AppColors.accent),
