@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,25 +8,9 @@ import '../../i18n/gen/strings.g.dart';
 import '../../pages/birth_guide.dart';
 import '../../pages/denpa_men_editor.dart';
 import '../../providers/denpa_men_providers.dart';
+import '../../providers/qr_code_providers.dart';
 import '../../routing/app_router.dart';
-
-enum DenpaMenAction { edit, birthGuide, delete }
-
-List<PopupMenuEntry<DenpaMenAction>> denpaMenActionMenuItems(
-  BuildContext context, {
-  required bool hasParents,
-}) {
-  final t = context.t;
-  return [
-    PopupMenuItem(value: DenpaMenAction.edit, child: Text(t.common.edit)),
-    if (hasParents)
-      PopupMenuItem(
-        value: DenpaMenAction.birthGuide,
-        child: Text(t.home.birthGuideAction),
-      ),
-    PopupMenuItem(value: DenpaMenAction.delete, child: Text(t.common.delete)),
-  ];
-}
+import 'qr_code_image_dialog.dart';
 
 Future<bool> confirmDenpaMenDelete(BuildContext context) async {
   final t = context.t;
@@ -49,27 +34,65 @@ Future<bool> confirmDenpaMenDelete(BuildContext context) async {
   return confirmed ?? false;
 }
 
-Future<void> handleDenpaMenAction(
+Future<void> _showQrCode(
   BuildContext context,
   WidgetRef ref,
-  DenpaMenAction action, {
+  String qrCodeId,
+) async {
+  final qrCodeRecord = ref
+      .read(qrCodeRepositoryProvider)
+      .getAll()
+      .firstWhereOrNull((r) => r.qrCode.id == qrCodeId);
+  if (qrCodeRecord != null && context.mounted) {
+    await showDialog<void>(
+      context: context,
+      builder: (context) =>
+          QrCodeImageDialog(rawValue: qrCodeRecord.qrCode.rawValue),
+    );
+  }
+}
+
+/// Builds the edit/delete menu entries for [record], each carrying its own
+/// action as a [VoidCallback] rather than a shared action enum, so a menu
+/// like this one only ever needs one place edited to add or remove an
+/// entry.
+List<PopupMenuEntry<VoidCallback>> denpaMenActionMenuItems(
+  BuildContext context,
+  WidgetRef ref, {
   required DenpaMenRecord record,
   required MasterData masterData,
-}) async {
-  switch (action) {
-    case DenpaMenAction.edit:
-      AddDenpaMenRoute(
+}) {
+  final t = context.t;
+  final denpaMen = record.denpaMen;
+  final qrCodeId = denpaMen.qrCodeId;
+  return [
+    if (qrCodeId != null)
+      PopupMenuItem(
+        value: () => _showQrCode(context, ref, qrCodeId),
+        child: Text(t.home.showQrCodeAction),
+      ),
+    PopupMenuItem(
+      value: () => AddDenpaMenRoute(
         $extra: DenpaMenEditorArgs(masterData: masterData, initial: record),
-      ).push(context);
-    case DenpaMenAction.birthGuide:
-      BirthGuideRoute(
-        $extra: BirthGuideArgs(masterData: masterData, target: record),
-      ).push(context);
-    case DenpaMenAction.delete:
-      if (await confirmDenpaMenDelete(context)) {
-        ref.read(denpaMenRepositoryProvider).delete(record.id);
-      }
-  }
+      ).push(context),
+      child: Text(t.common.edit),
+    ),
+    if (denpaMen.parentIds.isNotEmpty)
+      PopupMenuItem(
+        value: () => BirthGuideRoute(
+          $extra: BirthGuideArgs(masterData: masterData, target: record),
+        ).push(context),
+        child: Text(t.home.birthGuideAction),
+      ),
+    PopupMenuItem(
+      value: () async {
+        if (await confirmDenpaMenDelete(context)) {
+          ref.read(denpaMenRepositoryProvider).delete(record.id);
+        }
+      },
+      child: Text(t.common.delete),
+    ),
+  ];
 }
 
 class DenpaMenContextMenuArea extends ConsumerWidget {
@@ -90,7 +113,7 @@ class DenpaMenContextMenuArea extends ConsumerWidget {
     Offset globalPosition,
   ) async {
     final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-    final action = await showMenu<DenpaMenAction>(
+    final action = await showMenu<VoidCallback>(
       context: context,
       position: RelativeRect.fromRect(
         globalPosition & const Size(1, 1),
@@ -98,18 +121,12 @@ class DenpaMenContextMenuArea extends ConsumerWidget {
       ),
       items: denpaMenActionMenuItems(
         context,
-        hasParents: record.denpaMen.parentIds.isNotEmpty,
-      ),
-    );
-    if (action != null && context.mounted) {
-      await handleDenpaMenAction(
-        context,
         ref,
-        action,
         record: record,
         masterData: masterData,
-      );
-    }
+      ),
+    );
+    action?.call();
   }
 
   @override
