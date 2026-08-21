@@ -38,6 +38,7 @@ extension DenpaMenEntityMapper on DenpaMen {
       considerCorrections: considerCorrections,
       catchOrder: catchOrder,
       memo: memo,
+      hash: hash,
       createdAt: createdAt,
       moveInDate: moveInDate,
     );
@@ -52,7 +53,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
     MasterData masterData, {
     AntennaIdMigrator antennaIdMigrator = const LegacyAntennaIdMigrator(),
   }) {
-    return createDenpaMen(
+    final denpaMen = createDenpaMen(
       id: cuid,
       name: name,
       bodyColors: bodyColors,
@@ -101,5 +102,6 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
       memo: memo,
       moveInDate: moveInDate,
     );
+    return denpaMen.copyWith(hash: hash);
   }
 }

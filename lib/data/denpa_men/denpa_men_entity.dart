@@ -71,6 +71,8 @@ class DenpaMenEntity {
 
   String? memo;
 
+  String hash;
+
   @Property(type: PropertyType.date)
   DateTime createdAt;
 
@@ -109,6 +111,7 @@ class DenpaMenEntity {
     this.considerCorrections = true,
     this.catchOrder,
     this.memo,
+    this.hash = '',
     required this.createdAt,
     this.moveInDate,
   });

@@ -57,6 +57,7 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   moveInDate: json['moveInDate'] == null
       ? null
       : DateTime.parse(json['moveInDate'] as String),
+  hash: json['hash'] as String? ?? '',
 );
 
 Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
@@ -92,4 +93,5 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'qrCodeId': instance.qrCodeId,
   'memo': instance.memo,
   'moveInDate': instance.moveInDate?.toIso8601String(),
+  'hash': instance.hash,
 };

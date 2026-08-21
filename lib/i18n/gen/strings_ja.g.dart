@@ -44,6 +44,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
+	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
 	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
@@ -200,6 +201,9 @@ class Translations$common$ja {
 	/// ja: '決定'
 	String get confirm => '決定';
 
+	/// ja: 'OK'
+	String get ok => 'OK';
+
 	/// ja: '保存'
 	String get save => '保存';
 
@@ -278,8 +282,17 @@ class Translations$home$ja {
 	/// ja: '選択項目をエクスポート'
 	String get exportSelected => '選択項目をエクスポート';
 
-	/// ja: '選択した電波人間をJSONとしてコピーしました'
-	String get exportedToClipboard => '選択した電波人間をJSONとしてコピーしました';
+	/// ja: '書き出し先を選択'
+	String get exportDialogTitle => '書き出し先を選択';
+
+	/// ja: 'インポート'
+	String get importFromFile => 'インポート';
+
+	/// ja: '重複している個体は上書きされます。インポートしない個体はチェックを外してください'
+	String get importMergeConfirmTitle => '重複している個体は上書きされます。インポートしない個体はチェックを外してください';
+
+	/// ja: 'ファイルを読み込めませんでした'
+	String get importInvalidFile => 'ファイルを読み込めませんでした';
 
 	/// ja: 'コピー'
 	String get copySelected => 'コピー';
@@ -319,6 +332,54 @@ class Translations$home$ja {
 
 	/// ja: '出生ガイド'
 	String get birthGuideAction => '出生ガイド';
+}
+
+// Path: backup
+class Translations$backup$ja {
+	Translations$backup$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'インポート結果'
+	String get importCompleteTitle => 'インポート結果';
+
+	/// ja: '新規追加'
+	String get importAddedSection => '新規追加';
+
+	/// ja: '上書き更新'
+	String get importMergedSection => '上書き更新';
+
+	/// ja: '親が見つからない個体'
+	String get importOrphanedSection => '親が見つからない個体';
+
+	/// ja: 'インポートできなかったデータ'
+	String get importFailedSection => 'インポートできなかったデータ';
+
+	/// ja: 'エクスポート結果'
+	String get exportCompleteTitle => 'エクスポート結果';
+
+	/// ja: 'エクスポート完了'
+	String get exportExportedSection => 'エクスポート完了';
+
+	/// ja: '親が同梱されていない個体'
+	String get exportOrphanedSection => '親が同梱されていない個体';
+
+	/// ja: '電波人間をインポート'
+	String get importHeaderErrorTitle => '電波人間をインポート';
+
+	/// ja: '電波人間のインポートに失敗しました。データバージョンを読み込めません。'
+	String get importHeaderErrorDescription => '電波人間のインポートに失敗しました。データバージョンを読み込めません。';
+
+	/// ja: '電波人間をインポート'
+	String get importEntryParseErrorTitle => '電波人間をインポート';
+
+	/// ja: '"${name}"のデータを読み込めませんでした'
+	String importEntryParseErrorDescriptionNamed({required Object name}) => '"${name}"のデータを読み込めませんでした';
+
+	/// ja: '${index}件目のデータを読み込めませんでした'
+	String importEntryParseErrorDescriptionIndexed({required Object index}) => '${index}件目のデータを読み込めませんでした';
 }
 
 // Path: birthGuide
@@ -500,6 +561,7 @@ extension on Translations {
 			'app.name' => 'Denpa Memo',
 			'common.cancel' => 'キャンセル',
 			'common.confirm' => '決定',
+			'common.ok' => 'OK',
 			'common.save' => '保存',
 			'common.edit' => '編集',
 			'common.delete' => '削除',
@@ -520,7 +582,10 @@ extension on Translations {
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
 			'home.deleteSelectedConfirmMessage' => '選択した電波人間を削除しますか?',
 			'home.exportSelected' => '選択項目をエクスポート',
-			'home.exportedToClipboard' => '選択した電波人間をJSONとしてコピーしました',
+			'home.exportDialogTitle' => '書き出し先を選択',
+			'home.importFromFile' => 'インポート',
+			'home.importMergeConfirmTitle' => '重複している個体は上書きされます。インポートしない個体はチェックを外してください',
+			'home.importInvalidFile' => 'ファイルを読み込めませんでした',
 			'home.copySelected' => 'コピー',
 			'home.cutSelected' => 'カット',
 			'home.searchHint' => '検索',
@@ -534,6 +599,19 @@ extension on Translations {
 			'home.resetTreePosition' => '位置をリセット',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
+			'backup.importCompleteTitle' => 'インポート結果',
+			'backup.importAddedSection' => '新規追加',
+			'backup.importMergedSection' => '上書き更新',
+			'backup.importOrphanedSection' => '親が見つからない個体',
+			'backup.importFailedSection' => 'インポートできなかったデータ',
+			'backup.exportCompleteTitle' => 'エクスポート結果',
+			'backup.exportExportedSection' => 'エクスポート完了',
+			'backup.exportOrphanedSection' => '親が同梱されていない個体',
+			'backup.importHeaderErrorTitle' => '電波人間をインポート',
+			'backup.importHeaderErrorDescription' => '電波人間のインポートに失敗しました。データバージョンを読み込めません。',
+			'backup.importEntryParseErrorTitle' => '電波人間をインポート',
+			'backup.importEntryParseErrorDescriptionNamed' => ({required Object name}) => '"${name}"のデータを読み込めませんでした',
+			'backup.importEntryParseErrorDescriptionIndexed' => ({required Object index}) => '${index}件目のデータを読み込めませんでした',
 			'birthGuide.catchQrInstruction' => 'このQRコードから個体をキャッチしてください',
 			'birthGuide.catchIndividualInstruction' => 'この個体をキャッチしてください',
 			'birthGuide.breedParentInstruction' => 'この個体を用意してください',

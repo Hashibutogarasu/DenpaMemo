@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "32:4619165505260223847",
+      "lastPropertyId": "33:5724398760579049796",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -171,6 +171,11 @@
           "id": "32:4619165505260223847",
           "name": "bodyColorShades",
           "type": 27
+        },
+        {
+          "id": "33:5724398760579049796",
+          "name": "hash",
+          "type": 9
         }
       ],
       "relations": []

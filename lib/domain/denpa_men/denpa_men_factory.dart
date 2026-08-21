@@ -9,6 +9,7 @@ import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
 import 'denpa_men.dart';
+import 'denpa_men_hash.dart';
 import 'denpa_men_resistance_calculator.dart';
 import 'denpa_men_validation_exception.dart';
 
@@ -114,10 +115,11 @@ DenpaMen createDenpaMen({
   );
 
   final resistances = draft.calculateResistances(masterData);
-  return draft.copyWith(
+  final withResistances = draft.copyWith(
     abnormalityResistances: resistances.abnormalityResistances,
     attributeResistance: resistances.attributeResistance,
   );
+  return withResistances.copyWith(hash: computeDenpaMenHash(withResistances));
 }
 
 BodyColorResistanceRule _requireRule(

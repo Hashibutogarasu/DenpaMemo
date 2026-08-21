@@ -5,6 +5,7 @@
   "common": {
     "cancel": "キャンセル",
     "confirm": "決定",
+    "ok": "OK",
     "save": "保存",
     "edit": "編集",
     "delete": "削除",
@@ -29,7 +30,10 @@
     "deleteConfirmMessage": "この電波人間を削除しますか?",
     "deleteSelectedConfirmMessage": "選択した電波人間を削除しますか?",
     "exportSelected": "選択項目をエクスポート",
-    "exportedToClipboard": "選択した電波人間をJSONとしてコピーしました",
+    "exportDialogTitle": "書き出し先を選択",
+    "importFromFile": "インポート",
+    "importMergeConfirmTitle": "重複している個体は上書きされます。インポートしない個体はチェックを外してください",
+    "importInvalidFile": "ファイルを読み込めませんでした",
     "copySelected": "コピー",
     "cutSelected": "カット",
     "searchHint": "検索",
@@ -43,6 +47,21 @@
     "resetTreePosition": "位置をリセット",
     "catchOrderLabel": "${order}匹目: ${name}",
     "birthGuideAction": "出生ガイド"
+  },
+  "backup": {
+    "importCompleteTitle": "インポート結果",
+    "importAddedSection": "新規追加",
+    "importMergedSection": "上書き更新",
+    "importOrphanedSection": "親が見つからない個体",
+    "importFailedSection": "インポートできなかったデータ",
+    "exportCompleteTitle": "エクスポート結果",
+    "exportExportedSection": "エクスポート完了",
+    "exportOrphanedSection": "親が同梱されていない個体",
+    "importHeaderErrorTitle": "電波人間をインポート",
+    "importHeaderErrorDescription": "電波人間のインポートに失敗しました。データバージョンを読み込めません。",
+    "importEntryParseErrorTitle": "電波人間をインポート",
+    "importEntryParseErrorDescriptionNamed": "\"${name}\"のデータを読み込めませんでした",
+    "importEntryParseErrorDescriptionIndexed": "${index}件目のデータを読み込めませんでした"
   },
   "birthGuide": {
     "catchQrInstruction": "このQRコードから個体をキャッチしてください",

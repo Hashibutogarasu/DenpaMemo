@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/denpa_men/denpa_men_record.dart';
 import '../../i18n/gen/strings.g.dart';
-import '../icon/denpa_men_icon.dart';
 import 'bottom_slide_dialog.dart';
-import 'denpa_men_preview_dialog.dart';
+import 'denpa_men_selection_list_tile.dart';
 
 /// Shows [BottomSlideDialog] letting the user pick exactly 0 or 2 parents
 /// from [candidates], returning the selected records or null if cancelled.
@@ -66,19 +64,10 @@ class _ParentDenpaMenSelectionDialogState
         shrinkWrap: true,
         children: [
           for (final record in widget.candidates)
-            ListTile(
-              leading: Consumer(
-                builder: (context, ref, _) =>
-                    DenpaMenIcon(denpaMenId: record.denpaMen.id, size: 40),
-              ),
-              title: Text(record.denpaMen.name),
+            DenpaMenSelectionListTile(
+              denpaMen: record.denpaMen,
               selected: _selected.any((r) => r.id == record.id),
-              trailing: _selected.any((r) => r.id == record.id)
-                  ? const Icon(Icons.check)
-                  : null,
               onTap: () => _toggle(record),
-              onLongPress: () =>
-                  DenpaMenPreviewDialog.show(context, denpaMen: record.denpaMen),
             ),
         ],
       ),

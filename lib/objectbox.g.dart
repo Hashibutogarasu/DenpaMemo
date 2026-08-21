@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(32, 4619165505260223847),
+    lastPropertyId: const obx_int.IdUid(33, 5724398760579049796),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -221,6 +221,12 @@ final _entities = <obx_int.ModelEntity>[
         type: 27,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(33, 5724398760579049796),
+        name: 'hash',
+        type: 9,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -362,7 +368,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final bodyColorShadesOffset = fbb.writeListInt64(
           object.bodyColorShades,
         );
-        fbb.startTable(33);
+        final hashOffset = fbb.writeString(object.hash);
+        fbb.startTable(34);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -395,6 +402,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addBool(29, object.considerCorrections);
         fbb.addInt64(30, object.antennaLevel);
         fbb.addOffset(31, bodyColorShadesOffset);
+        fbb.addOffset(32, hashOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -545,6 +553,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final memoParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 48);
+        final hashParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 68, '');
         final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
           const fb.Int64Reader().vTableGet(buffer, rootOffset, 50, 0),
         );
@@ -581,6 +592,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           considerCorrections: considerCorrectionsParam,
           catchOrder: catchOrderParam,
           memo: memoParam,
+          hash: hashParam,
           createdAt: createdAtParam,
           moveInDate: moveInDateParam,
         );
@@ -820,6 +832,11 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.bodyColorShades].
   static final bodyColorShades = obx.QueryIntegerVectorProperty<DenpaMenEntity>(
     _entities[0].properties[31],
+  );
+
+  /// See [DenpaMenEntity.hash].
+  static final hash = obx.QueryStringProperty<DenpaMenEntity>(
+    _entities[0].properties[32],
   );
 }
 

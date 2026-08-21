@@ -22,4 +22,7 @@ abstract class QrCodeRepository {
     MasterData masterData, {
     int id = 0,
   });
+
+  /// Finds the persisted [QrCode] whose [QrCode.hash] matches [hash], or null.
+  QrCodeRecord? findByHash(String hash);
 }

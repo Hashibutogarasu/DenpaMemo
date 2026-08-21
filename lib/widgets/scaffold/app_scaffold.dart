@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../providers/denpa_men_providers.dart';
 import '../header/slanted_app_bar.dart';
+import '../import_export_progress_bar.dart';
 import '../navigation/app_back_button.dart';
 import '../search/search_overlay_bar.dart';
 
@@ -58,6 +59,7 @@ class AppScaffold extends ConsumerWidget {
         autofocus: true,
         child: Scaffold(
           appBar: SlantedAppBar(title: title, actions: actions),
+          bottomNavigationBar: const ImportExportProgressBar(),
           body: Stack(
             children: [
               Positioned.fill(child: body),

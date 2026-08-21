@@ -50,6 +50,7 @@ abstract class DenpaMen with _$DenpaMen {
     String? qrCodeId,
     String? memo,
     DateTime? moveInDate,
+    @Default('') String hash,
   }) = _DenpaMen;
 
   factory DenpaMen.fromJson(Map<String, dynamic> json) =>
