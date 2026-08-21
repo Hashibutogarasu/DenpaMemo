@@ -1,6 +1,25 @@
 [
   {
-    "id": "hardToDodge",
-    "category": "other"
+    "id": "hardToDodge_all_1",
+    "category": "other",
+    "targetsAll": true,
+    "maxLevel": null,
+    "evolvesToId": "hardToDodge_all_2",
+    "variantGroupId": "hardToDodge"
+  },
+  {
+    "id": "hardToDodge_all_2",
+    "category": "other",
+    "targetsAll": true,
+    "maxLevel": null,
+    "evolvesToId": "hardToDodge_all_3",
+    "variantGroupId": "hardToDodge"
+  },
+  {
+    "id": "hardToDodge_all_3",
+    "category": "other",
+    "targetsAll": true,
+    "maxLevel": null,
+    "variantGroupId": "hardToDodge"
   }
 ]
