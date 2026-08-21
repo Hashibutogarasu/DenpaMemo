@@ -12,7 +12,7 @@ import '../../theme/app_colors.dart';
 /// Always mounted (visibility is animated via [searchOverlayOpenProvider])
 /// rather than conditionally inserted into the tree, so the slide-out plays
 /// instead of the bar disappearing instantly.
-class SearchOverlayBar extends ConsumerWidget {
+class SearchOverlayBar extends ConsumerStatefulWidget {
   const SearchOverlayBar({
     super.key,
     this.duration = const Duration(milliseconds: 200),
@@ -23,22 +23,43 @@ class SearchOverlayBar extends ConsumerWidget {
   final EdgeInsetsGeometry margin;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SearchOverlayBar> createState() => _SearchOverlayBarState();
+}
+
+class _SearchOverlayBarState extends ConsumerState<SearchOverlayBar> {
+  final _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final t = context.t;
     final open = ref.watch(searchOverlayOpenProvider);
+
+    ref.listen(searchOverlayOpenProvider, (previous, next) {
+      if (next) {
+        _focusNode.requestFocus();
+      } else {
+        _focusNode.unfocus();
+      }
+    });
 
     return IgnorePointer(
       ignoring: !open,
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: margin,
+          padding: widget.margin,
           child: AnimatedSlide(
-            duration: duration,
+            duration: widget.duration,
             curve: Curves.easeOutCubic,
             offset: open ? Offset.zero : const Offset(0, -1.5),
             child: AnimatedOpacity(
-              duration: duration,
+              duration: widget.duration,
               curve: Curves.easeOutCubic,
               opacity: open ? 1 : 0,
               child: Material(
@@ -56,7 +77,7 @@ class SearchOverlayBar extends ConsumerWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
-                          autofocus: true,
+                          focusNode: _focusNode,
                           decoration: InputDecoration(
                             hintText: t.home.searchHint,
                             border: InputBorder.none,

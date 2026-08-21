@@ -6,8 +6,9 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../theme/app_colors.dart';
 
-/// Rounded floating action bar shown above the home list while one or more
-/// records are selected, offering bulk copy/cut/delete of the selection.
+/// Rounded floating action bar shown above the home list while the list is
+/// in multi-select mode, offering select-all/deselect-all and bulk
+/// copy/cut/delete of the selection.
 class SelectionFloatingMenu extends ConsumerWidget {
   const SelectionFloatingMenu({
     super.key,
@@ -73,7 +74,12 @@ class SelectionFloatingMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
-    final visible = ref.watch(selectedDenpaMenIdsProvider).isNotEmpty;
+    final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
+    final visible = ref.watch(selectionModeProvider);
+    final records = ref.watch(denpaMenListProvider(masterData)).value ?? [];
+    final allSelected =
+        records.isNotEmpty &&
+        records.every((record) => selectedIds.contains(record.id));
 
     return IgnorePointer(
       ignoring: !visible,
@@ -94,6 +100,21 @@ class SelectionFloatingMenu extends ConsumerWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  IconButton(
+                    icon: Icon(
+                      allSelected ? Icons.deselect : Icons.select_all,
+                      color: AppColors.accent,
+                    ),
+                    tooltip: allSelected
+                        ? t.home.deselectAll
+                        : t.home.selectAll,
+                    onPressed: () =>
+                        ref
+                            .read(selectedDenpaMenIdsProvider.notifier)
+                            .state = allSelected
+                        ? {}
+                        : {for (final record in records) record.id},
+                  ),
                   IconButton(
                     icon: const Icon(Icons.copy, color: AppColors.accent),
                     tooltip: t.home.copySelected,

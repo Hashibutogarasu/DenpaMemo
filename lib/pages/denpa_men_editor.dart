@@ -90,9 +90,9 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       pattern: masterData.patterns.first,
       anntena: masterData.anntenas.firstWhere((a) => a.id == 'none'),
       masterData: masterData,
-      maxHappiness: 0,
+      maxHappiness: 20,
       level: 1,
-      maxLevel: 1,
+      maxLevel: 20,
       corrections: const [],
     );
   }

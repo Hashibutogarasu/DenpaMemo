@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
@@ -8,6 +9,7 @@ import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
 import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
+import '../providers/responsive_providers.dart';
 import '../theme/app_colors.dart';
 import 'color/color_dot.dart';
 import 'container/indented_header.dart';
@@ -38,7 +40,7 @@ import 'label/joined_labels_text.dart';
 /// Every edit produces a full draft [DenpaMen] via [onChanged] so the caller
 /// can re-derive resistances (e.g. through `createDenpaMen`) and update the
 /// read-only status area immediately.
-class EditableDenpaMenStatus extends StatelessWidget {
+class EditableDenpaMenStatus extends ConsumerWidget {
   const EditableDenpaMenStatus({
     super.key,
     required this.denpaMen,
@@ -65,8 +67,9 @@ class EditableDenpaMenStatus extends StatelessWidget {
   final bool qrCodeEditable;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
+    final isMobile = ref.watch(isMobileLayoutProvider);
 
     return StatusContainer(
       padding: const EdgeInsets.all(8),
@@ -97,42 +100,71 @@ class EditableDenpaMenStatus extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: InlineGaugeLabel(
-                                    label: t.denpaMenStatus.level,
-                                    value: GaugeValue(
-                                      current: denpaMen.level,
-                                      max: denpaMen.maxLevel,
-                                    ),
-                                    onCurrentChanged: (value) => onChanged(
-                                      denpaMen.copyWith(level: value),
-                                    ),
-                                    onMaxChanged: (value) => onChanged(
-                                      denpaMen.copyWith(maxLevel: value),
+                            if (isMobile) ...[
+                              InlineGaugeLabel(
+                                label: t.denpaMenStatus.level,
+                                value: GaugeValue(
+                                  current: denpaMen.level,
+                                  max: denpaMen.maxLevel,
+                                ),
+                                onCurrentChanged: (value) =>
+                                    onChanged(denpaMen.copyWith(level: value)),
+                                onMaxChanged: (value) => onChanged(
+                                  denpaMen.copyWith(maxLevel: value),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              InlineGaugeLabel(
+                                label: t.denpaMenStatus.happiness,
+                                value: GaugeValue(
+                                  current: denpaMen.happiness,
+                                  max: denpaMen.maxHappiness,
+                                ),
+                                onCurrentChanged: (value) => onChanged(
+                                  denpaMen.copyWith(happiness: value),
+                                ),
+                                onMaxChanged: (value) => onChanged(
+                                  denpaMen.copyWith(maxHappiness: value),
+                                ),
+                              ),
+                            ] else
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: InlineGaugeLabel(
+                                      label: t.denpaMenStatus.level,
+                                      value: GaugeValue(
+                                        current: denpaMen.level,
+                                        max: denpaMen.maxLevel,
+                                      ),
+                                      onCurrentChanged: (value) => onChanged(
+                                        denpaMen.copyWith(level: value),
+                                      ),
+                                      onMaxChanged: (value) => onChanged(
+                                        denpaMen.copyWith(maxLevel: value),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Flexible(
-                                  child: InlineGaugeLabel(
-                                    label: t.denpaMenStatus.happiness,
-                                    value: GaugeValue(
-                                      current: denpaMen.happiness,
-                                      max: denpaMen.maxHappiness,
-                                    ),
-                                    onCurrentChanged: (value) => onChanged(
-                                      denpaMen.copyWith(happiness: value),
-                                    ),
-                                    onMaxChanged: (value) => onChanged(
-                                      denpaMen.copyWith(maxHappiness: value),
+                                  const SizedBox(width: 8),
+                                  Flexible(
+                                    child: InlineGaugeLabel(
+                                      label: t.denpaMenStatus.happiness,
+                                      value: GaugeValue(
+                                        current: denpaMen.happiness,
+                                        max: denpaMen.maxHappiness,
+                                      ),
+                                      onCurrentChanged: (value) => onChanged(
+                                        denpaMen.copyWith(happiness: value),
+                                      ),
+                                      onMaxChanged: (value) => onChanged(
+                                        denpaMen.copyWith(maxHappiness: value),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                             OutlinedInlineNameField(
                               value: denpaMen.name,
                               onChanged: (value) =>
@@ -160,6 +192,7 @@ class EditableDenpaMenStatus extends StatelessWidget {
               denpaMen: denpaMen,
               onChanged: onChanged,
               considerCorrections: considerCorrections,
+              columns: isMobile ? 1 : 2,
             ),
           ),
           Row(
@@ -274,7 +307,8 @@ class EditableDenpaMenStatus extends StatelessWidget {
             },
             child: JoinedLabelsText(
               labels: [
-                for (final c in denpaMen.corrections) t.correction[c.id] ?? c.id,
+                for (final c in denpaMen.corrections)
+                  t.correction[c.id] ?? c.id,
               ],
             ),
           ),
