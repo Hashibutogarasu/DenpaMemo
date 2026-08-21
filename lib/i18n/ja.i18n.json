@@ -205,7 +205,13 @@
     "harden_solo_3": "すごくかたくなれ",
     "harden_all_1": "みんなかためになれ",
     "harden_all_2": "みんなかたくなれ",
-    "harden_all_3": "みんなガチガチ"
+    "harden_all_3": "みんなガチガチ",
+    "invincible_solo_1": "すこしむてき",
+    "invincible_solo_2": "むてき",
+    "invincible_solo_3": "ながくむてき",
+    "invincible_all_1": "みんなすこしむてき",
+    "invincible_all_2": "みんなむてき",
+    "invincible_all_3": "みんなながくむてき"
   },
   "bodyColor": {
     "red": "あか",
