@@ -1,0 +1,102 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
+
+import '../domain/denpa_men/denpa_men_record.dart';
+import '../domain/master_data/master_data.dart';
+import '../domain/search/denpa_men_search_query.dart';
+import 'denpa_men_providers.dart';
+
+/// Single source of truth for the current search filters, shared by the
+/// home screen's quick name search and the dedicated search page.
+final searchQueryProvider = StateProvider<DenpaMenSearchQuery>(
+  (ref) => const DenpaMenSearchQuery(),
+);
+
+final _allDenpaMenProvider = Provider.family<List<DenpaMenRecord>, MasterData>(
+  (ref, masterData) =>
+      ref.watch(denpaMenListProvider(masterData)).value ?? [],
+);
+
+final _nameFilteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
+      final name = ref.watch(searchQueryProvider.select((q) => q.name));
+      final records = ref.watch(_allDenpaMenProvider(masterData));
+      if (name.isEmpty) return records;
+      return [for (final r in records) if (r.denpaMen.name.contains(name)) r];
+    });
+
+final _headShapeFilteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
+      final headShapeId = ref.watch(
+        searchQueryProvider.select((q) => q.headShapeId),
+      );
+      final records = ref.watch(_nameFilteredDenpaMenProvider(masterData));
+      if (headShapeId == null) return records;
+      return [
+        for (final r in records)
+          if (r.denpaMen.headShape.id == headShapeId) r,
+      ];
+    });
+
+final _bodyColorFilteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
+      final bodyColors = ref.watch(
+        searchQueryProvider.select((q) => q.bodyColors),
+      );
+      final isSpColor = ref.watch(
+        searchQueryProvider.select((q) => q.isSpColor),
+      );
+      var records = ref.watch(_headShapeFilteredDenpaMenProvider(masterData));
+      if (bodyColors.isNotEmpty) {
+        records = [
+          for (final r in records)
+            if (bodyColors.every(r.denpaMen.bodyColors.contains)) r,
+        ];
+      }
+      if (isSpColor != null) {
+        records = [
+          for (final r in records)
+            if (r.denpaMen.isSpColor == isSpColor) r,
+        ];
+      }
+      return records;
+    });
+
+final _memoFilteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
+      final memo = ref.watch(searchQueryProvider.select((q) => q.memo));
+      final records = ref.watch(_bodyColorFilteredDenpaMenProvider(masterData));
+      if (memo.isEmpty) return records;
+      return [
+        for (final r in records)
+          if ((r.denpaMen.memo ?? '').contains(memo)) r,
+      ];
+    });
+
+final _statFilteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
+      final query = ref.watch(searchQueryProvider);
+      final records = ref.watch(_memoFilteredDenpaMenProvider(masterData));
+      return [
+        for (final r in records)
+          if ((query.minHp == null || r.denpaMen.hp >= query.minHp!) &&
+              (query.minAp == null || r.denpaMen.ap >= query.minAp!) &&
+              (query.minAttack == null ||
+                  r.denpaMen.attack >= query.minAttack!) &&
+              (query.minDefense == null ||
+                  r.denpaMen.defense >= query.minDefense!) &&
+              (query.minSpeed == null || r.denpaMen.speed >= query.minSpeed!) &&
+              (query.minEvasionRate == null ||
+                  r.denpaMen.evasionRate >= query.minEvasionRate!))
+            r,
+      ];
+    });
+
+/// Final stage of the filter pipeline: applies every [searchQueryProvider]
+/// condition to [denpaMenListProvider] in sequence. UI code should watch
+/// only this provider, never the intermediate stages above.
+final filteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>(
+      (ref, masterData) =>
+          ref.watch(_statFilteredDenpaMenProvider(masterData)),
+    );

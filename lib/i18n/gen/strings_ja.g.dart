@@ -44,6 +44,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
+	late final Translations$search$ja search = Translations$search$ja.internal(_root);
 	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
 	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
@@ -279,6 +280,15 @@ class Translations$page$ja {
 
 	/// ja: '出生ガイド'
 	String get birthGuide => '出生ガイド';
+
+	/// ja: '検索'
+	String get search => '検索';
+
+	/// ja: '検索結果'
+	String get searchResults => '検索結果';
+
+	/// ja: '分析'
+	String get analysis => '分析';
 }
 
 // Path: home
@@ -369,6 +379,18 @@ class Translations$home$ja {
 
 	/// ja: 'QRコードを表示'
 	String get showQrCodeAction => 'QRコードを表示';
+}
+
+// Path: search
+class Translations$search$ja {
+	Translations$search$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '名前'
+	String get name => '名前';
 }
 
 // Path: backup
@@ -614,6 +636,9 @@ extension on Translations {
 			'page.qrRegenerate' => '再生成',
 			'page.selectQrCode' => 'QRコードを選ぶ',
 			'page.birthGuide' => '出生ガイド',
+			'page.search' => '検索',
+			'page.searchResults' => '検索結果',
+			'page.analysis' => '分析',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
@@ -641,6 +666,7 @@ extension on Translations {
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
+			'search.name' => '名前',
 			'backup.importCompleteTitle' => 'インポート結果',
 			'backup.importAddedSection' => '新規追加',
 			'backup.importMergedSection' => '上書き更新',

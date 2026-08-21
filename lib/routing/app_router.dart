@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../domain/master_data/master_data.dart';
+import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
 import '../pages/home.dart';
 import '../pages/qr_code_selection.dart';
+import '../pages/search.dart';
+import '../pages/search_results.dart';
 import '../pages/settings.dart';
 
 part 'app_router.g.dart';
@@ -18,7 +21,8 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   const HomeRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const Home();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      const NoTransitionPage(child: Home());
 }
 
 @TypedGoRoute<SettingsRoute>(path: '/settings')
@@ -26,7 +30,37 @@ class SettingsRoute extends GoRouteData with $SettingsRoute {
   const SettingsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const Settings();
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      const NoTransitionPage(child: Settings());
+}
+
+@TypedGoRoute<SearchRoute>(path: '/search')
+class SearchRoute extends GoRouteData with $SearchRoute {
+  const SearchRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      const NoTransitionPage(child: Search());
+}
+
+/// Pushed (never `go`-navigated to) so the search page's back button
+/// returns here, matching the [AddDenpaMenRoute] pattern.
+@TypedGoRoute<SearchResultsRoute>(path: '/search/results')
+class SearchResultsRoute extends GoRouteData with $SearchResultsRoute {
+  const SearchResultsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SearchResults();
+}
+
+@TypedGoRoute<AnalysisRoute>(path: '/analysis')
+class AnalysisRoute extends GoRouteData with $AnalysisRoute {
+  const AnalysisRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      const NoTransitionPage(child: Analysis());
 }
 
 /// Pushed (never `go`-navigated to) so it lands on top of the page stack,
