@@ -388,12 +388,15 @@ class _HomeState extends ConsumerState<Home> {
         ],
       ),
       floatingActionButton: masterDataAsync.maybeWhen(
-        data: (masterData) => AddDenpaMenFab(
-          masterData: masterData,
-          onImport: isMobile ? () => _importFromFile(context, ref) : null,
-          onExport: isMobile && selectedCount > 0
-              ? () => _exportSelected(context, ref, masterData)
-              : null,
+        data: (masterData) => Padding(
+          padding: EdgeInsets.only(bottom: isMobile ? 72 : 0),
+          child: AddDenpaMenFab(
+            masterData: masterData,
+            onImport: isMobile ? () => _importFromFile(context, ref) : null,
+            onExport: isMobile && selectedCount > 0
+                ? () => _exportSelected(context, ref, masterData)
+                : null,
+          ),
         ),
         orElse: () => null,
       ),
