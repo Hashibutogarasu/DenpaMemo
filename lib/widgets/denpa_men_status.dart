@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/denpa_men/abnormality_resistance.dart';
 import '../domain/denpa_men/attribute_resistance.dart';
@@ -9,6 +10,7 @@ import '../domain/denpa_men/denpa_men_correction_calculator.dart';
 import '../domain/master_data/anntena.dart';
 import '../domain/master_data/antenna_display_name.dart';
 import '../i18n/gen/strings.g.dart';
+import '../providers/responsive_providers.dart';
 import '../theme/app_colors.dart';
 import 'container/indented_header.dart';
 import 'container/nested.dart';
@@ -23,7 +25,7 @@ import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
 import 'label/status.dart';
 
-class DenpaMenStatus extends StatelessWidget {
+class DenpaMenStatus extends ConsumerWidget {
   const DenpaMenStatus({
     super.key,
     required this.denpaMenId,
@@ -117,15 +119,16 @@ class DenpaMenStatus extends StatelessWidget {
   final double entryHeight;
 
   @override
-  Widget build(BuildContext context) {
-    final content = _buildContent(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isMobile = ref.watch(isMobileLayoutProvider);
+    final content = _buildContent(context, isMobile);
     if (!showContainer) {
       return content;
     }
     return StatusContainer(padding: const EdgeInsets.all(8), child: content);
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _buildContent(BuildContext context, bool isMobile) {
     final t = context.t;
     const resistanceGap = 5.0;
     final attributeResistanceRows =
@@ -134,21 +137,30 @@ class DenpaMenStatus extends StatelessWidget {
         attributeResistanceRows * entryHeight +
         (attributeResistanceRows - 1) * resistanceGap;
 
-    final gaugesRow = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
-        ),
-        const SizedBox(width: 8),
-        Flexible(
-          child: GaugeLabel(
-            label: t.denpaMenStatus.happiness,
-            value: happiness,
-          ),
-        ),
-      ],
-    );
+    final gaugesRow = isMobile
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GaugeLabel(label: t.denpaMenStatus.level, value: level),
+              const SizedBox(height: 4),
+              GaugeLabel(label: t.denpaMenStatus.happiness, value: happiness),
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: GaugeLabel(
+                  label: t.denpaMenStatus.happiness,
+                  value: happiness,
+                ),
+              ),
+            ],
+          );
     final nameText = OutlinedTitleText(
       text: name,
       outlineColor: AppColors.accent,
@@ -202,7 +214,7 @@ class DenpaMenStatus extends StatelessWidget {
         NestedContainer(
           padding: const EdgeInsets.all(8),
           child: _StatWrap(
-            columns: 2,
+            columns: isMobile ? 1 : 2,
             gap: resistanceGap,
             entries: [
               _StatData(
