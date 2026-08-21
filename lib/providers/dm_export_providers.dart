@@ -36,33 +36,33 @@ class DmExportController {
         if (selectedIds.contains(record.id)) record.denpaMen,
     ];
 
-    final savePath = await FilePicker.saveFile(
-      dialogTitle: dialogTitle,
-      fileName: DMFile.defaultExportFileName(
-        exportedAt: DateTime.now(),
-        individualCount: candidates.length,
-      ),
-      type: FileType.custom,
-      allowedExtensions: [DMFile.extension],
-    );
-    if (savePath == null) {
-      progress.state = null;
-      return null;
-    }
-
     try {
       final packageInfo = await PackageInfo.fromPlatform();
       final qrCodes = _ref.read(qrCodeRepositoryProvider).getAll();
       final storage = _ref.read(denpaMenIconStorageProvider);
-      return await DMFile.writeExport(
+      final (result, zipBytes) = await DMFile.writeExport(
         candidates: candidates,
         masterData: masterData,
         qrCodes: [for (final record in qrCodes) record.qrCode],
         loadIcon: storage.loadIcon,
-        savePath: savePath,
         dataVersion: packageInfo.version,
         onProgress: (value) => progress.state = value,
       );
+
+      final savePath = await FilePicker.saveFile(
+        dialogTitle: dialogTitle,
+        fileName: DMFile.defaultExportFileName(
+          exportedAt: DateTime.now(),
+          individualCount: candidates.length,
+        ),
+        type: FileType.custom,
+        allowedExtensions: [DMFile.extension],
+        bytes: zipBytes,
+      );
+      if (savePath == null) {
+        return null;
+      }
+      return result;
     } finally {
       progress.state = null;
     }

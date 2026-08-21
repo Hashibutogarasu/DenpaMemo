@@ -23,7 +23,10 @@ class FilterConsistentIndividualsStep extends DmExportStep {
     final consistent = <DenpaMen>[];
     final candidates = context.candidates;
     for (var i = 0; i < candidates.length; i++) {
-      if (isDenpaMenConsistentWithMasterData(candidates[i], context.masterData)) {
+      if (isDenpaMenConsistentWithMasterData(
+        candidates[i],
+        context.masterData,
+      )) {
         consistent.add(candidates[i]);
       }
       reportProgress(entryIndex: i, entryCount: candidates.length);
@@ -47,7 +50,10 @@ class CreateWorkDirectoryStep extends DmExportStep {
   Future<void> run(DmExportContext context) async {
     final tempRoot = await getTemporaryDirectory();
     final workDirectory = Directory(
-      path.join(tempRoot.path, 'dm_export_${DateTime.now().microsecondsSinceEpoch}'),
+      path.join(
+        tempRoot.path,
+        'dm_export_${DateTime.now().microsecondsSinceEpoch}',
+      ),
     );
     await workDirectory.create(recursive: true);
     context.tempRoot = tempRoot;
@@ -69,10 +75,15 @@ class CreateWorkDirectoryStep extends DmExportStep {
 class WriteEntriesJsonStep extends DmExportStep {
   @override
   Future<void> run(DmExportContext context) async {
-    final entries = buildDenpaMenBackupEntries(context.consistent!, context.qrCodes);
+    final entries = buildDenpaMenBackupEntries(
+      context.consistent!,
+      context.qrCodes,
+    );
     context.entries = entries;
 
-    final entriesFile = File(path.join(context.workDirectory!.path, 'entries.json'));
+    final entriesFile = File(
+      path.join(context.workDirectory!.path, 'entries.json'),
+    );
     await entriesFile.writeAsString(jsonEncode(encodeDenpaMenBackup(entries)));
     reportProgress();
   }
@@ -89,7 +100,12 @@ class CopyIconsStep extends DmExportStep {
       final iconFile = await context.loadIcon(denpaMenId);
       if (iconFile != null) {
         final iconDirectory = Directory(
-          path.join(context.workDirectory!.path, 'icons', 'denpamens', denpaMenId),
+          path.join(
+            context.workDirectory!.path,
+            'icons',
+            'denpamens',
+            denpaMenId,
+          ),
         );
         await iconDirectory.create(recursive: true);
         final destName = 'icon${path.extension(iconFile.path)}';
@@ -130,11 +146,13 @@ class WriteZipStep extends DmExportStep {
   }
 }
 
-/// Copies the finished zip to the user-chosen save path.
-class CopyToSavePathStep extends DmExportStep {
+/// Reads the finished zip into memory before its temp file is cleaned up,
+/// so the caller can hand the bytes to `FilePicker.saveFile` (required on
+/// Android/iOS, where there is no writable path to copy into directly).
+class ReadZipBytesStep extends DmExportStep {
   @override
   Future<void> run(DmExportContext context) async {
-    await context.zipFile!.copy(context.savePath);
+    context.zipBytes = await context.zipFile!.readAsBytes();
     reportProgress();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -60,27 +61,30 @@ abstract class DMFile with _$DMFile {
     required DateTime exportedAt,
     required int individualCount,
   }) {
-    String pad(int value, [int width = 2]) => value.toString().padLeft(width, '0');
+    String pad(int value, [int width = 2]) =>
+        value.toString().padLeft(width, '0');
     final timestamp =
         '${exportedAt.year}${pad(exportedAt.month)}${pad(exportedAt.day)}'
         '_${pad(exportedAt.hour)}${pad(exportedAt.minute)}${pad(exportedAt.second)}';
     return '${timestamp}_$individualCount.$extension';
   }
 
-  /// Filters [candidates] down to those consistent with [masterData],
-  /// packages them (with their linked [qrCodes]) into a `.dm` zip at
-  /// [savePath], and returns the resulting [ExportResult].
+  /// Filters [candidates] down to those consistent with [masterData] and
+  /// packages them (with their linked [qrCodes]) into a `.dm` zip, returning
+  /// the resulting [ExportResult] together with the zip's raw bytes. The
+  /// caller is responsible for handing those bytes to the platform's save
+  /// dialog (e.g. `FilePicker.saveFile(bytes: ...)`), since Android/iOS
+  /// require the bytes up front rather than a writable path to copy into.
   ///
   /// [loadIcon] is called once per exported individual to fetch its icon
   /// file (if any) for inclusion in the archive. [onProgress] is invoked
   /// with a 0-1 fraction as the export proceeds, and with `null` once it
   /// finishes.
-  static Future<ExportResult> writeExport({
+  static Future<(ExportResult, Uint8List)> writeExport({
     required List<DenpaMen> candidates,
     required MasterData masterData,
     required List<QrCode> qrCodes,
     required Future<File?> Function(String denpaMenId) loadIcon,
-    required String savePath,
     required String dataVersion,
     required void Function(double? progress) onProgress,
   }) async {
@@ -89,7 +93,6 @@ abstract class DMFile with _$DMFile {
       masterData: masterData,
       qrCodes: qrCodes,
       loadIcon: loadIcon,
-      savePath: savePath,
       dataVersion: dataVersion,
       onProgress: onProgress,
     );
@@ -99,9 +102,9 @@ abstract class DMFile with _$DMFile {
       WriteEntriesJsonStep(),
       CopyIconsStep(),
       WriteZipStep(),
-      CopyToSavePathStep(),
+      ReadZipBytesStep(),
     ];
     await steps.runAll(context);
-    return context.exportResult!;
+    return (context.exportResult!, context.zipBytes!);
   }
 }
