@@ -9,7 +9,8 @@ import 'dialog/denpa_men_preview_dialog.dart';
 import 'icon/denpa_men_icon.dart';
 
 /// Shared row layout for lists of [DenpaMen] candidates: an icon, the
-/// name, and an optional selection checkmark or checkbox. Used by
+/// name, and a trailing slot that swaps between a selection checkmark, a
+/// selection checkbox, and an edit menu. Used by
 /// [DenpaMenSelectionDialog](dialog/denpa_men_selection_dialog.dart),
 /// [showParentDenpaMenSelectionDialog](dialog/parent_denpa_men_selection_dialog.dart),
 /// read-only result dialogs (leaving [onTap] null renders a
@@ -28,35 +29,12 @@ class DenpaMenListTile extends ConsumerWidget {
   });
 
   final DenpaMen denpaMen;
-
-  /// Whether the enclosing list is in multi-select mode. When true, the
-  /// leading checkbox and the row body both toggle selection instead of
-  /// invoking [onTap].
   final bool selectionMode;
-
   final bool selected;
-
-  /// Invoked with the new selection state when the leading checkbox is
-  /// tapped, or when the row is tapped while [selectionMode] is true.
-  /// Leave null to hide the checkbox and disable selection (read-only
-  /// usage, e.g. [BackupResultSection]).
   final ValueChanged<bool>? onSelectedChanged;
-
-  /// Invoked when the row is tapped while [selectionMode] is false.
   final VoidCallback? onTap;
-
-  /// Whether long-pressing the row opens [DenpaMenPreviewDialog]. Mobile
-  /// home lists pass false, since long-press isn't used as an entry point
-  /// into selection mode there (the leading checkbox is used instead).
   final bool enableLongPressPreview;
-
-  /// When set together with [masterData] (mobile home list), a trailing
-  /// edit/delete menu is shown, mirroring
-  /// [DenpaMenAccordionTile](denpa_men_accordion_tile.dart). Left null for
-  /// read-only or selection-picker usage.
   final DenpaMenRecord? record;
-
-  /// See [record].
   final MasterData? masterData;
 
   @override
@@ -70,32 +48,19 @@ class DenpaMenListTile extends ConsumerWidget {
     return ListTile(
       leading: onSelectedChanged == null
           ? leadingIcon
-          : Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: selectionMode
-                      ? Checkbox(
-                          value: selected,
-                          onChanged: (value) =>
-                              onSelectedChanged!(value ?? false),
-                        )
-                      : null,
-                ),
-                InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: selectionMode
-                      ? null
-                      : () => onSelectedChanged!(!selected),
-                  child: leadingIcon,
-                ),
-              ],
+          : InkWell(
+              customBorder: const CircleBorder(),
+              onTap: selectionMode ? null : () => onSelectedChanged!(!selected),
+              child: leadingIcon,
             ),
       title: Text(denpaMen.name),
       selected: selected,
-      trailing: showActionMenu
+      trailing: selectionMode && onSelectedChanged != null
+          ? Checkbox(
+              value: selected,
+              onChanged: (value) => onSelectedChanged!(value ?? false),
+            )
+          : showActionMenu
           ? PopupMenuButton<DenpaMenAction>(
               icon: const Icon(Icons.more_vert),
               onSelected: (action) => handleDenpaMenAction(
@@ -122,6 +87,12 @@ class DenpaMenListTile extends ConsumerWidget {
       },
       onLongPress: enableLongPressPreview
           ? () => DenpaMenPreviewDialog.show(context, denpaMen: denpaMen)
+          : onSelectedChanged != null
+          ? () {
+              if (!selectionMode) {
+                onSelectedChanged!(true);
+              }
+            }
           : null,
     );
   }
