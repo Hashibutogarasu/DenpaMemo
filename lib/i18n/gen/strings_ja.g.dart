@@ -142,6 +142,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'invincible_all_1': 'みんなすこしむてき',
 		'invincible_all_2': 'みんなむてき',
 		'invincible_all_3': 'みんなながくむてき',
+		'hardToDodge_all_1': 'みんなすこしよけにくい',
+		'hardToDodge_all_2': 'みんなよけにくい',
+		'hardToDodge_all_3': 'みんなすごくよけにくい',
 	};
 	Map<String, String> get bodyColor => {
 		'red': 'あか',
@@ -777,6 +780,9 @@ extension on Translations {
 			'antenna.invincible_all_1' => 'みんなすこしむてき',
 			'antenna.invincible_all_2' => 'みんなむてき',
 			'antenna.invincible_all_3' => 'みんなながくむてき',
+			'antenna.hardToDodge_all_1' => 'みんなすこしよけにくい',
+			'antenna.hardToDodge_all_2' => 'みんなよけにくい',
+			'antenna.hardToDodge_all_3' => 'みんなすごくよけにくい',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',
 			'bodyColor.yellow' => 'きいろ',

@@ -212,7 +212,10 @@
     "invincible_solo_3": "ながくむてき",
     "invincible_all_1": "みんなすこしむてき",
     "invincible_all_2": "みんなむてき",
-    "invincible_all_3": "みんなながくむてき"
+    "invincible_all_3": "みんなながくむてき",
+    "hardToDodge_all_1": "みんなすこしよけにくい",
+    "hardToDodge_all_2": "みんなよけにくい",
+    "hardToDodge_all_3": "みんなすごくよけにくい"
   },
   "bodyColor": {
     "red": "あか",
