@@ -117,6 +117,8 @@ class DenpaMenContextMenuArea extends ConsumerWidget {
     return GestureDetector(
       onSecondaryTapUp: (details) =>
           _showMenu(context, ref, details.globalPosition),
+      onLongPressStart: (details) =>
+          _showMenu(context, ref, details.globalPosition),
       child: child,
     );
   }

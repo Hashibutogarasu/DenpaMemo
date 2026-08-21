@@ -3,36 +3,37 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../domain/backup/dm_duplicate_detection.dart';
-import '../domain/backup/dm_export_validation.dart';
 import '../domain/backup/dm_file.dart';
 import '../domain/backup/dm_import_error.dart';
-import '../domain/backup/dm_progress.dart';
 import '../domain/backup/dm_zip_io.dart';
-import '../domain/backup/export_result.dart';
 import '../domain/backup/import_result.dart';
 import '../domain/backup/import_result_builder.dart';
 import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_backup_builder.dart';
 import '../domain/denpa_men/denpa_men_backup_codec.dart';
 import '../domain/denpa_men/denpa_men_backup_merge.dart';
 import '../domain/master_data/master_data.dart';
+import '../domain/step_progress.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
+import '../providers/dm_export_providers.dart';
 import '../providers/import_export_progress_providers.dart';
 import '../providers/master_data_providers.dart';
 import '../providers/qr_code_providers.dart';
+import '../providers/responsive_providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
 import '../widgets/denpa_men_accordion_tile.dart';
 import '../widgets/denpa_men_lineage_tree.dart';
+import '../widgets/denpa_men_list_tile.dart';
+import '../widgets/dialog/denpa_men_preview_dialog.dart';
 import '../widgets/dialog/denpa_men_selection_dialog.dart';
 import '../widgets/dialog/error_dialog.dart';
 import '../widgets/dialog/export_complete_dialog.dart';
@@ -60,114 +61,11 @@ class _HomeState extends ConsumerState<Home> {
     MasterData masterData,
   ) async {
     final t = context.t;
-    const totalSteps = 9;
-    final progress = ref.read(importExportProgressProvider.notifier);
-    progress.state = stepProgress(1, totalSteps);
-
-    final savePath = await FilePicker.saveFile(
-      dialogTitle: t.home.exportDialogTitle,
-      fileName: 'denpa_memo_export.${DMFile.extension}',
-      type: FileType.custom,
-      allowedExtensions: [DMFile.extension],
-    );
-    if (savePath == null) {
-      progress.state = null;
-      return;
-    }
-
-    late final ExportResult exportResult;
-    try {
-      final records = ref.read(denpaMenListProvider(masterData)).value ?? [];
-      final selectedIds = ref.read(selectedDenpaMenIdsProvider);
-      final qrCodes = ref.read(qrCodeListProvider).value ?? [];
-
-      final candidates = [
-        for (final record in records)
-          if (selectedIds.contains(record.id)) record.denpaMen,
-      ];
-      final consistent = <DenpaMen>[];
-      for (var i = 0; i < candidates.length; i++) {
-        if (isDenpaMenConsistentWithMasterData(candidates[i], masterData)) {
-          consistent.add(candidates[i]);
-        }
-        progress.state = stepProgressWithinEntries(2, totalSteps, i, candidates.length);
-      }
-
-      final exportedIds = {for (final d in consistent) d.id};
-      exportResult = ExportResult(
-        exported: consistent,
-        orphaned: [
-          for (final denpaMen in consistent)
-            if (isDenpaMenOrphanedInExport(denpaMen, exportedIds)) denpaMen,
-        ],
-      );
-
-      final entries = buildDenpaMenBackupEntries(
-        consistent,
-        [for (final r in qrCodes) r.qrCode],
-      );
-
-      final tempRoot = await getTemporaryDirectory();
-      final workDirectory = Directory(
-        path.join(tempRoot.path, 'dm_export_${DateTime.now().microsecondsSinceEpoch}'),
-      );
-      await workDirectory.create(recursive: true);
-      progress.state = stepProgress(3, totalSteps);
-
-      try {
-        final entriesFile = File(path.join(workDirectory.path, 'entries.json'));
-        await entriesFile.writeAsString(jsonEncode(encodeDenpaMenBackup(entries)));
-        progress.state = stepProgress(4, totalSteps);
-
-        final storage = ref.read(denpaMenIconStorageProvider);
-        for (var i = 0; i < entries.length; i++) {
-          final denpaMenId = entries[i].denpaMen.id;
-          final iconFile = await storage.loadIcon(denpaMenId);
-          if (iconFile != null) {
-            final iconDirectory = Directory(
-              path.join(workDirectory.path, 'icons', 'denpamens', denpaMenId),
-            );
-            await iconDirectory.create(recursive: true);
-            final destName = 'icon${path.extension(iconFile.path)}';
-            await iconFile.copy(path.join(iconDirectory.path, destName));
-            await File(
-              path.join(iconDirectory.path, 'metadata.json'),
-            ).writeAsString(jsonEncode({'fileName': destName}));
-          }
-          progress.state = stepProgressWithinEntries(5, totalSteps, i, entries.length);
-        }
-
-        final packageInfo = await PackageInfo.fromPlatform();
-        final header = DMFile(dataVersion: packageInfo.version).encodeHeader();
-        final zipFile = File(
-          path.join(tempRoot.path, 'dm_export_output.${DMFile.extension}'),
-        );
-        await writeDmZip(
-          sourceDirectory: workDirectory,
-          outputFile: zipFile,
-          headerComment: header,
-        );
-        progress.state = stepProgress(7, totalSteps);
-
-        await zipFile.copy(savePath);
-        progress.state = stepProgress(8, totalSteps);
-      } finally {
-        if (await workDirectory.exists()) {
-          await workDirectory.delete(recursive: true);
-        }
-        final outputZip = File(
-          path.join(tempRoot.path, 'dm_export_output.${DMFile.extension}'),
-        );
-        if (await outputZip.exists()) {
-          await outputZip.delete();
-        }
-      }
-    } finally {
-      progress.state = null;
-    }
-
-    if (context.mounted) {
-      await ExportCompleteDialog.show(context, result: exportResult);
+    final result = await ref
+        .read(dmExportControllerProvider)
+        .exportSelected(masterData, dialogTitle: t.home.exportDialogTitle);
+    if (result != null && context.mounted) {
+      await ExportCompleteDialog.show(context, result: result);
     }
   }
 
@@ -343,35 +241,59 @@ class _HomeState extends ConsumerState<Home> {
     }
   }
 
+  void _selectAll(MasterData masterData) {
+    final records = ref.read(denpaMenRepositoryProvider).getAll(masterData);
+    ref.read(selectedDenpaMenIdsProvider.notifier).state = {
+      for (final record in records) record.id,
+    };
+  }
+
+  void _clearSelection() {
+    ref.read(selectedDenpaMenIdsProvider.notifier).state = {};
+    ref.read(selectionModeProvider.notifier).state = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final masterDataAsync = ref.watch(masterDataProvider);
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
     final masterData = masterDataAsync.value;
+    final isMobile = ref.watch(isMobileLayoutProvider);
+    final selectionMode = ref.watch(selectionModeProvider);
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.home),
-      actions: [
-        PopupMenuButton<void>(
-          icon: const Icon(Icons.more_vert, color: AppColors.accent),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              enabled: selectedCount > 0,
-              onTap: masterData == null
-                  ? null
-                  : () => _exportSelected(context, ref, masterData),
-              child: Text(t.home.exportSelected),
-            ),
-            PopupMenuItem(
-              onTap: masterData == null
-                  ? null
-                  : () => _importFromFile(context, ref),
-              child: Text(t.home.importFromFile),
-            ),
-          ],
-        ),
-      ],
+      additionalShortcuts: selectionMode && masterData != null
+          ? {
+              const SingleActivator(LogicalKeyboardKey.keyA, control: true):
+                  () => _selectAll(masterData),
+              const SingleActivator(LogicalKeyboardKey.escape):
+                  _clearSelection,
+            }
+          : const {},
+      actions: isMobile
+          ? null
+          : [
+              PopupMenuButton<void>(
+                icon: const Icon(Icons.more_vert, color: AppColors.accent),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    enabled: selectedCount > 0,
+                    onTap: masterData == null
+                        ? null
+                        : () => _exportSelected(context, ref, masterData),
+                    child: Text(t.home.exportSelected),
+                  ),
+                  PopupMenuItem(
+                    onTap: masterData == null
+                        ? null
+                        : () => _importFromFile(context, ref),
+                    child: Text(t.home.importFromFile),
+                  ),
+                ],
+              ),
+            ],
       body: Stack(
         children: [
           Positioned.fill(
@@ -429,7 +351,13 @@ class _HomeState extends ConsumerState<Home> {
         ],
       ),
       floatingActionButton: masterDataAsync.maybeWhen(
-        data: (masterData) => AddDenpaMenFab(masterData: masterData),
+        data: (masterData) => AddDenpaMenFab(
+          masterData: masterData,
+          onImport: isMobile ? () => _importFromFile(context, ref) : null,
+          onExport: isMobile && selectedCount > 0
+              ? () => _exportSelected(context, ref, masterData)
+              : null,
+        ),
         orElse: () => null,
       ),
     );
@@ -463,6 +391,7 @@ class _HomeBody extends ConsumerWidget {
     final selectionMode = ref.watch(selectionModeProvider);
     final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
     final cutIds = ref.watch(cutDenpaMenIdsProvider);
+    final isMobile = ref.watch(isMobileLayoutProvider);
 
     return Stack(
       children: [
@@ -477,17 +406,36 @@ class _HomeBody extends ConsumerWidget {
                 itemCount: records.length,
                 itemBuilder: (context, index) {
                   final record = records[index];
+                  final denpaMen = record.denpaMen;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8),
-                    child: DenpaMenAccordionTile(
-                      record: record,
-                      masterData: masterData,
-                      selectionMode: selectionMode,
-                      selected: selectedIds.contains(record.id),
-                      isCut: cutIds.contains(record.id),
-                      onSelectedChanged: (selected) =>
-                          _setSelected(ref, record.id, selected),
-                    ),
+                    child: isMobile
+                        ? Opacity(
+                            opacity: cutIds.contains(record.id) ? 0.5 : 1,
+                            child: DenpaMenListTile(
+                              denpaMen: denpaMen,
+                              selectionMode: selectionMode,
+                              selected: selectedIds.contains(record.id),
+                              onSelectedChanged: (selected) =>
+                                  _setSelected(ref, record.id, selected),
+                              onTap: () => DenpaMenPreviewDialog.show(
+                                context,
+                                denpaMen: denpaMen,
+                              ),
+                              enableLongPressPreview: false,
+                              record: record,
+                              masterData: masterData,
+                            ),
+                          )
+                        : DenpaMenAccordionTile(
+                            record: record,
+                            masterData: masterData,
+                            selectionMode: selectionMode,
+                            selected: selectedIds.contains(record.id),
+                            isCut: cutIds.contains(record.id),
+                            onSelectedChanged: (selected) =>
+                                _setSelected(ref, record.id, selected),
+                          ),
                   );
                 },
               );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../domain/denpa_men/denpa_men_record.dart';
 import '../../i18n/gen/strings.g.dart';
+import '../denpa_men_list_tile.dart';
 import 'bottom_slide_dialog.dart';
-import 'denpa_men_selection_list_tile.dart';
 
 /// Shows [BottomSlideDialog] letting the user pick exactly 0 or 2 parents
 /// from [candidates], returning the selected records or null if cancelled.
@@ -64,7 +64,7 @@ class _ParentDenpaMenSelectionDialogState
         shrinkWrap: true,
         children: [
           for (final record in widget.candidates)
-            DenpaMenSelectionListTile(
+            DenpaMenListTile(
               denpaMen: record.denpaMen,
               selected: _selected.any((r) => r.id == record.id),
               onTap: () => _toggle(record),

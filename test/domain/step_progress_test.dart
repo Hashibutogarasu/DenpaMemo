@@ -1,4 +1,4 @@
-import 'package:denpa_memo/domain/backup/dm_progress.dart';
+import 'package:denpa_memo/domain/step_progress.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
