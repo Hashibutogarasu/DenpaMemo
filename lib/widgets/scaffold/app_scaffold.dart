@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../providers/denpa_men_providers.dart';
+import '../../providers/responsive_providers.dart';
+import '../../utils/responsive.dart';
 import '../header/slanted_app_bar.dart';
 import '../import_export_progress_bar.dart';
 import '../navigation/app_back_button.dart';
@@ -29,6 +31,7 @@ class AppScaffold extends ConsumerWidget {
     this.actions,
     this.buttonInset = 16,
     this.onBackPressed,
+    this.additionalShortcuts = const {},
   });
 
   final Widget title;
@@ -38,10 +41,23 @@ class AppScaffold extends ConsumerWidget {
   final double buttonInset;
   final VoidCallback? onBackPressed;
 
+  /// Extra key bindings layered on top of the built-in Ctrl+F/Escape ones,
+  /// for pages that need page-specific shortcuts (e.g. Ctrl+A/Escape for
+  /// the home screen's selection mode). Entries here take precedence over
+  /// the built-in Escape binding when both target the same key.
+  final Map<ShortcutActivator, VoidCallback> additionalShortcuts;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final canPop = context.canPop();
     final searchOverlayOpen = ref.watch(searchOverlayOpenProvider);
+
+    final isMobile = isMobileWidth(context);
+    if (ref.read(isMobileLayoutProvider) != isMobile) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(isMobileLayoutProvider.notifier).state = isMobile,
+      );
+    }
 
     return CallbackShortcuts(
       bindings: {
@@ -54,6 +70,7 @@ class AppScaffold extends ConsumerWidget {
         else if (canPop)
           const SingleActivator(LogicalKeyboardKey.escape): () =>
               (onBackPressed ?? () => context.pop())(),
+        ...additionalShortcuts,
       },
       child: Focus(
         autofocus: true,

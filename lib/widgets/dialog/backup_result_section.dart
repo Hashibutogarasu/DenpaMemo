@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/denpa_men/denpa_men.dart';
-import 'denpa_men_selection_list_tile.dart';
+import '../denpa_men_list_tile.dart';
 
 /// Shared section layout for [ImportCompleteDialog](import_complete_dialog.dart)
 /// and [ExportCompleteDialog](export_complete_dialog.dart): a heading with
 /// [denpaMens]'s count, followed by a read-only
-/// [DenpaMenSelectionListTile] per entry. Renders nothing when [denpaMens]
+/// [DenpaMenListTile] per entry. Renders nothing when [denpaMens]
 /// is empty.
 class BackupResultSection extends StatelessWidget {
   const BackupResultSection({super.key, required this.title, required this.denpaMens});
@@ -34,7 +34,7 @@ class BackupResultSection extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: denpaMens.length,
           itemBuilder: (context, index) =>
-              DenpaMenSelectionListTile(denpaMen: denpaMens[index]),
+              DenpaMenListTile(denpaMen: denpaMens[index]),
         ),
       ],
     );

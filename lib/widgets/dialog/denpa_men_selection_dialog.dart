@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/denpa_men/denpa_men.dart';
+import '../denpa_men_list_tile.dart';
 import 'bottom_slide_dialog.dart';
-import 'denpa_men_selection_list_tile.dart';
 
 /// Lets the user pick individuals out of [candidates], returning the
 /// selected [DenpaMen] list or null if cancelled. Used for `.dm` import
@@ -67,7 +67,7 @@ class _DenpaMenSelectionDialogState extends State<DenpaMenSelectionDialog> {
         shrinkWrap: true,
         children: [
           for (final denpaMen in widget._candidates)
-            DenpaMenSelectionListTile(
+            DenpaMenListTile(
               denpaMen: denpaMen,
               selected: _selected.any((d) => d.id == denpaMen.id),
               onTap: () => _toggle(denpaMen),

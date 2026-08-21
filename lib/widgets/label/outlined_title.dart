@@ -31,6 +31,8 @@ class OutlinedTitleText extends StatelessWidget {
       children: [
         Text(
           text,
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
           style: baseStyle.copyWith(
             foreground: Paint()
               ..style = PaintingStyle.stroke
@@ -38,7 +40,12 @@ class OutlinedTitleText extends StatelessWidget {
               ..color = outlineColor,
           ),
         ),
-        Text(text, style: baseStyle.copyWith(color: fillColor)),
+        Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          style: baseStyle.copyWith(color: fillColor),
+        ),
       ],
     );
   }

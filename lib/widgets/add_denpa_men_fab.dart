@@ -18,10 +18,23 @@ class AddDenpaMenFab extends StatefulWidget {
   const AddDenpaMenFab({
     super.key,
     required this.masterData,
+    this.onImport,
+    this.onExport,
     this.animationDuration = const Duration(milliseconds: 200),
   });
 
   final MasterData masterData;
+
+  /// When set (mobile home screen, where the AppBar overflow menu is
+  /// hidden), a "import from file" option is shown in the expanded menu.
+  /// Left null on desktop, where import is reached from the overflow menu.
+  final VoidCallback? onImport;
+
+  /// When set (mobile home screen with a non-empty selection), an "export
+  /// selected" option is shown in the expanded menu. Left null on desktop
+  /// or when nothing is selected.
+  final VoidCallback? onExport;
+
   final Duration animationDuration;
 
   @override
@@ -32,6 +45,16 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
   bool _open = false;
 
   void _toggle() => setState(() => _open = !_open);
+
+  void _import() {
+    setState(() => _open = false);
+    widget.onImport!();
+  }
+
+  void _export() {
+    setState(() => _open = false);
+    widget.onExport!();
+  }
 
   void _addSingle() {
     setState(() => _open = false);
@@ -87,6 +110,22 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        if (widget.onExport != null)
+          MiniFabOption(
+            label: t.home.exportSelected,
+            icon: Icons.ios_share,
+            onPressed: _export,
+            open: _open,
+            animationDuration: widget.animationDuration,
+          ),
+        if (widget.onImport != null)
+          MiniFabOption(
+            label: t.home.importFromFile,
+            icon: Icons.file_upload,
+            onPressed: _import,
+            open: _open,
+            animationDuration: widget.animationDuration,
+          ),
         MiniFabOption(
           label: t.home.addFromExistingQr,
           icon: Icons.qr_code_scanner,
