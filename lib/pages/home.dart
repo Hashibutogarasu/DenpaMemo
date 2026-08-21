@@ -314,44 +314,47 @@ class _HomeState extends ConsumerState<Home> {
           Positioned(
             top: 16,
             right: 16,
-            child: ToggleButtonGroup<HomeViewMode>(
-              values: HomeViewMode.values,
-              selected: viewMode,
-              onChanged: (mode) =>
-                  ref.read(homeViewModeProvider.notifier).state = mode,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Tooltip(
-                  message: t.home.viewModeList,
-                  child: const Icon(Icons.view_list, size: 20),
-                ),
-                Tooltip(
-                  message: t.home.viewModeTree,
-                  child: const Icon(Icons.account_tree, size: 20),
+                if (viewMode == HomeViewMode.list) ...[
+                  ToggleButtonGroup<HomeTileMode>(
+                    values: HomeTileMode.values,
+                    selected: tileMode,
+                    onChanged: (mode) =>
+                        ref.read(homeTileModeProvider.notifier).state = mode,
+                    children: [
+                      Tooltip(
+                        message: t.home.viewModeTile,
+                        child: const Icon(Icons.view_agenda, size: 20),
+                      ),
+                      Tooltip(
+                        message: t.home.viewModeGrid,
+                        child: const Icon(Icons.grid_view, size: 20),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                ],
+                ToggleButtonGroup<HomeViewMode>(
+                  values: HomeViewMode.values,
+                  selected: viewMode,
+                  onChanged: (mode) =>
+                      ref.read(homeViewModeProvider.notifier).state = mode,
+                  children: [
+                    Tooltip(
+                      message: t.home.viewModeList,
+                      child: const Icon(Icons.view_list, size: 20),
+                    ),
+                    Tooltip(
+                      message: t.home.viewModeTree,
+                      child: const Icon(Icons.account_tree, size: 20),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          if (viewMode == HomeViewMode.list)
-            Positioned(
-              top: 64,
-              right: 16,
-              child: ToggleButtonGroup<HomeTileMode>(
-                values: HomeTileMode.values,
-                selected: tileMode,
-                onChanged: (mode) =>
-                    ref.read(homeTileModeProvider.notifier).state = mode,
-                children: [
-                  Tooltip(
-                    message: t.home.viewModeTile,
-                    child: const Icon(Icons.view_agenda, size: 20),
-                  ),
-                  Tooltip(
-                    message: t.home.viewModeGrid,
-                    child: const Icon(Icons.grid_view, size: 20),
-                  ),
-                ],
-              ),
-            ),
           if (viewMode == HomeViewMode.tree)
             Positioned(
               top: 64,

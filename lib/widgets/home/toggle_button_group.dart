@@ -29,6 +29,7 @@ class ToggleButtonGroup<T> extends StatelessWidget {
         onPressed: (index) => onChanged(values[index]),
         borderRadius: BorderRadius.circular(4),
         constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         children: children,
       ),
     );
