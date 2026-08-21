@@ -24,12 +24,14 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/dm_export_providers.dart';
+import '../providers/home_view_providers.dart';
 import '../providers/import_export_progress_providers.dart';
 import '../providers/master_data_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../providers/responsive_providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
+import '../widgets/container/denpa_men_box.dart';
 import '../widgets/denpa_men_accordion_tile.dart';
 import '../widgets/denpa_men_lineage_tree.dart';
 import '../widgets/denpa_men_list_tile.dart';
@@ -38,11 +40,10 @@ import '../widgets/dialog/denpa_men_selection_dialog.dart';
 import '../widgets/dialog/error_dialog.dart';
 import '../widgets/dialog/export_complete_dialog.dart';
 import '../widgets/dialog/import_complete_dialog.dart';
+import '../widgets/home/toggle_button_group.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/selection_floating_menu.dart';
-
-enum _HomeViewMode { list, tree }
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});
@@ -52,7 +53,6 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
-  _HomeViewMode _viewMode = _HomeViewMode.list;
   final _lineageTreeController = GraphViewController();
 
   Future<void> _exportSelected(
@@ -261,6 +261,8 @@ class _HomeState extends ConsumerState<Home> {
     final masterData = masterDataAsync.value;
     final isMobile = ref.watch(isMobileLayoutProvider);
     final selectionMode = ref.watch(selectionModeProvider);
+    final viewMode = ref.watch(homeViewModeProvider);
+    final tileMode = ref.watch(homeTileModeProvider);
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.home),
@@ -298,9 +300,9 @@ class _HomeState extends ConsumerState<Home> {
         children: [
           Positioned.fill(
             child: masterDataAsync.when(
-              data: (masterData) => switch (_viewMode) {
-                _HomeViewMode.list => _HomeBody(masterData: masterData),
-                _HomeViewMode.tree => DenpaMenLineageTree(
+              data: (masterData) => switch (viewMode) {
+                HomeViewMode.list => _HomeBody(masterData: masterData),
+                HomeViewMode.tree => DenpaMenLineageTree(
                   masterData: masterData,
                   controller: _lineageTreeController,
                 ),
@@ -312,33 +314,45 @@ class _HomeState extends ConsumerState<Home> {
           Positioned(
             top: 16,
             right: 16,
-            child: Material(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              elevation: 4,
-              borderRadius: BorderRadius.circular(4),
-              child: ToggleButtons(
-                isSelected: [
-                  _viewMode == _HomeViewMode.list,
-                  _viewMode == _HomeViewMode.tree,
-                ],
-                onPressed: (index) =>
-                    setState(() => _viewMode = _HomeViewMode.values[index]),
-                borderRadius: BorderRadius.circular(4),
-                constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+            child: ToggleButtonGroup<HomeViewMode>(
+              values: HomeViewMode.values,
+              selected: viewMode,
+              onChanged: (mode) =>
+                  ref.read(homeViewModeProvider.notifier).state = mode,
+              children: [
+                Tooltip(
+                  message: t.home.viewModeList,
+                  child: const Icon(Icons.view_list, size: 20),
+                ),
+                Tooltip(
+                  message: t.home.viewModeTree,
+                  child: const Icon(Icons.account_tree, size: 20),
+                ),
+              ],
+            ),
+          ),
+          if (viewMode == HomeViewMode.list)
+            Positioned(
+              top: 64,
+              right: 16,
+              child: ToggleButtonGroup<HomeTileMode>(
+                values: HomeTileMode.values,
+                selected: tileMode,
+                onChanged: (mode) =>
+                    ref.read(homeTileModeProvider.notifier).state = mode,
                 children: [
                   Tooltip(
-                    message: t.home.viewModeList,
-                    child: const Icon(Icons.view_list, size: 20),
+                    message: t.home.viewModeTile,
+                    child: const Icon(Icons.view_agenda, size: 20),
                   ),
                   Tooltip(
-                    message: t.home.viewModeTree,
-                    child: const Icon(Icons.account_tree, size: 20),
+                    message: t.home.viewModeGrid,
+                    child: const Icon(Icons.grid_view, size: 20),
                   ),
                 ],
               ),
             ),
-          ),
-          if (_viewMode == _HomeViewMode.tree)
+          if (viewMode == HomeViewMode.tree)
             Positioned(
               top: 64,
               right: 16,
@@ -394,6 +408,7 @@ class _HomeBody extends ConsumerWidget {
     final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
     final cutIds = ref.watch(cutDenpaMenIdsProvider);
     final isMobile = ref.watch(isMobileLayoutProvider);
+    final tileMode = ref.watch(homeTileModeProvider);
 
     return Stack(
       children: [
@@ -403,47 +418,61 @@ class _HomeBody extends ConsumerWidget {
               if (records.isEmpty) {
                 return Center(child: Text(context.t.home.empty));
               }
-              return ListView.builder(
+              return Padding(
                 padding: EdgeInsets.fromLTRB(
                   isMobile ? 0 : 16,
                   64,
                   isMobile ? 0 : 16,
                   96,
                 ),
-                itemCount: records.length,
-                itemBuilder: (context, index) {
-                  final record = records[index];
-                  final denpaMen = record.denpaMen;
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: isMobile
-                        ? Opacity(
-                            opacity: cutIds.contains(record.id) ? 0.5 : 1,
-                            child: DenpaMenListTile(
-                              denpaMen: denpaMen,
-                              selectionMode: selectionMode,
-                              selected: selectedIds.contains(record.id),
-                              onSelectedChanged: (selected) =>
-                                  _setSelected(ref, record.id, selected),
-                              onTap: () => DenpaMenPreviewDialog.show(
-                                context,
-                                denpaMen: denpaMen,
+                child: switch (tileMode) {
+                  HomeTileMode.grid => DenpaMenBox(
+                    records: records,
+                    selectionMode: selectionMode,
+                    selectedIds: selectedIds,
+                    cutIds: cutIds,
+                    onSelectedChanged: (id, selected) =>
+                        _setSelected(ref, id, selected),
+                    onTapRecord: (denpaMen) =>
+                        DenpaMenPreviewDialog.show(context, denpaMen: denpaMen),
+                  ),
+                  HomeTileMode.tile => ListView.builder(
+                    itemCount: records.length,
+                    itemBuilder: (context, index) {
+                      final record = records[index];
+                      final denpaMen = record.denpaMen;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: isMobile
+                            ? Opacity(
+                                opacity: cutIds.contains(record.id) ? 0.5 : 1,
+                                child: DenpaMenListTile(
+                                  denpaMen: denpaMen,
+                                  selectionMode: selectionMode,
+                                  selected: selectedIds.contains(record.id),
+                                  onSelectedChanged: (selected) =>
+                                      _setSelected(ref, record.id, selected),
+                                  onTap: () => DenpaMenPreviewDialog.show(
+                                    context,
+                                    denpaMen: denpaMen,
+                                  ),
+                                  enableLongPressPreview: false,
+                                  record: record,
+                                  masterData: masterData,
+                                ),
+                              )
+                            : DenpaMenAccordionTile(
+                                record: record,
+                                masterData: masterData,
+                                selectionMode: selectionMode,
+                                selected: selectedIds.contains(record.id),
+                                isCut: cutIds.contains(record.id),
+                                onSelectedChanged: (selected) =>
+                                    _setSelected(ref, record.id, selected),
                               ),
-                              enableLongPressPreview: false,
-                              record: record,
-                              masterData: masterData,
-                            ),
-                          )
-                        : DenpaMenAccordionTile(
-                            record: record,
-                            masterData: masterData,
-                            selectionMode: selectionMode,
-                            selected: selectedIds.contains(record.id),
-                            isCut: cutIds.contains(record.id),
-                            onSelectedChanged: (selected) =>
-                                _setSelected(ref, record.id, selected),
-                          ),
-                  );
+                      );
+                    },
+                  ),
                 },
               );
             },

@@ -330,6 +330,12 @@ class Translations$home$ja {
 	/// ja: 'ツリー表示'
 	String get viewModeTree => 'ツリー表示';
 
+	/// ja: 'タイル表示'
+	String get viewModeTile => 'タイル表示';
+
+	/// ja: 'グリッド表示'
+	String get viewModeGrid => 'グリッド表示';
+
 	/// ja: '位置をリセット'
 	String get resetTreePosition => '位置をリセット';
 
@@ -604,6 +610,8 @@ extension on Translations {
 			'home.addFromQrFileInvalid' => 'QRコードを読み取れませんでした',
 			'home.viewModeList' => 'リスト表示',
 			'home.viewModeTree' => 'ツリー表示',
+			'home.viewModeTile' => 'タイル表示',
+			'home.viewModeGrid' => 'グリッド表示',
 			'home.resetTreePosition' => '位置をリセット',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
