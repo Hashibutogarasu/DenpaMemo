@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../domain/backup/dm_file.dart';
 import '../domain/backup/export_result.dart';
@@ -47,8 +46,14 @@ class DmExportController {
 
     String? copyToPath;
     if (Platform.isAndroid) {
-      final documentsDirectory = await getApplicationDocumentsDirectory();
-      copyToPath = path.join(documentsDirectory.path, fileName);
+      final directoryPath = await FilePicker.getDirectoryPath(
+        dialogTitle: dialogTitle,
+      );
+      if (directoryPath == null) {
+        progress.state = null;
+        return null;
+      }
+      copyToPath = path.join(directoryPath, fileName);
     }
 
     try {
