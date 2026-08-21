@@ -7,6 +7,7 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
+import '../providers/search_providers.dart';
 import 'lineage/lineage_graph.dart';
 
 /// Shows every saved QR code as the root of a tree, in a single shared
@@ -31,9 +32,18 @@ class DenpaMenLineageTree extends ConsumerWidget {
     final qrCodesAsync = ref.watch(qrCodeListProvider);
     final denpaMenAsync = ref.watch(denpaMenListProvider(masterData));
 
+    final denpaMenRecords = ref.watch(filteredDenpaMenProvider(masterData));
+
     return qrCodesAsync.when(
-      data: (qrCodes) => denpaMenAsync.when(
-        data: (denpaMenRecords) {
+      data: (allQrCodes) => denpaMenAsync.when(
+        data: (_) {
+          final matchedQrCodeIds = {
+            for (final record in denpaMenRecords) record.denpaMen.qrCodeId,
+          };
+          final qrCodes = [
+            for (final qrCode in allQrCodes)
+              if (matchedQrCodeIds.contains(qrCode.qrCode.id)) qrCode,
+          ];
           if (qrCodes.isEmpty) {
             return Center(child: Text(context.t.home.empty));
           }

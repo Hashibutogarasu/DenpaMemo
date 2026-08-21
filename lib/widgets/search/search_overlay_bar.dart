@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_providers.dart';
+import '../../providers/search_providers.dart';
 import '../../theme/app_colors.dart';
 
 /// Overlay search bar that slides down from the top of the screen when
-/// Ctrl+F is pressed, and back up when dismissed. This is only the input
-/// surface and dismiss affordance — search itself is not implemented yet.
+/// Ctrl+F is pressed, and back up when dismissed. Binds its input directly
+/// to [searchQueryProvider]'s name field, so typing here filters the home
+/// screen through the same search pipeline used by the dedicated search
+/// page.
 ///
 /// Always mounted (visibility is animated via [searchOverlayOpenProvider])
 /// rather than conditionally inserted into the tree, so the slide-out plays
@@ -28,10 +31,23 @@ class SearchOverlayBar extends ConsumerStatefulWidget {
 
 class _SearchOverlayBarState extends ConsumerState<SearchOverlayBar> {
   final _focusNode = FocusNode();
+  late final _controller = TextEditingController(
+    text: ref.read(searchQueryProvider).name,
+  );
+
+  void _updateName(String value) {
+    ref.read(searchQueryProvider.notifier).update((q) => q.copyWith(name: value));
+  }
+
+  void _clear() {
+    _controller.clear();
+    _updateName('');
+  }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -45,6 +61,7 @@ class _SearchOverlayBarState extends ConsumerState<SearchOverlayBar> {
         _focusNode.requestFocus();
       } else {
         _focusNode.unfocus();
+        _clear();
       }
     });
 
@@ -77,11 +94,13 @@ class _SearchOverlayBarState extends ConsumerState<SearchOverlayBar> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
+                          controller: _controller,
                           focusNode: _focusNode,
                           decoration: InputDecoration(
                             hintText: t.home.searchHint,
                             border: InputBorder.none,
                           ),
+                          onChanged: _updateName,
                         ),
                       ),
                       IconButton(

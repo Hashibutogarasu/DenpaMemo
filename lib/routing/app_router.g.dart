@@ -9,6 +9,9 @@ part of 'app_router.dart';
 List<RouteBase> get $appRoutes => [
   $homeRoute,
   $settingsRoute,
+  $searchRoute,
+  $searchResultsRoute,
+  $analysisRoute,
   $addDenpaMenRoute,
   $denpaMenQrRoute,
   $qrCodeSelectionRoute,
@@ -52,6 +55,85 @@ mixin $SettingsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $searchRoute => GoRouteData.$route(
+  path: '/search',
+  hasOverriddenOnExit: false,
+  factory: $SearchRoute._fromState,
+);
+
+mixin $SearchRoute on GoRouteData {
+  static SearchRoute _fromState(GoRouterState state) => const SearchRoute();
+
+  @override
+  String get location => GoRouteData.$location('/search');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $searchResultsRoute => GoRouteData.$route(
+  path: '/search/results',
+  hasOverriddenOnExit: false,
+  factory: $SearchResultsRoute._fromState,
+);
+
+mixin $SearchResultsRoute on GoRouteData {
+  static SearchResultsRoute _fromState(GoRouterState state) =>
+      const SearchResultsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/search/results');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $analysisRoute => GoRouteData.$route(
+  path: '/analysis',
+  hasOverriddenOnExit: false,
+  factory: $AnalysisRoute._fromState,
+);
+
+mixin $AnalysisRoute on GoRouteData {
+  static AnalysisRoute _fromState(GoRouterState state) => const AnalysisRoute();
+
+  @override
+  String get location => GoRouteData.$location('/analysis');
 
   @override
   void go(BuildContext context) => context.go(location);
