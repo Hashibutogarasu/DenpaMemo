@@ -63,27 +63,35 @@ class DenpaMenListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final record = this.record;
     final masterData = this.masterData;
-    final showActionMenu = !selectionMode && record != null && masterData != null;
+    final showActionMenu =
+        !selectionMode && record != null && masterData != null;
     final leadingIcon = DenpaMenIcon(denpaMenId: denpaMen.id, size: 40);
 
     return ListTile(
       leading: onSelectedChanged == null
           ? leadingIcon
-          : selectionMode
-          ? Row(
+          : Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Checkbox(
-                  value: selected,
-                  onChanged: (value) => onSelectedChanged!(value ?? false),
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: selectionMode
+                      ? Checkbox(
+                          value: selected,
+                          onChanged: (value) =>
+                              onSelectedChanged!(value ?? false),
+                        )
+                      : null,
                 ),
-                leadingIcon,
+                InkWell(
+                  customBorder: const CircleBorder(),
+                  onTap: selectionMode
+                      ? null
+                      : () => onSelectedChanged!(!selected),
+                  child: leadingIcon,
+                ),
               ],
-            )
-          : InkWell(
-              customBorder: const CircleBorder(),
-              onTap: () => onSelectedChanged!(!selected),
-              child: leadingIcon,
             ),
       title: Text(denpaMen.name),
       selected: selected,
