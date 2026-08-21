@@ -135,7 +135,9 @@ class SelectionFloatingMenu extends ConsumerWidget {
                         : {for (final record in records) record.id},
                   ),
                   IconButton(
-                    icon: const Icon(Icons.edit, color: AppColors.accent),
+                    icon: const Icon(Icons.edit),
+                    color: AppColors.accent,
+                    disabledColor: AppColors.accent.withValues(alpha: 0.3),
                     tooltip: t.common.edit,
                     onPressed: selectedIds.length == 1
                         ? () => _edit(context, ref)
