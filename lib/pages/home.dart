@@ -87,7 +87,10 @@ class _HomeState extends ConsumerState<Home> {
     progress.state = stepProgress(1, totalSteps);
     final tempRoot = await getTemporaryDirectory();
     final extractDirectory = Directory(
-      path.join(tempRoot.path, 'dm_import_${DateTime.now().microsecondsSinceEpoch}'),
+      path.join(
+        tempRoot.path,
+        'dm_import_${DateTime.now().microsecondsSinceEpoch}',
+      ),
     );
 
     try {
@@ -107,7 +110,9 @@ class _HomeState extends ConsumerState<Home> {
       }
       progress.state = stepProgress(3, totalSteps);
 
-      final entriesFile = File(path.join(extractDirectory.path, 'entries.json'));
+      final entriesFile = File(
+        path.join(extractDirectory.path, 'entries.json'),
+      );
       if (!await entriesFile.exists()) {
         if (context.mounted) {
           ScaffoldMessenger.of(
@@ -116,7 +121,9 @@ class _HomeState extends ConsumerState<Home> {
         }
         return;
       }
-      final decodeResult = decodeDenpaMenBackup(await entriesFile.readAsString());
+      final decodeResult = decodeDenpaMenBackup(
+        await entriesFile.readAsString(),
+      );
       if (decodeResult == null ||
           (decodeResult.entries.isEmpty && decodeResult.failed.isEmpty)) {
         if (context.mounted) {
@@ -133,12 +140,20 @@ class _HomeState extends ConsumerState<Home> {
       final iconsByDenpaMenId = <String, File>{};
       for (final entry in entries) {
         final iconDirectory = Directory(
-          path.join(extractDirectory.path, 'icons', 'denpamens', entry.denpaMen.id),
+          path.join(
+            extractDirectory.path,
+            'icons',
+            'denpamens',
+            entry.denpaMen.id,
+          ),
         );
-        final metadataFile = File(path.join(iconDirectory.path, 'metadata.json'));
+        final metadataFile = File(
+          path.join(iconDirectory.path, 'metadata.json'),
+        );
         if (await metadataFile.exists()) {
           final metadata =
-              jsonDecode(await metadataFile.readAsString()) as Map<String, dynamic>;
+              jsonDecode(await metadataFile.readAsString())
+                  as Map<String, dynamic>;
           final fileName = metadata['fileName'] as String?;
           if (fileName != null) {
             final iconFile = File(path.join(iconDirectory.path, fileName));
@@ -212,7 +227,10 @@ class _HomeState extends ConsumerState<Home> {
       }
 
       for (final entry in selectedEntries) {
-        final record = denpaMenRepository.findByCuid(entry.denpaMen.id, masterData);
+        final record = denpaMenRepository.findByCuid(
+          entry.denpaMen.id,
+          masterData,
+        );
         if (record == null) {
           continue;
         }
@@ -268,10 +286,12 @@ class _HomeState extends ConsumerState<Home> {
       title: OutlinedTitleText(text: t.page.home),
       additionalShortcuts: selectionMode && masterData != null
           ? {
-              const SingleActivator(LogicalKeyboardKey.keyA, control: true):
-                  () => _selectAll(masterData),
-              const SingleActivator(LogicalKeyboardKey.escape):
-                  _clearSelection,
+              const SingleActivator(
+                LogicalKeyboardKey.keyA,
+                control: true,
+              ): () =>
+                  _selectAll(masterData),
+              const SingleActivator(LogicalKeyboardKey.escape): _clearSelection,
             }
           : const {},
       actions: isMobile
@@ -413,83 +433,100 @@ class _HomeBody extends ConsumerWidget {
     final isMobile = ref.watch(isMobileLayoutProvider);
     final tileMode = ref.watch(homeTileModeProvider);
 
-    return Stack(
+    final contentPadding = EdgeInsets.fromLTRB(
+      isMobile ? 0 : 16,
+      0,
+      isMobile ? 0 : 16,
+      96,
+    );
+
+    return Column(
       children: [
-        Positioned.fill(
-          child: recordsAsync.when(
-            data: (records) {
-              if (records.isEmpty) {
-                return Center(child: Text(context.t.home.empty));
-              }
-              return Padding(
-                padding: EdgeInsets.fromLTRB(
-                  isMobile ? 0 : 16,
-                  64,
-                  isMobile ? 0 : 16,
-                  96,
-                ),
-                child: switch (tileMode) {
-                  HomeTileMode.grid => DenpaMenBox(
-                    records: records,
-                    selectionMode: selectionMode,
-                    selectedIds: selectedIds,
-                    cutIds: cutIds,
-                    onSelectedChanged: (id, selected) =>
-                        _setSelected(ref, id, selected),
-                    onTapRecord: (denpaMen) =>
-                        DenpaMenPreviewDialog.show(context, denpaMen: denpaMen),
-                  ),
-                  HomeTileMode.tile => ListView.builder(
-                    itemCount: records.length,
-                    itemBuilder: (context, index) {
-                      final record = records[index];
-                      final denpaMen = record.denpaMen;
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: isMobile
-                            ? Opacity(
-                                opacity: cutIds.contains(record.id) ? 0.5 : 1,
-                                child: DenpaMenListTile(
-                                  denpaMen: denpaMen,
-                                  selectionMode: selectionMode,
-                                  selected: selectedIds.contains(record.id),
-                                  onSelectedChanged: (selected) =>
-                                      _setSelected(ref, record.id, selected),
-                                  onTap: () => DenpaMenPreviewDialog.show(
-                                    context,
-                                    denpaMen: denpaMen,
+        const SizedBox(height: 64),
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: recordsAsync.when(
+                  data: (records) {
+                    if (records.isEmpty) {
+                      return Center(child: Text(context.t.home.empty));
+                    }
+                    return switch (tileMode) {
+                      HomeTileMode.grid => DenpaMenBox(
+                        records: records,
+                        selectionMode: selectionMode,
+                        selectedIds: selectedIds,
+                        cutIds: cutIds,
+                        onSelectedChanged: (id, selected) =>
+                            _setSelected(ref, id, selected),
+                        onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
+                          context,
+                          denpaMen: denpaMen,
+                        ),
+                        padding: contentPadding,
+                      ),
+                      HomeTileMode.tile => ListView.builder(
+                        padding: contentPadding,
+                        itemCount: records.length,
+                        itemBuilder: (context, index) {
+                          final record = records[index];
+                          final denpaMen = record.denpaMen;
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: isMobile
+                                ? Opacity(
+                                    opacity: cutIds.contains(record.id)
+                                        ? 0.5
+                                        : 1,
+                                    child: DenpaMenListTile(
+                                      denpaMen: denpaMen,
+                                      selectionMode: selectionMode,
+                                      selected: selectedIds.contains(record.id),
+                                      onSelectedChanged: (selected) =>
+                                          _setSelected(
+                                            ref,
+                                            record.id,
+                                            selected,
+                                          ),
+                                      onTap: () => DenpaMenPreviewDialog.show(
+                                        context,
+                                        denpaMen: denpaMen,
+                                      ),
+                                      enableLongPressPreview: false,
+                                      record: record,
+                                      masterData: masterData,
+                                    ),
+                                  )
+                                : DenpaMenAccordionTile(
+                                    record: record,
+                                    masterData: masterData,
+                                    selectionMode: selectionMode,
+                                    selected: selectedIds.contains(record.id),
+                                    isCut: cutIds.contains(record.id),
+                                    onSelectedChanged: (selected) =>
+                                        _setSelected(ref, record.id, selected),
                                   ),
-                                  enableLongPressPreview: false,
-                                  record: record,
-                                  masterData: masterData,
-                                ),
-                              )
-                            : DenpaMenAccordionTile(
-                                record: record,
-                                masterData: masterData,
-                                selectionMode: selectionMode,
-                                selected: selectedIds.contains(record.id),
-                                isCut: cutIds.contains(record.id),
-                                onSelectedChanged: (selected) =>
-                                    _setSelected(ref, record.id, selected),
-                              ),
-                      );
-                    },
+                          );
+                        },
+                      ),
+                    };
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (error, stackTrace) => Center(child: Text('$error')),
+                ),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: SelectionFloatingMenu(masterData: masterData),
                   ),
-                },
-              );
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stackTrace) => Center(child: Text('$error')),
-          ),
-        ),
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: SelectionFloatingMenu(masterData: masterData),
-            ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

@@ -85,95 +85,94 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
     return Opacity(
       opacity: widget.isCut ? 0.5 : 1,
       child: StatusContainer(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: widget.selectionMode
-                    ? Checkbox(
-                        value: widget.selected,
-                        onChanged: (value) =>
-                            widget.onSelectedChanged(value ?? false),
-                      )
-                    : null,
-              ),
-              Expanded(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: _handleTap,
-                  onLongPress: _handleLongPress,
-                  child: AnimatedOpacity(
-                    duration: widget.animationDuration,
-                    opacity: _expanded ? 0 : 1,
-                    child: Row(
-                      children: [
-                        DenpaMenIcon(denpaMenId: denpaMen.id, size: 32),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: OutlinedTitleText(
-                            text: denpaMen.name,
-                            outlineColor: AppColors.accent,
-                            fontSize: 20,
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: widget.selectionMode
+                      ? Checkbox(
+                          value: widget.selected,
+                          onChanged: (value) =>
+                              widget.onSelectedChanged(value ?? false),
+                        )
+                      : null,
+                ),
+                Expanded(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: _handleTap,
+                    onLongPress: _handleLongPress,
+                    child: AnimatedOpacity(
+                      duration: widget.animationDuration,
+                      opacity: _expanded ? 0 : 1,
+                      child: Row(
+                        children: [
+                          DenpaMenIcon(denpaMenId: denpaMen.id, size: 32),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            child: OutlinedTitleText(
+                              text: denpaMen.name,
+                              outlineColor: AppColors.accent,
+                              fontSize: 20,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        GaugeLabel(
-                          label: t.denpaMenStatus.level,
-                          value: GaugeValue(
-                            current: denpaMen.level,
-                            max: denpaMen.maxLevel,
+                          const SizedBox(width: 8),
+                          GaugeLabel(
+                            label: t.denpaMenStatus.level,
+                            value: GaugeValue(
+                              current: denpaMen.level,
+                              max: denpaMen.maxLevel,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              PopupMenuButton<DenpaMenAction>(
-                icon: const Icon(Icons.more_vert, color: AppColors.accent),
-                onSelected: (action) => handleDenpaMenAction(
-                  context,
-                  ref,
-                  action,
-                  record: widget.record,
-                  masterData: widget.masterData,
+                PopupMenuButton<VoidCallback>(
+                  icon: const Icon(Icons.more_vert, color: AppColors.accent),
+                  onSelected: (action) => action(),
+                  itemBuilder: (context) => denpaMenActionMenuItems(
+                    context,
+                    ref,
+                    record: widget.record,
+                    masterData: widget.masterData,
+                  ),
                 ),
-                itemBuilder: (context) => denpaMenActionMenuItems(
-                  context,
-                  hasParents: denpaMen.parentIds.isNotEmpty,
+                InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: _handleTap,
+                  onLongPress: _handleLongPress,
+                  child: AnimatedRotation(
+                    turns: _expanded ? 0.5 : 0,
+                    duration: widget.animationDuration,
+                    child: const Icon(
+                      Icons.expand_more,
+                      color: AppColors.accent,
+                    ),
+                  ),
                 ),
-              ),
-              InkWell(
-                borderRadius: BorderRadius.circular(20),
-                onTap: _handleTap,
-                onLongPress: _handleLongPress,
-                child: AnimatedRotation(
-                  turns: _expanded ? 0.5 : 0,
-                  duration: widget.animationDuration,
-                  child: const Icon(Icons.expand_more, color: AppColors.accent),
-                ),
-              ),
-            ],
-          ),
-          AnimatedSize(
-            duration: widget.animationDuration,
-            alignment: Alignment.topCenter,
-            child: _expanded
-                ? DenpaMenStatus.fromDenpaMen(
-                    denpaMen,
-                    totalAttributeCount: widget.masterData.attributes.length,
-                    showContainer: false,
-                    showIcon: true,
-                  )
-                : const SizedBox(width: double.infinity),
-          ),
-        ],
-      ),
+              ],
+            ),
+            AnimatedSize(
+              duration: widget.animationDuration,
+              alignment: Alignment.topCenter,
+              child: _expanded
+                  ? DenpaMenStatus.fromDenpaMen(
+                      denpaMen,
+                      totalAttributeCount: widget.masterData.attributes.length,
+                      showContainer: false,
+                      showIcon: true,
+                    )
+                  : const SizedBox(width: double.infinity),
+            ),
+          ],
+        ),
       ),
     );
   }

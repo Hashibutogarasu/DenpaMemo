@@ -61,18 +61,14 @@ class DenpaMenListTile extends ConsumerWidget {
               onChanged: (value) => onSelectedChanged!(value ?? false),
             )
           : showActionMenu
-          ? PopupMenuButton<DenpaMenAction>(
+          ? PopupMenuButton<VoidCallback>(
               icon: const Icon(Icons.more_vert),
-              onSelected: (action) => handleDenpaMenAction(
-                context,
-                ref,
-                action,
-                record: record,
-                masterData: masterData,
-              ),
+              onSelected: (action) => action(),
               itemBuilder: (context) => denpaMenActionMenuItems(
                 context,
-                hasParents: denpaMen.parentIds.isNotEmpty,
+                ref,
+                record: record,
+                masterData: masterData,
               ),
             )
           : onSelectedChanged == null && selected

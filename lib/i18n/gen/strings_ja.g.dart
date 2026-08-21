@@ -344,6 +344,9 @@ class Translations$home$ja {
 
 	/// ja: '出生ガイド'
 	String get birthGuideAction => '出生ガイド';
+
+	/// ja: 'QRコードを表示'
+	String get showQrCodeAction => 'QRコードを表示';
 }
 
 // Path: backup
@@ -615,6 +618,7 @@ extension on Translations {
 			'home.resetTreePosition' => '位置をリセット',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
+			'home.showQrCodeAction' => 'QRコードを表示',
 			'backup.importCompleteTitle' => 'インポート結果',
 			'backup.importAddedSection' => '新規追加',
 			'backup.importMergedSection' => '上書き更新',

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
-import '../theme/app_colors.dart';
 import 'dialog/denpa_men_preview_dialog.dart';
 import 'icon/denpa_men_icon.dart';
 
@@ -49,28 +48,18 @@ class DenpaMenContainer extends StatelessWidget {
             }
           : null,
       child: Stack(
-        clipBehavior: Clip.none,
         children: [
-          Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              color: selected
-                  ? AppColors.accent.withValues(alpha: 0.15)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.all(4),
-            child: DenpaMenIcon(denpaMenId: denpaMen.id, size: size - 8),
-          ),
+          DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
           if (selected)
-            Positioned(
-              right: -2,
-              bottom: -2,
-              child: CircleAvatar(
-                radius: 9,
-                backgroundColor: AppColors.accent,
-                child: const Icon(Icons.check, size: 12, color: Colors.white),
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withValues(alpha: 0.4),
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.check_box,
+                  color: Colors.white,
+                  size: size * 0.4,
+                ),
               ),
             ),
         ],

@@ -26,6 +26,7 @@ class DenpaMenBox extends StatelessWidget {
     this.columns,
     this.itemSize = 56,
     this.gap = 8,
+    this.padding = EdgeInsets.zero,
   });
 
   final List<DenpaMenRecord> records;
@@ -40,6 +41,7 @@ class DenpaMenBox extends StatelessWidget {
   final int? columns;
   final double itemSize;
   final double gap;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class DenpaMenBox extends StatelessWidget {
             );
 
         return GridView.builder(
-          padding: EdgeInsets.zero,
+          padding: padding,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: resolvedColumns,
             mainAxisSpacing: gap,

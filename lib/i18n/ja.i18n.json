@@ -50,7 +50,8 @@
     "viewModeGrid": "グリッド表示",
     "resetTreePosition": "位置をリセット",
     "catchOrderLabel": "${order}匹目: ${name}",
-    "birthGuideAction": "出生ガイド"
+    "birthGuideAction": "出生ガイド",
+    "showQrCodeAction": "QRコードを表示"
   },
   "backup": {
     "importCompleteTitle": "インポート結果",
