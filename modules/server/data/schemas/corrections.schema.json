@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Corrections",
+  "description": "Correction master data, parsed into Correction (lib/domain/master_data/correction.dart). A correction is a bonus applied to a pool of growth stats and/or abnormality resistances, layered on top of body-color/head-shape resistances as the last step before a DenpaMen is finalized.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Stable identifier referenced by other data and code, and looked up in the app's localization resources for display text."
+      },
+      "hpBonus": {
+        "type": "integer",
+        "description": "Flat bonus added to HP."
+      },
+      "apBonus": {
+        "type": "integer",
+        "description": "Flat bonus added to AP."
+      },
+      "attackBonus": {
+        "type": "integer",
+        "description": "Flat bonus added to attack."
+      },
+      "defenseBonus": {
+        "type": "integer",
+        "description": "Flat bonus added to defense."
+      },
+      "speedBonus": {
+        "type": "integer",
+        "description": "Flat bonus added to speed."
+      },
+      "evasionRateBonus": {
+        "type": "integer",
+        "description": "Flat bonus added to evasion rate."
+      },
+      "abnormalityResistanceBonuses": {
+        "type": "object",
+        "description": "Flat bonus per abnormality id, added on top of body-color/head-shape resistances.",
+        "additionalProperties": { "type": "integer" }
+      }
+    }
+  }
+}

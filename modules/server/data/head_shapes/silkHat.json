@@ -1,0 +1,30 @@
+{
+  "id": "silkHat",
+  "abnormalityResistanceBonuses": {
+    "poison": 2,
+    "burn": 2,
+    "frostbite": 2,
+    "cold": 2,
+    "mud": 2,
+    "electrocution": 2,
+    "soaked": 2,
+    "blind": 2,
+    "curse": 2,
+    "suddenDeath": 2,
+    "paralysis": 2,
+    "sleep": 2,
+    "charm": 2,
+    "fear": 2,
+    "jack": 1
+  },
+  "attributeResistanceBonuses": {
+    "fire": 1,
+    "water": 1,
+    "thunder": 1,
+    "earth": 1,
+    "ice": 1,
+    "wind": 1,
+    "light": 1,
+    "dark": 1
+  }
+}

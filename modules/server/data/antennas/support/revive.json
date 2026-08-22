@@ -1,0 +1,30 @@
+[
+  {
+    "id": "revive_solo_1",
+    "category": "support",
+    "targetCount": 1,
+    "maxLevel": 9,
+    "evolvesToId": "revive_solo_2",
+    "variantGroupId": "revive"
+  },
+  {
+    "id": "revive_solo_2",
+    "category": "support",
+    "targetCount": 1,
+    "variantGroupId": "revive"
+  },
+  {
+    "id": "revive_all_1",
+    "category": "support",
+    "targetsAll": true,
+    "maxLevel": 9,
+    "evolvesToId": "revive_all_2",
+    "variantGroupId": "revive"
+  },
+  {
+    "id": "revive_all_2",
+    "category": "support",
+    "targetsAll": true,
+    "variantGroupId": "revive"
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "poison"
+  },
+  {
+    "id": "burn"
+  },
+  {
+    "id": "frostbite"
+  },
+  {
+    "id": "cold"
+  },
+  {
+    "id": "mud"
+  },
+  {
+    "id": "electrocution"
+  },
+  {
+    "id": "soaked"
+  },
+  {
+    "id": "blind"
+  },
+  {
+    "id": "curse"
+  },
+  {
+    "id": "suddenDeath"
+  },
+  {
+    "id": "paralysis"
+  },
+  {
+    "id": "sleep"
+  },
+  {
+    "id": "charm"
+  },
+  {
+    "id": "fear"
+  },
+  {
+    "id": "jack"
+  }
+]

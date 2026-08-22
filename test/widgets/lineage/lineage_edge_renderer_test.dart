@@ -66,9 +66,6 @@ void main() {
       final parentBottom = result.parent.position.dy + result.parent.height;
       final childTop = result.child.position.dy;
 
-      // The bug: the path starts at the parent's center (above its true
-      // bottom edge) and ends at the child's center (below its true top
-      // edge), so it visibly cuts through both node squares.
       expect(result.pathBounds.top, lessThan(parentBottom));
       expect(result.pathBounds.bottom, greaterThan(childTop));
     },

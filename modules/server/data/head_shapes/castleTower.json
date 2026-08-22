@@ -1,0 +1,6 @@
+{
+  "id": "castleTower",
+  "abnormalityResistanceBonuses": {
+    "jack": 2
+  }
+}

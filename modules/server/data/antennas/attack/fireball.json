@@ -1,0 +1,26 @@
+[
+  {
+    "id": "fireball_1",
+    "category": "attack",
+    "targetCount": 1,
+    "dealsDamage": true,
+    "attackAttributeIds": ["fire"],
+    "variantGroupId": "fireball"
+  },
+  {
+    "id": "fireball_3",
+    "category": "attack",
+    "targetCount": 3,
+    "dealsDamage": true,
+    "attackAttributeIds": ["fire"],
+    "variantGroupId": "fireball"
+  },
+  {
+    "id": "fireball_all",
+    "category": "attack",
+    "targetsAll": true,
+    "dealsDamage": true,
+    "attackAttributeIds": ["fire"],
+    "variantGroupId": "fireball"
+  }
+]

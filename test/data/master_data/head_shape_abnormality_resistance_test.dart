@@ -18,9 +18,6 @@ void main() {
   HeadShape headShapeById(String id) =>
       masterData.headShapes.firstWhere((h) => h.id == id);
 
-  // Body color 'red' also grants burn +1 (see
-  // body_color_abnormality_resistance.json), so every expectation below
-  // includes that on top of the head shape's own bonuses.
   DenpaMen build(HeadShape headShape) {
     return createDenpaMen(
       maxHappiness: 0,

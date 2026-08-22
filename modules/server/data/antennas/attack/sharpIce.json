@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sharpIce_1",
+    "category": "attack",
+    "targetCount": 1,
+    "dealsDamage": true,
+    "attackAttributeIds": ["ice"],
+    "variantGroupId": "sharpIce"
+  },
+  {
+    "id": "sharpIce_3",
+    "category": "attack",
+    "targetCount": 3,
+    "dealsDamage": true,
+    "attackAttributeIds": ["ice"],
+    "variantGroupId": "sharpIce"
+  },
+  {
+    "id": "sharpIce_all",
+    "category": "attack",
+    "targetsAll": true,
+    "dealsDamage": true,
+    "attackAttributeIds": ["ice"],
+    "variantGroupId": "sharpIce"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "id": "moon",
+  "attributeResistanceBonuses": {
+    "fire": 1,
+    "water": 1,
+    "thunder": 1,
+    "earth": 1,
+    "ice": 1,
+    "wind": 1,
+    "light": 1,
+    "dark": 1
+  }
+}

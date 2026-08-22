@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Personalities",
+  "description": "Personality master data, parsed into Personality (lib/domain/master_data/personality.dart).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Stable identifier referenced by other data and code, and looked up in the app's localization resources for display text."
+      }
+    }
+  }
+}
