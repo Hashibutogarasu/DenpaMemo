@@ -8,6 +8,6 @@ void main() {
   testWidgets('MyApp builds', (WidgetTester tester) async {
     await tester.pumpWidget(MyApp(objectBox: ObjectBox.createInMemory()));
 
-    expect(find.byType(Scaffold), findsOneWidget);
+    expect(find.byType(Scaffold), findsNWidgets(2));
   });
 }

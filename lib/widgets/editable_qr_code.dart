@@ -35,20 +35,17 @@ class EditableQrCode extends StatelessWidget {
 
     return SelectionTile(
       label: t.editableStatus.qrCode,
-      onTap: !enabled
-          ? null
-          : () async {
-              final result = await showQrCodeSelectionDialog(
-                context,
-                candidates: candidates,
-                selected: selected,
-              );
-              if (result != null) {
-                onChanged(
-                  denpaMen.copyWith(qrCodeId: result.record?.qrCode.id),
-                );
-              }
-            },
+      enabled: enabled,
+      onTap: () async {
+        final result = await showQrCodeSelectionDialog(
+          context,
+          candidates: candidates,
+          selected: selected,
+        );
+        if (result != null) {
+          onChanged(denpaMen.copyWith(qrCodeId: result.record?.qrCode.id));
+        }
+      },
       child: Text(
         selected == null
             ? t.common.unset

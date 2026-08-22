@@ -12,6 +12,7 @@ import '../widgets/dialog/head_shape_selection_dialog.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/search/search_stat_grid.dart';
+import '../widgets/unfocus_on_tap.dart';
 
 class Search extends ConsumerWidget {
   const Search({super.key});
@@ -84,21 +85,7 @@ class _SearchFormState extends ConsumerState<_SearchForm> {
             onChanged: (value) =>
                 ref.read(searchQueryProvider.notifier).state = value,
           ),
-          ListTile(
-            title: Text(t.editableStatus.headShape),
-            subtitle: Text(
-              query.headShapeId == null
-                  ? t.common.unset
-                  : t.headShape[query.headShapeId] ?? query.headShapeId!,
-            ),
-            trailing: query.headShapeId == null
-                ? const Icon(Icons.chevron_right)
-                : IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => ref
-                        .read(searchQueryProvider.notifier)
-                        .update((q) => q.copyWith(headShapeId: null)),
-                  ),
+          UnfocusOnTap(
             onTap: () async {
               final selected = await showHeadShapeSelectionDialog(
                 context,
@@ -114,34 +101,24 @@ class _SearchFormState extends ConsumerState<_SearchForm> {
                     .update((q) => q.copyWith(headShapeId: selected.id));
               }
             },
+            child: ListTile(
+              title: Text(t.editableStatus.headShape),
+              subtitle: Text(
+                query.headShapeId == null
+                    ? t.common.unset
+                    : t.headShape[query.headShapeId] ?? query.headShapeId!,
+              ),
+              trailing: query.headShapeId == null
+                  ? const Icon(Icons.chevron_right)
+                  : IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => ref
+                          .read(searchQueryProvider.notifier)
+                          .update((q) => q.copyWith(headShapeId: null)),
+                    ),
+            ),
           ),
-          ListTile(
-            title: Text(t.editableStatus.bodyColor),
-            subtitle: query.bodyColors.isEmpty
-                ? Text(t.common.unset)
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      for (final colorId in query.bodyColors)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 4),
-                          child: ColorDot(colorId: colorId),
-                        ),
-                    ],
-                  ),
-            trailing: query.bodyColors.isEmpty
-                ? const Icon(Icons.chevron_right)
-                : IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => ref
-                        .read(searchQueryProvider.notifier)
-                        .update(
-                          (q) => q.copyWith(
-                            bodyColors: const [],
-                            isSpColor: null,
-                          ),
-                        ),
-                  ),
+          UnfocusOnTap(
             onTap: () async {
               final result = await showBodyColorSelectionDialog(
                 context,
@@ -157,6 +134,34 @@ class _SearchFormState extends ConsumerState<_SearchForm> {
                 );
               }
             },
+            child: ListTile(
+              title: Text(t.editableStatus.bodyColor),
+              subtitle: query.bodyColors.isEmpty
+                  ? Text(t.common.unset)
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final colorId in query.bodyColors)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: ColorDot(colorId: colorId),
+                          ),
+                      ],
+                    ),
+              trailing: query.bodyColors.isEmpty
+                  ? const Icon(Icons.chevron_right)
+                  : IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => ref
+                          .read(searchQueryProvider.notifier)
+                          .update(
+                            (q) => q.copyWith(
+                              bodyColors: const [],
+                              isSpColor: null,
+                            ),
+                          ),
+                    ),
+            ),
           ),
           TextField(
             controller: _memoController,

@@ -17,7 +17,8 @@ import 'editable_denpa_men_status.dart';
 ///
 /// On a wide viewport the two panes sit side by side; on a narrow one they
 /// become swipeable pages with a dot indicator, also reachable by mouse
-/// wheel. [denpaMen] is fully controlled by the caller: every edit is
+/// wheel, with the editable pane shown first. [denpaMen] is fully
+/// controlled by the caller: every edit is
 /// reported through [onChanged] with a new draft, which the caller should
 /// re-derive (e.g. via `createDenpaMen`) and feed back in.
 class AddDenpaMen extends StatefulWidget {
@@ -134,11 +135,11 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
                   children: [
                     _AddDenpaMenPane(
                       minWidth: widget.minPaneWidth,
-                      child: preview,
+                      child: editable,
                     ),
                     _AddDenpaMenPane(
                       minWidth: widget.minPaneWidth,
-                      child: editable,
+                      child: preview,
                     ),
                   ],
                 ),
