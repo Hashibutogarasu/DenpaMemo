@@ -19,16 +19,30 @@ interface AntennaJson {
   hasLevel?: boolean;
 }
 
-const CATEGORY_DIRS: Array<{ dir: AntennaJson['category']; categoryId: number }> = [
-  { dir: 'attack', categoryId: 0 },
-  { dir: 'support', categoryId: 1 },
-  { dir: 'other', categoryId: 2 },
-];
+const CATEGORY_IDS: Record<AntennaJson['category'], number> = {
+  attack: 0,
+  support: 1,
+  other: 2,
+};
 
 function deriveTargetModeId(row: AntennaJson): number | null {
   if (row.targetsAll === true) return 1;
   if (row.id.includes('_solo_')) return 0;
   return null;
+}
+
+async function listJsonFilesRecursively(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const entryPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await listJsonFilesRecursively(entryPath)));
+    } else if (entry.name.endsWith('.json')) {
+      files.push(entryPath);
+    }
+  }
+  return files;
 }
 
 export async function loadAntennas(
@@ -40,27 +54,25 @@ export async function loadAntennas(
     (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.legacyId, attribute]),
   );
 
-  const parsedRows: Array<{ json: AntennaJson; categoryId: number }> = [];
-  for (const { dir, categoryId } of CATEGORY_DIRS) {
-    const antennasDir = path.join(dataDir, 'antennas', dir);
-    const files = await readdir(antennasDir);
-    for (const file of files) {
-      if (!file.endsWith('.json')) continue;
-      const source = path.join('antennas', dir, file);
-      const rows = JSON.parse(await readFile(path.join(antennasDir, file), 'utf-8')) as AntennaJson[];
-      for (const row of rows) {
-        guard.check('anntena', row.id, source);
-        parsedRows.push({ json: row, categoryId });
-      }
+  const antennasDir = path.join(dataDir, 'antennas');
+  const files = await listJsonFilesRecursively(antennasDir);
+
+  const parsedRows: AntennaJson[] = [];
+  for (const file of files) {
+    const source = path.relative(dataDir, file);
+    const rows = JSON.parse(await readFile(file, 'utf-8')) as AntennaJson[];
+    for (const row of rows) {
+      guard.check('anntena', row.id, source);
+      parsedRows.push(row);
     }
   }
 
   await dataSource.transaction(async (manager) => {
     const repo = manager.getRepository(AnntenaEntity);
-    for (const { json, categoryId } of parsedRows) {
+    for (const json of parsedRows) {
       const entity = new AnntenaEntity();
       entity.legacyId = json.id;
-      entity.categoryId = categoryId;
+      entity.categoryId = CATEGORY_IDS[json.category];
       entity.targetCount = json.targetCount ?? null;
       entity.targetModeId = deriveTargetModeId(json);
       entity.dealsDamage = json.dealsDamage ?? false;
@@ -80,7 +92,7 @@ export async function loadAntennas(
     }
 
     const savedByLegacyId = new Map((await repo.find()).map((entity) => [entity.legacyId, entity]));
-    for (const { json } of parsedRows) {
+    for (const json of parsedRows) {
       if (!json.evolvesToId) continue;
       const entity = savedByLegacyId.get(json.id)!;
       const evolvesTo = savedByLegacyId.get(json.evolvesToId);

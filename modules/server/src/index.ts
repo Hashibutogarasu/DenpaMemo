@@ -12,11 +12,18 @@ async function main() {
   await AppDataSource.runMigrations();
   await runSeedIfNeeded(AppDataSource);
 
-  const yoga = createYoga({ schema: buildSchema(AppDataSource), graphqlEndpoint: '/graphql' });
+  const yoga = createYoga({ schema: buildSchema(AppDataSource), graphqlEndpoint: '/' });
 
   const app = new Elysia({ adapter: node() })
     .get('/health', () => ({ status: 'ok' }))
-    .all('/graphql', ({ request }) => yoga.fetch(request))
+    .mount('/graphql', async (request: Request) => {
+      const yogaResponse = await yoga.fetch(request);
+      const body = await yogaResponse.arrayBuffer();
+      return new Response(body, {
+        status: yogaResponse.status,
+        headers: yogaResponse.headers,
+      });
+    })
     .listen(env.PORT);
 
   console.log(`denpa_memo server listening on http://localhost:${env.PORT}/graphql`);

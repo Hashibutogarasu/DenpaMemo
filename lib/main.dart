@@ -20,16 +20,16 @@ void main() async {
 
 /// The hash migration needs master data before any [ProviderScope] exists
 /// to read it from `masterDataProvider`, so it builds its own
-/// [GraphQLClient] via [createGraphQlClient]. Master data now requires the
-/// `modules/server` API, unlike the bundled-JSON repository this replaced;
-/// if it isn't reachable yet, skip the migration rather than crash the app
-/// before it can even show its own error screen.
+/// [GraphQLClient] via [GraphQlClientFactory]. Master data now requires
+/// the `modules/server` API, unlike the bundled-JSON repository this
+/// replaced; if it isn't reachable yet, skip the migration rather than
+/// crash the app before it can even show its own error screen.
 Future<void> _migrateDenpaMenHashesIfServerReachable(
   ObjectBox objectBox,
 ) async {
   try {
     final masterData = await GraphqlMasterDataRepository(
-      client: createGraphQlClient(),
+      client: graphQlClientFactory.create(),
     ).load();
     migrateDenpaMenHashes(ObjectBoxDenpaMenRepository(objectBox), masterData);
   } catch (error) {
