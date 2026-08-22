@@ -5,7 +5,7 @@ config();
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
-  PORT: z.coerce.number().int().positive().default(4000),
+  PORT: z.coerce.number().int().positive().default(4100),
 });
 
 export const env = envSchema.parse({

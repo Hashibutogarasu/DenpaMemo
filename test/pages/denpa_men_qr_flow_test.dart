@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
-import 'package:denpa_memo/main.dart';
+import '../support/test_app.dart';
 
 void main() {
   testWidgets(
@@ -11,7 +11,7 @@ void main() {
     'saves both individuals and returns home',
     (WidgetTester tester) async {
       final objectBox = ObjectBox.createInMemory();
-      await tester.pumpWidget(MyApp(objectBox: objectBox));
+      await tester.pumpWidget(TestApp(objectBox: objectBox));
       await tester.pumpAndSettle();
 
       expect(find.text('電波人間が登録されていません'), findsOneWidget);

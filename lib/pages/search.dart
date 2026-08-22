@@ -9,7 +9,9 @@ import '../routing/app_router.dart';
 import '../widgets/color/color_dot.dart';
 import '../widgets/dialog/body_color_selection_dialog.dart';
 import '../widgets/dialog/head_shape_selection_dialog.dart';
+import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/label/outlined_title.dart';
+import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/search/search_stat_grid.dart';
 import '../widgets/unfocus_on_tap.dart';
@@ -22,12 +24,14 @@ class Search extends ConsumerWidget {
     final masterDataAsync = ref.watch(masterDataProvider);
     final t = context.t;
 
+    listenForMasterDataErrors(ref, context);
+
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.search),
       body: masterDataAsync.when(
         data: (masterData) => _SearchForm(headShapes: masterData.headShapes),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text('$error')),
+        loading: () => const ProgressBar(),
+        error: (error, stackTrace) => const SizedBox.shrink(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => const SearchResultsRoute().push(context),

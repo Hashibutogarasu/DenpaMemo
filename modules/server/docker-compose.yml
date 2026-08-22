@@ -24,9 +24,9 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgres://denpa_memo:denpa_memo@postgres:5432/denpa_memo
-      PORT: 4000
+      PORT: 4100
     ports:
-      - '4000:4000'
+      - '4100:4100'
     volumes:
       - .:/app
       - /app/node_modules

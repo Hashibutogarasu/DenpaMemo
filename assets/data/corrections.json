@@ -1,9 +1,0 @@
-[
-  {
-    "id": "protagonist",
-    "hpBonus": 12,
-    "abnormalityResistanceBonuses": {
-      "suddenDeath": 2
-    }
-  }
-]

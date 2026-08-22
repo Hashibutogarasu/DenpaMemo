@@ -36,6 +36,8 @@ export async function resolveMasterData(dataSource: DataSource) {
       dataSource.getRepository(CorrectionEntity).find(),
     ]);
 
+  const anntenaLegacyIdById = new Map(anntenas.map((anntena) => [anntena.id, anntena.legacyId]));
+
   return {
     headShapes: await Promise.all(
       headShapes.map(async (headShape) => ({
@@ -43,7 +45,10 @@ export async function resolveMasterData(dataSource: DataSource) {
         attributeResistanceBonuses: await attributeResistanceBonusesFor(dataSource, 'head_shape', headShape.id),
       })),
     ),
-    anntenas,
+    anntenas: anntenas.map((anntena) => ({
+      ...anntena,
+      evolvesToId: anntena.evolvesToId ? (anntenaLegacyIdById.get(anntena.evolvesToId) ?? null) : null,
+    })),
     attributes,
     abnormalityTypes,
     bodyColorResistanceRules: await Promise.all(

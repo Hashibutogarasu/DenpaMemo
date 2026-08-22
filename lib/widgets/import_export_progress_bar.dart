@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/import_export_progress_providers.dart';
+import 'progress_bar.dart';
 
 /// A bottom-of-screen progress indicator for the currently running `.dm`
 /// export/import operation. Renders nothing while
-/// [importExportProgressProvider] is null; shows a bare
-/// [LinearProgressIndicator] (no label, no percentage text) otherwise.
+/// [importExportProgressProvider] is null; shows a bare [ProgressBar]
+/// (no label, no percentage text) otherwise.
 class ImportExportProgressBar extends ConsumerWidget {
   const ImportExportProgressBar({super.key});
 
@@ -16,6 +17,6 @@ class ImportExportProgressBar extends ConsumerWidget {
     if (progress == null) {
       return const SizedBox.shrink();
     }
-    return LinearProgressIndicator(value: progress.clamp(0.0, 1.0));
+    return ProgressBar(value: progress.clamp(0.0, 1.0));
   }
 }
