@@ -6,13 +6,11 @@ import 'package:go_router/go_router.dart';
 import '../../providers/responsive_providers.dart';
 import '../../utils/responsive.dart';
 import '../header/slanted_app_bar.dart';
-import '../import_export_progress_bar.dart';
 import '../navigation/app_back_button.dart';
-import '../navigation/app_bottom_navigation_bar.dart';
 
 /// Standard page shell: a [SlantedAppBar] header, plus [body] with the
 /// stack-aware [AppBackButton] (bottom-left, shown only when
-/// `context.canPop()`) and [floatingActionButton] (bottom-right) laid out
+/// `Navigator.canPop(context)`) and [floatingActionButton] (bottom-right) laid out
 /// as siblings in one [Stack]. Keeping both buttons in the same Stack —
 /// rather than routing one of them through [Scaffold.floatingActionButton]
 /// — is what keeps their height and bottom offset pixel-identical.
@@ -42,13 +40,14 @@ class AppScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canPop = context.canPop();
+    final canPop = Navigator.canPop(context);
 
     final isMobile = isMobileWidth(context);
     if (ref.read(isMobileLayoutProvider) != isMobile) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(isMobileLayoutProvider.notifier).state = isMobile,
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
+        ref.read(isMobileLayoutProvider.notifier).state = isMobile;
+      });
     }
 
     return CallbackShortcuts(
@@ -65,10 +64,6 @@ class AppScaffold extends ConsumerWidget {
             title: title,
             actions: actions,
             topSafeAreaInset: MediaQuery.paddingOf(context).top,
-          ),
-          bottomNavigationBar: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [ImportExportProgressBar(), AppBottomNavigationBar()],
           ),
           body: Stack(
             children: [

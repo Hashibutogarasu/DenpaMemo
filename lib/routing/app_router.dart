@@ -11,12 +11,35 @@ import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
 import '../pages/search_results.dart';
 import '../pages/settings.dart';
+import '../widgets/scaffold/app_shell.dart';
 
 part 'app_router.g.dart';
 
 final GoRouter appRouter = GoRouter(routes: $appRoutes);
 
-@TypedGoRoute<HomeRoute>(path: '/')
+/// Wraps the four root-tab routes (home, search, analysis, settings) in
+/// [AppShell], which owns the persistent bottom navigation bar. Routes
+/// pushed on top — [SearchResultsRoute] and its siblings — are declared
+/// outside this shell, so they never show that bar.
+@TypedShellRoute<AppShellRouteData>(
+  routes: [
+    TypedGoRoute<HomeRoute>(path: '/'),
+    TypedGoRoute<SettingsRoute>(path: '/settings'),
+    TypedGoRoute<SearchRoute>(path: '/search'),
+    TypedGoRoute<AnalysisRoute>(path: '/analysis'),
+  ],
+)
+class AppShellRouteData extends ShellRouteData {
+  const AppShellRouteData();
+
+  @override
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    Widget navigator,
+  ) => AppShell(child: navigator);
+}
+
 class HomeRoute extends GoRouteData with $HomeRoute {
   const HomeRoute();
 
@@ -25,7 +48,6 @@ class HomeRoute extends GoRouteData with $HomeRoute {
       const NoTransitionPage(child: Home());
 }
 
-@TypedGoRoute<SettingsRoute>(path: '/settings')
 class SettingsRoute extends GoRouteData with $SettingsRoute {
   const SettingsRoute();
 
@@ -34,7 +56,6 @@ class SettingsRoute extends GoRouteData with $SettingsRoute {
       const NoTransitionPage(child: Settings());
 }
 
-@TypedGoRoute<SearchRoute>(path: '/search')
 class SearchRoute extends GoRouteData with $SearchRoute {
   const SearchRoute();
 
@@ -43,8 +64,17 @@ class SearchRoute extends GoRouteData with $SearchRoute {
       const NoTransitionPage(child: Search());
 }
 
+class AnalysisRoute extends GoRouteData with $AnalysisRoute {
+  const AnalysisRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      const NoTransitionPage(child: Analysis());
+}
+
 /// Pushed (never `go`-navigated to) so the search page's back button
-/// returns here, matching the [AddDenpaMenRoute] pattern.
+/// returns here, matching the [AddDenpaMenRoute] pattern. Declared outside
+/// [AppShellRouteData] so it does not show the root bottom navigation bar.
 @TypedGoRoute<SearchResultsRoute>(path: '/search/results')
 class SearchResultsRoute extends GoRouteData with $SearchResultsRoute {
   const SearchResultsRoute();
@@ -52,15 +82,6 @@ class SearchResultsRoute extends GoRouteData with $SearchResultsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const SearchResults();
-}
-
-@TypedGoRoute<AnalysisRoute>(path: '/analysis')
-class AnalysisRoute extends GoRouteData with $AnalysisRoute {
-  const AnalysisRoute();
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) =>
-      const NoTransitionPage(child: Analysis());
 }
 
 /// Pushed (never `go`-navigated to) so it lands on top of the page stack,

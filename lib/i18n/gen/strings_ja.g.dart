@@ -80,6 +80,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'egg': 'たまご',
 		'sparkle': 'きらきら',
 		'onigiri': 'おにぎり',
+		'beans': 'まめ',
 	};
 	Map<String, String> get correction => {
 		'protagonist': '主人公補正',
@@ -753,6 +754,7 @@ extension on Translations {
 			'headShape.egg' => 'たまご',
 			'headShape.sparkle' => 'きらきら',
 			'headShape.onigiri' => 'おにぎり',
+			'headShape.beans' => 'まめ',
 			'correction.protagonist' => '主人公補正',
 			'antenna.none' => 'アンテナなし',
 			'antenna.antennaRoot' => 'アンテナのねっこ',

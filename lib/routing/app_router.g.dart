@@ -7,22 +7,44 @@ part of 'app_router.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-  $homeRoute,
-  $settingsRoute,
-  $searchRoute,
+  $appShellRouteData,
   $searchResultsRoute,
-  $analysisRoute,
   $addDenpaMenRoute,
   $denpaMenQrRoute,
   $qrCodeSelectionRoute,
   $birthGuideRoute,
 ];
 
-RouteBase get $homeRoute => GoRouteData.$route(
-  path: '/',
-  hasOverriddenOnExit: false,
-  factory: $HomeRoute._fromState,
+RouteBase get $appShellRouteData => ShellRouteData.$route(
+  factory: $AppShellRouteDataExtension._fromState,
+  routes: [
+    GoRouteData.$route(
+      path: '/',
+      hasOverriddenOnExit: false,
+      factory: $HomeRoute._fromState,
+    ),
+    GoRouteData.$route(
+      path: '/settings',
+      hasOverriddenOnExit: false,
+      factory: $SettingsRoute._fromState,
+    ),
+    GoRouteData.$route(
+      path: '/search',
+      hasOverriddenOnExit: false,
+      factory: $SearchRoute._fromState,
+    ),
+    GoRouteData.$route(
+      path: '/analysis',
+      hasOverriddenOnExit: false,
+      factory: $AnalysisRoute._fromState,
+    ),
+  ],
 );
+
+extension $AppShellRouteDataExtension on AppShellRouteData {
+  static AppShellRouteData _fromState(GoRouterState state) =>
+      const AppShellRouteData();
+}
 
 mixin $HomeRoute on GoRouteData {
   static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
@@ -44,12 +66,6 @@ mixin $HomeRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $settingsRoute => GoRouteData.$route(
-  path: '/settings',
-  hasOverriddenOnExit: false,
-  factory: $SettingsRoute._fromState,
-);
-
 mixin $SettingsRoute on GoRouteData {
   static SettingsRoute _fromState(GoRouterState state) => const SettingsRoute();
 
@@ -70,17 +86,31 @@ mixin $SettingsRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $searchRoute => GoRouteData.$route(
-  path: '/search',
-  hasOverriddenOnExit: false,
-  factory: $SearchRoute._fromState,
-);
-
 mixin $SearchRoute on GoRouteData {
   static SearchRoute _fromState(GoRouterState state) => const SearchRoute();
 
   @override
   String get location => GoRouteData.$location('/search');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $AnalysisRoute on GoRouteData {
+  static AnalysisRoute _fromState(GoRouterState state) => const AnalysisRoute();
+
+  @override
+  String get location => GoRouteData.$location('/analysis');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -108,32 +138,6 @@ mixin $SearchResultsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/search/results');
-
-  @override
-  void go(BuildContext context) => context.go(location);
-
-  @override
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  @override
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  @override
-  void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $analysisRoute => GoRouteData.$route(
-  path: '/analysis',
-  hasOverriddenOnExit: false,
-  factory: $AnalysisRoute._fromState,
-);
-
-mixin $AnalysisRoute on GoRouteData {
-  static AnalysisRoute _fromState(GoRouterState state) => const AnalysisRoute();
-
-  @override
-  String get location => GoRouteData.$location('/analysis');
 
   @override
   void go(BuildContext context) => context.go(location);

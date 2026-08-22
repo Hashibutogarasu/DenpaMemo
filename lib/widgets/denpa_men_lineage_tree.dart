@@ -36,9 +36,28 @@ class DenpaMenLineageTree extends ConsumerWidget {
 
     return qrCodesAsync.when(
       data: (allQrCodes) => denpaMenAsync.when(
-        data: (_) {
+        data: (allDenpaMenRecords) {
+          final recordsById = {
+            for (final record in allDenpaMenRecords) record.denpaMen.id: record,
+          };
+          final lineageRecordsById = {
+            for (final record in denpaMenRecords) record.denpaMen.id: record,
+          };
+          final pendingParentIds = [
+            for (final record in denpaMenRecords) ...record.denpaMen.parentIds,
+          ];
+          while (pendingParentIds.isNotEmpty) {
+            final parentId = pendingParentIds.removeLast();
+            if (lineageRecordsById.containsKey(parentId)) continue;
+            final parent = recordsById[parentId];
+            if (parent == null) continue;
+            lineageRecordsById[parentId] = parent;
+            pendingParentIds.addAll(parent.denpaMen.parentIds);
+          }
+          final lineageRecords = lineageRecordsById.values.toList();
+
           final matchedQrCodeIds = {
-            for (final record in denpaMenRecords) record.denpaMen.qrCodeId,
+            for (final record in lineageRecords) record.denpaMen.qrCodeId,
           };
           final qrCodes = [
             for (final qrCode in allQrCodes)
@@ -50,10 +69,10 @@ class DenpaMenLineageTree extends ConsumerWidget {
 
           return LineageGraph(
             qrCodes: qrCodes,
-            denpaMenRecords: denpaMenRecords,
+            denpaMenRecords: lineageRecords,
             masterData: masterData,
             iconsById: {
-              for (final record in denpaMenRecords)
+              for (final record in lineageRecords)
                 record.denpaMen.id: ref
                     .watch(denpaMenIconProvider(record.denpaMen.id))
                     .value,
