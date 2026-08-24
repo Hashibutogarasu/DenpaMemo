@@ -11,17 +11,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class GraphQlClientFactory {
   const GraphQlClientFactory();
 
-  /// A debug build running on Android talks to the hosted dev server
-  /// directly, since the emulator's loopback alias (`10.0.2.2`) does not
-  /// reach a physical device.
   static const _androidDebugEndpoint =
       'https://denpamemo.karasu256.com/graphql';
 
-  /// The Android emulator's `localhost` refers to the emulator itself,
-  /// not the host machine the dev server runs on — `10.0.2.2` is the
-  /// emulator's documented alias for that host. Every other platform
-  /// this app ships for (a physical Linux desktop, sharing the same
-  /// machine as the server) reaches it directly via `localhost`.
   String get endpoint {
     if (Platform.isAndroid && kDebugMode) {
       return _androidDebugEndpoint;
