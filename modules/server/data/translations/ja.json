@@ -105,12 +105,12 @@
     "speedUp_all_1": "みんなすこしはやくなれ",
     "speedUp_all_2": "みんなはやくなれ",
     "speedUp_all_3": "みんなかぜになれ",
-    "slowDown_solo_1": "すこしおそくなれ",
-    "slowDown_solo_2": "おそくなれ",
-    "slowDown_solo_3": "すごくおそくなれ",
-    "slowDown_all_1": "みんなすこしおそくなれ",
-    "slowDown_all_2": "みんなおそくなれ",
-    "slowDown_all_3": "みんなのろのろ"
+    "speedDown_solo_1": "すこしおそくなれ",
+    "speedDown_solo_2": "おそくなれ",
+    "speedDown_solo_3": "すごくおそくなれ",
+    "speedDown_all_1": "みんなすこしおそくなれ",
+    "speedDown_all_2": "みんなおそくなれ",
+    "speedDown_all_3": "みんなのろのろ"
   },
   "bodyColor": {
     "red": "あか",

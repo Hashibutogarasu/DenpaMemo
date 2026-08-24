@@ -1,0 +1,48 @@
+[
+  {
+    "id": "speedDown_solo_1",
+    "category": "support",
+    "targetCount": 1,
+    "hasLevel": false,
+    "evolvesToId": "speedDown_solo_2",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_solo_2",
+    "category": "support",
+    "targetCount": 1,
+    "hasLevel": false,
+    "evolvesToId": "speedDown_solo_3",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_solo_3",
+    "category": "support",
+    "targetCount": 1,
+    "hasLevel": false,
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_all_1",
+    "category": "support",
+    "targetsAll": true,
+    "hasLevel": false,
+    "evolvesToId": "speedDown_all_2",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_all_2",
+    "category": "support",
+    "targetsAll": true,
+    "hasLevel": false,
+    "evolvesToId": "speedDown_all_3",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_all_3",
+    "category": "support",
+    "targetsAll": true,
+    "hasLevel": false,
+    "variantGroupId": "speedDown"
+  }
+]
