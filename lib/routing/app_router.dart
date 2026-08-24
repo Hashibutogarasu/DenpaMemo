@@ -6,6 +6,8 @@ import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
+import '../pages/denpa_men_selection.dart';
+import '../pages/denpa_men_selection_results.dart';
 import '../pages/home.dart';
 import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
@@ -137,6 +139,42 @@ class QrCodeSelectionRoute extends GoRouteData with $QrCodeSelectionRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       QrCodeSelectionPage(masterData: $extra!);
+}
+
+/// Pushed (never `go`-navigated to) from [EditableParents] to pick which
+/// individuals become [DenpaMen.parentIds]. Declared outside
+/// [AppShellRouteData] for the same reason as [SearchResultsRoute].
+/// [$extra] carries the args both this page and [DenpaMenSelectionSearchRoute]
+/// need, since neither can round-trip through a URL.
+@TypedGoRoute<DenpaMenSelectionRoute>(path: '/select')
+class DenpaMenSelectionRoute extends GoRouteData with $DenpaMenSelectionRoute {
+  const DenpaMenSelectionRoute({this.$extra});
+
+  final DenpaMenSelectionArgs? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      DenpaMenSelectionPage(args: $extra!);
+}
+
+/// Pushed from [DenpaMenSelectionPage]'s search tab once the user runs a
+/// search. Declared outside [AppShellRouteData] for the same reason as
+/// [SearchResultsRoute]; unlike it, tapping a result here toggles a
+/// selection instead of opening a preview, and the header checkmark pops
+/// this route with `true` to let [DenpaMenSelectionPage] finish the flow.
+@TypedGoRoute<DenpaMenSelectionSearchRoute>(path: '/select/search')
+class DenpaMenSelectionSearchRoute extends GoRouteData
+    with $DenpaMenSelectionSearchRoute {
+  const DenpaMenSelectionSearchRoute({this.$extra});
+
+  final DenpaMenSelectionArgs? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      DenpaMenSelectionSearchResults(
+        excludeId: $extra!.excludeId,
+        maxSelectable: $extra!.maxSelectable,
+      );
 }
 
 /// Pushed from the home list's per-individual menu when that individual has

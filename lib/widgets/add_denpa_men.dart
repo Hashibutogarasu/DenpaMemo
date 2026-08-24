@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/master_data.dart';
 import '../domain/qr_code/qr_code_record.dart';
 import '../theme/app_colors.dart';
@@ -26,7 +25,6 @@ class AddDenpaMen extends StatefulWidget {
     super.key,
     required this.denpaMen,
     required this.masterData,
-    required this.parentCandidates,
     required this.qrCodeCandidates,
     required this.onChanged,
     this.qrCodeEditable = true,
@@ -37,7 +35,6 @@ class AddDenpaMen extends StatefulWidget {
 
   final DenpaMen denpaMen;
   final MasterData masterData;
-  final List<DenpaMenRecord> parentCandidates;
   final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
   final bool qrCodeEditable;
@@ -99,7 +96,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       headShapes: widget.masterData.headShapes,
       anntenas: widget.masterData.anntenas,
       corrections: widget.masterData.corrections,
-      parentCandidates: widget.parentCandidates,
+      masterData: widget.masterData,
       qrCodeCandidates: widget.qrCodeCandidates,
       onChanged: widget.onChanged,
       qrCodeEditable: widget.qrCodeEditable,

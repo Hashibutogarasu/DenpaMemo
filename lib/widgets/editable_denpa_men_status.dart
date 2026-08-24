@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/master_data/anntena.dart';
 import '../domain/master_data/antenna_display_name.dart';
 import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
+import '../domain/master_data/master_data.dart';
 import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/responsive_providers.dart';
@@ -47,7 +47,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
     required this.headShapes,
     required this.anntenas,
     required this.corrections,
-    required this.parentCandidates,
+    required this.masterData,
     required this.qrCodeCandidates,
     required this.onChanged,
     required this.considerCorrections,
@@ -59,7 +59,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
   final List<HeadShape> headShapes;
   final List<Anntena> anntenas;
   final List<Correction> corrections;
-  final List<DenpaMenRecord> parentCandidates;
+  final MasterData masterData;
   final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
   final bool considerCorrections;
@@ -315,7 +315,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
           const SizedBox(height: 8),
           EditableParents(
             denpaMen: denpaMen,
-            candidates: parentCandidates,
+            masterData: masterData,
             onChanged: onChanged,
           ),
           const SizedBox(height: 8),

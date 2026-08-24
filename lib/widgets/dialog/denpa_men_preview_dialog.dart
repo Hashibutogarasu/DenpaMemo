@@ -8,8 +8,7 @@ import '../denpa_men_status.dart';
 /// Shows [denpaMen]'s read-only preview ([DenpaMenStatus]) in a dialog,
 /// used when tapping an individual's node in
 /// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart) and when long
-/// pressing a candidate in
-/// [showParentDenpaMenSelectionDialog](parent_denpa_men_selection_dialog.dart).
+/// pressing a candidate in [DenpaMenListTile](../denpa_men_list_tile.dart).
 class DenpaMenPreviewDialog extends ConsumerWidget {
   const DenpaMenPreviewDialog({super.key, required this.denpaMen});
 

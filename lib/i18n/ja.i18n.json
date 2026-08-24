@@ -62,7 +62,9 @@
     "showQrCodeAction": "QRコードを表示"
   },
   "search": {
-    "name": "名前"
+    "name": "名前",
+    "tabList": "リスト",
+    "tabSearch": "検索"
   },
   "masterData": {
     "loading": "マスターデータを読み込み中",
