@@ -6,9 +6,16 @@ import '../domain/master_data/master_data.dart';
 import '../domain/search/denpa_men_search_query.dart';
 import 'denpa_men_providers.dart';
 
-/// Single source of truth for the current search filters, shared by the
-/// home screen's quick name search and the dedicated search page.
+/// Filters applied to [filteredDenpaMenProvider]; reset by [SearchResults]
+/// on dispose so the home screen stops showing stale results.
 final searchQueryProvider = StateProvider<DenpaMenSearchQuery>(
+  (ref) => const DenpaMenSearchQuery(),
+);
+
+/// The search page's draft, independent of [searchQueryProvider] so it
+/// survives leaving [SearchResults]; copied into [searchQueryProvider] only
+/// when the user opens results.
+final searchFormDraftProvider = StateProvider<DenpaMenSearchQuery>(
   (ref) => const DenpaMenSearchQuery(),
 );
 
