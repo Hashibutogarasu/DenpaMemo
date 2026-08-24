@@ -1,10 +1,11 @@
-import { readdir, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { DataSource } from 'typeorm';
 import { AttributeBonusEntity } from '../../entities/attribute-bonus.entity';
 import { AttributeEntity } from '../../entities/attribute.entity';
 import { HeadShapeEntity } from '../../entities/head-shape.entity';
 import type { DuplicateIdGuard } from '../duplicate-id-guard';
+import { listJsonFilesRecursively } from '../list-json-files';
 
 interface HeadShapeJson {
   id: string;
@@ -24,7 +25,7 @@ export async function loadHeadShapes(
   guard: DuplicateIdGuard,
 ): Promise<void> {
   const headShapesDir = path.join(dataDir, 'head_shapes');
-  const files = (await readdir(headShapesDir)).filter((file) => file.endsWith('.json'));
+  const files = await listJsonFilesRecursively(headShapesDir);
 
   const attributeByLegacyId = new Map(
     (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.legacyId, attribute]),
@@ -32,8 +33,8 @@ export async function loadHeadShapes(
 
   await dataSource.transaction(async (manager) => {
     for (const file of files) {
-      const json = JSON.parse(await readFile(path.join(headShapesDir, file), 'utf-8')) as HeadShapeJson;
-      guard.check('head_shape', json.id, path.join('head_shapes', file));
+      const json = JSON.parse(await readFile(file, 'utf-8')) as HeadShapeJson;
+      guard.check('head_shape', json.id, path.relative(dataDir, file));
 
       const entity = new HeadShapeEntity();
       entity.legacyId = json.id;

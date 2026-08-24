@@ -1,9 +1,10 @@
-import { readdir, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { DataSource } from 'typeorm';
 import { AnntenaEntity } from '../../entities/anntena.entity';
 import { AttributeEntity } from '../../entities/attribute.entity';
 import type { DuplicateIdGuard } from '../duplicate-id-guard';
+import { listJsonFilesRecursively } from '../list-json-files';
 
 interface AntennaJson {
   id: string;
@@ -29,20 +30,6 @@ function deriveTargetModeId(row: AntennaJson): number | null {
   if (row.targetsAll === true) return 1;
   if (row.id.includes('_solo_')) return 0;
   return null;
-}
-
-async function listJsonFilesRecursively(dir: string): Promise<string[]> {
-  const entries = await readdir(dir, { withFileTypes: true });
-  const files: string[] = [];
-  for (const entry of entries) {
-    const entryPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...(await listJsonFilesRecursively(entryPath)));
-    } else if (entry.name.endsWith('.json')) {
-      files.push(entryPath);
-    }
-  }
-  return files;
 }
 
 export async function loadAntennas(
