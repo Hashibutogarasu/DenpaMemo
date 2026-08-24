@@ -42,9 +42,11 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final Translations$app$ja app = Translations$app$ja.internal(_root);
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
+	late final Translations$step$ja step = Translations$step$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$search$ja search = Translations$search$ja.internal(_root);
+	late final Translations$masterData$ja masterData = Translations$masterData$ja.internal(_root);
 	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
 	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
@@ -248,6 +250,24 @@ class Translations$common$ja {
 
 	/// ja: '未設定'
 	String get unset => '未設定';
+
+	/// ja: '再試行'
+	String get retry => '再試行';
+}
+
+// Path: step
+class Translations$step$ja {
+	Translations$step$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '処理に失敗しました'
+	String get failureTitle => '処理に失敗しました';
+
+	/// ja: '処理中にエラーが発生しました: ${error}'
+	String failureDescription({required Object error}) => '処理中にエラーが発生しました: ${error}';
 }
 
 // Path: page
@@ -392,6 +412,30 @@ class Translations$search$ja {
 
 	/// ja: '名前'
 	String get name => '名前';
+}
+
+// Path: masterData
+class Translations$masterData$ja {
+	Translations$masterData$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'マスターデータを読み込み中'
+	String get loading => 'マスターデータを読み込み中';
+
+	/// ja: 'サーバーに接続できません'
+	String get connectionErrorTitle => 'サーバーに接続できません';
+
+	/// ja: 'サーバーに接続できませんでした。サーバーが起動しているか、接続先を確認してください。'
+	String get connectionErrorDescription => 'サーバーに接続できませんでした。サーバーが起動しているか、接続先を確認してください。';
+
+	/// ja: 'マスターデータの取得に失敗しました'
+	String get serverErrorTitle => 'マスターデータの取得に失敗しました';
+
+	/// ja: 'サーバーがエラーを返しました: ${message}'
+	String serverErrorDescription({required Object message}) => 'サーバーがエラーを返しました: ${message}';
 }
 
 // Path: backup
@@ -629,6 +673,9 @@ extension on Translations {
 			'common.next' => '次へ',
 			'common.complete' => '完了',
 			'common.unset' => '未設定',
+			'common.retry' => '再試行',
+			'step.failureTitle' => '処理に失敗しました',
+			'step.failureDescription' => ({required Object error}) => '処理中にエラーが発生しました: ${error}',
 			'page.home' => 'ホーム',
 			'page.settings' => '設定',
 			'page.addDenpaMen' => '電波人間を追加',
@@ -668,6 +715,11 @@ extension on Translations {
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
 			'search.name' => '名前',
+			'masterData.loading' => 'マスターデータを読み込み中',
+			'masterData.connectionErrorTitle' => 'サーバーに接続できません',
+			'masterData.connectionErrorDescription' => 'サーバーに接続できませんでした。サーバーが起動しているか、接続先を確認してください。',
+			'masterData.serverErrorTitle' => 'マスターデータの取得に失敗しました',
+			'masterData.serverErrorDescription' => ({required Object message}) => 'サーバーがエラーを返しました: ${message}',
 			'backup.importCompleteTitle' => 'インポート結果',
 			'backup.importAddedSection' => '新規追加',
 			'backup.importMergedSection' => '上書き更新',

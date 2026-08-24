@@ -13,8 +13,10 @@ import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
 import '../widgets/dialog/export_complete_dialog.dart';
 import '../widgets/dialog/import_complete_dialog.dart';
+import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
 import '../widgets/label/outlined_title.dart';
+import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/search/search_overlay_bar.dart';
 
@@ -49,6 +51,8 @@ class Home extends ConsumerWidget {
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
     final isMobile = ref.watch(isMobileLayoutProvider);
+
+    listenForMasterDataErrors(ref, context);
 
     return CallbackShortcuts(
       bindings: {
@@ -104,11 +108,11 @@ class Home extends ConsumerWidget {
               ),
               loading: () => AppScaffold(
                 title: OutlinedTitleText(text: t.page.home),
-                body: const Center(child: CircularProgressIndicator()),
+                body: const ProgressBar(),
               ),
               error: (error, stackTrace) => AppScaffold(
                 title: OutlinedTitleText(text: t.page.home),
-                body: Center(child: Text('$error')),
+                body: const SizedBox.shrink(),
               ),
             ),
             const Positioned(

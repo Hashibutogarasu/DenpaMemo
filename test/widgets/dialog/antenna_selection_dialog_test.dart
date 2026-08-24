@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/data/master_data/json_master_data_repository.dart';
 import 'package:denpa_memo/domain/master_data/anntena.dart';
 import 'package:denpa_memo/domain/master_data/attribute.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
@@ -82,6 +81,8 @@ const _antennaRoot = Anntena(
   hasLevel: false,
 );
 
+const _none = Anntena(id: 'none', category: AnntenaCategory.other, hasLevel: false);
+
 const _allAnntenas = [
   _healSolo1,
   _healSolo2,
@@ -136,9 +137,6 @@ void main() {
   testWidgets(
     'the "no antenna" entry appears exactly once in the other-category tab',
     (WidgetTester tester) async {
-      final masterData = await JsonMasterDataRepository().load();
-      final none = masterData.anntenas.firstWhere((a) => a.id == 'none');
-
       await tester.pumpWidget(
         TranslationProvider(
           child: MaterialApp(
@@ -148,8 +146,8 @@ void main() {
                   onPressed: () async {
                     await showAntennaSelectionDialog(
                       context,
-                      anntenas: masterData.anntenas,
-                      selected: none,
+                      anntenas: [..._allAnntenas, _none],
+                      selected: _none,
                       level: 0,
                     );
                   },

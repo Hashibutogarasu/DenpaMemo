@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: denpa_memo
+      POSTGRES_PASSWORD: denpa_memo
+      POSTGRES_DB: denpa_memo
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U denpa_memo']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    build:
+      context: .
+      target: dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://denpa_memo:denpa_memo@postgres:5432/denpa_memo
+      PORT: 4100
+    ports:
+      - '4100:4100'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: pnpm run dev
+
+volumes:
+  postgres-data:

@@ -55,9 +55,6 @@ void main() {
         ),
       ),
     );
-    // One frame for AppScaffold to sync isMobileLayoutProvider from
-    // MediaQuery, another for dependants (Home/_HomeBody) to rebuild
-    // against it.
     await tester.pump();
     await tester.pump();
   }

@@ -6,9 +6,16 @@ import '../domain/master_data/master_data.dart';
 import '../domain/search/denpa_men_search_query.dart';
 import 'denpa_men_providers.dart';
 
-/// Single source of truth for the current search filters, shared by the
-/// home screen's quick name search and the dedicated search page.
+/// Filters applied to [filteredDenpaMenProvider]; reset by [SearchResults]
+/// on dispose so the home screen stops showing stale results.
 final searchQueryProvider = StateProvider<DenpaMenSearchQuery>(
+  (ref) => const DenpaMenSearchQuery(),
+);
+
+/// The search page's draft, independent of [searchQueryProvider] so it
+/// survives leaving [SearchResults]; copied into [searchQueryProvider] only
+/// when the user opens results.
+final searchFormDraftProvider = StateProvider<DenpaMenSearchQuery>(
   (ref) => const DenpaMenSearchQuery(),
 );
 
@@ -38,6 +45,30 @@ final _headShapeFilteredDenpaMenProvider =
       ];
     });
 
+final _antennaFilteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
+      final antennaId = ref.watch(
+        searchQueryProvider.select((q) => q.antennaId),
+      );
+      final minAntennaLevel = ref.watch(
+        searchQueryProvider.select((q) => q.minAntennaLevel),
+      );
+      var records = ref.watch(_headShapeFilteredDenpaMenProvider(masterData));
+      if (antennaId != null) {
+        records = [
+          for (final r in records)
+            if (r.denpaMen.anntena.id == antennaId) r,
+        ];
+      }
+      if (minAntennaLevel != null) {
+        records = [
+          for (final r in records)
+            if (r.denpaMen.antennaLevel >= minAntennaLevel) r,
+        ];
+      }
+      return records;
+    });
+
 final _bodyColorFilteredDenpaMenProvider =
     Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
       final bodyColors = ref.watch(
@@ -46,7 +77,7 @@ final _bodyColorFilteredDenpaMenProvider =
       final isSpColor = ref.watch(
         searchQueryProvider.select((q) => q.isSpColor),
       );
-      var records = ref.watch(_headShapeFilteredDenpaMenProvider(masterData));
+      var records = ref.watch(_antennaFilteredDenpaMenProvider(masterData));
       if (bodyColors.isNotEmpty) {
         records = [
           for (final r in records)

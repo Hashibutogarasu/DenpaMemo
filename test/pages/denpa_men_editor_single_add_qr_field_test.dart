@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
-import 'package:denpa_memo/main.dart';
+import '../support/test_app.dart';
 
 void main() {
   testWidgets(
@@ -11,7 +11,7 @@ void main() {
     (WidgetTester tester) async {
       final objectBox = ObjectBox.createInMemory();
       addTearDown(objectBox.store.close);
-      await tester.pumpWidget(MyApp(objectBox: objectBox));
+      await tester.pumpWidget(TestApp(objectBox: objectBox));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byIcon(Icons.add));

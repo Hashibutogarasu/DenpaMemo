@@ -42,4 +42,15 @@ abstract class Step<C> extends ChangeNotifier {
   /// whether the batch as a whole succeeded. No-op by default; steps that
   /// create temporary resources (e.g. a work directory) override this.
   Future<void> cleanup(C context) async {}
+
+  /// Whether [retry] has a real implementation for this step. `false` by
+  /// default, meaning [retry] behaves exactly like calling [run] again —
+  /// steps whose failures need different recovery logic (or that can't
+  /// safely be re-attempted at all) should override both this and
+  /// [retry].
+  bool get retriable => false;
+
+  /// Re-attempts this step's work after [run] failed. Defaults to calling
+  /// [run] again.
+  Future<void> retry(C context) => run(context);
 }

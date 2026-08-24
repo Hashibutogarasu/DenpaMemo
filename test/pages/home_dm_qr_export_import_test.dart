@@ -13,7 +13,7 @@ import 'package:denpa_memo/domain/denpa_men/denpa_men_backup_builder.dart';
 import 'package:denpa_memo/domain/denpa_men/denpa_men_backup_merge.dart';
 import 'package:denpa_memo/domain/denpa_men/denpa_men_factory.dart';
 import 'package:denpa_memo/domain/qr_code/qr_code_factory.dart';
-import 'package:denpa_memo/main.dart';
+import '../support/test_app.dart';
 import 'package:denpa_memo/providers/master_data_providers.dart';
 
 import '../support/fake_path_provider_platform.dart';
@@ -38,7 +38,7 @@ void main() {
 
       final objectBox = ObjectBox.createInMemory();
       addTearDown(objectBox.store.close);
-      await tester.pumpWidget(MyApp(objectBox: objectBox));
+      await tester.pumpWidget(TestApp(objectBox: objectBox));
       for (var i = 0; i < 10; i++) {
         await tester.pump(const Duration(milliseconds: 200));
       }

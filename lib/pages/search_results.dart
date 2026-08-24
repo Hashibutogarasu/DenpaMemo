@@ -6,8 +6,10 @@ import '../domain/search/denpa_men_search_query.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/master_data_providers.dart';
 import '../providers/search_providers.dart';
+import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
 import '../widgets/label/outlined_title.dart';
+import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 
 /// Shows [filteredDenpaMenProvider]'s matches for the current
@@ -49,6 +51,8 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
   Widget build(BuildContext context) {
     final masterDataAsync = ref.watch(masterDataProvider);
 
+    listenForMasterDataErrors(ref, context);
+
     return masterDataAsync.when(
       data: (masterData) => DenpaMenHomeScreen(
         title: OutlinedTitleText(text: context.t.page.searchResults),
@@ -56,11 +60,11 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
       ),
       loading: () => AppScaffold(
         title: OutlinedTitleText(text: context.t.page.searchResults),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const ProgressBar(),
       ),
       error: (error, stackTrace) => AppScaffold(
         title: OutlinedTitleText(text: context.t.page.searchResults),
-        body: Center(child: Text('$error')),
+        body: const SizedBox.shrink(),
       ),
     );
   }
