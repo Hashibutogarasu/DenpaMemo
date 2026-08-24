@@ -23,7 +23,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(33, 5724398760579049796),
+    lastPropertyId: const obx_int.IdUid(39, 3473083904217281237),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -227,6 +227,42 @@ final _entities = <obx_int.ModelEntity>[
         type: 9,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(34, 584456325217302226),
+        name: 'monsterExpMonsterId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(35, 7898687205623347596),
+        name: 'monsterExpCount',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(36, 6324361579409960967),
+        name: 'monsterExpValue',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(37, 3234012520861903854),
+        name: 'monsterExpLevel',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(38, 2134945977364214541),
+        name: 'monsterExpMaxLevelTeammateCount',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(39, 3473083904217281237),
+        name: 'monsterExpRecipientCount',
+        type: 6,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -369,7 +405,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.bodyColorShades,
         );
         final hashOffset = fbb.writeString(object.hash);
-        fbb.startTable(34);
+        final monsterExpMonsterIdOffset = object.monsterExpMonsterId == null
+            ? null
+            : fbb.writeString(object.monsterExpMonsterId!);
+        fbb.startTable(40);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -403,6 +442,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(30, object.antennaLevel);
         fbb.addOffset(31, bodyColorShadesOffset);
         fbb.addOffset(32, hashOffset);
+        fbb.addOffset(33, monsterExpMonsterIdOffset);
+        fbb.addInt64(34, object.monsterExpCount);
+        fbb.addInt64(35, object.monsterExpValue);
+        fbb.addInt64(36, object.monsterExpLevel);
+        fbb.addInt64(37, object.monsterExpMaxLevelTeammateCount);
+        fbb.addInt64(38, object.monsterExpRecipientCount);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -556,6 +601,28 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final hashParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 68, '');
+        final monsterExpMonsterIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 70);
+        final monsterExpCountParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          72,
+        );
+        final monsterExpValueParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          74,
+        );
+        final monsterExpLevelParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          76,
+        );
+        final monsterExpMaxLevelTeammateCountParam = const fb.Int64Reader()
+            .vTableGetNullable(buffer, rootOffset, 78);
+        final monsterExpRecipientCountParam = const fb.Int64Reader()
+            .vTableGetNullable(buffer, rootOffset, 80);
         final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
           const fb.Int64Reader().vTableGet(buffer, rootOffset, 50, 0),
         );
@@ -593,6 +660,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           catchOrder: catchOrderParam,
           memo: memoParam,
           hash: hashParam,
+          monsterExpMonsterId: monsterExpMonsterIdParam,
+          monsterExpCount: monsterExpCountParam,
+          monsterExpValue: monsterExpValueParam,
+          monsterExpLevel: monsterExpLevelParam,
+          monsterExpMaxLevelTeammateCount: monsterExpMaxLevelTeammateCountParam,
+          monsterExpRecipientCount: monsterExpRecipientCountParam,
           createdAt: createdAtParam,
           moveInDate: moveInDateParam,
         );
@@ -838,6 +911,34 @@ class DenpaMenEntity_ {
   static final hash = obx.QueryStringProperty<DenpaMenEntity>(
     _entities[0].properties[32],
   );
+
+  /// See [DenpaMenEntity.monsterExpMonsterId].
+  static final monsterExpMonsterId = obx.QueryStringProperty<DenpaMenEntity>(
+    _entities[0].properties[33],
+  );
+
+  /// See [DenpaMenEntity.monsterExpCount].
+  static final monsterExpCount = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[34],
+  );
+
+  /// See [DenpaMenEntity.monsterExpValue].
+  static final monsterExpValue = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[35],
+  );
+
+  /// See [DenpaMenEntity.monsterExpLevel].
+  static final monsterExpLevel = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[36],
+  );
+
+  /// See [DenpaMenEntity.monsterExpMaxLevelTeammateCount].
+  static final monsterExpMaxLevelTeammateCount =
+      obx.QueryIntegerProperty<DenpaMenEntity>(_entities[0].properties[37]);
+
+  /// See [DenpaMenEntity.monsterExpRecipientCount].
+  static final monsterExpRecipientCount =
+      obx.QueryIntegerProperty<DenpaMenEntity>(_entities[0].properties[38]);
 }
 
 /// [QrCodeEntity] entity fields to define ObjectBox queries.

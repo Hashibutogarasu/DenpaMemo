@@ -10,6 +10,7 @@ import { loadAttributes } from './loaders/load-attributes';
 import { loadBodyColorAbnormalityResistanceRules, loadBodyColorResistanceRules } from './loaders/load-body-color-rules';
 import { loadCorrections } from './loaders/load-corrections';
 import { loadHeadShapes } from './loaders/load-head-shapes';
+import { loadMonsters } from './loaders/load-monsters';
 import { loadSimpleList } from './loaders/load-simple-list';
 import { loadTranslations } from './loaders/load-translations';
 import { AbnormalityTypeEntity } from '../entities/abnormality-type.entity';
@@ -43,6 +44,7 @@ export async function runSeedIfNeeded(dataSource: DataSource, dataDir: string = 
   await loadSimpleList(dataSource, dataDir, 'personalities.json', 'personality', PersonalityEntity, guard);
   await loadSimpleList(dataSource, dataDir, 'patterns.json', 'pattern', PatternEntity, guard);
   await loadCorrections(dataSource, dataDir, guard);
+  await loadMonsters(dataSource, dataDir, guard);
 
   await loadTranslations(dataSource, dataDir);
 

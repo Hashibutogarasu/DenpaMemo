@@ -6,6 +6,7 @@ import '../master_data/head_shape.dart';
 import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
+import '../monster/monster_exp.dart';
 import 'abnormality_resistance.dart';
 import 'attribute_resistance.dart';
 
@@ -46,11 +47,13 @@ abstract class DenpaMen with _$DenpaMen {
     required List<Correction> corrections,
     required bool considerCorrections,
     required List<String> parentIds,
+    @Deprecated('Use DenpaMenCatchOrderResolution.newCatchOrder instead.')
     int? catchOrder,
     String? qrCodeId,
     String? memo,
     DateTime? moveInDate,
     @Default('') String hash,
+    MonsterExp? monsterExp,
   }) = _DenpaMen;
 
   factory DenpaMen.fromJson(Map<String, dynamic> json) =>

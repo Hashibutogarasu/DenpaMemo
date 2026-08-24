@@ -57,6 +57,7 @@
     "viewModeTile": "タイル表示",
     "viewModeGrid": "グリッド表示",
     "resetTreePosition": "位置をリセット",
+    "toggleTreeCursor": "カーソル表示の切り替え",
     "catchOrderLabel": "${order}匹目: ${name}",
     "birthGuideAction": "出生ガイド",
     "showQrCodeAction": "QRコードを表示"
@@ -65,6 +66,9 @@
     "name": "名前",
     "tabList": "リスト",
     "tabSearch": "検索"
+  },
+  "monster": {
+    "swordmouse": "ねずみけんし"
   },
   "masterData": {
     "loading": "マスターデータを読み込み中",
@@ -138,7 +142,14 @@
     "antennaEffectDuration": "効果時間",
     "antennaPlusLevel": "レベル",
     "antennaPlusLevelValue": "+${plusLevel}",
-    "antennaNameWithPlusLevel": "${name}+${plusLevel}"
+    "antennaNameWithPlusLevel": "${name}+${plusLevel}",
+    "monsterExp": "モンスターから獲得した経験値を記録",
+    "monsterExpSelectMonster": "モンスターを選択",
+    "monsterExpCount": "討伐数",
+    "monsterExpExp": "経験値",
+    "monsterExpLevel": "レベル",
+    "monsterExpMaxLevelTeammateCount": "レベル最大の電波人間の人数",
+    "monsterExpRecipientCount": "経験値を獲得した人数"
   },
   "headShape": {
     "circle": "まる",
@@ -242,7 +253,13 @@
     "speedUp_solo_3": "かぜになれ",
     "speedUp_all_1": "みんなすこしはやくなれ",
     "speedUp_all_2": "みんなはやくなれ",
-    "speedUp_all_3": "みんなかぜになれ"
+    "speedUp_all_3": "みんなかぜになれ",
+    "speedDown_solo_1": "すこしおそくなれ",
+    "speedDown_solo_2": "おそくなれ",
+    "speedDown_solo_3": "すごくおそくなれ",
+    "speedDown_all_1": "みんなすこしおそくなれ",
+    "speedDown_all_2": "みんなおそくなれ",
+    "speedDown_all_3": "みんなのろのろ"
   },
   "bodyColor": {
     "red": "あか",

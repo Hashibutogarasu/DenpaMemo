@@ -9,7 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
-import 'package:denpa_memo/data/denpa_men_icon/denpa_men_icon_storage.dart';
+import 'package:denpa_memo/data/icon/entity_icon_storage.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/data/qr_code/objectbox_qr_code_repository.dart';
 import 'package:denpa_memo/domain/denpa_men/denpa_men_backup_entry.dart';
@@ -26,7 +26,7 @@ void main() {
     'individual and its icon, updating the home list',
     (WidgetTester tester) async {
       late Directory tempRoot;
-      const storage = DenpaMenIconStorage();
+      const storage = EntityIconStorage('denpamens');
 
       await tester.runAsync(() async {
         tempRoot = await Directory.systemTemp.createTemp(

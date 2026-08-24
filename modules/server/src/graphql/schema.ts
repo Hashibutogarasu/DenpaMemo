@@ -1,6 +1,7 @@
 import { createSchema } from 'graphql-yoga';
 import type { DataSource } from 'typeorm';
 import { resolveMasterData } from './resolvers/master-data.resolver';
+import { resolveMonsters } from './resolvers/monster.resolver';
 import { resolveTranslations } from './resolvers/translation.resolver';
 import { resolveCalculateResistances } from './resolvers/calculate.resolver';
 
@@ -124,6 +125,11 @@ const typeDefs = `
     value: String!
   }
 
+  type Monster {
+    id: String!
+    translateKey: String!
+  }
+
   type AttributeResistance {
     attributeId: String!
     value: Int!
@@ -159,6 +165,7 @@ const typeDefs = `
 
   type Query {
     masterData: MasterData!
+    monsters: [Monster!]!
     translations(map: String!, locale: String = "ja"): [Translation!]!
     calculateResistances(input: ResistanceInput!): DenpaMenResistances!
   }
@@ -177,6 +184,7 @@ export function buildSchema(dataSource: DataSource) {
       },
       Query: {
         masterData: () => resolveMasterData(dataSource),
+        monsters: () => resolveMonsters(dataSource),
         translations: (_parent: unknown, args: { map: string; locale: string }) =>
           resolveTranslations(dataSource, args.map, args.locale),
         calculateResistances: (_parent: unknown, args: Parameters<typeof resolveCalculateResistances>[1]) =>

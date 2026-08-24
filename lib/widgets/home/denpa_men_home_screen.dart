@@ -46,6 +46,7 @@ class DenpaMenHomeScreen extends ConsumerStatefulWidget {
 
 class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
   final _lineageTreeController = GraphViewController();
+  bool _treeCursorEnabled = false;
 
   void _selectAll() {
     final records = ref
@@ -68,6 +69,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
     final selectionMode = ref.watch(selectionModeProvider);
     final viewMode = ref.watch(homeViewModeProvider);
     final tileMode = ref.watch(homeTileModeProvider);
+    final isMobile = ref.watch(isMobileLayoutProvider);
 
     return AppScaffold(
       title: widget.title,
@@ -90,6 +92,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
               HomeViewMode.tree => DenpaMenLineageTree(
                 masterData: masterData,
                 controller: _lineageTreeController,
+                cursorEnabled: _treeCursorEnabled,
               ),
             },
           ),
@@ -137,7 +140,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
               ],
             ),
           ),
-          if (viewMode == HomeViewMode.tree)
+          if (viewMode == HomeViewMode.tree) ...[
             Positioned(
               top: 64,
               right: 16,
@@ -147,6 +150,22 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                 label: Text(t.home.resetTreePosition),
               ),
             ),
+            if (isMobile)
+              Positioned(
+                top: 112,
+                right: 16,
+                child: ElevatedButton.icon(
+                  onPressed: () => setState(
+                    () => _treeCursorEnabled = !_treeCursorEnabled,
+                  ),
+                  icon: Icon(
+                    _treeCursorEnabled ? Icons.add_circle : Icons.add,
+                    size: 18,
+                  ),
+                  label: Text(t.home.toggleTreeCursor),
+                ),
+              ),
+          ],
         ],
       ),
     );

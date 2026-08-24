@@ -13,7 +13,8 @@ export type TranslationEntityType =
   | 'bodyColor'
   | 'attribute'
   | 'abnormality'
-  | 'correction';
+  | 'correction'
+  | 'monster';
 
 @Entity('translation')
 @Index(['entityType', 'entityLegacyId', 'locale'], { unique: true })

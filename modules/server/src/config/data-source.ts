@@ -11,6 +11,7 @@ import { BodyColorAbnormalityResistanceRuleEntity } from '../entities/body-color
 import { BodyColorResistanceRuleEntity } from '../entities/body-color-resistance-rule.entity';
 import { CorrectionEntity } from '../entities/correction.entity';
 import { HeadShapeEntity } from '../entities/head-shape.entity';
+import { MonsterEntity } from '../entities/monster.entity';
 import { PatternEntity } from '../entities/pattern.entity';
 import { PersonalityEntity } from '../entities/personality.entity';
 import { PhysiqueEntity } from '../entities/physique.entity';
@@ -33,6 +34,7 @@ export const AppDataSource = new DataSource({
     BodyColorResistanceRuleEntity,
     CorrectionEntity,
     HeadShapeEntity,
+    MonsterEntity,
     PatternEntity,
     PersonalityEntity,
     PhysiqueEntity,

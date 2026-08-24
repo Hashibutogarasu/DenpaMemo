@@ -34,6 +34,9 @@
   "correction": {
     "protagonist": "主人公補正"
   },
+  "monster": {
+    "swordmouse": "ねずみけんし"
+  },
   "antenna": {
     "none": "アンテナなし",
     "antennaRoot": "アンテナのねっこ",
@@ -101,7 +104,13 @@
     "speedUp_solo_3": "かぜになれ",
     "speedUp_all_1": "みんなすこしはやくなれ",
     "speedUp_all_2": "みんなはやくなれ",
-    "speedUp_all_3": "みんなかぜになれ"
+    "speedUp_all_3": "みんなかぜになれ",
+    "speedDown_solo_1": "すこしおそくなれ",
+    "speedDown_solo_2": "おそくなれ",
+    "speedDown_solo_3": "すごくおそくなれ",
+    "speedDown_all_1": "みんなすこしおそくなれ",
+    "speedDown_all_2": "みんなおそくなれ",
+    "speedDown_all_3": "みんなのろのろ"
   },
   "bodyColor": {
     "red": "あか",

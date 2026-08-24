@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "33:5724398760579049796",
+      "lastPropertyId": "39:3473083904217281237",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -176,6 +176,36 @@
           "id": "33:5724398760579049796",
           "name": "hash",
           "type": 9
+        },
+        {
+          "id": "34:584456325217302226",
+          "name": "monsterExpMonsterId",
+          "type": 9
+        },
+        {
+          "id": "35:7898687205623347596",
+          "name": "monsterExpCount",
+          "type": 6
+        },
+        {
+          "id": "36:6324361579409960967",
+          "name": "monsterExpValue",
+          "type": 6
+        },
+        {
+          "id": "37:3234012520861903854",
+          "name": "monsterExpLevel",
+          "type": 6
+        },
+        {
+          "id": "38:2134945977364214541",
+          "name": "monsterExpMaxLevelTeammateCount",
+          "type": 6
+        },
+        {
+          "id": "39:3473083904217281237",
+          "name": "monsterExpRecipientCount",
+          "type": 6
         }
       ],
       "relations": []

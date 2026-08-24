@@ -73,6 +73,18 @@ class DenpaMenEntity {
 
   String hash;
 
+  String? monsterExpMonsterId;
+
+  int? monsterExpCount;
+
+  int? monsterExpValue;
+
+  int? monsterExpLevel;
+
+  int? monsterExpMaxLevelTeammateCount;
+
+  int? monsterExpRecipientCount;
+
   @Property(type: PropertyType.date)
   DateTime createdAt;
 
@@ -112,6 +124,12 @@ class DenpaMenEntity {
     this.catchOrder,
     this.memo,
     this.hash = '',
+    this.monsterExpMonsterId,
+    this.monsterExpCount,
+    this.monsterExpValue,
+    this.monsterExpLevel,
+    this.monsterExpMaxLevelTeammateCount,
+    this.monsterExpRecipientCount,
     required this.createdAt,
     this.moveInDate,
   });

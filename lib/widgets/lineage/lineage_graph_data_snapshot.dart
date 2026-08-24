@@ -3,8 +3,13 @@ import 'package:collection/collection.dart';
 import '../../domain/denpa_men/denpa_men_record.dart';
 import '../../domain/qr_code/qr_code_record.dart';
 
-typedef DenpaMenSignature =
-    (String id, String? qrCodeId, List<String> parentIds, int? catchOrder, String name);
+typedef DenpaMenSignature = (
+  String id,
+  String? qrCodeId,
+  List<String> parentIds,
+  int? catchOrder,
+  String name,
+);
 
 const _snapshotEquality = DeepCollectionEquality();
 

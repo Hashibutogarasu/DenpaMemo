@@ -2,17 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../icon/denpa_men_icon.dart';
+import '../icon/entity_icon.dart';
+import 'catch_order_badge.dart';
+import 'lineage_node_highlight_painter.dart';
 
 /// A `DenpaMen` node in
 /// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart): [iconFile]'s
 /// image (or a placeholder if it's null), with its name shown below. The
 /// icon is resolved by the caller ahead of time — rather than watched
 /// here — so the graph lays out once and doesn't reflow node-by-node as
-/// each icon finishes loading. When [catchIndex] is set (an individual
-/// caught directly under a QR code), it's overlaid in the icon's
-/// bottom-right corner; bred descendants pass null since they have no
-/// catch order of their own.
+/// each icon finishes loading. When [catchIndex] is set, it's overlaid in
+/// the icon's bottom-right corner; null omits the badge.
+/// [hoverHighlightPainter], when set, paints a hover-highlight border and
+/// catch-order badge on top, driven by a [Listenable] rather than a
+/// rebuild — see [LineageNodeHighlightPainter].
 class DenpaMenNode extends StatelessWidget {
   const DenpaMenNode({
     super.key,
@@ -20,12 +23,14 @@ class DenpaMenNode extends StatelessWidget {
     required this.name,
     required this.size,
     this.catchIndex,
+    this.hoverHighlightPainter,
   });
 
   final File? iconFile;
   final String name;
   final double size;
   final int? catchIndex;
+  final LineageNodeHighlightPainter? hoverHighlightPainter;
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +40,16 @@ class DenpaMenNode extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            ResolvedDenpaMenIcon(file: iconFile, size: size),
+            ResolvedEntityIcon(file: iconFile, size: size),
+            if (hoverHighlightPainter != null)
+              Positioned.fill(
+                child: CustomPaint(painter: hoverHighlightPainter),
+              ),
             if (catchIndex != null)
               Positioned(
                 right: 4,
                 bottom: 4,
-                child: Text(
-                  '$catchIndex',
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
+                child: CatchOrderBadge(value: catchIndex!),
               ),
           ],
         ),
