@@ -1,43 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
+import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
+import '../pages/denpa_men_selection.dart';
+import '../providers/denpa_men_providers.dart';
+import '../routing/app_router.dart';
 import 'container/selection_tile.dart';
-import 'dialog/parent_denpa_men_selection_dialog.dart';
 import 'label/joined_labels_text.dart';
 
-/// Field for picking [DenpaMen.parentIds]: either empty or exactly 2 parents,
-/// chosen from [candidates] (existing individuals, self already excluded) via
-/// [showParentDenpaMenSelectionDialog].
-class EditableParents extends StatelessWidget {
+/// Field for picking [DenpaMen.parentIds]: either empty or exactly 2
+/// parents, chosen via [DenpaMenSelectionRoute].
+class EditableParents extends ConsumerWidget {
   const EditableParents({
     super.key,
     required this.denpaMen,
-    required this.candidates,
+    required this.masterData,
     required this.onChanged,
   });
 
   final DenpaMen denpaMen;
-  final List<DenpaMenRecord> candidates;
+  final MasterData masterData;
   final ValueChanged<DenpaMen> onChanged;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
-    final selected = [
-      for (final record in candidates)
-        if (denpaMen.parentIds.contains(record.denpaMen.id)) record,
+    final records = ref.watch(denpaMenListProvider(masterData)).value ?? [];
+    final selectedNames = [
+      for (final record in records)
+        if (denpaMen.parentIds.contains(record.denpaMen.id))
+          record.denpaMen.name,
     ];
 
     return SelectionTile(
       label: t.editableStatus.parents,
       onTap: () async {
-        final result = await showParentDenpaMenSelectionDialog(
-          context,
-          candidates: candidates,
-          selected: selected,
-        );
+        final result = await DenpaMenSelectionRoute(
+          $extra: DenpaMenSelectionArgs(
+            excludeId: denpaMen.id,
+            initialSelectedIds: denpaMen.parentIds,
+            maxSelectable: 2,
+          ),
+        ).push<List<DenpaMenRecord>>(context);
         if (result != null) {
           onChanged(
             denpaMen.copyWith(
@@ -46,9 +53,7 @@ class EditableParents extends StatelessWidget {
           );
         }
       },
-      child: JoinedLabelsText(
-        labels: [for (final record in selected) record.denpaMen.name],
-      ),
+      child: JoinedLabelsText(labels: selectedNames),
     );
   }
 }

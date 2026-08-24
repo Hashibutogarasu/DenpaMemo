@@ -12,6 +12,8 @@ List<RouteBase> get $appRoutes => [
   $addDenpaMenRoute,
   $denpaMenQrRoute,
   $qrCodeSelectionRoute,
+  $denpaMenSelectionRoute,
+  $denpaMenSelectionSearchRoute,
   $birthGuideRoute,
 ];
 
@@ -229,6 +231,71 @@ mixin $QrCodeSelectionRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/add/qr-select');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $denpaMenSelectionRoute => GoRouteData.$route(
+  path: '/select',
+  hasOverriddenOnExit: false,
+  factory: $DenpaMenSelectionRoute._fromState,
+);
+
+mixin $DenpaMenSelectionRoute on GoRouteData {
+  static DenpaMenSelectionRoute _fromState(GoRouterState state) =>
+      DenpaMenSelectionRoute($extra: state.extra as DenpaMenSelectionArgs?);
+
+  DenpaMenSelectionRoute get _self => this as DenpaMenSelectionRoute;
+
+  @override
+  String get location => GoRouteData.$location('/select');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $denpaMenSelectionSearchRoute => GoRouteData.$route(
+  path: '/select/search',
+  hasOverriddenOnExit: false,
+  factory: $DenpaMenSelectionSearchRoute._fromState,
+);
+
+mixin $DenpaMenSelectionSearchRoute on GoRouteData {
+  static DenpaMenSelectionSearchRoute _fromState(GoRouterState state) =>
+      DenpaMenSelectionSearchRoute(
+        $extra: state.extra as DenpaMenSelectionArgs?,
+      );
+
+  DenpaMenSelectionSearchRoute get _self =>
+      this as DenpaMenSelectionSearchRoute;
+
+  @override
+  String get location => GoRouteData.$location('/select/search');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);

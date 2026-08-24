@@ -412,6 +412,12 @@ class Translations$search$ja {
 
 	/// ja: '名前'
 	String get name => '名前';
+
+	/// ja: 'リスト'
+	String get tabList => 'リスト';
+
+	/// ja: '検索'
+	String get tabSearch => '検索';
 }
 
 // Path: masterData
@@ -715,6 +721,8 @@ extension on Translations {
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
 			'search.name' => '名前',
+			'search.tabList' => 'リスト',
+			'search.tabSearch' => '検索',
 			'masterData.loading' => 'マスターデータを読み込み中',
 			'masterData.connectionErrorTitle' => 'サーバーに接続できません',
 			'masterData.connectionErrorDescription' => 'サーバーに接続できませんでした。サーバーが起動しているか、接続先を確認してください。',

@@ -12,7 +12,7 @@ import 'icon/denpa_men_icon.dart';
 /// name, and a trailing slot that swaps between a selection checkmark, a
 /// selection checkbox, and an edit menu. Used by
 /// [DenpaMenSelectionDialog](dialog/denpa_men_selection_dialog.dart),
-/// [showParentDenpaMenSelectionDialog](dialog/parent_denpa_men_selection_dialog.dart),
+/// [DenpaMenSelectionPage](../pages/denpa_men_selection.dart),
 /// read-only result dialogs (leaving [onTap] null renders a
 /// non-interactive tile), and the mobile home individual list.
 class DenpaMenListTile extends ConsumerWidget {

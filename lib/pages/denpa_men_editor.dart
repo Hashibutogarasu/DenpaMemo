@@ -193,12 +193,6 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final records =
-        ref.watch(denpaMenListProvider(widget.masterData)).value ?? [];
-    final parentCandidates = [
-      for (final record in records)
-        if (record.denpaMen.id != _denpaMen.id) record,
-    ];
     final session = ref.watch(denpaMenSessionProvider);
     final qrCodeCandidates = <QrCodeRecord>[
       ...ref.watch(qrCodeListProvider).value ?? [],
@@ -244,7 +238,6 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       body: AddDenpaMen(
         denpaMen: _denpaMen,
         masterData: widget.masterData,
-        parentCandidates: parentCandidates,
         qrCodeCandidates: qrCodeCandidates,
         onChanged: _applyEdit,
         qrCodeEditable: !widget.sessionMode,
