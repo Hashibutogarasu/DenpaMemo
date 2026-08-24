@@ -1,4 +1,5 @@
 import '../qr_code/qr_code_record.dart';
+import 'denpa_men_catch_order.dart';
 import 'denpa_men_record.dart';
 
 abstract class BirthGuideException implements Exception {
@@ -45,6 +46,9 @@ List<BirthGuideStep> buildBirthGuideSteps({
 }) {
   final denpaMenById = {
     for (final record in allDenpaMen) record.denpaMen.id: record,
+  };
+  final denpaMenOnlyById = {
+    for (final entry in denpaMenById.entries) entry.key: entry.value.denpaMen,
   };
   final qrCodeById = {
     for (final record in allQrCodes) record.qrCode.id: record,
@@ -106,9 +110,8 @@ List<BirthGuideStep> buildBirthGuideSteps({
               )
               .toList()
             ..sort(
-              (a, b) => (a.denpaMen.catchOrder ?? 0).compareTo(
-                b.denpaMen.catchOrder ?? 0,
-              ),
+              (a, b) => (a.denpaMen.newCatchOrder(denpaMenOnlyById) ?? 0)
+                  .compareTo(b.denpaMen.newCatchOrder(denpaMenOnlyById) ?? 0),
             );
       for (final individual in individuals) {
         catchStepEmittedForId.add(individual.denpaMen.id);

@@ -47,6 +47,7 @@ abstract class DenpaMen with _$DenpaMen {
     required List<Correction> corrections,
     required bool considerCorrections,
     required List<String> parentIds,
+    @Deprecated('Use DenpaMenCatchOrderResolution.newCatchOrder instead.')
     int? catchOrder,
     String? qrCodeId,
     String? memo,

@@ -57,6 +57,7 @@
     "viewModeTile": "タイル表示",
     "viewModeGrid": "グリッド表示",
     "resetTreePosition": "位置をリセット",
+    "toggleTreeCursor": "カーソル表示の切り替え",
     "catchOrderLabel": "${order}匹目: ${name}",
     "birthGuideAction": "出生ガイド",
     "showQrCodeAction": "QRコードを表示"

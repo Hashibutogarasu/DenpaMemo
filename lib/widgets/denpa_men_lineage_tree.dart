@@ -11,21 +11,22 @@ import '../providers/search_providers.dart';
 import 'lineage/lineage_graph.dart';
 
 /// Shows every saved QR code as the root of a tree, in a single shared
-/// canvas: individuals caught directly under it (ordered by catch order,
-/// centered on the first one caught), then any bred descendants reached by
-/// following `DenpaMen.parentIds` — connected with an edge from each of its
-/// (up to two) parents, so shared offspring visibly converge. Every QR code
-/// hangs off one invisible super-root so the whole forest lays out as a
-/// single connected diagram.
+/// canvas: individuals caught directly under it (ordered by catch order),
+/// then any bred descendants reached by following `DenpaMen.parentIds` —
+/// connected with an edge from each of its (up to two) parents, so shared
+/// offspring visibly converge. Every QR code hangs off one invisible
+/// super-root so the whole forest lays out as a single connected diagram.
 class DenpaMenLineageTree extends ConsumerWidget {
   const DenpaMenLineageTree({
     super.key,
     required this.masterData,
     this.controller,
+    this.cursorEnabled = false,
   });
 
   final MasterData masterData;
   final GraphViewController? controller;
+  final bool cursorEnabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,6 +79,7 @@ class DenpaMenLineageTree extends ConsumerWidget {
                     .value,
             },
             controller: controller,
+            cursorEnabled: cursorEnabled,
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),

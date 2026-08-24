@@ -401,6 +401,9 @@ class Translations$home$ja {
 	/// ja: '位置をリセット'
 	String get resetTreePosition => '位置をリセット';
 
+	/// ja: 'カーソル表示の切り替え'
+	String get toggleTreeCursor => 'カーソル表示の切り替え';
+
 	/// ja: '${order}匹目: ${name}'
 	String catchOrderLabel({required Object order, required Object name}) => '${order}匹目: ${name}';
 
@@ -747,6 +750,7 @@ extension on Translations {
 			'home.viewModeTile' => 'タイル表示',
 			'home.viewModeGrid' => 'グリッド表示',
 			'home.resetTreePosition' => '位置をリセット',
+			'home.toggleTreeCursor' => 'カーソル表示の切り替え',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
