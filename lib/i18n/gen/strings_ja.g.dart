@@ -46,6 +46,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$search$ja search = Translations$search$ja.internal(_root);
+	Map<String, String> get monster => {
+		'swordmouse': 'ねずみけんし',
+	};
 	late final Translations$masterData$ja masterData = Translations$masterData$ja.internal(_root);
 	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
 	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
@@ -155,6 +158,12 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'speedUp_all_1': 'みんなすこしはやくなれ',
 		'speedUp_all_2': 'みんなはやくなれ',
 		'speedUp_all_3': 'みんなかぜになれ',
+		'slowDown_solo_1': 'すこしおそくなれ',
+		'slowDown_solo_2': 'おそくなれ',
+		'slowDown_solo_3': 'すごくおそくなれ',
+		'slowDown_all_1': 'みんなすこしおそくなれ',
+		'slowDown_all_2': 'みんなおそくなれ',
+		'slowDown_all_3': 'みんなのろのろ',
 	};
 	Map<String, String> get bodyColor => {
 		'red': 'あか',
@@ -658,6 +667,27 @@ class Translations$editableStatus$ja {
 
 	/// ja: '${name}+${plusLevel}'
 	String antennaNameWithPlusLevel({required Object name, required Object plusLevel}) => '${name}+${plusLevel}';
+
+	/// ja: 'モンスターから獲得した経験値を記録'
+	String get monsterExp => 'モンスターから獲得した経験値を記録';
+
+	/// ja: 'モンスターを選択'
+	String get monsterExpSelectMonster => 'モンスターを選択';
+
+	/// ja: '討伐数'
+	String get monsterExpCount => '討伐数';
+
+	/// ja: '経験値'
+	String get monsterExpExp => '経験値';
+
+	/// ja: 'レベル'
+	String get monsterExpLevel => 'レベル';
+
+	/// ja: 'レベル最大の電波人間の人数'
+	String get monsterExpMaxLevelTeammateCount => 'レベル最大の電波人間の人数';
+
+	/// ja: '経験値を獲得した人数'
+	String get monsterExpRecipientCount => '経験値を獲得した人数';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -723,6 +753,7 @@ extension on Translations {
 			'search.name' => '名前',
 			'search.tabList' => 'リスト',
 			'search.tabSearch' => '検索',
+			'monster.swordmouse' => 'ねずみけんし',
 			'masterData.loading' => 'マスターデータを読み込み中',
 			'masterData.connectionErrorTitle' => 'サーバーに接続できません',
 			'masterData.connectionErrorDescription' => 'サーバーに接続できませんでした。サーバーが起動しているか、接続先を確認してください。',
@@ -785,6 +816,13 @@ extension on Translations {
 			'editableStatus.antennaPlusLevel' => 'レベル',
 			'editableStatus.antennaPlusLevelValue' => ({required Object plusLevel}) => '+${plusLevel}',
 			'editableStatus.antennaNameWithPlusLevel' => ({required Object name, required Object plusLevel}) => '${name}+${plusLevel}',
+			'editableStatus.monsterExp' => 'モンスターから獲得した経験値を記録',
+			'editableStatus.monsterExpSelectMonster' => 'モンスターを選択',
+			'editableStatus.monsterExpCount' => '討伐数',
+			'editableStatus.monsterExpExp' => '経験値',
+			'editableStatus.monsterExpLevel' => 'レベル',
+			'editableStatus.monsterExpMaxLevelTeammateCount' => 'レベル最大の電波人間の人数',
+			'editableStatus.monsterExpRecipientCount' => '経験値を獲得した人数',
 			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',
 			'headShape.bread' => 'しょくぱん',
@@ -883,6 +921,12 @@ extension on Translations {
 			'antenna.speedUp_all_1' => 'みんなすこしはやくなれ',
 			'antenna.speedUp_all_2' => 'みんなはやくなれ',
 			'antenna.speedUp_all_3' => 'みんなかぜになれ',
+			'antenna.slowDown_solo_1' => 'すこしおそくなれ',
+			'antenna.slowDown_solo_2' => 'おそくなれ',
+			'antenna.slowDown_solo_3' => 'すごくおそくなれ',
+			'antenna.slowDown_all_1' => 'みんなすこしおそくなれ',
+			'antenna.slowDown_all_2' => 'みんなおそくなれ',
+			'antenna.slowDown_all_3' => 'みんなのろのろ',
 			'bodyColor.red' => 'あか',
 			'bodyColor.blue' => 'あお',
 			'bodyColor.yellow' => 'きいろ',

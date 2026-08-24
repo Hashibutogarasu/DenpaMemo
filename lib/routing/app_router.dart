@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../domain/master_data/master_data.dart';
+import '../domain/monster/monster_exp.dart';
 import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
 import '../pages/denpa_men_editor.dart';
@@ -9,6 +10,8 @@ import '../pages/denpa_men_qr.dart';
 import '../pages/denpa_men_selection.dart';
 import '../pages/denpa_men_selection_results.dart';
 import '../pages/home.dart';
+import '../pages/monster_exp.dart';
+import '../pages/monster_selection.dart';
 import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
 import '../pages/search_results.dart';
@@ -175,6 +178,33 @@ class DenpaMenSelectionSearchRoute extends GoRouteData
         excludeId: $extra!.excludeId,
         maxSelectable: $extra!.maxSelectable,
       );
+}
+
+/// Pushed from the edit panel's "record monster exp" tile. Declared
+/// outside [AppShellRouteData] for the same reason as [SearchResultsRoute].
+/// [$extra] carries the currently-recorded [MonsterExp], if any, so the
+/// page can be reopened pre-filled with it.
+@TypedGoRoute<MonsterExpRoute>(path: '/monster-exp')
+class MonsterExpRoute extends GoRouteData with $MonsterExpRoute {
+  const MonsterExpRoute({this.$extra});
+
+  final MonsterExp? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      MonsterExpPage(initial: $extra);
+}
+
+/// Pushed from [MonsterExpPage]'s "defeated monster" field to pick which
+/// [Monster] was defeated. Declared outside [AppShellRouteData] for the
+/// same reason as [SearchResultsRoute].
+@TypedGoRoute<MonsterSelectionRoute>(path: '/monster-exp/select')
+class MonsterSelectionRoute extends GoRouteData with $MonsterSelectionRoute {
+  const MonsterSelectionRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const MonsterSelectionPage();
 }
 
 /// Pushed from the home list's per-individual menu when that individual has

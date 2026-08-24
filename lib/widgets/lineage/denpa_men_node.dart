@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../icon/denpa_men_icon.dart';
+import '../icon/entity_icon.dart';
 
 /// A `DenpaMen` node in
 /// [DenpaMenLineageTree](../denpa_men_lineage_tree.dart): [iconFile]'s
@@ -35,7 +35,7 @@ class DenpaMenNode extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            ResolvedDenpaMenIcon(file: iconFile, size: size),
+            ResolvedEntityIcon(file: iconFile, size: size),
             if (catchIndex != null)
               Positioned(
                 right: 4,

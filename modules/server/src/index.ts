@@ -26,7 +26,7 @@ async function main() {
     })
     .listen(env.PORT);
 
-  console.log(`denpa_memo server listening on http://localhost:${env.PORT}/graphql`);
+  console.log(`Server listening on http://localhost:${env.PORT}/graphql`);
   return app;
 }
 

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DenpaMen {
 
- String get id; String get name; List<AbnormalityResistance> get abnormalityResistances; List<String> get bodyColors; List<int> get bodyColorShades; List<AttributeResistance> get attributeResistance; Physique get physique; Personality get personality; Pattern get pattern; HeadShape get headShape; Anntena get anntena; int get antennaLevel; bool get isSpColor; int get happiness; int get maxHappiness; int get level; int get maxLevel; int? get currentExp; int? get maxExp; int get hp; int get ap; int get attack; int get defense; int get speed; int get evasionRate; List<Correction> get corrections; bool get considerCorrections; List<String> get parentIds; int? get catchOrder; String? get qrCodeId; String? get memo; DateTime? get moveInDate; String get hash;
+ String get id; String get name; List<AbnormalityResistance> get abnormalityResistances; List<String> get bodyColors; List<int> get bodyColorShades; List<AttributeResistance> get attributeResistance; Physique get physique; Personality get personality; Pattern get pattern; HeadShape get headShape; Anntena get anntena; int get antennaLevel; bool get isSpColor; int get happiness; int get maxHappiness; int get level; int get maxLevel; int? get currentExp; int? get maxExp; int get hp; int get ap; int get attack; int get defense; int get speed; int get evasionRate; List<Correction> get corrections; bool get considerCorrections; List<String> get parentIds; int? get catchOrder; String? get qrCodeId; String? get memo; DateTime? get moveInDate; String get hash; MonsterExp? get monsterExp;
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DenpaMenCopyWith<DenpaMen> get copyWith => _$DenpaMenCopyWithImpl<DenpaMen>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DenpaMen&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.abnormalityResistances, abnormalityResistances)&&const DeepCollectionEquality().equals(other.bodyColors, bodyColors)&&const DeepCollectionEquality().equals(other.bodyColorShades, bodyColorShades)&&const DeepCollectionEquality().equals(other.attributeResistance, attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.antennaLevel, antennaLevel) || other.antennaLevel == antennaLevel)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.maxHappiness, maxHappiness) || other.maxHappiness == maxHappiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate)&&const DeepCollectionEquality().equals(other.corrections, corrections)&&(identical(other.considerCorrections, considerCorrections) || other.considerCorrections == considerCorrections)&&const DeepCollectionEquality().equals(other.parentIds, parentIds)&&(identical(other.catchOrder, catchOrder) || other.catchOrder == catchOrder)&&(identical(other.qrCodeId, qrCodeId) || other.qrCodeId == qrCodeId)&&(identical(other.memo, memo) || other.memo == memo)&&(identical(other.moveInDate, moveInDate) || other.moveInDate == moveInDate)&&(identical(other.hash, hash) || other.hash == hash));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DenpaMen&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.abnormalityResistances, abnormalityResistances)&&const DeepCollectionEquality().equals(other.bodyColors, bodyColors)&&const DeepCollectionEquality().equals(other.bodyColorShades, bodyColorShades)&&const DeepCollectionEquality().equals(other.attributeResistance, attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.antennaLevel, antennaLevel) || other.antennaLevel == antennaLevel)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.maxHappiness, maxHappiness) || other.maxHappiness == maxHappiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate)&&const DeepCollectionEquality().equals(other.corrections, corrections)&&(identical(other.considerCorrections, considerCorrections) || other.considerCorrections == considerCorrections)&&const DeepCollectionEquality().equals(other.parentIds, parentIds)&&(identical(other.catchOrder, catchOrder) || other.catchOrder == catchOrder)&&(identical(other.qrCodeId, qrCodeId) || other.qrCodeId == qrCodeId)&&(identical(other.memo, memo) || other.memo == memo)&&(identical(other.moveInDate, moveInDate) || other.moveInDate == moveInDate)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.monsterExp, monsterExp) || other.monsterExp == monsterExp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,name,const DeepCollectionEquality().hash(abnormalityResistances),const DeepCollectionEquality().hash(bodyColors),const DeepCollectionEquality().hash(bodyColorShades),const DeepCollectionEquality().hash(attributeResistance),physique,personality,pattern,headShape,anntena,antennaLevel,isSpColor,happiness,maxHappiness,level,maxLevel,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate,const DeepCollectionEquality().hash(corrections),considerCorrections,const DeepCollectionEquality().hash(parentIds),catchOrder,qrCodeId,memo,moveInDate,hash]);
+int get hashCode => Object.hashAll([runtimeType,id,name,const DeepCollectionEquality().hash(abnormalityResistances),const DeepCollectionEquality().hash(bodyColors),const DeepCollectionEquality().hash(bodyColorShades),const DeepCollectionEquality().hash(attributeResistance),physique,personality,pattern,headShape,anntena,antennaLevel,isSpColor,happiness,maxHappiness,level,maxLevel,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate,const DeepCollectionEquality().hash(corrections),considerCorrections,const DeepCollectionEquality().hash(parentIds),catchOrder,qrCodeId,memo,moveInDate,hash,monsterExp]);
 
 @override
 String toString() {
-  return 'DenpaMen(id: $id, name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, bodyColorShades: $bodyColorShades, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, antennaLevel: $antennaLevel, isSpColor: $isSpColor, happiness: $happiness, maxHappiness: $maxHappiness, level: $level, maxLevel: $maxLevel, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate, corrections: $corrections, considerCorrections: $considerCorrections, parentIds: $parentIds, catchOrder: $catchOrder, qrCodeId: $qrCodeId, memo: $memo, moveInDate: $moveInDate, hash: $hash)';
+  return 'DenpaMen(id: $id, name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, bodyColorShades: $bodyColorShades, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, antennaLevel: $antennaLevel, isSpColor: $isSpColor, happiness: $happiness, maxHappiness: $maxHappiness, level: $level, maxLevel: $maxLevel, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate, corrections: $corrections, considerCorrections: $considerCorrections, parentIds: $parentIds, catchOrder: $catchOrder, qrCodeId: $qrCodeId, memo: $memo, moveInDate: $moveInDate, hash: $hash, monsterExp: $monsterExp)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $DenpaMenCopyWith<$Res>  {
   factory $DenpaMenCopyWith(DenpaMen value, $Res Function(DenpaMen) _then) = _$DenpaMenCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<int> bodyColorShades, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, int antennaLevel, bool isSpColor, int happiness, int maxHappiness, int level, int maxLevel, int? currentExp, int? maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate, List<Correction> corrections, bool considerCorrections, List<String> parentIds, int? catchOrder, String? qrCodeId, String? memo, DateTime? moveInDate, String hash
+ String id, String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<int> bodyColorShades, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, int antennaLevel, bool isSpColor, int happiness, int maxHappiness, int level, int maxLevel, int? currentExp, int? maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate, List<Correction> corrections, bool considerCorrections, List<String> parentIds, int? catchOrder, String? qrCodeId, String? memo, DateTime? moveInDate, String hash, MonsterExp? monsterExp
 });
 
 
-$PhysiqueCopyWith<$Res> get physique;$PersonalityCopyWith<$Res> get personality;$PatternCopyWith<$Res> get pattern;$HeadShapeCopyWith<$Res> get headShape;$AnntenaCopyWith<$Res> get anntena;
+$PhysiqueCopyWith<$Res> get physique;$PersonalityCopyWith<$Res> get personality;$PatternCopyWith<$Res> get pattern;$HeadShapeCopyWith<$Res> get headShape;$AnntenaCopyWith<$Res> get anntena;$MonsterExpCopyWith<$Res>? get monsterExp;
 
 }
 /// @nodoc
@@ -65,7 +65,7 @@ class _$DenpaMenCopyWithImpl<$Res>
 
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? bodyColorShades = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? antennaLevel = null,Object? isSpColor = null,Object? happiness = null,Object? maxHappiness = null,Object? level = null,Object? maxLevel = null,Object? currentExp = freezed,Object? maxExp = freezed,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,Object? corrections = null,Object? considerCorrections = null,Object? parentIds = null,Object? catchOrder = freezed,Object? qrCodeId = freezed,Object? memo = freezed,Object? moveInDate = freezed,Object? hash = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? bodyColorShades = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? antennaLevel = null,Object? isSpColor = null,Object? happiness = null,Object? maxHappiness = null,Object? level = null,Object? maxLevel = null,Object? currentExp = freezed,Object? maxExp = freezed,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,Object? corrections = null,Object? considerCorrections = null,Object? parentIds = null,Object? catchOrder = freezed,Object? qrCodeId = freezed,Object? memo = freezed,Object? moveInDate = freezed,Object? hash = null,Object? monsterExp = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -100,7 +100,8 @@ as int?,qrCodeId: freezed == qrCodeId ? _self.qrCodeId : qrCodeId // ignore: cas
 as String?,memo: freezed == memo ? _self.memo : memo // ignore: cast_nullable_to_non_nullable
 as String?,moveInDate: freezed == moveInDate ? _self.moveInDate : moveInDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
-as String,
+as String,monsterExp: freezed == monsterExp ? _self.monsterExp : monsterExp // ignore: cast_nullable_to_non_nullable
+as MonsterExp?,
   ));
 }
 /// Create a copy of DenpaMen
@@ -147,6 +148,18 @@ $AnntenaCopyWith<$Res> get anntena {
   
   return $AnntenaCopyWith<$Res>(_self.anntena, (value) {
     return _then(_self.copyWith(anntena: value));
+  });
+}/// Create a copy of DenpaMen
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MonsterExpCopyWith<$Res>? get monsterExp {
+    if (_self.monsterExp == null) {
+    return null;
+  }
+
+  return $MonsterExpCopyWith<$Res>(_self.monsterExp!, (value) {
+    return _then(_self.copyWith(monsterExp: value));
   });
 }
 }
@@ -230,10 +243,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<int> bodyColorShades,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  int antennaLevel,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate,  List<Correction> corrections,  bool considerCorrections,  List<String> parentIds,  int? catchOrder,  String? qrCodeId,  String? memo,  DateTime? moveInDate,  String hash)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<int> bodyColorShades,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  int antennaLevel,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate,  List<Correction> corrections,  bool considerCorrections,  List<String> parentIds,  int? catchOrder,  String? qrCodeId,  String? memo,  DateTime? moveInDate,  String hash,  MonsterExp? monsterExp)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DenpaMen() when $default != null:
-return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColors,_that.bodyColorShades,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.antennaLevel,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate,_that.corrections,_that.considerCorrections,_that.parentIds,_that.catchOrder,_that.qrCodeId,_that.memo,_that.moveInDate,_that.hash);case _:
+return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColors,_that.bodyColorShades,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.antennaLevel,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate,_that.corrections,_that.considerCorrections,_that.parentIds,_that.catchOrder,_that.qrCodeId,_that.memo,_that.moveInDate,_that.hash,_that.monsterExp);case _:
   return orElse();
 
 }
@@ -251,10 +264,10 @@ return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColor
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<int> bodyColorShades,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  int antennaLevel,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate,  List<Correction> corrections,  bool considerCorrections,  List<String> parentIds,  int? catchOrder,  String? qrCodeId,  String? memo,  DateTime? moveInDate,  String hash)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<int> bodyColorShades,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  int antennaLevel,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate,  List<Correction> corrections,  bool considerCorrections,  List<String> parentIds,  int? catchOrder,  String? qrCodeId,  String? memo,  DateTime? moveInDate,  String hash,  MonsterExp? monsterExp)  $default,) {final _that = this;
 switch (_that) {
 case _DenpaMen():
-return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColors,_that.bodyColorShades,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.antennaLevel,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate,_that.corrections,_that.considerCorrections,_that.parentIds,_that.catchOrder,_that.qrCodeId,_that.memo,_that.moveInDate,_that.hash);case _:
+return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColors,_that.bodyColorShades,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.antennaLevel,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate,_that.corrections,_that.considerCorrections,_that.parentIds,_that.catchOrder,_that.qrCodeId,_that.memo,_that.moveInDate,_that.hash,_that.monsterExp);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -271,10 +284,10 @@ return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColor
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<int> bodyColorShades,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  int antennaLevel,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate,  List<Correction> corrections,  bool considerCorrections,  List<String> parentIds,  int? catchOrder,  String? qrCodeId,  String? memo,  DateTime? moveInDate,  String hash)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  List<AbnormalityResistance> abnormalityResistances,  List<String> bodyColors,  List<int> bodyColorShades,  List<AttributeResistance> attributeResistance,  Physique physique,  Personality personality,  Pattern pattern,  HeadShape headShape,  Anntena anntena,  int antennaLevel,  bool isSpColor,  int happiness,  int maxHappiness,  int level,  int maxLevel,  int? currentExp,  int? maxExp,  int hp,  int ap,  int attack,  int defense,  int speed,  int evasionRate,  List<Correction> corrections,  bool considerCorrections,  List<String> parentIds,  int? catchOrder,  String? qrCodeId,  String? memo,  DateTime? moveInDate,  String hash,  MonsterExp? monsterExp)?  $default,) {final _that = this;
 switch (_that) {
 case _DenpaMen() when $default != null:
-return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColors,_that.bodyColorShades,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.antennaLevel,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate,_that.corrections,_that.considerCorrections,_that.parentIds,_that.catchOrder,_that.qrCodeId,_that.memo,_that.moveInDate,_that.hash);case _:
+return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColors,_that.bodyColorShades,_that.attributeResistance,_that.physique,_that.personality,_that.pattern,_that.headShape,_that.anntena,_that.antennaLevel,_that.isSpColor,_that.happiness,_that.maxHappiness,_that.level,_that.maxLevel,_that.currentExp,_that.maxExp,_that.hp,_that.ap,_that.attack,_that.defense,_that.speed,_that.evasionRate,_that.corrections,_that.considerCorrections,_that.parentIds,_that.catchOrder,_that.qrCodeId,_that.memo,_that.moveInDate,_that.hash,_that.monsterExp);case _:
   return null;
 
 }
@@ -286,7 +299,7 @@ return $default(_that.id,_that.name,_that.abnormalityResistances,_that.bodyColor
 @JsonSerializable()
 
 class _DenpaMen implements DenpaMen {
-  const _DenpaMen({required this.id, required this.name, required final  List<AbnormalityResistance> abnormalityResistances, required final  List<String> bodyColors, final  List<int> bodyColorShades = const <int>[], required final  List<AttributeResistance> attributeResistance, required this.physique, required this.personality, required this.pattern, required this.headShape, required this.anntena, this.antennaLevel = 0, required this.isSpColor, required this.happiness, required this.maxHappiness, required this.level, required this.maxLevel, required this.currentExp, required this.maxExp, required this.hp, required this.ap, required this.attack, required this.defense, required this.speed, required this.evasionRate, required final  List<Correction> corrections, required this.considerCorrections, required final  List<String> parentIds, this.catchOrder, this.qrCodeId, this.memo, this.moveInDate, this.hash = ''}): _abnormalityResistances = abnormalityResistances,_bodyColors = bodyColors,_bodyColorShades = bodyColorShades,_attributeResistance = attributeResistance,_corrections = corrections,_parentIds = parentIds;
+  const _DenpaMen({required this.id, required this.name, required final  List<AbnormalityResistance> abnormalityResistances, required final  List<String> bodyColors, final  List<int> bodyColorShades = const <int>[], required final  List<AttributeResistance> attributeResistance, required this.physique, required this.personality, required this.pattern, required this.headShape, required this.anntena, this.antennaLevel = 0, required this.isSpColor, required this.happiness, required this.maxHappiness, required this.level, required this.maxLevel, required this.currentExp, required this.maxExp, required this.hp, required this.ap, required this.attack, required this.defense, required this.speed, required this.evasionRate, required final  List<Correction> corrections, required this.considerCorrections, required final  List<String> parentIds, this.catchOrder, this.qrCodeId, this.memo, this.moveInDate, this.hash = '', this.monsterExp}): _abnormalityResistances = abnormalityResistances,_bodyColors = bodyColors,_bodyColorShades = bodyColorShades,_attributeResistance = attributeResistance,_corrections = corrections,_parentIds = parentIds;
   factory _DenpaMen.fromJson(Map<String, dynamic> json) => _$DenpaMenFromJson(json);
 
 @override final  String id;
@@ -358,6 +371,7 @@ class _DenpaMen implements DenpaMen {
 @override final  String? memo;
 @override final  DateTime? moveInDate;
 @override@JsonKey() final  String hash;
+@override final  MonsterExp? monsterExp;
 
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
@@ -372,16 +386,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DenpaMen&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._abnormalityResistances, _abnormalityResistances)&&const DeepCollectionEquality().equals(other._bodyColors, _bodyColors)&&const DeepCollectionEquality().equals(other._bodyColorShades, _bodyColorShades)&&const DeepCollectionEquality().equals(other._attributeResistance, _attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.antennaLevel, antennaLevel) || other.antennaLevel == antennaLevel)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.maxHappiness, maxHappiness) || other.maxHappiness == maxHappiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate)&&const DeepCollectionEquality().equals(other._corrections, _corrections)&&(identical(other.considerCorrections, considerCorrections) || other.considerCorrections == considerCorrections)&&const DeepCollectionEquality().equals(other._parentIds, _parentIds)&&(identical(other.catchOrder, catchOrder) || other.catchOrder == catchOrder)&&(identical(other.qrCodeId, qrCodeId) || other.qrCodeId == qrCodeId)&&(identical(other.memo, memo) || other.memo == memo)&&(identical(other.moveInDate, moveInDate) || other.moveInDate == moveInDate)&&(identical(other.hash, hash) || other.hash == hash));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DenpaMen&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._abnormalityResistances, _abnormalityResistances)&&const DeepCollectionEquality().equals(other._bodyColors, _bodyColors)&&const DeepCollectionEquality().equals(other._bodyColorShades, _bodyColorShades)&&const DeepCollectionEquality().equals(other._attributeResistance, _attributeResistance)&&(identical(other.physique, physique) || other.physique == physique)&&(identical(other.personality, personality) || other.personality == personality)&&(identical(other.pattern, pattern) || other.pattern == pattern)&&(identical(other.headShape, headShape) || other.headShape == headShape)&&(identical(other.anntena, anntena) || other.anntena == anntena)&&(identical(other.antennaLevel, antennaLevel) || other.antennaLevel == antennaLevel)&&(identical(other.isSpColor, isSpColor) || other.isSpColor == isSpColor)&&(identical(other.happiness, happiness) || other.happiness == happiness)&&(identical(other.maxHappiness, maxHappiness) || other.maxHappiness == maxHappiness)&&(identical(other.level, level) || other.level == level)&&(identical(other.maxLevel, maxLevel) || other.maxLevel == maxLevel)&&(identical(other.currentExp, currentExp) || other.currentExp == currentExp)&&(identical(other.maxExp, maxExp) || other.maxExp == maxExp)&&(identical(other.hp, hp) || other.hp == hp)&&(identical(other.ap, ap) || other.ap == ap)&&(identical(other.attack, attack) || other.attack == attack)&&(identical(other.defense, defense) || other.defense == defense)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.evasionRate, evasionRate) || other.evasionRate == evasionRate)&&const DeepCollectionEquality().equals(other._corrections, _corrections)&&(identical(other.considerCorrections, considerCorrections) || other.considerCorrections == considerCorrections)&&const DeepCollectionEquality().equals(other._parentIds, _parentIds)&&(identical(other.catchOrder, catchOrder) || other.catchOrder == catchOrder)&&(identical(other.qrCodeId, qrCodeId) || other.qrCodeId == qrCodeId)&&(identical(other.memo, memo) || other.memo == memo)&&(identical(other.moveInDate, moveInDate) || other.moveInDate == moveInDate)&&(identical(other.hash, hash) || other.hash == hash)&&(identical(other.monsterExp, monsterExp) || other.monsterExp == monsterExp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,name,const DeepCollectionEquality().hash(_abnormalityResistances),const DeepCollectionEquality().hash(_bodyColors),const DeepCollectionEquality().hash(_bodyColorShades),const DeepCollectionEquality().hash(_attributeResistance),physique,personality,pattern,headShape,anntena,antennaLevel,isSpColor,happiness,maxHappiness,level,maxLevel,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate,const DeepCollectionEquality().hash(_corrections),considerCorrections,const DeepCollectionEquality().hash(_parentIds),catchOrder,qrCodeId,memo,moveInDate,hash]);
+int get hashCode => Object.hashAll([runtimeType,id,name,const DeepCollectionEquality().hash(_abnormalityResistances),const DeepCollectionEquality().hash(_bodyColors),const DeepCollectionEquality().hash(_bodyColorShades),const DeepCollectionEquality().hash(_attributeResistance),physique,personality,pattern,headShape,anntena,antennaLevel,isSpColor,happiness,maxHappiness,level,maxLevel,currentExp,maxExp,hp,ap,attack,defense,speed,evasionRate,const DeepCollectionEquality().hash(_corrections),considerCorrections,const DeepCollectionEquality().hash(_parentIds),catchOrder,qrCodeId,memo,moveInDate,hash,monsterExp]);
 
 @override
 String toString() {
-  return 'DenpaMen(id: $id, name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, bodyColorShades: $bodyColorShades, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, antennaLevel: $antennaLevel, isSpColor: $isSpColor, happiness: $happiness, maxHappiness: $maxHappiness, level: $level, maxLevel: $maxLevel, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate, corrections: $corrections, considerCorrections: $considerCorrections, parentIds: $parentIds, catchOrder: $catchOrder, qrCodeId: $qrCodeId, memo: $memo, moveInDate: $moveInDate, hash: $hash)';
+  return 'DenpaMen(id: $id, name: $name, abnormalityResistances: $abnormalityResistances, bodyColors: $bodyColors, bodyColorShades: $bodyColorShades, attributeResistance: $attributeResistance, physique: $physique, personality: $personality, pattern: $pattern, headShape: $headShape, anntena: $anntena, antennaLevel: $antennaLevel, isSpColor: $isSpColor, happiness: $happiness, maxHappiness: $maxHappiness, level: $level, maxLevel: $maxLevel, currentExp: $currentExp, maxExp: $maxExp, hp: $hp, ap: $ap, attack: $attack, defense: $defense, speed: $speed, evasionRate: $evasionRate, corrections: $corrections, considerCorrections: $considerCorrections, parentIds: $parentIds, catchOrder: $catchOrder, qrCodeId: $qrCodeId, memo: $memo, moveInDate: $moveInDate, hash: $hash, monsterExp: $monsterExp)';
 }
 
 
@@ -392,11 +406,11 @@ abstract mixin class _$DenpaMenCopyWith<$Res> implements $DenpaMenCopyWith<$Res>
   factory _$DenpaMenCopyWith(_DenpaMen value, $Res Function(_DenpaMen) _then) = __$DenpaMenCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<int> bodyColorShades, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, int antennaLevel, bool isSpColor, int happiness, int maxHappiness, int level, int maxLevel, int? currentExp, int? maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate, List<Correction> corrections, bool considerCorrections, List<String> parentIds, int? catchOrder, String? qrCodeId, String? memo, DateTime? moveInDate, String hash
+ String id, String name, List<AbnormalityResistance> abnormalityResistances, List<String> bodyColors, List<int> bodyColorShades, List<AttributeResistance> attributeResistance, Physique physique, Personality personality, Pattern pattern, HeadShape headShape, Anntena anntena, int antennaLevel, bool isSpColor, int happiness, int maxHappiness, int level, int maxLevel, int? currentExp, int? maxExp, int hp, int ap, int attack, int defense, int speed, int evasionRate, List<Correction> corrections, bool considerCorrections, List<String> parentIds, int? catchOrder, String? qrCodeId, String? memo, DateTime? moveInDate, String hash, MonsterExp? monsterExp
 });
 
 
-@override $PhysiqueCopyWith<$Res> get physique;@override $PersonalityCopyWith<$Res> get personality;@override $PatternCopyWith<$Res> get pattern;@override $HeadShapeCopyWith<$Res> get headShape;@override $AnntenaCopyWith<$Res> get anntena;
+@override $PhysiqueCopyWith<$Res> get physique;@override $PersonalityCopyWith<$Res> get personality;@override $PatternCopyWith<$Res> get pattern;@override $HeadShapeCopyWith<$Res> get headShape;@override $AnntenaCopyWith<$Res> get anntena;@override $MonsterExpCopyWith<$Res>? get monsterExp;
 
 }
 /// @nodoc
@@ -409,7 +423,7 @@ class __$DenpaMenCopyWithImpl<$Res>
 
 /// Create a copy of DenpaMen
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? bodyColorShades = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? antennaLevel = null,Object? isSpColor = null,Object? happiness = null,Object? maxHappiness = null,Object? level = null,Object? maxLevel = null,Object? currentExp = freezed,Object? maxExp = freezed,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,Object? corrections = null,Object? considerCorrections = null,Object? parentIds = null,Object? catchOrder = freezed,Object? qrCodeId = freezed,Object? memo = freezed,Object? moveInDate = freezed,Object? hash = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? abnormalityResistances = null,Object? bodyColors = null,Object? bodyColorShades = null,Object? attributeResistance = null,Object? physique = null,Object? personality = null,Object? pattern = null,Object? headShape = null,Object? anntena = null,Object? antennaLevel = null,Object? isSpColor = null,Object? happiness = null,Object? maxHappiness = null,Object? level = null,Object? maxLevel = null,Object? currentExp = freezed,Object? maxExp = freezed,Object? hp = null,Object? ap = null,Object? attack = null,Object? defense = null,Object? speed = null,Object? evasionRate = null,Object? corrections = null,Object? considerCorrections = null,Object? parentIds = null,Object? catchOrder = freezed,Object? qrCodeId = freezed,Object? memo = freezed,Object? moveInDate = freezed,Object? hash = null,Object? monsterExp = freezed,}) {
   return _then(_DenpaMen(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -444,7 +458,8 @@ as int?,qrCodeId: freezed == qrCodeId ? _self.qrCodeId : qrCodeId // ignore: cas
 as String?,memo: freezed == memo ? _self.memo : memo // ignore: cast_nullable_to_non_nullable
 as String?,moveInDate: freezed == moveInDate ? _self.moveInDate : moveInDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
-as String,
+as String,monsterExp: freezed == monsterExp ? _self.monsterExp : monsterExp // ignore: cast_nullable_to_non_nullable
+as MonsterExp?,
   ));
 }
 
@@ -492,6 +507,18 @@ $AnntenaCopyWith<$Res> get anntena {
   
   return $AnntenaCopyWith<$Res>(_self.anntena, (value) {
     return _then(_self.copyWith(anntena: value));
+  });
+}/// Create a copy of DenpaMen
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MonsterExpCopyWith<$Res>? get monsterExp {
+    if (_self.monsterExp == null) {
+    return null;
+  }
+
+  return $MonsterExpCopyWith<$Res>(_self.monsterExp!, (value) {
+    return _then(_self.copyWith(monsterExp: value));
   });
 }
 }

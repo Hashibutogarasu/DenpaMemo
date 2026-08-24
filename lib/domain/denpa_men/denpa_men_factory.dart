@@ -8,6 +8,7 @@ import '../master_data/master_data.dart';
 import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
+import '../monster/monster_exp.dart';
 import 'denpa_men.dart';
 import 'denpa_men_hash.dart';
 import 'denpa_men_resistance_calculator.dart';
@@ -52,6 +53,7 @@ DenpaMen createDenpaMen({
   String? qrCodeId,
   String? memo,
   DateTime? moveInDate,
+  MonsterExp? monsterExp,
 }) {
   if (bodyColors.length != 1 && bodyColors.length != 2) {
     throw InvalidBodyColorCountException(bodyColors.length);
@@ -112,6 +114,7 @@ DenpaMen createDenpaMen({
     qrCodeId: qrCodeId,
     memo: memo == null || memo.isEmpty ? null : memo,
     moveInDate: moveInDate,
+    monsterExp: monsterExp,
   );
 
   final resistances = draft.calculateResistances(masterData);

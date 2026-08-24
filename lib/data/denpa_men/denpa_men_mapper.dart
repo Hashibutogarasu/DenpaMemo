@@ -1,6 +1,7 @@
 import '../../domain/denpa_men/denpa_men.dart';
 import '../../domain/denpa_men/denpa_men_factory.dart';
 import '../../domain/master_data/master_data.dart';
+import '../../domain/monster/monster_exp.dart';
 import '../master_data/legacy_antenna_id_migrations.dart';
 import 'denpa_men_entity.dart';
 
@@ -39,6 +40,12 @@ extension DenpaMenEntityMapper on DenpaMen {
       catchOrder: catchOrder,
       memo: memo,
       hash: hash,
+      monsterExpMonsterId: monsterExp?.monsterId,
+      monsterExpCount: monsterExp?.count,
+      monsterExpValue: monsterExp?.exp,
+      monsterExpLevel: monsterExp?.level,
+      monsterExpMaxLevelTeammateCount: monsterExp?.maxLevelTeammateCount,
+      monsterExpRecipientCount: monsterExp?.expRecipientCount,
       createdAt: createdAt,
       moveInDate: moveInDate,
     );
@@ -101,7 +108,41 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
       qrCodeId: qrCode.target?.cuid,
       memo: memo,
       moveInDate: moveInDate,
+      monsterExp: _monsterExpFromColumns(
+        monsterId: monsterExpMonsterId,
+        count: monsterExpCount,
+        exp: monsterExpValue,
+        level: monsterExpLevel,
+        maxLevelTeammateCount: monsterExpMaxLevelTeammateCount,
+        expRecipientCount: monsterExpRecipientCount,
+      ),
     );
     return denpaMen.copyWith(hash: hash);
   }
+}
+
+MonsterExp? _monsterExpFromColumns({
+  required String? monsterId,
+  required int? count,
+  required int? exp,
+  required int? level,
+  required int? maxLevelTeammateCount,
+  required int? expRecipientCount,
+}) {
+  if (monsterId == null ||
+      count == null ||
+      exp == null ||
+      level == null ||
+      maxLevelTeammateCount == null ||
+      expRecipientCount == null) {
+    return null;
+  }
+  return MonsterExp(
+    monsterId: monsterId,
+    count: count,
+    exp: exp,
+    level: level,
+    maxLevelTeammateCount: maxLevelTeammateCount,
+    expRecipientCount: expRecipientCount,
+  );
 }

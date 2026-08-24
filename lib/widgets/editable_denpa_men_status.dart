@@ -7,9 +7,11 @@ import '../domain/master_data/antenna_display_name.dart';
 import '../domain/master_data/correction.dart';
 import '../domain/master_data/head_shape.dart';
 import '../domain/master_data/master_data.dart';
+import '../domain/monster/monster_exp.dart';
 import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/responsive_providers.dart';
+import '../routing/app_router.dart';
 import '../theme/app_colors.dart';
 import 'color/color_dot.dart';
 import 'container/indented_header.dart';
@@ -185,6 +187,24 @@ class EditableDenpaMenStatus extends ConsumerWidget {
             ),
           ),
           EditableExp(denpaMen: denpaMen, onChanged: onChanged),
+          const SizedBox(height: 8),
+          SelectionTile(
+            label: t.editableStatus.monsterExp,
+            onTap: () async {
+              final result = await MonsterExpRoute(
+                $extra: denpaMen.monsterExp,
+              ).push<MonsterExp>(context);
+              if (result != null) {
+                onChanged(denpaMen.copyWith(monsterExp: result));
+              }
+            },
+            child: Text(
+              denpaMen.monsterExp == null
+                  ? t.common.unset
+                  : t.monster[denpaMen.monsterExp!.monsterId] ??
+                        denpaMen.monsterExp!.monsterId,
+            ),
+          ),
           const SizedBox(height: 8),
           NestedContainer(
             padding: const EdgeInsets.all(8),

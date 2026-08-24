@@ -66,6 +66,9 @@
     "tabList": "リスト",
     "tabSearch": "検索"
   },
+  "monster": {
+    "swordmouse": "ねずみけんし"
+  },
   "masterData": {
     "loading": "マスターデータを読み込み中",
     "connectionErrorTitle": "サーバーに接続できません",
@@ -138,7 +141,14 @@
     "antennaEffectDuration": "効果時間",
     "antennaPlusLevel": "レベル",
     "antennaPlusLevelValue": "+${plusLevel}",
-    "antennaNameWithPlusLevel": "${name}+${plusLevel}"
+    "antennaNameWithPlusLevel": "${name}+${plusLevel}",
+    "monsterExp": "モンスターから獲得した経験値を記録",
+    "monsterExpSelectMonster": "モンスターを選択",
+    "monsterExpCount": "討伐数",
+    "monsterExpExp": "経験値",
+    "monsterExpLevel": "レベル",
+    "monsterExpMaxLevelTeammateCount": "レベル最大の電波人間の人数",
+    "monsterExpRecipientCount": "経験値を獲得した人数"
   },
   "headShape": {
     "circle": "まる",
@@ -242,7 +252,13 @@
     "speedUp_solo_3": "かぜになれ",
     "speedUp_all_1": "みんなすこしはやくなれ",
     "speedUp_all_2": "みんなはやくなれ",
-    "speedUp_all_3": "みんなかぜになれ"
+    "speedUp_all_3": "みんなかぜになれ",
+    "slowDown_solo_1": "すこしおそくなれ",
+    "slowDown_solo_2": "おそくなれ",
+    "slowDown_solo_3": "すごくおそくなれ",
+    "slowDown_all_1": "みんなすこしおそくなれ",
+    "slowDown_all_2": "みんなおそくなれ",
+    "slowDown_all_3": "みんなのろのろ"
   },
   "bodyColor": {
     "red": "あか",

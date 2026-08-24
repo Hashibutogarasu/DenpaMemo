@@ -130,6 +130,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         catchOrder: draft.catchOrder,
         qrCodeId: draft.qrCodeId,
         memo: draft.memo,
+        monsterExp: draft.monsterExp,
       );
     });
   }

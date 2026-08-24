@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/denpa_men_icon/denpa_men_icon_storage.dart';
+import '../data/icon/entity_icon_storage.dart';
 
-final denpaMenIconStorageProvider = Provider<DenpaMenIconStorage>((ref) {
-  return DenpaMenIconStorage();
+final denpaMenIconStorageProvider = Provider<EntityIconStorage>((ref) {
+  return const EntityIconStorage('denpamens');
 });
 
 /// Loads the icon file for the `DenpaMen` with the given id, or null if it

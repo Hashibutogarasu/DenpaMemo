@@ -14,6 +14,8 @@ List<RouteBase> get $appRoutes => [
   $qrCodeSelectionRoute,
   $denpaMenSelectionRoute,
   $denpaMenSelectionSearchRoute,
+  $monsterExpRoute,
+  $monsterSelectionRoute,
   $birthGuideRoute,
 ];
 
@@ -311,6 +313,64 @@ mixin $DenpaMenSelectionSearchRoute on GoRouteData {
   @override
   void replace(BuildContext context) =>
       context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $monsterExpRoute => GoRouteData.$route(
+  path: '/monster-exp',
+  hasOverriddenOnExit: false,
+  factory: $MonsterExpRoute._fromState,
+);
+
+mixin $MonsterExpRoute on GoRouteData {
+  static MonsterExpRoute _fromState(GoRouterState state) =>
+      MonsterExpRoute($extra: state.extra as MonsterExp?);
+
+  MonsterExpRoute get _self => this as MonsterExpRoute;
+
+  @override
+  String get location => GoRouteData.$location('/monster-exp');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $monsterSelectionRoute => GoRouteData.$route(
+  path: '/monster-exp/select',
+  hasOverriddenOnExit: false,
+  factory: $MonsterSelectionRoute._fromState,
+);
+
+mixin $MonsterSelectionRoute on GoRouteData {
+  static MonsterSelectionRoute _fromState(GoRouterState state) =>
+      const MonsterSelectionRoute();
+
+  @override
+  String get location => GoRouteData.$location('/monster-exp/select');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
 }
 
 RouteBase get $birthGuideRoute => GoRouteData.$route(
