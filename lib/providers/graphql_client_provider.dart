@@ -15,7 +15,7 @@ class GraphQlClientFactory {
   /// directly, since the emulator's loopback alias (`10.0.2.2`) does not
   /// reach a physical device.
   static const _androidDebugEndpoint =
-      'https://dev.api.denpamemo.karasu256.com/graphql';
+      'https://denpamemo.karasu256.com/graphql';
 
   /// The Android emulator's `localhost` refers to the emulator itself,
   /// not the host machine the dev server runs on — `10.0.2.2` is the
