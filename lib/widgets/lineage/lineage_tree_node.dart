@@ -26,6 +26,8 @@ class LineageTreeNode extends StatelessWidget {
     required this.isBred,
     required this.hoveredBredId,
     required this.denpaMenById,
+    required this.incomingSourceKeysById,
+    required this.graphNodeKey,
     required this.onTap,
     this.onHoverEnter,
     this.onHoverExit,
@@ -39,6 +41,8 @@ class LineageTreeNode extends StatelessWidget {
   final bool isBred;
   final ValueListenable<String?> hoveredBredId;
   final Map<String, DenpaMen> denpaMenById;
+  final Map<String, List<Object>> incomingSourceKeysById;
+  final Object graphNodeKey;
   final VoidCallback onTap;
   final VoidCallback? onHoverEnter;
   final VoidCallback? onHoverExit;
@@ -55,12 +59,12 @@ class LineageTreeNode extends StatelessWidget {
         child: DenpaMenNode(
           iconFile: iconFile,
           name: info.name!,
-          catchIndex: isBred ? null : info.catchIndex,
           hoverHighlightPainter: LineageNodeHighlightPainter(
+            nodeKey: graphNodeKey,
             denpaMenId: info.record!.denpaMen.id,
             denpaMenById: denpaMenById,
+            incomingSourceKeysById: incomingSourceKeysById,
             hoveredBredId: hoveredBredId,
-            showBadge: info.catchIndex == null,
           ),
           size: nodeSize,
         ),

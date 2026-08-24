@@ -153,24 +153,6 @@ void main() {
     expect(secondKey, firstKey);
   });
 
-  testWidgets('a bred individual shows no catch-order badge of its own', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      _Harness(
-        initial: [
-          _record(1, 'a', catchOrder: 4),
-          _record(2, 'b', catchOrder: 9),
-          _record(3, 'c', parentIds: ['a', 'b']),
-        ],
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('5'), findsOneWidget);
-    expect(find.text('10'), findsOneWidget);
-  });
-
   testWidgets(
     'hovering a bred individual highlights its parents with a badge and '
     'a color border',

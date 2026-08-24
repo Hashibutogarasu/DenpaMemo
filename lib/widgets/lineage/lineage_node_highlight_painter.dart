@@ -13,28 +13,32 @@ import 'lineage_graph_highlight.dart';
 /// painting is the only update path that doesn't.
 class LineageNodeHighlightPainter extends CustomPainter {
   LineageNodeHighlightPainter({
+    required this.nodeKey,
     required this.denpaMenId,
     required this.denpaMenById,
+    required this.incomingSourceKeysById,
     required this.hoveredBredId,
-    this.showBadge = true,
   }) : super(repaint: hoveredBredId);
 
+  final Object nodeKey;
   final String denpaMenId;
   final Map<String, DenpaMen> denpaMenById;
+  final Map<String, List<Object>> incomingSourceKeysById;
   final ValueListenable<String?> hoveredBredId;
-  final bool showBadge;
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (!isLineageNodeHighlighted(
-      denpaMenId,
-      hoveredBredId.value,
-      denpaMenById,
-    )) {
-      return;
-    }
     final denpaMen = denpaMenById[denpaMenId];
     if (denpaMen == null) {
+      return;
+    }
+
+    final highlighted = isLineageNodeHighlighted(
+      nodeKey,
+      hoveredBredId.value,
+      incomingSourceKeysById,
+    );
+    if (!highlighted) {
       return;
     }
 
@@ -51,10 +55,11 @@ class LineageNodeHighlightPainter extends CustomPainter {
       canvas.drawRRect(rrect, borderPaint);
     }
 
-    if (!showBadge) {
-      return;
-    }
-    final badgeValue = lineageNodeBadgeValue(denpaMen, denpaMenById);
+    final badgeValue = lineageNodeParentBadgeValue(
+      denpaMenId,
+      hoveredBredId.value!,
+      denpaMenById,
+    );
     if (badgeValue != null) {
       _paintBadge(canvas, size, badgeValue);
     }
@@ -96,8 +101,9 @@ class LineageNodeHighlightPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant LineageNodeHighlightPainter oldDelegate) {
-    return denpaMenId != oldDelegate.denpaMenId ||
-        showBadge != oldDelegate.showBadge ||
-        !identical(denpaMenById, oldDelegate.denpaMenById);
+    return nodeKey != oldDelegate.nodeKey ||
+        denpaMenId != oldDelegate.denpaMenId ||
+        !identical(denpaMenById, oldDelegate.denpaMenById) ||
+        !identical(incomingSourceKeysById, oldDelegate.incomingSourceKeysById);
   }
 }

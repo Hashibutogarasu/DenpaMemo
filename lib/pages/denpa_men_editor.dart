@@ -165,7 +165,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     });
   }
 
-  void _complete() {
+  Future<void> _complete() async {
     final session = ref.read(denpaMenSessionProvider);
     if (session == null) {
       return;
@@ -188,7 +188,10 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     ref.read(denpaMenSessionProvider.notifier).clear();
     ref.invalidate(denpaMenListProvider(widget.masterData));
     ref.invalidate(qrCodeListProvider);
-    const HomeRoute().go(context);
+    await ref.read(denpaMenListProvider(widget.masterData).future);
+    if (mounted) {
+      const HomeRoute().go(context);
+    }
   }
 
   @override

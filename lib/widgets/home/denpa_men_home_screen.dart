@@ -65,6 +65,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final masterData = widget.masterData;
+    ref.watch(denpaMenCatchOrderMigrationProvider(masterData));
     final t = context.t;
     final selectionMode = ref.watch(selectionModeProvider);
     final viewMode = ref.watch(homeViewModeProvider);

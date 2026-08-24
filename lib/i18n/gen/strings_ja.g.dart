@@ -412,6 +412,9 @@ class Translations$home$ja {
 
 	/// ja: 'QRコードを表示'
 	String get showQrCodeAction => 'QRコードを表示';
+
+	/// ja: '系譜ツリーをJSONとしてコピー'
+	String get copyLineageTreeJsonAction => '系譜ツリーをJSONとしてコピー';
 }
 
 // Path: search
@@ -754,6 +757,7 @@ extension on Translations {
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
+			'home.copyLineageTreeJsonAction' => '系譜ツリーをJSONとしてコピー',
 			'search.name' => '名前',
 			'search.tabList' => 'リスト',
 			'search.tabSearch' => '検索',

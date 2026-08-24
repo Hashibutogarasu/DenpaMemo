@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/legacy.dart';
 
 import '../data/denpa_men/objectbox_denpa_men_repository.dart';
 import '../domain/denpa_men/denpa_men.dart';
+import '../domain/denpa_men/denpa_men_catch_order_migration.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/denpa_men/denpa_men_repository.dart';
 import '../domain/master_data/master_data.dart';
@@ -21,6 +22,19 @@ final denpaMenListProvider =
       final repository = ref.watch(denpaMenRepositoryProvider);
       return repository.watchAll(masterData);
     });
+
+/// Runs [migrateDenpaMenCatchOrders] exactly once per [masterData], right
+/// after [denpaMenListProvider] finishes its first load (the individuals
+/// the home screen's loading indicator waits on). Watch this from the
+/// screen that shows that loading indicator; its cached [AsyncValue] means
+/// re-watching it elsewhere never re-runs the migration.
+final denpaMenCatchOrderMigrationProvider = FutureProvider.family<void, MasterData>((
+  ref,
+  masterData,
+) async {
+  await ref.watch(denpaMenListProvider(masterData).future);
+  migrateDenpaMenCatchOrders(ref.read(denpaMenRepositoryProvider), masterData);
+});
 
 /// Whether the home accordion list is in multi-select mode. Turned on
 /// either from the AppBar overflow menu or by long-pressing a tile, and

@@ -31,7 +31,7 @@ class QrCodeSelectionPage extends ConsumerWidget {
     final denpaMenRecords =
         ref.read(denpaMenListProvider(masterData)).value ?? [];
     final existingDenpaMenCount = denpaMenRecords
-        .where((r) => r.denpaMen.qrCodeId == record.qrCode.id)
+        .where((r) => r.denpaMen.parentIds.isEmpty)
         .length;
     ref
         .read(denpaMenSessionProvider.notifier)
