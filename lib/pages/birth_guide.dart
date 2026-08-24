@@ -64,13 +64,13 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
       }
       showBirthGuideErrorDialog(
         context,
-        onDismissed: () => const HomeRoute().go(context),
+        onDismissed: () => Navigator.of(context).pop(),
       );
     });
   }
 
   void _finish() {
-    const HomeRoute().go(context);
+    Navigator.of(context).pop();
   }
 
   void _goToPreviousSlide() {
@@ -234,7 +234,7 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
                 bottom: widget.buttonInset + 56 + widget.buttonGap,
                 child: FloatingActionButton.extended(
                   heroTag: 'birthGuideHome',
-                  onPressed: _finish,
+                  onPressed: () => const HomeRoute().go(context),
                   icon: const Icon(Icons.home),
                   label: Text(t.page.home),
                 ),
