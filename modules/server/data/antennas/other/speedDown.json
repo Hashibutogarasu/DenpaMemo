@@ -1,6 +1,48 @@
 [
   {
-    "id": "speedDown",
-    "category": "other"
+    "id": "speedDown_solo_1",
+    "category": "other",
+    "targetCount": 1,
+    "maxLevel": null,
+    "evolvesToId": "speedDown_solo_2",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_solo_2",
+    "category": "other",
+    "targetCount": 1,
+    "maxLevel": null,
+    "evolvesToId": "speedDown_solo_3",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_solo_3",
+    "category": "other",
+    "targetCount": 1,
+    "maxLevel": null,
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_all_1",
+    "category": "other",
+    "targetsAll": true,
+    "maxLevel": null,
+    "evolvesToId": "speedDown_all_2",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_all_2",
+    "category": "other",
+    "targetsAll": true,
+    "maxLevel": null,
+    "evolvesToId": "speedDown_all_3",
+    "variantGroupId": "speedDown"
+  },
+  {
+    "id": "speedDown_all_3",
+    "category": "other",
+    "targetsAll": true,
+    "maxLevel": null,
+    "variantGroupId": "speedDown"
   }
 ]
