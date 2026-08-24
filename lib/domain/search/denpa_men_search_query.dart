@@ -12,6 +12,8 @@ abstract class DenpaMenSearchQuery with _$DenpaMenSearchQuery {
     String? headShapeId,
     @Default(<String>[]) List<String> bodyColors,
     bool? isSpColor,
+    String? antennaId,
+    int? minAntennaLevel,
     @Default('') String memo,
     int? minHp,
     int? minAp,
@@ -28,6 +30,8 @@ abstract class DenpaMenSearchQuery with _$DenpaMenSearchQuery {
       headShapeId == null &&
       bodyColors.isEmpty &&
       isSpColor == null &&
+      antennaId == null &&
+      minAntennaLevel == null &&
       memo.isEmpty &&
       minHp == null &&
       minAp == null &&

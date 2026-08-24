@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../domain/master_data/anntena.dart';
+import '../domain/master_data/antenna_display_name.dart';
 import '../domain/master_data/head_shape.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/master_data_providers.dart';
 import '../providers/search_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/color/color_dot.dart';
+import '../widgets/dialog/antenna_selection_dialog.dart';
 import '../widgets/dialog/body_color_selection_dialog.dart';
 import '../widgets/dialog/head_shape_selection_dialog.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
@@ -29,7 +32,10 @@ class Search extends ConsumerWidget {
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.search),
       body: masterDataAsync.when(
-        data: (masterData) => _SearchForm(headShapes: masterData.headShapes),
+        data: (masterData) => _SearchForm(
+          headShapes: masterData.headShapes,
+          anntenas: masterData.anntenas,
+        ),
         loading: () => const ProgressBar(),
         error: (error, stackTrace) => const SizedBox.shrink(),
       ),
@@ -42,9 +48,10 @@ class Search extends ConsumerWidget {
 }
 
 class _SearchForm extends ConsumerStatefulWidget {
-  const _SearchForm({required this.headShapes});
+  const _SearchForm({required this.headShapes, required this.anntenas});
 
   final List<HeadShape> headShapes;
+  final List<Anntena> anntenas;
 
   @override
   ConsumerState<_SearchForm> createState() => _SearchFormState();
@@ -70,6 +77,7 @@ class _SearchFormState extends ConsumerState<_SearchForm> {
     final t = context.t;
     final query = ref.watch(searchQueryProvider);
     final headShapes = widget.headShapes;
+    final anntenas = widget.anntenas;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
@@ -86,6 +94,7 @@ class _SearchFormState extends ConsumerState<_SearchForm> {
           ),
           SearchStatGrid(
             query: query,
+            columns: 1,
             onChanged: (value) =>
                 ref.read(searchQueryProvider.notifier).state = value,
           ),
@@ -162,6 +171,55 @@ class _SearchFormState extends ConsumerState<_SearchForm> {
                             (q) => q.copyWith(
                               bodyColors: const [],
                               isSpColor: null,
+                            ),
+                          ),
+                    ),
+            ),
+          ),
+          UnfocusOnTap(
+            onTap: () async {
+              final result = await showAntennaSelectionDialog(
+                context,
+                anntenas: anntenas,
+                selected: anntenas.firstWhere(
+                  (a) => a.id == query.antennaId,
+                  orElse: () => anntenas.first,
+                ),
+                level: query.minAntennaLevel ?? 0,
+              );
+              if (result != null) {
+                ref.read(searchQueryProvider.notifier).update(
+                  (q) => q.copyWith(
+                    antennaId: result.anntena.id,
+                    minAntennaLevel: result.level,
+                  ),
+                );
+              }
+            },
+            child: ListTile(
+              title: Text(t.editableStatus.antenna),
+              subtitle: Text(
+                query.antennaId == null
+                    ? t.common.unset
+                    : antennaDisplayName(
+                        t,
+                        anntenas.firstWhere(
+                          (a) => a.id == query.antennaId,
+                          orElse: () => anntenas.first,
+                        ),
+                        query.minAntennaLevel ?? 0,
+                      ),
+              ),
+              trailing: query.antennaId == null
+                  ? const Icon(Icons.chevron_right)
+                  : IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => ref
+                          .read(searchQueryProvider.notifier)
+                          .update(
+                            (q) => q.copyWith(
+                              antennaId: null,
+                              minAntennaLevel: null,
                             ),
                           ),
                     ),

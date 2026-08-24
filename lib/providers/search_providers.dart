@@ -38,6 +38,30 @@ final _headShapeFilteredDenpaMenProvider =
       ];
     });
 
+final _antennaFilteredDenpaMenProvider =
+    Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
+      final antennaId = ref.watch(
+        searchQueryProvider.select((q) => q.antennaId),
+      );
+      final minAntennaLevel = ref.watch(
+        searchQueryProvider.select((q) => q.minAntennaLevel),
+      );
+      var records = ref.watch(_headShapeFilteredDenpaMenProvider(masterData));
+      if (antennaId != null) {
+        records = [
+          for (final r in records)
+            if (r.denpaMen.anntena.id == antennaId) r,
+        ];
+      }
+      if (minAntennaLevel != null) {
+        records = [
+          for (final r in records)
+            if (r.denpaMen.antennaLevel >= minAntennaLevel) r,
+        ];
+      }
+      return records;
+    });
+
 final _bodyColorFilteredDenpaMenProvider =
     Provider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
       final bodyColors = ref.watch(
@@ -46,7 +70,7 @@ final _bodyColorFilteredDenpaMenProvider =
       final isSpColor = ref.watch(
         searchQueryProvider.select((q) => q.isSpColor),
       );
-      var records = ref.watch(_headShapeFilteredDenpaMenProvider(masterData));
+      var records = ref.watch(_antennaFilteredDenpaMenProvider(masterData));
       if (bodyColors.isNotEmpty) {
         records = [
           for (final r in records)
