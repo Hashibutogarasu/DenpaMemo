@@ -5,7 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_providers.dart';
-import '../../widgetbook/denpa_men/denpa_men_data.dart';
+import '../../widgetbook/denpa_men/route_denpa_men_data.dart';
 import '../add_denpa_men_fab.dart';
 import 'denpa_men_home_screen.dart';
 
@@ -20,8 +20,10 @@ Widget denpaMenHomeScreenUseCase(BuildContext context) {
     overrides: [selectionModeProvider.overrideWith((ref) => selectionMode)],
     child: DenpaMenHomeScreen(
       title: Text(context.t.app.name),
-      masterData: DenpaMenData.masterData,
-      floatingActionButton: AddDenpaMenFab(masterData: DenpaMenData.masterData),
+      masterData: RouteDenpaMenData.masterData,
+      floatingActionButton: AddDenpaMenFab(
+        masterData: RouteDenpaMenData.masterData,
+      ),
     ),
   );
 }

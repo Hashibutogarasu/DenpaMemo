@@ -28,6 +28,9 @@ Future<AntennaSelectionResult?> showAntennaSelectionDialog(
 
 String _familyIdOf(Anntena a) => a.variantGroupId ?? a.id;
 
+Anntena? _evolveOf(Anntena current, Map<String, Anntena> byId) =>
+    current.evolvesToId == null ? null : byId[current.evolvesToId];
+
 List<Anntena> _rootsOf(List<Anntena> anntenas) {
   final evolvedIds = anntenas
       .map((a) => a.evolvesToId)
@@ -60,11 +63,13 @@ _LevelResolution _resolveAtLevel(
 ) {
   var current = root;
   var previousCap = 0;
-  while (current.maxLevel != null &&
-      level > current.maxLevel! &&
-      current.evolvesToId != null) {
+  while (current.maxLevel != null && level > current.maxLevel!) {
+    final next = _evolveOf(current, byId);
+    if (next == null) {
+      break;
+    }
     previousCap = current.maxLevel!;
-    current = byId[current.evolvesToId]!;
+    current = next;
   }
   final inTierLevel = current.maxLevel == null
       ? math.max(0, level - previousCap)
@@ -83,11 +88,11 @@ int _patternIndexContaining(
       if (current.id == leafId) {
         return i;
       }
-      final nextId = current.evolvesToId;
-      if (nextId == null) {
+      final next = _evolveOf(current, byId);
+      if (next == null) {
         break;
       }
-      current = byId[nextId]!;
+      current = next;
     }
   }
   return 0;
@@ -105,11 +110,11 @@ Anntena _resolveAtDuration(
 ) {
   var current = root;
   for (var i = 0; i < durationIndex; i++) {
-    final nextId = current.evolvesToId;
-    if (nextId == null) {
+    final next = _evolveOf(current, byId);
+    if (next == null) {
       break;
     }
-    current = byId[nextId]!;
+    current = next;
   }
   return current;
 }
@@ -117,8 +122,12 @@ Anntena _resolveAtDuration(
 int _durationChainLength(Anntena root, Map<String, Anntena> byId) {
   var current = root;
   var length = 1;
-  while (current.evolvesToId != null) {
-    current = byId[current.evolvesToId]!;
+  while (true) {
+    final next = _evolveOf(current, byId);
+    if (next == null) {
+      break;
+    }
+    current = next;
     length++;
   }
   return length;
@@ -135,11 +144,11 @@ int _durationIndexContaining(
     if (current.id == leafId) {
       return index;
     }
-    final nextId = current.evolvesToId;
-    if (nextId == null) {
+    final next = _evolveOf(current, byId);
+    if (next == null) {
       return 0;
     }
-    current = byId[nextId]!;
+    current = next;
     index++;
   }
 }
@@ -236,9 +245,13 @@ class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
   int _maxLevelFor(Anntena root) {
     var current = root;
     var total = 0;
-    while (current.maxLevel != null && current.evolvesToId != null) {
+    while (current.maxLevel != null) {
+      final next = _evolveOf(current, _byId);
+      if (next == null) {
+        break;
+      }
       total += current.maxLevel!;
-      current = _byId[current.evolvesToId]!;
+      current = next;
     }
     return total + widget.maxSelectableLevel;
   }

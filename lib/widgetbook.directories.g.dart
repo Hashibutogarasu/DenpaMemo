@@ -1059,14 +1059,8 @@ final directories = <_widgetbook.WidgetbookNode>[
         name: 'ExpBar',
         useCases: [
           _widgetbook.WidgetbookUseCase(
-            name: 'Full',
-            builder:
-                _denpa_memo_widgets_label_exp_bar_widgetbook.expBarFullUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'Half',
-            builder:
-                _denpa_memo_widgets_label_exp_bar_widgetbook.expBarHalfUseCase,
+            name: 'Default',
+            builder: _denpa_memo_widgets_label_exp_bar_widgetbook.expBarUseCase,
           ),
         ],
       ),
