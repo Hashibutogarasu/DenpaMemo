@@ -46,7 +46,25 @@ class DenpaMenHomeScreen extends ConsumerStatefulWidget {
 
 class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
   final _lineageTreeController = GraphViewController();
+  final _hoveredTreeRecordId = ValueNotifier<int?>(null);
   bool _treeCursorEnabled = false;
+
+  @override
+  void dispose() {
+    _hoveredTreeRecordId.dispose();
+    super.dispose();
+  }
+
+  void _toggleHoveredTreeSelection() {
+    final id = _hoveredTreeRecordId.value;
+    if (id == null) {
+      return;
+    }
+    toggleDenpaMenSelection(ref, id);
+    if (ref.read(selectedDenpaMenIdsProvider).isNotEmpty) {
+      ref.read(selectionModeProvider.notifier).state = true;
+    }
+  }
 
   void _selectAll() {
     final records = ref
@@ -68,9 +86,35 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
     ref.watch(denpaMenCatchOrderMigrationProvider(masterData));
     final t = context.t;
     final selectionMode = ref.watch(selectionModeProvider);
+    final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
     final viewMode = ref.watch(homeViewModeProvider);
     final tileMode = ref.watch(homeTileModeProvider);
     final isMobile = ref.watch(isMobileLayoutProvider);
+
+    final treeSelectButton = viewMode == HomeViewMode.tree && isMobile
+        ? ValueListenableBuilder<int?>(
+            valueListenable: _hoveredTreeRecordId,
+            builder: (context, hoveredId, _) {
+              final isSelected =
+                  hoveredId != null && selectedIds.contains(hoveredId);
+              return FloatingActionButton(
+                heroTag: 'tree-select-hovered',
+                tooltip: isSelected
+                    ? t.home.deselectHoveredTreeIndividual
+                    : t.home.selectHoveredTreeIndividual,
+                backgroundColor: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : null,
+                onPressed: hoveredId == null
+                    ? null
+                    : _toggleHoveredTreeSelection,
+                child: Icon(
+                  isSelected ? Icons.check_circle : Icons.check_circle_outline,
+                ),
+              );
+            },
+          )
+        : null;
 
     return AppScaffold(
       title: widget.title,
@@ -84,7 +128,19 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
             }
           : const {},
       actions: widget.actions,
-      floatingActionButton: widget.floatingActionButton,
+      floatingActionButton: treeSelectButton == null
+          ? widget.floatingActionButton
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                treeSelectButton,
+                if (widget.floatingActionButton != null) ...[
+                  const SizedBox(height: 16),
+                  widget.floatingActionButton!,
+                ],
+              ],
+            ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -94,6 +150,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                 masterData: masterData,
                 controller: _lineageTreeController,
                 cursorEnabled: _treeCursorEnabled,
+                hoveredRecordId: _hoveredTreeRecordId,
               ),
             },
           ),
@@ -164,20 +221,6 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                     size: 18,
                   ),
                   label: Text(t.home.toggleTreeCursor),
-                ),
-              ),
-              Positioned(
-                top: 160,
-                right: 16,
-                child: FloatingActionButton(
-                  tooltip: t.home.toggleTreeSelection,
-                  backgroundColor: selectionMode
-                      ? Theme.of(context).colorScheme.primary
-                      : null,
-                  onPressed: () =>
-                      ref.read(selectionModeProvider.notifier).state =
-                          !selectionMode,
-                  child: const Icon(Icons.track_changes),
                 ),
               ),
             ],

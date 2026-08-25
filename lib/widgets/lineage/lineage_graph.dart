@@ -31,6 +31,7 @@ class LineageGraph extends ConsumerStatefulWidget {
     required this.iconsById,
     this.controller,
     this.cursorEnabled = false,
+    this.hoveredRecordId,
   });
 
   final List<QrCodeRecord> qrCodes;
@@ -39,6 +40,7 @@ class LineageGraph extends ConsumerStatefulWidget {
   final Map<String, File?> iconsById;
   final GraphViewController? controller;
   final bool cursorEnabled;
+  final ValueNotifier<int?>? hoveredRecordId;
 
   @override
   ConsumerState<LineageGraph> createState() => _LineageGraphState();
@@ -52,7 +54,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
   final _selectionMode = ValueNotifier<bool>(false);
   final _selectedIds = ValueNotifier<Set<int>>({});
   Timer? _cursorHitTestTimer;
-  final _bredNodeEntriesByNodeKey = <Object, (GlobalKey, String)>{};
+  final _nodeEntriesByNodeKey = <Object, (GlobalKey, NodeInfo)>{};
   final _stackKey = GlobalKey();
 
   late LineageGraphData _graphData;
@@ -88,7 +90,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
         widget.controller != oldWidget.controller) {
       _dataSnapshotValue = newSnapshot;
       _generation++;
-      _bredNodeEntriesByNodeKey.clear();
+      _nodeEntriesByNodeKey.clear();
       _graphData = buildLineageGraphData(
         qrCodes: widget.qrCodes,
         denpaMenRecords: widget.denpaMenRecords,
@@ -118,13 +120,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
     super.dispose();
   }
 
-  void _toggleSelected(int id) {
-    final current = ref.read(selectedDenpaMenIdsProvider);
-    ref.read(selectedDenpaMenIdsProvider.notifier).state =
-        current.contains(id)
-        ? (Set<int>.from(current)..remove(id))
-        : (Set<int>.from(current)..add(id));
-  }
+  void _toggleSelected(int id) => toggleDenpaMenSelection(ref, id);
 
   void _middleClickSelect(int id) {
     ref.read(selectionModeProvider.notifier).state = true;
@@ -143,6 +139,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
     _cursorHitTestTimer?.cancel();
     _cursorHitTestTimer = null;
     _hoveredBredId.value = null;
+    widget.hoveredRecordId?.value = null;
   }
 
   void _updateHoverFromCursor() {
@@ -151,19 +148,24 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
       return;
     }
     final center = stackBox.localToGlobal(stackBox.size.center(Offset.zero));
-    String? hoveredId;
-    for (final (key, denpaMenId) in _bredNodeEntriesByNodeKey.values) {
+    String? hoveredBredId;
+    int? hoveredRecordId;
+    for (final (key, info) in _nodeEntriesByNodeKey.values) {
       final nodeBox = key.currentContext?.findRenderObject() as RenderBox?;
       if (nodeBox == null || !nodeBox.attached) {
         continue;
       }
       final rect = nodeBox.localToGlobal(Offset.zero) & nodeBox.size;
       if (rect.contains(center)) {
-        hoveredId = denpaMenId;
+        hoveredRecordId = info.record!.id;
+        if (info.kind == NodeKind.bredDenpaMen) {
+          hoveredBredId = info.record!.denpaMen.id;
+        }
         break;
       }
     }
-    _hoveredBredId.value = hoveredId;
+    _hoveredBredId.value = hoveredBredId;
+    widget.hoveredRecordId?.value = hoveredRecordId;
   }
 
   void _setHoveredBredId(String? id) {
@@ -239,6 +241,9 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
                 onToggleSelection: _toggleSelected,
                 onMiddleClick: _middleClickSelect,
                 onTap: () => _showPreview(context, info.record!.denpaMen),
+                nodeKey: _nodeEntriesByNodeKey
+                    .putIfAbsent(node.key!.value, () => (GlobalKey(), info))
+                    .$1,
               ),
             ),
             NodeKind.bredDenpaMen => Builder(
@@ -260,11 +265,8 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
                 onTap: () => _showPreview(context, info.record!.denpaMen),
                 onHoverEnter: () => _setHoveredBredId(info.record!.denpaMen.id),
                 onHoverExit: () => _setHoveredBredId(null),
-                nodeKey: _bredNodeEntriesByNodeKey
-                    .putIfAbsent(
-                      node.key!.value,
-                      () => (GlobalKey(), info.record!.denpaMen.id),
-                    )
+                nodeKey: _nodeEntriesByNodeKey
+                    .putIfAbsent(node.key!.value, () => (GlobalKey(), info))
                     .$1,
               ),
             ),

@@ -48,6 +48,14 @@ final selectedDenpaMenIdsProvider = StateProvider<Set<int>>((ref) => {});
 /// held in memory for a future paste feature.
 final denpaMenClipboardProvider = StateProvider<List<DenpaMen>>((ref) => []);
 
+/// Adds [id] to [selectedDenpaMenIdsProvider] if absent, removes it otherwise.
+void toggleDenpaMenSelection(WidgetRef ref, int id) {
+  final current = ref.read(selectedDenpaMenIdsProvider);
+  ref.read(selectedDenpaMenIdsProvider.notifier).state = current.contains(id)
+      ? (Set<int>.from(current)..remove(id))
+      : (Set<int>.from(current)..add(id));
+}
+
 /// Ids of records that were cut and are pending a paste-driven removal.
 /// Rendered as greyed-out until consumed or the selection is cleared.
 final cutDenpaMenIdsProvider = StateProvider<Set<int>>((ref) => {});

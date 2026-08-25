@@ -22,11 +22,13 @@ class DenpaMenLineageTree extends ConsumerWidget {
     required this.masterData,
     this.controller,
     this.cursorEnabled = false,
+    this.hoveredRecordId,
   });
 
   final MasterData masterData;
   final GraphViewController? controller;
   final bool cursorEnabled;
+  final ValueNotifier<int?>? hoveredRecordId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,6 +82,7 @@ class DenpaMenLineageTree extends ConsumerWidget {
             },
             controller: controller,
             cursorEnabled: cursorEnabled,
+            hoveredRecordId: hoveredRecordId,
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
