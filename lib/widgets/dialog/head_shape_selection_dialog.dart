@@ -13,15 +13,16 @@ Future<HeadShape?> showHeadShapeSelectionDialog(
 }) {
   return showBottomSlideDialog<HeadShape>(
     context: context,
-    builder: (context) => _HeadShapeSelectionDialog(
+    builder: (context) => HeadShapeSelectionDialog(
       headShapes: headShapes,
       initial: selected,
     ),
   );
 }
 
-class _HeadShapeSelectionDialog extends StatefulWidget {
-  const _HeadShapeSelectionDialog({
+class HeadShapeSelectionDialog extends StatefulWidget {
+  const HeadShapeSelectionDialog({
+    super.key,
     required this.headShapes,
     required this.initial,
   });
@@ -30,12 +31,12 @@ class _HeadShapeSelectionDialog extends StatefulWidget {
   final HeadShape initial;
 
   @override
-  State<_HeadShapeSelectionDialog> createState() =>
+  State<HeadShapeSelectionDialog> createState() =>
       _HeadShapeSelectionDialogState();
 }
 
 class _HeadShapeSelectionDialogState
-    extends State<_HeadShapeSelectionDialog> {
+    extends State<HeadShapeSelectionDialog> {
   late HeadShape _selected = widget.initial;
 
   @override

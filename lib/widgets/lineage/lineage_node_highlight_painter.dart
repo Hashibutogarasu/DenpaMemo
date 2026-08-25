@@ -18,6 +18,8 @@ class LineageNodeHighlightPainter extends CustomPainter {
     required this.denpaMenById,
     required this.incomingSourceKeysById,
     required this.hoveredBredId,
+    this.highlightColorOverride,
+    this.badgeTextOverride,
   }) : super(repaint: hoveredBredId);
 
   final Object nodeKey;
@@ -25,6 +27,9 @@ class LineageNodeHighlightPainter extends CustomPainter {
   final Map<String, DenpaMen> denpaMenById;
   final Map<String, List<Object>> incomingSourceKeysById;
   final ValueListenable<String?> hoveredBredId;
+
+  final Color? highlightColorOverride;
+  final String? badgeTextOverride;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -42,7 +47,7 @@ class LineageNodeHighlightPainter extends CustomPainter {
       return;
     }
 
-    final highlightColor = lineageNodeHighlightColor(denpaMen);
+    final highlightColor = highlightColorOverride ?? lineageNodeHighlightColor(denpaMen);
     if (highlightColor != null) {
       final borderPaint = Paint()
         ..color = highlightColor
@@ -55,20 +60,22 @@ class LineageNodeHighlightPainter extends CustomPainter {
       canvas.drawRRect(rrect, borderPaint);
     }
 
-    final badgeValue = lineageNodeParentBadgeValue(
-      denpaMenId,
-      hoveredBredId.value!,
-      denpaMenById,
-    );
-    if (badgeValue != null) {
-      _paintBadge(canvas, size, badgeValue);
+    final badgeText =
+        badgeTextOverride ??
+        lineageNodeParentBadgeValue(
+          denpaMenId,
+          hoveredBredId.value!,
+          denpaMenById,
+        )?.toString();
+    if (badgeText != null) {
+      _paintBadge(canvas, size, badgeText);
     }
   }
 
-  void _paintBadge(Canvas canvas, Size size, int value) {
+  void _paintBadge(Canvas canvas, Size size, String text) {
     final textPainter = TextPainter(
       text: TextSpan(
-        text: '$value',
+        text: text,
         style: const TextStyle(fontSize: 11, color: Colors.black87),
       ),
       textDirection: TextDirection.ltr,

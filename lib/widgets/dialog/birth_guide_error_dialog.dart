@@ -6,10 +6,21 @@ Future<void> showBirthGuideErrorDialog(
   BuildContext context, {
   required VoidCallback onDismissed,
 }) {
-  final t = context.t;
   return showDialog<void>(
     context: context,
-    builder: (context) => AlertDialog(
+    builder: (context) => BirthGuideErrorDialog(onDismissed: onDismissed),
+  );
+}
+
+class BirthGuideErrorDialog extends StatelessWidget {
+  const BirthGuideErrorDialog({super.key, required this.onDismissed});
+
+  final VoidCallback onDismissed;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t;
+    return AlertDialog(
       title: Text(t.birthGuide.errorTitle),
       content: Text(t.birthGuide.errorMessage),
       actions: [
@@ -21,6 +32,6 @@ Future<void> showBirthGuideErrorDialog(
           child: Text(t.common.confirm),
         ),
       ],
-    ),
-  );
+    );
+  }
 }

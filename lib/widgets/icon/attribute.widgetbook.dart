@@ -5,5 +5,5 @@ import 'attribute.dart';
 
 @widgetbook.UseCase(name: 'Default', type: AttributeIcon, path: 'icon')
 Widget attributeIconUseCase(BuildContext context) {
-  return const AttributeIcon(icon: Icon(Icons.local_fire_department, color: Colors.red));
+  return const AttributeIcon(size: 20);
 }

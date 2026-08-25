@@ -19,7 +19,7 @@ import 'package:denpa_memo/widgets/lineage/lineage_graph_highlight.dart';
 import '../support/file_master_data_repository.dart';
 import '../support/lineage_tree_fixture.dart';
 
-const _fixturePath = 'test/denpamens/fixtures/mizuka.json';
+const _fixturePath = 'assets/routes/mizuka.json';
 const _tsunenoriId = 'kpelvifntq7ju4tz8bll8xjc';
 const _takamitsuId = 'cug5bs8ofxmrwi7i31jkzqb2';
 const _sanagiId = 'n19girll1iju0wg2ni6w8cs4';

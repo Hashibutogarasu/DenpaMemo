@@ -17,7 +17,7 @@ Future<AntennaSelectionResult?> showAntennaSelectionDialog(
 }) {
   return showBottomSlideDialog<AntennaSelectionResult>(
     context: context,
-    builder: (context) => _AntennaSelectionDialog(
+    builder: (context) => AntennaSelectionDialog(
       anntenas: anntenas,
       initial: selected,
       level: level,
@@ -162,8 +162,9 @@ _LevelResolution _resolveTile(
   return _resolveAtLevel(root, level, byId);
 }
 
-class _AntennaSelectionDialog extends StatefulWidget {
-  const _AntennaSelectionDialog({
+class AntennaSelectionDialog extends StatefulWidget {
+  const AntennaSelectionDialog({
+    super.key,
     required this.anntenas,
     required this.initial,
     required this.level,
@@ -176,11 +177,11 @@ class _AntennaSelectionDialog extends StatefulWidget {
   final int maxSelectableLevel;
 
   @override
-  State<_AntennaSelectionDialog> createState() =>
+  State<AntennaSelectionDialog> createState() =>
       _AntennaSelectionDialogState();
 }
 
-class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
+class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController = TabController(
     length: AnntenaCategory.values.length,
@@ -270,12 +271,15 @@ class _AntennaSelectionDialogState extends State<_AntennaSelectionDialog>
       _byId,
     );
 
-    return ListTile(
-      key: ValueKey(familyId),
-      title: Text(_displayName(t, resolution)),
-      selected: isSelected,
-      trailing: isSelected ? const Icon(Icons.check) : null,
-      onTap: () => _selectFamily(familyId, patternIndex),
+    return Material(
+      type: MaterialType.transparency,
+      child: ListTile(
+        key: ValueKey(familyId),
+        title: Text(_displayName(t, resolution)),
+        selected: isSelected,
+        trailing: isSelected ? const Icon(Icons.check) : null,
+        onTap: () => _selectFamily(familyId, patternIndex),
+      ),
     );
   }
 

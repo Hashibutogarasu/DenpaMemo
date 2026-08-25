@@ -23,25 +23,29 @@ Future<QrCodeSelection?> showQrCodeSelectionDialog(
 }) {
   return showBottomSlideDialog<QrCodeSelection>(
     context: context,
-    builder: (context) => _QrCodeSelectionDialog(
+    builder: (context) => QrCodeSelectionDialog(
       candidates: candidates,
       initial: selected,
     ),
   );
 }
 
-class _QrCodeSelectionDialog extends StatefulWidget {
-  const _QrCodeSelectionDialog({required this.candidates, required this.initial});
+class QrCodeSelectionDialog extends StatefulWidget {
+  const QrCodeSelectionDialog({
+    super.key,
+    required this.candidates,
+    required this.initial,
+  });
 
   final List<QrCodeRecord> candidates;
   final QrCodeRecord? initial;
 
   @override
-  State<_QrCodeSelectionDialog> createState() =>
+  State<QrCodeSelectionDialog> createState() =>
       _QrCodeSelectionDialogState();
 }
 
-class _QrCodeSelectionDialogState extends State<_QrCodeSelectionDialog> {
+class _QrCodeSelectionDialogState extends State<QrCodeSelectionDialog> {
   late QrCodeRecord? _selected = widget.initial;
 
   @override

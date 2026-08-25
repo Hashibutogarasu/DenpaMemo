@@ -8,7 +8,8 @@ import 'bottom_slide_dialog.dart';
 /// selected [DenpaMen] list or null if cancelled. Used for `.dm` import
 /// merge confirmation.
 class DenpaMenSelectionDialog extends StatefulWidget {
-  const DenpaMenSelectionDialog._({
+  const DenpaMenSelectionDialog.internal({
+    super.key,
     required this.title,
     required List<DenpaMen> candidates,
     required List<DenpaMen> initial,
@@ -31,7 +32,7 @@ class DenpaMenSelectionDialog extends StatefulWidget {
   }) {
     return showBottomSlideDialog<List<DenpaMen>>(
       context: context,
-      builder: (context) => DenpaMenSelectionDialog._(
+      builder: (context) => DenpaMenSelectionDialog.internal(
         title: title,
         candidates: candidates,
         initial: initial,

@@ -4,8 +4,13 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'widgetbook.directories.g.dart';
 import 'widgetbook/core/widgetbook_scope.dart';
+import 'widgetbook/denpa_men/route_denpa_men_data.dart';
+import 'widgetbook/denpa_men/route_denpa_men_seed.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await RouteDenpaMenData.initialize();
+  seedRouteDenpaMenIntoObjectBox();
   runApp(const WidgetbookApp());
 }
 
