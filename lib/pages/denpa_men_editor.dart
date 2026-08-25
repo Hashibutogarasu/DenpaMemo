@@ -236,7 +236,6 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
             )
           : FloatingActionButton.extended(
               onPressed: _save,
-              icon: const Icon(Icons.check),
               label: Text(t.common.save),
             ),
       body: AddDenpaMen(

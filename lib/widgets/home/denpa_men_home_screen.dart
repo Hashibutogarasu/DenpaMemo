@@ -151,7 +151,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                 label: Text(t.home.resetTreePosition),
               ),
             ),
-            if (isMobile)
+            if (isMobile) ...[
               Positioned(
                 top: 112,
                 right: 16,
@@ -166,6 +166,21 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                   label: Text(t.home.toggleTreeCursor),
                 ),
               ),
+              Positioned(
+                top: 160,
+                right: 16,
+                child: FloatingActionButton(
+                  tooltip: t.home.toggleTreeSelection,
+                  backgroundColor: selectionMode
+                      ? Theme.of(context).colorScheme.primary
+                      : null,
+                  onPressed: () =>
+                      ref.read(selectionModeProvider.notifier).state =
+                          !selectionMode,
+                  child: const Icon(Icons.track_changes),
+                ),
+              ),
+            ],
           ],
         ],
       ),

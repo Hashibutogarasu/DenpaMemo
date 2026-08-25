@@ -13,6 +13,7 @@ import '../../i18n/gen/strings.g.dart';
 import '../../pages/birth_guide.dart';
 import '../../pages/denpa_men_editor.dart';
 import '../../providers/denpa_men_providers.dart';
+import '../../providers/dm_export_providers.dart';
 import '../../providers/qr_code_providers.dart';
 import '../../routing/app_router.dart';
 import 'qr_code_image_dialog.dart';
@@ -141,6 +142,11 @@ List<PopupMenuEntry<VoidCallback>> denpaMenActionMenuItems(
         child: Text(t.home.copyLineageTreeJsonAction),
       ),
     ],
+    if (ref.read(selectedDenpaMenIdsProvider).isNotEmpty)
+      PopupMenuItem(
+        value: () => exportSelectedDenpaMen(context, ref, masterData),
+        child: Text(t.home.exportSelected),
+      ),
     PopupMenuItem(
       value: () async {
         if (await confirmDenpaMenDelete(context)) {

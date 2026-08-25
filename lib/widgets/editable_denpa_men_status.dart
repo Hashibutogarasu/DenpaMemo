@@ -22,7 +22,6 @@ import 'dialog/antenna_selection_dialog.dart';
 import 'dialog/body_color_selection_dialog.dart';
 import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
-import 'editable_catch_order.dart';
 import 'editable_exp.dart';
 import 'editable_parents.dart';
 import 'editable_qr_code.dart';
@@ -345,10 +344,6 @@ class EditableDenpaMenStatus extends ConsumerWidget {
             onChanged: onChanged,
             enabled: qrCodeEditable,
           ),
-          if (denpaMen.qrCodeId != null) ...[
-            const SizedBox(height: 8),
-            EditableCatchOrder(denpaMen: denpaMen, onChanged: onChanged),
-          ],
           const SizedBox(height: 8),
           Container(
             width: double.infinity,

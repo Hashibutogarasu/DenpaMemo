@@ -74,25 +74,17 @@ class LineageNodeHighlightPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
     )..layout();
 
-    const horizontalPadding = 3.0;
-    const verticalPadding = 1.0;
-    final badgeSize = Size(
-      textPainter.width + horizontalPadding * 2,
-      textPainter.height + verticalPadding * 2,
-    );
+    const padding = 3.0;
+    final longestSide = textPainter.width > textPainter.height
+        ? textPainter.width
+        : textPainter.height;
+    final diameter = longestSide + padding * 2;
     final badgeCenter = Offset(
-      size.width - 4 - badgeSize.width / 2,
-      size.height - 4 - badgeSize.height / 2,
+      size.width - 4 - diameter / 2,
+      size.height - 4 - diameter / 2,
     );
 
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: badgeCenter,
-        width: badgeSize.width,
-        height: badgeSize.height,
-      ),
-      Paint()..color = Colors.white,
-    );
+    canvas.drawCircle(badgeCenter, diameter / 2, Paint()..color = Colors.white);
     textPainter.paint(
       canvas,
       badgeCenter - Offset(textPainter.width / 2, textPainter.height / 2),

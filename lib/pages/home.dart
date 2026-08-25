@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/dm_export_providers.dart';
@@ -11,7 +10,6 @@ import '../providers/master_data_providers.dart';
 import '../providers/responsive_providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
-import '../widgets/dialog/export_complete_dialog.dart';
 import '../widgets/dialog/import_complete_dialog.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
@@ -19,20 +17,6 @@ import '../widgets/label/outlined_title.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/search/search_overlay_bar.dart';
-
-Future<void> _exportSelected(
-  BuildContext context,
-  WidgetRef ref,
-  MasterData masterData,
-) async {
-  final t = context.t;
-  final result = await ref
-      .read(dmExportControllerProvider)
-      .exportSelected(masterData, dialogTitle: t.home.exportDialogTitle);
-  if (result != null && context.mounted) {
-    await ExportCompleteDialog.show(context, result: result);
-  }
-}
 
 Future<void> _importFromFile(BuildContext context, WidgetRef ref) async {
   final result = await ref.read(dmImportControllerProvider).importFromFile(context);
@@ -83,7 +67,7 @@ class Home extends ConsumerWidget {
                             PopupMenuItem(
                               enabled: selectedCount > 0,
                               onTap: () =>
-                                  _exportSelected(context, ref, masterData),
+                                  exportSelectedDenpaMen(context, ref, masterData),
                               child: Text(t.home.exportSelected),
                             ),
                             PopupMenuItem(
@@ -101,7 +85,7 @@ class Home extends ConsumerWidget {
                         ? () => _importFromFile(context, ref)
                         : null,
                     onExport: isMobile && selectedCount > 0
-                        ? () => _exportSelected(context, ref, masterData)
+                        ? () => exportSelectedDenpaMen(context, ref, masterData)
                         : null,
                   ),
                 ),

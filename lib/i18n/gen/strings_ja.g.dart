@@ -404,6 +404,9 @@ class Translations$home$ja {
 	/// ja: 'カーソル表示の切り替え'
 	String get toggleTreeCursor => 'カーソル表示の切り替え';
 
+	/// ja: '選択モードの切り替え'
+	String get toggleTreeSelection => '選択モードの切り替え';
+
 	/// ja: '${order}匹目: ${name}'
 	String catchOrderLabel({required Object order, required Object name}) => '${order}匹目: ${name}';
 
@@ -754,6 +757,7 @@ extension on Translations {
 			'home.viewModeGrid' => 'グリッド表示',
 			'home.resetTreePosition' => '位置をリセット',
 			'home.toggleTreeCursor' => 'カーソル表示の切り替え',
+			'home.toggleTreeSelection' => '選択モードの切り替え',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
