@@ -21,9 +21,15 @@ class AddDenpaMenFab extends StatefulWidget {
     this.onImport,
     this.onExport,
     this.animationDuration = const Duration(milliseconds: 200),
+    this.mainButtonLayerLink,
   });
 
   final MasterData masterData;
+
+  /// Lets a caller elsewhere in the tree find exactly where the always-on
+  /// "+" button renders (via [CompositedTransformFollower]), regardless of
+  /// how much space the mini options above it reserve while closed.
+  final LayerLink? mainButtonLayerLink;
 
   /// When set (mobile home screen, where the AppBar overflow menu is
   /// hidden), a "import from file" option is shown in the expanded menu.
@@ -43,6 +49,7 @@ class AddDenpaMenFab extends StatefulWidget {
 
 class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
   bool _open = false;
+  late final _mainButtonLayerLink = widget.mainButtonLayerLink ?? LayerLink();
 
   void _toggle() => setState(() => _open = !_open);
 
@@ -154,13 +161,16 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
           open: _open,
           animationDuration: widget.animationDuration,
         ),
-        FloatingActionButton(
-          heroTag: null,
-          onPressed: _toggle,
-          child: AnimatedRotation(
-            duration: widget.animationDuration,
-            turns: _open ? 0.125 : 0,
-            child: const Icon(Icons.add),
+        CompositedTransformTarget(
+          link: _mainButtonLayerLink,
+          child: FloatingActionButton(
+            heroTag: null,
+            onPressed: _toggle,
+            child: AnimatedRotation(
+              duration: widget.animationDuration,
+              turns: _open ? 0.125 : 0,
+              child: const Icon(Icons.add),
+            ),
           ),
         ),
       ],

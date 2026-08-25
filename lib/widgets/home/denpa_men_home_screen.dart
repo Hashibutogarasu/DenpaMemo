@@ -40,31 +40,12 @@ class DenpaMenHomeScreen extends ConsumerStatefulWidget {
   final List<Widget>? actions;
 
   @override
-  ConsumerState<DenpaMenHomeScreen> createState() =>
-      _DenpaMenHomeScreenState();
+  ConsumerState<DenpaMenHomeScreen> createState() => _DenpaMenHomeScreenState();
 }
 
 class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
   final _lineageTreeController = GraphViewController();
-  final _hoveredTreeRecordId = ValueNotifier<int?>(null);
   bool _treeCursorEnabled = false;
-
-  @override
-  void dispose() {
-    _hoveredTreeRecordId.dispose();
-    super.dispose();
-  }
-
-  void _toggleHoveredTreeSelection() {
-    final id = _hoveredTreeRecordId.value;
-    if (id == null) {
-      return;
-    }
-    toggleDenpaMenSelection(ref, id);
-    if (ref.read(selectedDenpaMenIdsProvider).isNotEmpty) {
-      ref.read(selectionModeProvider.notifier).state = true;
-    }
-  }
 
   void _selectAll() {
     final records = ref
@@ -86,61 +67,21 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
     ref.watch(denpaMenCatchOrderMigrationProvider(masterData));
     final t = context.t;
     final selectionMode = ref.watch(selectionModeProvider);
-    final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
     final viewMode = ref.watch(homeViewModeProvider);
     final tileMode = ref.watch(homeTileModeProvider);
     final isMobile = ref.watch(isMobileLayoutProvider);
-
-    final treeSelectButton = viewMode == HomeViewMode.tree && isMobile
-        ? ValueListenableBuilder<int?>(
-            valueListenable: _hoveredTreeRecordId,
-            builder: (context, hoveredId, _) {
-              final isSelected =
-                  hoveredId != null && selectedIds.contains(hoveredId);
-              return FloatingActionButton(
-                heroTag: 'tree-select-hovered',
-                tooltip: isSelected
-                    ? t.home.deselectHoveredTreeIndividual
-                    : t.home.selectHoveredTreeIndividual,
-                backgroundColor: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : null,
-                onPressed: hoveredId == null
-                    ? null
-                    : _toggleHoveredTreeSelection,
-                child: Icon(
-                  isSelected ? Icons.check_circle : Icons.check_circle_outline,
-                ),
-              );
-            },
-          )
-        : null;
 
     return AppScaffold(
       title: widget.title,
       additionalShortcuts: selectionMode
           ? {
-              const SingleActivator(
-                LogicalKeyboardKey.keyA,
-                control: true,
-              ): _selectAll,
+              const SingleActivator(LogicalKeyboardKey.keyA, control: true):
+                  _selectAll,
               const SingleActivator(LogicalKeyboardKey.escape): _clearSelection,
             }
           : const {},
       actions: widget.actions,
-      floatingActionButton: treeSelectButton == null
-          ? widget.floatingActionButton
-          : Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                treeSelectButton,
-                if (widget.floatingActionButton != null) ...[
-                  const SizedBox(height: 16),
-                  widget.floatingActionButton!,
-                ],
-              ],
-            ),
+      floatingActionButton: widget.floatingActionButton,
       body: Stack(
         children: [
           Positioned.fill(
@@ -150,7 +91,6 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                 masterData: masterData,
                 controller: _lineageTreeController,
                 cursorEnabled: _treeCursorEnabled,
-                hoveredRecordId: _hoveredTreeRecordId,
               ),
             },
           ),
@@ -213,9 +153,8 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                 top: 112,
                 right: 16,
                 child: ElevatedButton.icon(
-                  onPressed: () => setState(
-                    () => _treeCursorEnabled = !_treeCursorEnabled,
-                  ),
+                  onPressed: () =>
+                      setState(() => _treeCursorEnabled = !_treeCursorEnabled),
                   icon: Icon(
                     _treeCursorEnabled ? Icons.add_circle : Icons.add,
                     size: 18,

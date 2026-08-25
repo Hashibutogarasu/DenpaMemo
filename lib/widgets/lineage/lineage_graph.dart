@@ -31,7 +31,6 @@ class LineageGraph extends ConsumerStatefulWidget {
     required this.iconsById,
     this.controller,
     this.cursorEnabled = false,
-    this.hoveredRecordId,
   });
 
   final List<QrCodeRecord> qrCodes;
@@ -40,7 +39,6 @@ class LineageGraph extends ConsumerStatefulWidget {
   final Map<String, File?> iconsById;
   final GraphViewController? controller;
   final bool cursorEnabled;
-  final ValueNotifier<int?>? hoveredRecordId;
 
   @override
   ConsumerState<LineageGraph> createState() => _LineageGraphState();
@@ -139,7 +137,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
     _cursorHitTestTimer?.cancel();
     _cursorHitTestTimer = null;
     _hoveredBredId.value = null;
-    widget.hoveredRecordId?.value = null;
+    ref.read(hoveredTreeRecordIdProvider.notifier).state = null;
   }
 
   void _updateHoverFromCursor() {
@@ -165,7 +163,7 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
       }
     }
     _hoveredBredId.value = hoveredBredId;
-    widget.hoveredRecordId?.value = hoveredRecordId;
+    ref.read(hoveredTreeRecordIdProvider.notifier).state = hoveredRecordId;
   }
 
   void _setHoveredBredId(String? id) {

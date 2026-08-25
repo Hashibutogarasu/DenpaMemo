@@ -15,10 +15,7 @@ final denpaMenRepositoryProvider = Provider<DenpaMenRepository>((ref) {
 
 /// Streams the saved [DenpaMen] list resolved against [masterData].
 final denpaMenListProvider =
-    StreamProvider.family<List<DenpaMenRecord>, MasterData>((
-      ref,
-      masterData,
-    ) {
+    StreamProvider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
       final repository = ref.watch(denpaMenRepositoryProvider);
       return repository.watchAll(masterData);
     });
@@ -28,13 +25,14 @@ final denpaMenListProvider =
 /// the home screen's loading indicator waits on). Watch this from the
 /// screen that shows that loading indicator; its cached [AsyncValue] means
 /// re-watching it elsewhere never re-runs the migration.
-final denpaMenCatchOrderMigrationProvider = FutureProvider.family<void, MasterData>((
-  ref,
-  masterData,
-) async {
-  await ref.watch(denpaMenListProvider(masterData).future);
-  migrateDenpaMenCatchOrders(ref.read(denpaMenRepositoryProvider), masterData);
-});
+final denpaMenCatchOrderMigrationProvider =
+    FutureProvider.family<void, MasterData>((ref, masterData) async {
+      await ref.watch(denpaMenListProvider(masterData).future);
+      migrateDenpaMenCatchOrders(
+        ref.read(denpaMenRepositoryProvider),
+        masterData,
+      );
+    });
 
 /// Whether the home accordion list is in multi-select mode. Turned on
 /// either from the AppBar overflow menu or by long-pressing a tile, and
@@ -47,6 +45,10 @@ final selectedDenpaMenIdsProvider = StateProvider<Set<int>>((ref) => {});
 /// [DenpaMen] entries most recently copied or cut from the home screen,
 /// held in memory for a future paste feature.
 final denpaMenClipboardProvider = StateProvider<List<DenpaMen>>((ref) => []);
+
+/// Id of the [DenpaMenRecord] the lineage tree's on-screen cursor is
+/// currently over, `null` when it's over nothing.
+final hoveredTreeRecordIdProvider = StateProvider<int?>((ref) => null);
 
 /// Adds [id] to [selectedDenpaMenIdsProvider] if absent, removes it otherwise.
 void toggleDenpaMenSelection(WidgetRef ref, int id) {
