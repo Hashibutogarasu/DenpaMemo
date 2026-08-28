@@ -1,24 +1,11 @@
 import 'dart:io';
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../data/icon/entity_icon_storage.dart';
-import '../data/monster/graphql_monster_repository.dart';
-import 'graphql_client_provider.dart';
-
-final monsterRepositoryProvider = Provider<MonsterRepository>((ref) {
-  final client = ref.watch(graphQLClientProvider);
-  return GraphqlMonsterRepository(client: client);
-});
-
-final monsterListProvider = FutureProvider<List<Monster>>((ref) {
-  final repository = ref.watch(monsterRepositoryProvider);
-  return repository.load();
-}, retry: (_, _) => null);
 
 final monsterIconStorageProvider = Provider<EntityIconStorage>((ref) {
   return const EntityIconStorage('monsters');

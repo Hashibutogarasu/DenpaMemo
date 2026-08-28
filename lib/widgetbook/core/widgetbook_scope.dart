@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/objectbox/objectbox.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_icon_providers.dart';
-import '../../providers/master_data_providers.dart';
 import '../../providers/objectbox_providers.dart';
 import '../denpa_men/route_denpa_men_data.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 /// Shared in-memory [ObjectBox] for this Widgetbook session.
 final ObjectBox widgetbookObjectBox = ObjectBox.createInMemory();

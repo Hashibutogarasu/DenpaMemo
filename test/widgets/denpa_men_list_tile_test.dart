@@ -7,10 +7,10 @@ import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
-import 'package:denpa_memo/providers/master_data_providers.dart';
 import 'package:denpa_memo/providers/objectbox_providers.dart';
 import 'package:denpa_memo/widgets/denpa_men_list_tile.dart';
 import 'package:denpa_memo/widgets/dialog/denpa_men_preview_dialog.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
 

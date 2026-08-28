@@ -4,6 +4,7 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:graphql_client/graphql_client.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
@@ -11,7 +12,6 @@ import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/data/qr_code/objectbox_qr_code_repository.dart';
 import '../support/test_app.dart';
-import 'package:denpa_memo/providers/master_data_providers.dart';
 
 import '../support/fake_path_provider_platform.dart';
 

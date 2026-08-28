@@ -8,10 +8,10 @@ import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/pages/home.dart';
 import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
 import 'package:denpa_memo/providers/denpa_men_providers.dart';
-import 'package:denpa_memo/providers/master_data_providers.dart';
 import 'package:denpa_memo/widgets/denpa_men_accordion_tile.dart';
 import 'package:denpa_memo/widgets/denpa_men_list_tile.dart';
 import 'package:denpa_memo/widgets/selection_floating_menu.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
 

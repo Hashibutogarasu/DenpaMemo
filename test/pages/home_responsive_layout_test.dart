@@ -7,8 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/pages/home.dart';
 import 'package:denpa_memo/providers/denpa_men_providers.dart';
-import 'package:denpa_memo/providers/master_data_providers.dart';
 import 'package:denpa_memo/widgets/header/slanted_app_bar.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 final _masterData = MasterData(
   headShapes: const [],

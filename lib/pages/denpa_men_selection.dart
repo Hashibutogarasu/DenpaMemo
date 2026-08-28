@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/legacy.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_selection_providers.dart';
-import '../providers/master_data_providers.dart';
 import '../providers/search_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/denpa_men_list_tile.dart';
@@ -15,6 +14,7 @@ import '../widgets/label/outlined_title.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/search/search_form.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 class DenpaMenSelectionArgs {
   const DenpaMenSelectionArgs({

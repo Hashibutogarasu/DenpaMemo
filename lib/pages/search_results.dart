@@ -4,13 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../i18n/gen/strings.g.dart';
-import '../providers/master_data_providers.dart';
 import '../providers/search_providers.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
 import '../widgets/label/outlined_title.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 /// Shows [filteredDenpaMenProvider]'s matches for the current
 /// [searchQueryProvider]. Resets that query in [dispose], not just on the

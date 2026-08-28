@@ -1,7 +1,6 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import '../../domain/master_data/master_data_load_error.dart';
 import 'monster_graphql_queries.dart';
 
 /// [MonsterRepository] implementation backed by the `modules/server`
@@ -21,7 +20,7 @@ class GraphqlMonsterRepository implements MonsterRepository {
     );
 
     if (result.hasException) {
-      throw MasterDataLoadError.fromOperationException(result.exception!);
+      throw result.exception!;
     }
 
     final monsters = result.data!['monsters'] as List<dynamic>;

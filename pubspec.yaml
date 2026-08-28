@@ -47,6 +47,8 @@ dependencies:
     path: modules/DataPack
   step_dialog:
     path: modules/StepDialog
+  graphql_client:
+    path: modules/GraphQLClient
 dev_dependencies:
   flutter_test:
     sdk: flutter

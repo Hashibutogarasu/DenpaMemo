@@ -2,8 +2,8 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/master_data_providers.dart';
 import '../denpa_men_status.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 /// Shows [denpaMen]'s read-only preview ([DenpaMenStatus]) in a dialog,
 /// used when tapping an individual's node in

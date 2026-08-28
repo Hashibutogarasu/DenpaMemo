@@ -5,6 +5,7 @@ import 'package:data_pack/data_pack.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql_client/graphql_client.dart';
 import 'package:step_dialog/step_dialog.dart'
     hide Translations, BuildContextTranslationsExtension;
 
@@ -16,7 +17,6 @@ import '../widgets/dialog/denpa_men_selection_dialog.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
 import 'import_export_progress_providers.dart';
-import 'master_data_providers.dart';
 import 'qr_code_providers.dart';
 
 /// Drives the "import individuals from a `.dm` file" flow: prompts for a

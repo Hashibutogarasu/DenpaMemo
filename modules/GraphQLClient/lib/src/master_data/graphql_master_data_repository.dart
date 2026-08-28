@@ -1,7 +1,6 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import '../../domain/master_data/master_data_load_error.dart';
 import 'master_data_graphql_queries.dart';
 
 /// [MasterDataRepository] implementation backed by the `modules/server`
@@ -36,7 +35,7 @@ class GraphqlMasterDataRepository implements MasterDataRepository {
     );
 
     if (result.hasException) {
-      throw MasterDataLoadError.fromOperationException(result.exception!);
+      throw result.exception!;
     }
 
     final masterData = result.data!['masterData'] as Map<String, dynamic>;

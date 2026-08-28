@@ -2,12 +2,11 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
+import 'package:graphql_client/graphql_client.dart';
 
 import 'data/denpa_men/objectbox_denpa_men_repository.dart';
-import 'data/master_data/graphql_master_data_repository.dart';
 import 'data/objectbox/objectbox.dart';
 import 'i18n/gen/strings.g.dart';
-import 'providers/graphql_client_provider.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 

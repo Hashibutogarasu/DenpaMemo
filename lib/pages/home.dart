@@ -7,7 +7,6 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/dm_export_providers.dart';
 import '../providers/dm_import_providers.dart';
 import '../providers/home_view_providers.dart';
-import '../providers/master_data_providers.dart';
 import '../providers/responsive_providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/add_denpa_men_fab.dart';
@@ -18,6 +17,7 @@ import '../widgets/label/outlined_title.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/search/search_overlay_bar.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 final _addFabLayerLink = LayerLink();
 

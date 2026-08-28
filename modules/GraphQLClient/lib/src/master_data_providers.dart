@@ -1,8 +1,8 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/master_data/graphql_master_data_repository.dart';
 import 'graphql_client_provider.dart';
+import 'master_data/graphql_master_data_repository.dart';
 
 final masterDataRepositoryProvider = Provider<MasterDataRepository>((ref) {
   final client = ref.watch(graphQLClientProvider);

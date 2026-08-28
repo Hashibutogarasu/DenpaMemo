@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../../domain/master_data/master_data_load_error.dart';
-import '../../providers/master_data_providers.dart';
 import '../../widgets/dialog/master_data_error_listener.dart';
 import '../denpa_men/route_denpa_men_data.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 final demoShouldFailMasterDataProvider = StateProvider<bool>((ref) => false);
 
