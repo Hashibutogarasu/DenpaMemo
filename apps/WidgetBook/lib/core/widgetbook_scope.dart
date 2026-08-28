@@ -1,5 +1,6 @@
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 /// The currently displayed use case's widget. [widgetbookScope] is a plain
@@ -20,15 +21,17 @@ class _WidgetbookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return denpamemo_widgets.TranslationProvider(
-      child: step_dialog.TranslationProvider(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-          home: Material(
-            child: ValueListenableBuilder<Widget>(
-              valueListenable: _widgetbookContent,
-              builder: (context, content, _) => content,
+    return ProviderScope(
+      child: denpamemo_widgets.TranslationProvider(
+        child: step_dialog.TranslationProvider(
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+            home: Material(
+              child: ValueListenableBuilder<Widget>(
+                valueListenable: _widgetbookContent,
+                builder: (context, content, _) => content,
+              ),
             ),
           ),
         ),
