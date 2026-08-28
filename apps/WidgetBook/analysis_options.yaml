@@ -1,1 +1,10 @@
 include: package:flutter_lints/flutter.yaml
+
+# Use cases intentionally reference data_pack/tree_graph/graphview types
+# without depending on those packages directly — they're only resolved
+# transitively through denpamemo_widgets/tree_graph, since this app must
+# not depend on data_pack/graphql_client directly (see the workspace
+# refactor plan).
+analyzer:
+  errors:
+    depend_on_referenced_packages: ignore
