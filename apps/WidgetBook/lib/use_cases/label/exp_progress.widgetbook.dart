@@ -1,0 +1,14 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
+
+
+@widgetbook.UseCase(name: 'InProgress', type: ExpProgress, path: 'label')
+Widget expProgressInProgressUseCase(BuildContext context) {
+  return const SizedBox(width: 200, child: ExpProgress(progress: 0.4));
+}
+
+@widgetbook.UseCase(name: 'Max', type: ExpProgress, path: 'label')
+Widget expProgressMaxUseCase(BuildContext context) {
+  return const SizedBox(width: 200, child: ExpProgress(progress: null));
+}
