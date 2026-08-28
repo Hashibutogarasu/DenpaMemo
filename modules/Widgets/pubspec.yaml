@@ -1,5 +1,5 @@
 name: denpamemo_widgets
-description: Graph + DataPack を合成した、denpa_memoアプリの再利用可能なFlutterウィジット一式。
+description: Denpa Men Widget library
 version: 0.1.0
 publish_to: 'none'
 resolution: workspace

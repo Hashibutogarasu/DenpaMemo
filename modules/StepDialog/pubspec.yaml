@@ -1,5 +1,5 @@
 name: step_dialog
-description: 再試行可能なステップクラスと再試行ダイアログUIを提供するウィジェットライブラリ。
+description: Utility library of step runner
 version: 0.1.0
 publish_to: 'none'
 resolution: workspace

@@ -1,5 +1,5 @@
 name: graphql_client
-description: modules/server へのGraphQL接続管理・リポジトリ実装を持つライブラリ。
+description: Client for server module
 version: 0.1.0
 publish_to: 'none'
 resolution: workspace
