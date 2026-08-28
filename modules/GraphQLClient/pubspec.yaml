@@ -1,0 +1,19 @@
+name: graphql_client
+description: modules/server へのGraphQL接続管理・リポジトリ実装を持つライブラリ。
+version: 0.1.0
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:

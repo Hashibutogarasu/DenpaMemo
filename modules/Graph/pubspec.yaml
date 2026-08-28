@@ -1,0 +1,19 @@
+name: tree_graph
+description: ツリー表示の汎用描画エンジンを持つ、何にも依存しない独立ウィジェットライブラリ。
+version: 0.1.0
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:

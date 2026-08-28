@@ -1,0 +1,19 @@
+name: step_dialog
+description: 再試行可能なステップクラスと再試行ダイアログUIを提供するウィジェットライブラリ。
+version: 0.1.0
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:

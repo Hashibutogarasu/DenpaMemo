@@ -1,0 +1,14 @@
+name: data_pack
+description: 電波人間の逆襲のドメインモデル・計算ロジックを扱う純粋Dartライブラリ。
+version: 0.1.0
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

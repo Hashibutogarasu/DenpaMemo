@@ -6,6 +6,14 @@ version: 1.0.0+1
 environment:
   sdk: ^3.10.1
 
+workspace:
+  - modules/DataPack
+  - modules/StepDialog
+  - modules/GraphQLClient
+  - modules/Graph
+  - modules/Widgets
+  - apps/WidgetBook
+
 dependencies:
   flutter:
     sdk: flutter
@@ -49,9 +57,27 @@ dev_dependencies:
   qr: ^3.0.2
   path_provider_platform_interface: ^2.1.3
   widgetbook_generator: ^3.24.0
+  melos: ^8.5.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/data/icons/monster/
     - assets/routes/
+
+melos:
+  scripts:
+    analyze:
+      exec:
+        command: flutter analyze .
+        concurrency: 1
+      packageFilters:
+        flutter: true
+      description: Run static analysis for every Flutter workspace package (data_pack is pure Dart and is analyzed separately with "dart analyze").
+    test:
+      exec:
+        command: flutter test
+        concurrency: 1
+      packageFilters:
+        flutter: true
+      description: Run the test suite for every Flutter workspace package (data_pack is pure Dart and is tested separately with "dart test").
