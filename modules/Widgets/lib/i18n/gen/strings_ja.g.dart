@@ -42,9 +42,15 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
+	late final Translations$home$ja home = Translations$home$ja.internal(_root);
+	late final Translations$search$ja search = Translations$search$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
 	late final Translations$editableStatus$ja editableStatus = Translations$editableStatus$ja.internal(_root);
+	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
+	Map<String, String> get monster => {
+		'swordmouse': 'ねずみけんし',
+	};
 	Map<String, String> get antenna => {
 		'none': 'アンテナなし',
 		'antennaRoot': 'アンテナのねっこ',
@@ -169,6 +175,35 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'onigiri': 'おにぎり',
 		'beans': 'まめ',
 	};
+	Map<String, String> get attribute => {
+		'fire': '火',
+		'water': '水',
+		'thunder': '雷',
+		'earth': '土',
+		'ice': '氷',
+		'wind': '風',
+		'light': '光',
+		'dark': '闇',
+		'physical': '物理',
+		'suddenDeath': '突然死',
+	};
+	Map<String, String> get abnormality => {
+		'poison': 'どく',
+		'burn': 'やけど',
+		'frostbite': 'しもやけ',
+		'cold': 'かぜっぴき',
+		'mud': 'どろだらけ',
+		'electrocution': 'かんでん',
+		'soaked': 'みずびだし',
+		'blind': 'ブラインド',
+		'curse': 'のろい',
+		'suddenDeath': 'とつぜんし',
+		'paralysis': 'マヒ',
+		'sleep': 'ねむり',
+		'charm': 'みりょう',
+		'fear': 'きょうふ',
+		'jack': 'ジャック',
+	};
 }
 
 // Path: common
@@ -207,6 +242,30 @@ class Translations$birthGuide$ja {
 	String get errorTitle => 'エラー';
 }
 
+// Path: home
+class Translations$home$ja {
+	Translations$home$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '検索'
+	String get searchHint => '検索';
+}
+
+// Path: search
+class Translations$search$ja {
+	Translations$search$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '名前'
+	String get name => '名前';
+}
+
 // Path: denpaMenStatus
 class Translations$denpaMenStatus$ja {
 	Translations$denpaMenStatus$ja.internal(this._root);
@@ -215,8 +274,17 @@ class Translations$denpaMenStatus$ja {
 
 	// Translations
 
+	/// ja: '幸福度'
+	String get happiness => '幸福度';
+
+	/// ja: 'レベル'
+	String get level => 'レベル';
+
 	/// ja: 'MAX'
 	String get max => 'MAX';
+
+	/// ja: 'ぞくせいたいせいなし'
+	String get noAttributeResistance => 'ぞくせいたいせいなし';
 
 	/// ja: 'つぎのLvまで'
 	String get untilNextLevel => 'つぎのLvまで';
@@ -229,6 +297,9 @@ class Translations$stat$ja {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
+
+	/// ja: 'アンテナ'
+	String get antenna => 'アンテナ';
 
 	/// ja: 'AP'
 	String get ap => 'AP';
@@ -302,17 +373,47 @@ class Translations$editableStatus$ja {
 	/// ja: '薄い'
 	String get bodyColorShadeThin => '薄い';
 
+	/// ja: '補正を考慮する'
+	String get considerCorrections => '補正を考慮する';
+
 	/// ja: '補正'
 	String get correction => '補正';
 
 	/// ja: '頭の形'
 	String get headShape => '頭の形';
 
+	/// ja: 'メモ'
+	String get memo => 'メモ';
+
+	/// ja: 'モンスターから獲得した経験値を記録'
+	String get monsterExp => 'モンスターから獲得した経験値を記録';
+
+	/// ja: '親'
+	String get parents => '親';
+
 	/// ja: 'QRコード'
 	String get qrCode => 'QRコード';
 
 	/// ja: 'SPカラー'
 	String get spColor => 'SPカラー';
+}
+
+// Path: backup
+class Translations$backup$ja {
+	Translations$backup$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'エクスポート結果'
+	String get exportCompleteTitle => 'エクスポート結果';
+
+	/// ja: 'エクスポート完了'
+	String get exportExportedSection => 'エクスポート完了';
+
+	/// ja: '親が同梱されていない個体'
+	String get exportOrphanedSection => '親が同梱されていない個体';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -329,8 +430,14 @@ extension on Translations {
 			'common.unset' => '未設定',
 			'birthGuide.errorMessage' => '系譜データの読み込みに失敗しました',
 			'birthGuide.errorTitle' => 'エラー',
+			'home.searchHint' => '検索',
+			'search.name' => '名前',
+			'denpaMenStatus.happiness' => '幸福度',
+			'denpaMenStatus.level' => 'レベル',
 			'denpaMenStatus.max' => 'MAX',
+			'denpaMenStatus.noAttributeResistance' => 'ぞくせいたいせいなし',
 			'denpaMenStatus.untilNextLevel' => 'つぎのLvまで',
+			'stat.antenna' => 'アンテナ',
 			'stat.ap' => 'AP',
 			'stat.attack' => 'こうげきりょく',
 			'stat.currentExp' => '経験値',
@@ -352,10 +459,18 @@ extension on Translations {
 			'editableStatus.bodyColorShadeDark' => '濃い',
 			'editableStatus.bodyColorShadeNormal' => '通常',
 			'editableStatus.bodyColorShadeThin' => '薄い',
+			'editableStatus.considerCorrections' => '補正を考慮する',
 			'editableStatus.correction' => '補正',
 			'editableStatus.headShape' => '頭の形',
+			'editableStatus.memo' => 'メモ',
+			'editableStatus.monsterExp' => 'モンスターから獲得した経験値を記録',
+			'editableStatus.parents' => '親',
 			'editableStatus.qrCode' => 'QRコード',
 			'editableStatus.spColor' => 'SPカラー',
+			'backup.exportCompleteTitle' => 'エクスポート結果',
+			'backup.exportExportedSection' => 'エクスポート完了',
+			'backup.exportOrphanedSection' => '親が同梱されていない個体',
+			'monster.swordmouse' => 'ねずみけんし',
 			'antenna.none' => 'アンテナなし',
 			'antenna.antennaRoot' => 'アンテナのねっこ',
 			'antenna.waterGun_1' => 'みずでっぽう',
@@ -472,6 +587,31 @@ extension on Translations {
 			'headShape.sparkle' => 'きらきら',
 			'headShape.onigiri' => 'おにぎり',
 			'headShape.beans' => 'まめ',
+			'attribute.fire' => '火',
+			'attribute.water' => '水',
+			'attribute.thunder' => '雷',
+			'attribute.earth' => '土',
+			'attribute.ice' => '氷',
+			'attribute.wind' => '風',
+			'attribute.light' => '光',
+			'attribute.dark' => '闇',
+			'attribute.physical' => '物理',
+			'attribute.suddenDeath' => '突然死',
+			'abnormality.poison' => 'どく',
+			'abnormality.burn' => 'やけど',
+			'abnormality.frostbite' => 'しもやけ',
+			'abnormality.cold' => 'かぜっぴき',
+			'abnormality.mud' => 'どろだらけ',
+			'abnormality.electrocution' => 'かんでん',
+			'abnormality.soaked' => 'みずびだし',
+			'abnormality.blind' => 'ブラインド',
+			'abnormality.curse' => 'のろい',
+			'abnormality.suddenDeath' => 'とつぜんし',
+			'abnormality.paralysis' => 'マヒ',
+			'abnormality.sleep' => 'ねむり',
+			'abnormality.charm' => 'みりょう',
+			'abnormality.fear' => 'きょうふ',
+			'abnormality.jack' => 'ジャック',
 			_ => null,
 		};
 	}

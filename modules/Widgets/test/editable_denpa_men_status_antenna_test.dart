@@ -1,11 +1,8 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
-import 'package:denpa_memo/widgets/editable_denpa_men_status.dart';
-import '../support/all_translation_providers.dart';
 
 const _healSolo1 = Anntena(
   id: 'heal_solo_1',
@@ -21,6 +18,37 @@ const _healSolo2 = Anntena(
   targetCount: 1,
   variantGroupId: 'heal',
 );
+
+Widget _buildApp(
+  DenpaMen denpaMen,
+  MasterData masterData,
+  ValueChanged<DenpaMen> onChanged,
+) {
+  return ProviderScope(
+    child: TranslationProvider(
+      child: MaterialApp(
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: EditableDenpaMenStatus(
+              denpaMen: denpaMen,
+              headShapes: masterData.headShapes,
+              anntenas: masterData.anntenas,
+              corrections: masterData.corrections,
+              qrCodeCandidates: const [],
+              onChanged: onChanged,
+              considerCorrections: true,
+              onConsiderCorrectionsChanged: (_) {},
+              icon: const SizedBox.shrink(),
+              parentCandidates: const [],
+              onPickParents: (_) async => null,
+              onPickMonsterExp: (_) async => null,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 void main() {
   testWidgets('picking a level via the antenna dialog updates both anntena and '
@@ -70,28 +98,7 @@ void main() {
     DenpaMen? changed;
 
     await tester.pumpWidget(
-      ProviderScope(
-        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: AllTranslationProviders(
-          child: MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: EditableDenpaMenStatus(
-                  denpaMen: denpaMen,
-                  headShapes: masterData.headShapes,
-                  anntenas: masterData.anntenas,
-                  corrections: masterData.corrections,
-                  masterData: masterData,
-                  qrCodeCandidates: const [],
-                  onChanged: (value) => changed = value,
-                  considerCorrections: true,
-                  onConsiderCorrectionsChanged: (_) {},
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      _buildApp(denpaMen, masterData, (value) => changed = value),
     );
     await tester.pumpAndSettle();
 
@@ -115,28 +122,7 @@ void main() {
     expect(changed!.antennaLevel, 9);
 
     await tester.pumpWidget(
-      ProviderScope(
-        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: AllTranslationProviders(
-          child: MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: EditableDenpaMenStatus(
-                  denpaMen: changed!,
-                  headShapes: masterData.headShapes,
-                  anntenas: masterData.anntenas,
-                  corrections: masterData.corrections,
-                  masterData: masterData,
-                  qrCodeCandidates: const [],
-                  onChanged: (value) => changed = value,
-                  considerCorrections: true,
-                  onConsiderCorrectionsChanged: (_) {},
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      _buildApp(changed!, masterData, (value) => changed = value),
     );
     await tester.pumpAndSettle();
 
@@ -196,32 +182,9 @@ void main() {
 
     DenpaMen? changed;
 
-    Widget buildApp(DenpaMen current) {
-      return ProviderScope(
-        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: AllTranslationProviders(
-          child: MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: EditableDenpaMenStatus(
-                  denpaMen: current,
-                  headShapes: masterData.headShapes,
-                  anntenas: masterData.anntenas,
-                  corrections: masterData.corrections,
-                  masterData: masterData,
-                  qrCodeCandidates: const [],
-                  onChanged: (value) => changed = value,
-                  considerCorrections: true,
-                  onConsiderCorrectionsChanged: (_) {},
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    await tester.pumpWidget(buildApp(denpaMen));
+    await tester.pumpWidget(
+      _buildApp(denpaMen, masterData, (value) => changed = value),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('ちょっとかいふく'), findsOneWidget);
@@ -238,7 +201,9 @@ void main() {
     expect(changed, isNotNull);
     expect(changed!.antennaLevel, 3);
 
-    await tester.pumpWidget(buildApp(changed!));
+    await tester.pumpWidget(
+      _buildApp(changed!, masterData, (value) => changed = value),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('ちょっとかいふく+3'), findsOneWidget);
@@ -295,30 +260,7 @@ void main() {
       maxLevel: 1,
     );
 
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: AllTranslationProviders(
-          child: MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: EditableDenpaMenStatus(
-                  denpaMen: denpaMen,
-                  headShapes: masterData.headShapes,
-                  anntenas: masterData.anntenas,
-                  corrections: masterData.corrections,
-                  masterData: masterData,
-                  qrCodeCandidates: const [],
-                  onChanged: (_) {},
-                  considerCorrections: true,
-                  onConsiderCorrectionsChanged: (_) {},
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+    await tester.pumpWidget(_buildApp(denpaMen, masterData, (_) {}));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('ちょっとかいふく+3'));

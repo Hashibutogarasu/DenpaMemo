@@ -1,9 +1,9 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 
 import '../../domain/backup/dm_import_error.dart';
 import '../../domain/backup/import_result.dart';
 import '../../i18n/gen/strings.g.dart';
-import 'backup_result_section.dart';
 
 /// Summarizes one `.dm` import's outcome as read-only sections, shown via
 /// [show] after `_importFromFile` in `../../pages/home.dart` finishes.

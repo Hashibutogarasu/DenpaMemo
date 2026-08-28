@@ -1,47 +1,57 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../i18n/gen/strings.g.dart';
-import '../../providers/denpa_men_providers.dart';
-import '../../providers/search_providers.dart';
+import '../theme/app_colors.dart';
 
 /// Overlay search bar that slides down from the top of the screen when
-/// Ctrl+F is pressed, and back up when dismissed. Binds its input directly
-/// to [searchQueryProvider]'s name field, so typing here filters the home
-/// screen through the same search pipeline used by the dedicated search
-/// page.
+/// [open] is true, and back up when it isn't. [queryName] mirrors the
+/// current search name filter; typing here calls [onQueryNameChanged].
 ///
-/// Always mounted (visibility is animated via [searchOverlayOpenProvider])
-/// rather than conditionally inserted into the tree, so the slide-out plays
-/// instead of the bar disappearing instantly.
-class SearchOverlayBar extends ConsumerStatefulWidget {
+/// Always mounted (visibility is animated via [open]) rather than
+/// conditionally inserted into the tree, so the slide-out plays instead of
+/// the bar disappearing instantly.
+class SearchOverlayBar extends StatefulWidget {
   const SearchOverlayBar({
     super.key,
+    required this.open,
+    required this.queryName,
+    required this.onQueryNameChanged,
+    required this.onClose,
     this.duration = const Duration(milliseconds: 200),
     this.margin = const EdgeInsets.all(16),
   });
 
+  final bool open;
+  final String queryName;
+  final ValueChanged<String> onQueryNameChanged;
+  final VoidCallback onClose;
   final Duration duration;
   final EdgeInsetsGeometry margin;
 
   @override
-  ConsumerState<SearchOverlayBar> createState() => _SearchOverlayBarState();
+  State<SearchOverlayBar> createState() => _SearchOverlayBarState();
 }
 
-class _SearchOverlayBarState extends ConsumerState<SearchOverlayBar> {
+class _SearchOverlayBarState extends State<SearchOverlayBar> {
   final _focusNode = FocusNode();
-  late final _controller = TextEditingController(
-    text: ref.read(searchQueryProvider).name,
-  );
-
-  void _updateName(String value) {
-    ref.read(searchQueryProvider.notifier).update((q) => q.copyWith(name: value));
-  }
+  late final _controller = TextEditingController(text: widget.queryName);
 
   void _clear() {
     _controller.clear();
-    _updateName('');
+    widget.onQueryNameChanged('');
+  }
+
+  @override
+  void didUpdateWidget(covariant SearchOverlayBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.open != oldWidget.open) {
+      if (widget.open) {
+        _focusNode.requestFocus();
+      } else {
+        _focusNode.unfocus();
+        _clear();
+      }
+    }
   }
 
   @override
@@ -54,16 +64,7 @@ class _SearchOverlayBarState extends ConsumerState<SearchOverlayBar> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final open = ref.watch(searchOverlayOpenProvider);
-
-    ref.listen(searchOverlayOpenProvider, (previous, next) {
-      if (next) {
-        _focusNode.requestFocus();
-      } else {
-        _focusNode.unfocus();
-        _clear();
-      }
-    });
+    final open = widget.open;
 
     return IgnorePointer(
       ignoring: !open,
@@ -100,14 +101,12 @@ class _SearchOverlayBarState extends ConsumerState<SearchOverlayBar> {
                             hintText: t.home.searchHint,
                             border: InputBorder.none,
                           ),
-                          onChanged: _updateName,
+                          onChanged: widget.onQueryNameChanged,
                         ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.close, color: AppColors.accent),
-                        onPressed: () =>
-                            ref.read(searchOverlayOpenProvider.notifier)
-                                .state = false,
+                        onPressed: widget.onClose,
                       ),
                     ],
                   ),

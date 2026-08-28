@@ -1,31 +1,39 @@
+import 'dart:io';
+
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../i18n/gen/strings.g.dart';
+import 'container/status.dart';
 import 'denpa_men_status.dart';
-import 'dialog/denpa_men_action_menu.dart';
-import 'icon/denpa_men_icon.dart';
+import 'icon/entity_icon.dart';
+import 'label/gauge_label.dart';
+import 'label/gauge_value.dart';
+import 'label/outlined_title.dart';
+import 'theme/app_colors.dart';
 
-/// Collapsed-by-default list entry for a saved [DenpaMenRecord]. Header and
-/// (once expanded) [DenpaMenStatus] share a single [StatusContainer] rather
-/// than each having their own, so the tile reads as one continuous shape
-/// instead of two stacked rounded boxes.
-class DenpaMenAccordionTile extends ConsumerStatefulWidget {
+/// Collapsed-by-default list entry for [denpaMen]. Header and (once
+/// expanded) [DenpaMenStatus] share a single [StatusContainer] rather than
+/// each having their own, so the tile reads as one continuous shape instead
+/// of two stacked rounded boxes. [iconFile] is an already-resolved icon (or
+/// null for a placeholder); [actionMenuItemsBuilder] supplies the trailing
+/// overflow menu's items, or omit it to hide the menu entirely.
+class DenpaMenAccordionTile extends StatefulWidget {
   const DenpaMenAccordionTile({
     super.key,
-    required this.record,
-    required this.masterData,
+    required this.denpaMen,
+    required this.totalAttributeCount,
     required this.selectionMode,
     required this.selected,
     required this.isCut,
     required this.onSelectedChanged,
+    this.iconFile,
+    this.actionMenuItemsBuilder,
     this.animationDuration = const Duration(milliseconds: 200),
   });
 
-  final DenpaMenRecord record;
-  final MasterData masterData;
+  final DenpaMen denpaMen;
+  final int totalAttributeCount;
 
   /// Duration of the expand/collapse and rotation animations.
   final Duration animationDuration;
@@ -50,12 +58,15 @@ class DenpaMenAccordionTile extends ConsumerStatefulWidget {
   /// this tile).
   final ValueChanged<bool> onSelectedChanged;
 
+  final File? iconFile;
+  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
+  actionMenuItemsBuilder;
+
   @override
-  ConsumerState<DenpaMenAccordionTile> createState() =>
-      _DenpaMenAccordionTileState();
+  State<DenpaMenAccordionTile> createState() => _DenpaMenAccordionTileState();
 }
 
-class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
+class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
   bool _expanded = false;
 
   void _handleTap() {
@@ -75,7 +86,7 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final denpaMen = widget.record.denpaMen;
+    final denpaMen = widget.denpaMen;
 
     return Opacity(
       opacity: widget.isCut ? 0.5 : 1,
@@ -107,7 +118,7 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                       opacity: _expanded ? 0 : 1,
                       child: Row(
                         children: [
-                          DenpaMenIcon(denpaMenId: denpaMen.id, size: 32),
+                          ResolvedEntityIcon(file: widget.iconFile, size: 32),
                           const SizedBox(width: 8),
                           Flexible(
                             child: OutlinedTitleText(
@@ -129,16 +140,12 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
                     ),
                   ),
                 ),
-                PopupMenuButton<VoidCallback>(
-                  icon: const Icon(Icons.more_vert, color: AppColors.accent),
-                  onSelected: (action) => action(),
-                  itemBuilder: (context) => denpaMenActionMenuItems(
-                    context,
-                    ref,
-                    record: widget.record,
-                    masterData: widget.masterData,
+                if (widget.actionMenuItemsBuilder != null)
+                  PopupMenuButton<VoidCallback>(
+                    icon: const Icon(Icons.more_vert, color: AppColors.accent),
+                    onSelected: (action) => action(),
+                    itemBuilder: widget.actionMenuItemsBuilder!,
                   ),
-                ),
                 InkWell(
                   borderRadius: BorderRadius.circular(20),
                   onTap: _handleTap,
@@ -160,9 +167,10 @@ class _DenpaMenAccordionTileState extends ConsumerState<DenpaMenAccordionTile> {
               child: _expanded
                   ? DenpaMenStatus.fromDenpaMen(
                       denpaMen,
-                      totalAttributeCount: widget.masterData.attributes.length,
+                      totalAttributeCount: widget.totalAttributeCount,
                       showContainer: false,
                       showIcon: true,
+                      iconFile: widget.iconFile,
                     )
                   : const SizedBox(width: double.infinity),
             ),

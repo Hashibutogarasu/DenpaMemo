@@ -11,7 +11,6 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../routing/app_router.dart';
 import 'denpa_men_editor.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 
 class DenpaMenQrPageArgs {
   const DenpaMenQrPageArgs({required this.masterData, this.initialRawValue});

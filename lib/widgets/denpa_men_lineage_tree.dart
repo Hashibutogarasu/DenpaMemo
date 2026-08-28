@@ -10,7 +10,6 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../providers/search_providers.dart';
 import 'dialog/denpa_men_action_menu.dart';
-import 'dialog/denpa_men_preview_dialog.dart';
 
 /// Shows every saved QR code as the root of a tree of caught/bred
 /// individuals, all in one shared canvas.
@@ -66,15 +65,17 @@ class DenpaMenLineageTree extends ConsumerWidget {
             return Center(child: Text(context.t.home.empty));
           }
 
+          final iconsById = {
+            for (final record in lineageRecords)
+              record.denpaMen.id: ref
+                  .watch(denpaMenIconProvider(record.denpaMen.id))
+                  .value,
+          };
+
           return DenpaMenLineageGraph(
             qrCodes: qrCodes,
             denpaMenRecords: lineageRecords,
-            iconsById: {
-              for (final record in lineageRecords)
-                record.denpaMen.id: ref
-                    .watch(denpaMenIconProvider(record.denpaMen.id))
-                    .value,
-            },
+            iconsById: iconsById,
             selectionMode: ref.watch(selectionModeProvider),
             selectedIds: ref.watch(selectedDenpaMenIdsProvider),
             onToggleSelection: (id) => toggleDenpaMenSelection(ref, id),
@@ -82,8 +83,12 @@ class DenpaMenLineageTree extends ConsumerWidget {
               ref.read(selectionModeProvider.notifier).state = true;
               toggleDenpaMenSelection(ref, id);
             },
-            onTapNode: (context, denpaMen) =>
-                DenpaMenPreviewDialog.show(context, denpaMen: denpaMen),
+            onTapNode: (context, denpaMen) => DenpaMenPreviewDialog.show(
+              context,
+              denpaMen: denpaMen,
+              totalAttributeCount: masterData.attributes.length,
+              iconFile: iconsById[denpaMen.id],
+            ),
             onHoveredRecordChanged: (id) =>
                 ref.read(hoveredTreeRecordIdProvider.notifier).state = id,
             contextMenuBuilder: (context, record, child) =>

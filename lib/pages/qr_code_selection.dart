@@ -9,7 +9,6 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 import 'denpa_men_editor.dart';
 
 /// Lets the user pick an already-saved QR code to add more individuals

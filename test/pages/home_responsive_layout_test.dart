@@ -1,14 +1,14 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/pages/home.dart';
 import 'package:denpa_memo/providers/denpa_men_providers.dart';
 import 'package:graphql_client/graphql_client.dart';
+import '../support/all_translation_providers.dart';
 
 final _masterData = MasterData(
   headShapes: const [],
@@ -49,7 +49,7 @@ void main() {
             (ref, masterData) => Stream.value(const <DenpaMenRecord>[]),
           ),
         ],
-        child: TranslationProvider(
+        child: AllTranslationProviders(
           child: MaterialApp.router(routerConfig: router),
         ),
       ),

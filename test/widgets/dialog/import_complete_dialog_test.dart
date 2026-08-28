@@ -1,12 +1,10 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:denpa_memo/domain/backup/dm_import_error.dart';
 import 'package:denpa_memo/domain/backup/import_result.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
 import 'package:denpa_memo/widgets/dialog/import_complete_dialog.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
@@ -49,11 +47,8 @@ void main() {
 
   Future<void> pump(WidgetTester tester, ImportResult result) {
     return tester.pumpWidget(
-      ProviderScope(
-        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: TranslationProvider(
-          child: MaterialApp(home: ImportCompleteDialog(result: result)),
-        ),
+      TranslationProvider(
+        child: MaterialApp(home: ImportCompleteDialog(result: result)),
       ),
     );
   }

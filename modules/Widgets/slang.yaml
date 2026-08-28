@@ -10,3 +10,6 @@ maps:
   - bodyColor
   - correction
   - antenna
+  - attribute
+  - abnormality
+  - monster

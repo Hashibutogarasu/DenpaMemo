@@ -9,10 +9,7 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_selection_providers.dart';
 import '../providers/search_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/denpa_men_list_tile.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
-import '../widgets/scaffold/app_scaffold.dart';
-import '../widgets/search/search_form.dart';
 import 'package:graphql_client/graphql_client.dart';
 
 class DenpaMenSelectionArgs {
@@ -195,6 +192,10 @@ class _DenpaMenSelectionPageState extends ConsumerState<DenpaMenSelectionPage>
                         SearchForm(
                           headShapes: masterData.headShapes,
                           anntenas: masterData.anntenas,
+                          query: ref.watch(searchFormDraftProvider),
+                          onChanged: (value) => ref
+                              .read(searchFormDraftProvider.notifier)
+                              .state = value,
                         ),
                       ],
                     );

@@ -8,7 +8,6 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/search_providers.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 import 'package:graphql_client/graphql_client.dart';
 
 /// Shows [filteredDenpaMenProvider]'s matches for the current

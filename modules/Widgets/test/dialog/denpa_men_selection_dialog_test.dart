@@ -1,13 +1,8 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
-import 'package:denpa_memo/widgets/dialog/denpa_men_preview_dialog.dart';
-import 'package:denpa_memo/widgets/dialog/denpa_men_selection_dialog.dart';
-import 'package:graphql_client/graphql_client.dart';
-import '../../support/all_translation_providers.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
 
@@ -58,11 +53,7 @@ void main() {
     List<DenpaMen>? result;
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          denpaMenIconProvider.overrideWith((ref, id) async => null),
-          masterDataProvider.overrideWithValue(AsyncData(masterData)),
-        ],
-        child: AllTranslationProviders(
+        child: TranslationProvider(
           child: MaterialApp(
             home: Builder(
               builder: (context) => ElevatedButton(
@@ -73,6 +64,7 @@ void main() {
                     candidates: candidates,
                     initial: initial,
                     minSelection: minSelection,
+                    totalAttributeCount: masterData.attributes.length,
                   );
                 },
                 child: const Text('open'),
@@ -131,11 +123,7 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          denpaMenIconProvider.overrideWith((ref, id) async => null),
-          masterDataProvider.overrideWithValue(AsyncData(masterData)),
-        ],
-        child: AllTranslationProviders(
+        child: TranslationProvider(
           child: MaterialApp(
             home: Builder(
               builder: (context) => ElevatedButton(
@@ -145,6 +133,7 @@ void main() {
                     title: 'Select',
                     candidates: [a, b],
                     initial: [a],
+                    totalAttributeCount: masterData.attributes.length,
                   );
                 },
                 child: const Text('open'),

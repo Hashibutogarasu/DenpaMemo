@@ -1,9 +1,8 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:denpa_memo/widgets/denpa_men_status.dart';
-import '../support/all_translation_providers.dart';
 
 const _healSolo1 = Anntena(
   id: 'heal_solo_1',
@@ -61,13 +60,15 @@ void main() {
       );
 
       await tester.pumpWidget(
-        AllTranslationProviders(
-          child: MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: DenpaMenStatus.fromDenpaMen(
-                  denpaMen,
-                  totalAttributeCount: 1,
+        ProviderScope(
+          child: TranslationProvider(
+            child: MaterialApp(
+              home: Scaffold(
+                body: SingleChildScrollView(
+                  child: DenpaMenStatus.fromDenpaMen(
+                    denpaMen,
+                    totalAttributeCount: 1,
+                  ),
                 ),
               ),
             ),

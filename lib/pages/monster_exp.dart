@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../i18n/gen/strings.g.dart';
 import '../routing/app_router.dart';
 import '../widgets/icon/monster_icon.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 
 /// Records the outcome of defeating a monster: which one, how many, and
 /// the individual's resulting exp/level plus how many teammates were

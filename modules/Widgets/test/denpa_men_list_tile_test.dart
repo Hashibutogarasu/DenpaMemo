@@ -1,16 +1,7 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
-import 'package:denpa_memo/data/objectbox/objectbox.dart';
-import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
-import 'package:denpa_memo/providers/objectbox_providers.dart';
-import 'package:denpa_memo/widgets/denpa_men_list_tile.dart';
-import 'package:denpa_memo/widgets/dialog/denpa_men_preview_dialog.dart';
-import 'package:graphql_client/graphql_client.dart';
-import '../support/all_translation_providers.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
 
@@ -60,30 +51,23 @@ void main() {
     ValueChanged<bool>? onSelectedChanged,
     VoidCallback? onTap,
     bool enableLongPressPreview = true,
-    DenpaMenRecord? record,
-    MasterData? recordMasterData,
-    ObjectBox? objectBox,
+    ValueChanged<DenpaMen>? onLongPress,
+    List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
+    actionMenuItemsBuilder,
   }) async {
     await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          denpaMenIconProvider.overrideWith((ref, id) async => null),
-          masterDataProvider.overrideWithValue(AsyncData(masterData)),
-          if (objectBox != null) objectBoxProvider.overrideWithValue(objectBox),
-        ],
-        child: AllTranslationProviders(
-          child: MaterialApp(
-            home: Scaffold(
-              body: DenpaMenListTile(
-                denpaMen: denpaMen,
-                selectionMode: selectionMode,
-                selected: selected,
-                onSelectedChanged: onSelectedChanged,
-                onTap: onTap,
-                enableLongPressPreview: enableLongPressPreview,
-                record: record,
-                masterData: recordMasterData,
-              ),
+      TranslationProvider(
+        child: MaterialApp(
+          home: Scaffold(
+            body: DenpaMenListTile(
+              denpaMen: denpaMen,
+              selectionMode: selectionMode,
+              selected: selected,
+              onSelectedChanged: onSelectedChanged,
+              onTap: onTap,
+              enableLongPressPreview: enableLongPressPreview,
+              onLongPress: onLongPress,
+              actionMenuItemsBuilder: actionMenuItemsBuilder,
             ),
           ),
         ),
@@ -128,72 +112,48 @@ void main() {
   );
 
   testWidgets(
-    'enableLongPressPreview false: long-press does not open the preview '
-    'dialog',
+    'enableLongPressPreview false: long-press does not invoke onLongPress',
     (tester) async {
+      DenpaMen? pressed;
       await pumpTile(
         tester,
         denpaMen: buildDenpaMen('individual-a'),
         enableLongPressPreview: false,
+        onLongPress: (denpaMen) => pressed = denpaMen,
       );
 
       await tester.longPress(find.text('individual-a'));
       await tester.pumpAndSettle();
 
-      expect(find.byType(DenpaMenPreviewDialog), findsNothing);
+      expect(pressed, isNull);
     },
   );
 
-  testWidgets('default enableLongPressPreview: long-press opens the preview '
-      'dialog', (tester) async {
-    await pumpTile(tester, denpaMen: buildDenpaMen('individual-a'));
+  testWidgets(
+    'default enableLongPressPreview: long-press invokes onLongPress with '
+    'the denpaMen',
+    (tester) async {
+      DenpaMen? pressed;
+      final denpaMen = buildDenpaMen('individual-a');
+      await pumpTile(
+        tester,
+        denpaMen: denpaMen,
+        onLongPress: (value) => pressed = value,
+      );
 
-    await tester.longPress(find.text('individual-a'));
-    await tester.pumpAndSettle();
+      await tester.longPress(find.text('individual-a'));
+      await tester.pumpAndSettle();
 
-    expect(find.byType(DenpaMenPreviewDialog), findsOneWidget);
-  });
+      expect(pressed, denpaMen);
+    },
+  );
 
   testWidgets(
-    'without record/masterData, no trailing action menu is shown',
+    'without an action menu builder, no trailing action menu is shown',
     (tester) async {
       await pumpTile(tester, denpaMen: buildDenpaMen('individual-a'));
 
       expect(find.byIcon(Icons.more_vert), findsNothing);
-    },
-  );
-
-  testWidgets(
-    'with record/masterData, the trailing menu deletes the individual after '
-    'confirmation',
-    (tester) async {
-      final objectBox = ObjectBox.createInMemory();
-      addTearDown(objectBox.store.close);
-      final repository = ObjectBoxDenpaMenRepository(objectBox);
-      final denpaMen = buildDenpaMen('individual-a');
-      final id = repository.save(denpaMen);
-      final record = DenpaMenRecord(id: id, denpaMen: denpaMen);
-
-      await pumpTile(
-        tester,
-        denpaMen: denpaMen,
-        record: record,
-        recordMasterData: masterData,
-        objectBox: objectBox,
-      );
-
-      expect(find.byIcon(Icons.more_vert), findsOneWidget);
-
-      await tester.tap(find.byIcon(Icons.more_vert));
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('削除'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('削除の確認'), findsOneWidget);
-      await tester.tap(find.text('削除'));
-      await tester.pumpAndSettle();
-
-      expect(repository.getAll(masterData), isEmpty);
     },
   );
 }

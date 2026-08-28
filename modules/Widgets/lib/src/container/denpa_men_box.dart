@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
@@ -22,6 +23,7 @@ class DenpaMenBox extends StatelessWidget {
     required this.cutIds,
     required this.onSelectedChanged,
     required this.onTapRecord,
+    this.iconsById = const {},
     this.columns,
     this.itemSize = 56,
     this.gap = 8,
@@ -34,6 +36,10 @@ class DenpaMenBox extends StatelessWidget {
   final Set<int> cutIds;
   final void Function(int id, bool selected) onSelectedChanged;
   final ValueChanged<DenpaMen> onTapRecord;
+
+  /// Already-resolved icons keyed by [DenpaMen.id]; a missing entry
+  /// renders a placeholder.
+  final Map<String, File?> iconsById;
 
   /// Fixed column count. When null, the column count is derived from the
   /// available width, [itemSize], and [gap] instead.
@@ -73,6 +79,7 @@ class DenpaMenBox extends StatelessWidget {
                     onSelectedChanged(record.id, selected),
                 onTap: () => onTapRecord(record.denpaMen),
                 enableLongPressPreview: false,
+                iconFile: iconsById[record.denpaMen.id],
                 size: itemSize,
               ),
             );

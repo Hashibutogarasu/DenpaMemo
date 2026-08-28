@@ -1,19 +1,20 @@
+import 'dart:io';
+
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'dialog/denpa_men_action_menu.dart';
-import 'dialog/denpa_men_preview_dialog.dart';
-import 'icon/denpa_men_icon.dart';
+import 'icon/entity_icon.dart';
 
 /// Shared row layout for lists of [DenpaMen] candidates: an icon, the
 /// name, and a trailing slot that swaps between a selection checkmark, a
-/// selection checkbox, and an edit menu. Used by
-/// [DenpaMenSelectionDialog](dialog/denpa_men_selection_dialog.dart),
-/// [DenpaMenSelectionPage](../pages/denpa_men_selection.dart),
-/// read-only result dialogs (leaving [onTap] null renders a
-/// non-interactive tile), and the mobile home individual list.
-class DenpaMenListTile extends ConsumerWidget {
+/// selection checkbox, and an edit menu. [iconFile] is an already-resolved
+/// icon (or null for a placeholder); [actionMenuItemsBuilder] supplies the
+/// trailing overflow menu's items, or omit it to hide the menu entirely.
+/// [onLongPress] fires on long-press when [enableLongPressPreview] is true
+/// (its default); when false, long-pressing instead enters selection mode
+/// via [onSelectedChanged], the same as tapping while [selectionMode] is
+/// already active.
+class DenpaMenListTile extends StatelessWidget {
   const DenpaMenListTile({
     super.key,
     required this.denpaMen,
@@ -22,8 +23,9 @@ class DenpaMenListTile extends ConsumerWidget {
     this.onSelectedChanged,
     this.onTap,
     this.enableLongPressPreview = true,
-    this.record,
-    this.masterData,
+    this.onLongPress,
+    this.iconFile,
+    this.actionMenuItemsBuilder,
   });
 
   final DenpaMen denpaMen;
@@ -32,16 +34,15 @@ class DenpaMenListTile extends ConsumerWidget {
   final ValueChanged<bool>? onSelectedChanged;
   final VoidCallback? onTap;
   final bool enableLongPressPreview;
-  final DenpaMenRecord? record;
-  final MasterData? masterData;
+  final ValueChanged<DenpaMen>? onLongPress;
+  final File? iconFile;
+  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
+  actionMenuItemsBuilder;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final record = this.record;
-    final masterData = this.masterData;
-    final showActionMenu =
-        !selectionMode && record != null && masterData != null;
-    final leadingIcon = DenpaMenIcon(denpaMenId: denpaMen.id, size: 40);
+  Widget build(BuildContext context) {
+    final showActionMenu = !selectionMode && actionMenuItemsBuilder != null;
+    final leadingIcon = ResolvedEntityIcon(file: iconFile, size: 40);
 
     return Material(
       type: MaterialType.transparency,
@@ -66,12 +67,7 @@ class DenpaMenListTile extends ConsumerWidget {
             ? PopupMenuButton<VoidCallback>(
                 icon: const Icon(Icons.more_vert),
                 onSelected: (action) => action(),
-                itemBuilder: (context) => denpaMenActionMenuItems(
-                  context,
-                  ref,
-                  record: record,
-                  masterData: masterData,
-                ),
+                itemBuilder: actionMenuItemsBuilder!,
               )
             : onSelectedChanged == null && selected
             ? const Icon(Icons.check)
@@ -84,7 +80,7 @@ class DenpaMenListTile extends ConsumerWidget {
           }
         },
         onLongPress: enableLongPressPreview
-            ? () => DenpaMenPreviewDialog.show(context, denpaMen: denpaMen)
+            ? (onLongPress == null ? null : () => onLongPress!(denpaMen))
             : onSelectedChanged != null
             ? () {
                 if (!selectionMode) {

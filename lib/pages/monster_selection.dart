@@ -7,7 +7,6 @@ import 'package:graphql_client/graphql_client.dart';
 import '../i18n/gen/strings.g.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/icon/monster_icon.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 
 /// Single-select list of every [Monster], reached from
 /// [MonsterExpPage](monster_exp.dart)'s "defeated monster" field. Tapping

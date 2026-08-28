@@ -5,12 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../i18n/gen/strings.g.dart';
+import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/birth_guide/birth_guide_confirm_slide.dart';
-import '../widgets/birth_guide/birth_guide_individual_slide.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 
 class BirthGuideArgs {
   const BirthGuideArgs({required this.masterData, required this.target});
@@ -110,6 +108,9 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
                 denpaMen: individual.denpaMen,
                 totalAttributeCount: totalAttributeCount,
                 instruction: t.birthGuide.catchIndividualInstruction,
+                iconFile: ref
+                    .watch(denpaMenIconProvider(individual.denpaMen.id))
+                    .value,
               ),
             );
             isConfirmSlide.add(false);
@@ -120,6 +121,9 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
               denpaMen: step.parentA.denpaMen,
               totalAttributeCount: totalAttributeCount,
               instruction: t.birthGuide.breedParentInstruction,
+              iconFile: ref
+                  .watch(denpaMenIconProvider(step.parentA.denpaMen.id))
+                  .value,
             ),
           );
           isConfirmSlide.add(false);
@@ -128,6 +132,9 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
               denpaMen: step.parentB.denpaMen,
               totalAttributeCount: totalAttributeCount,
               instruction: t.birthGuide.breedParentInstruction,
+              iconFile: ref
+                  .watch(denpaMenIconProvider(step.parentB.denpaMen.id))
+                  .value,
             ),
           );
           isConfirmSlide.add(false);
@@ -136,6 +143,9 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
               denpaMen: step.individual.denpaMen,
               totalAttributeCount: totalAttributeCount,
               instruction: t.birthGuide.confirmInstruction,
+              iconFile: ref
+                  .watch(denpaMenIconProvider(step.individual.denpaMen.id))
+                  .value,
             ),
           );
           isConfirmSlide.add(true);

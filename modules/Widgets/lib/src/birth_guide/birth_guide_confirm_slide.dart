@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
@@ -9,11 +11,13 @@ class BirthGuideConfirmSlide extends StatelessWidget {
     required this.denpaMen,
     required this.totalAttributeCount,
     required this.instruction,
+    this.iconFile,
   });
 
   final DenpaMen denpaMen;
   final int totalAttributeCount;
   final String instruction;
+  final File? iconFile;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,7 @@ class BirthGuideConfirmSlide extends StatelessWidget {
       denpaMen: denpaMen,
       totalAttributeCount: totalAttributeCount,
       instruction: instruction,
+      iconFile: iconFile,
     );
   }
 }

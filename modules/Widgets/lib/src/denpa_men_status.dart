@@ -1,19 +1,30 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/master_data/antenna_display_name.dart';
 import '../i18n/gen/strings.g.dart';
-import '../providers/responsive_providers.dart';
-import 'icon/denpa_men_icon.dart';
+import 'container/indented_header.dart';
+import 'container/nested.dart';
+import 'container/status.dart';
+import 'domain/antenna_display_name.dart';
+import 'icon/entity_icon.dart';
+import 'label/abnormality_resistance_entry.dart';
+import 'label/attribute_resistance_entry.dart';
+import 'label/exp_progress.dart';
+import 'label/gauge_label.dart';
+import 'label/gauge_value.dart';
+import 'label/outlined_title.dart';
+import 'label/stat_value.dart';
+import 'label/status.dart';
+import 'responsive/responsive_provider.dart';
+import 'theme/app_colors.dart';
 
 class DenpaMenStatus extends ConsumerWidget {
   const DenpaMenStatus({
     super.key,
-    required this.denpaMenId,
     required this.name,
     required this.level,
     required this.happiness,
@@ -32,6 +43,7 @@ class DenpaMenStatus extends ConsumerWidget {
     this.memo,
     this.showContainer = true,
     this.showIcon = false,
+    this.iconFile,
     this.attributeResistanceColumns = 4,
     this.entryHeight = 20,
   });
@@ -45,13 +57,13 @@ class DenpaMenStatus extends ConsumerWidget {
     bool showContainer = true,
     bool includeStatBonus = true,
     bool showIcon = false,
+    File? iconFile,
   }) {
     final corrected = denpaMen.applyCorrections(
       includeStatBonus: includeStatBonus,
     );
     return DenpaMenStatus(
       key: key,
-      denpaMenId: corrected.id,
       name: corrected.name,
       level: GaugeValue(current: corrected.level, max: corrected.maxLevel),
       happiness: GaugeValue(
@@ -78,10 +90,10 @@ class DenpaMenStatus extends ConsumerWidget {
       memo: corrected.memo,
       showContainer: showContainer,
       showIcon: showIcon,
+      iconFile: iconFile,
     );
   }
 
-  final String denpaMenId;
   final String name;
   final GaugeValue level;
   final GaugeValue happiness;
@@ -100,6 +112,11 @@ class DenpaMenStatus extends ConsumerWidget {
   final String? memo;
   final bool showContainer;
   final bool showIcon;
+
+  /// Already-resolved icon file shown when [showIcon] is true; renders a
+  /// placeholder while null. Resolving the icon (which `DenpaMen` it
+  /// belongs to, where it's stored) is the caller's responsibility.
+  final File? iconFile;
   final int attributeResistanceColumns;
   final double entryHeight;
 
@@ -160,7 +177,7 @@ class DenpaMenStatus extends ConsumerWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                DenpaMenIcon(denpaMenId: denpaMenId, size: 56),
+                ResolvedEntityIcon(file: iconFile, size: 56),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Container(

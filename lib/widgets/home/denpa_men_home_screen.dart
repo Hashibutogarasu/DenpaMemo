@@ -6,16 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';
 import '../../providers/home_view_providers.dart';
-import '../../providers/responsive_providers.dart';
 import '../../providers/search_providers.dart';
-import '../container/denpa_men_box.dart';
-import '../denpa_men_accordion_tile.dart';
 import '../denpa_men_lineage_tree.dart';
-import '../denpa_men_list_tile.dart';
-import '../dialog/denpa_men_preview_dialog.dart';
-import '../scaffold/app_scaffold.dart';
+import '../dialog/denpa_men_action_menu.dart';
 import '../selection_floating_menu.dart';
 
 /// Full home-style screen: view mode toggles and the individual
@@ -203,6 +199,13 @@ class _HomeBody extends ConsumerWidget {
     final cutIds = ref.watch(cutDenpaMenIdsProvider);
     final isMobile = ref.watch(isMobileLayoutProvider);
     final tileMode = ref.watch(homeTileModeProvider);
+    final totalAttributeCount = masterData.attributes.length;
+    final iconsById = {
+      for (final record in records)
+        record.denpaMen.id: ref.watch(
+          denpaMenIconProvider(record.denpaMen.id),
+        ).value,
+    };
 
     final contentPadding = EdgeInsets.fromLTRB(
       isMobile ? 0 : 16,
@@ -234,7 +237,10 @@ class _HomeBody extends ConsumerWidget {
                         onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
                           context,
                           denpaMen: denpaMen,
+                          totalAttributeCount: totalAttributeCount,
+                          iconFile: iconsById[denpaMen.id],
                         ),
+                        iconsById: iconsById,
                         padding: contentPadding,
                       ),
                       HomeTileMode.tile => ListView.builder(
@@ -263,20 +269,36 @@ class _HomeBody extends ConsumerWidget {
                                       onTap: () => DenpaMenPreviewDialog.show(
                                         context,
                                         denpaMen: denpaMen,
+                                        totalAttributeCount: totalAttributeCount,
+                                        iconFile: iconsById[denpaMen.id],
                                       ),
                                       enableLongPressPreview: false,
-                                      record: record,
-                                      masterData: masterData,
+                                      iconFile: iconsById[denpaMen.id],
+                                      actionMenuItemsBuilder: (context) =>
+                                          denpaMenActionMenuItems(
+                                            context,
+                                            ref,
+                                            record: record,
+                                            masterData: masterData,
+                                          ),
                                     ),
                                   )
                                 : DenpaMenAccordionTile(
-                                    record: record,
-                                    masterData: masterData,
+                                    denpaMen: denpaMen,
+                                    totalAttributeCount: totalAttributeCount,
                                     selectionMode: selectionMode,
                                     selected: selectedIds.contains(record.id),
                                     isCut: cutIds.contains(record.id),
                                     onSelectedChanged: (selected) =>
                                         _setSelected(ref, record.id, selected),
+                                    iconFile: iconsById[denpaMen.id],
+                                    actionMenuItemsBuilder: (context) =>
+                                        denpaMenActionMenuItems(
+                                          context,
+                                          ref,
+                                          record: record,
+                                          masterData: masterData,
+                                        ),
                                   ),
                           );
                         },

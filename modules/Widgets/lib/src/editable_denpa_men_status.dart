@@ -1,19 +1,40 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/master_data/antenna_display_name.dart';
 import '../i18n/gen/strings.g.dart';
-import '../providers/responsive_providers.dart';
-import '../routing/app_router.dart';
+import 'color/color_dot.dart';
+import 'container/indented_header.dart';
+import 'container/nested.dart';
+import 'container/selection_tile.dart';
+import 'container/status.dart';
+import 'dialog/antenna_selection_dialog.dart';
+import 'dialog/body_color_selection_dialog.dart';
+import 'dialog/correction_selection_dialog.dart';
+import 'dialog/head_shape_selection_dialog.dart';
+import 'domain/antenna_display_name.dart';
+import 'editable_exp.dart';
 import 'editable_parents.dart';
-import 'icon/editable_denpa_men_icon.dart';
+import 'editable_qr_code.dart';
+import 'editable_stat_grid.dart';
+import 'field/inline_text_field.dart';
+import 'field/outlined_inline_name_field.dart';
+import 'label/gauge_value.dart';
+import 'label/inline_gauge_label.dart';
+import 'label/joined_labels_text.dart';
+import 'responsive/responsive_provider.dart';
+import 'theme/app_colors.dart';
 
 /// Right-hand desktop pane letting the user edit [denpaMen] in place. Name
 /// and numeric stats are edited inline; head shape, body color, and
 /// corrections open a [showHeadShapeSelectionDialog] /
 /// [showBodyColorSelectionDialog] / [showCorrectionSelectionDialog].
+///
+/// [icon] is a prebuilt widget for the tappable icon slot (an already
+/// wired-up icon editor is the caller's responsibility, since picking and
+/// storing a new icon needs app-specific storage). [parentCandidates] and
+/// [onPickParents] back the parent picker field; [onPickMonsterExp] opens
+/// the monster-exp picker.
 ///
 /// Every edit produces a full draft [DenpaMen] via [onChanged] so the caller
 /// can re-derive resistances (e.g. through `createDenpaMen`) and update the
@@ -25,11 +46,14 @@ class EditableDenpaMenStatus extends ConsumerWidget {
     required this.headShapes,
     required this.anntenas,
     required this.corrections,
-    required this.masterData,
     required this.qrCodeCandidates,
     required this.onChanged,
     required this.considerCorrections,
     required this.onConsiderCorrectionsChanged,
+    required this.icon,
+    required this.parentCandidates,
+    required this.onPickParents,
+    required this.onPickMonsterExp,
     this.qrCodeEditable = true,
   });
 
@@ -37,12 +61,16 @@ class EditableDenpaMenStatus extends ConsumerWidget {
   final List<HeadShape> headShapes;
   final List<Anntena> anntenas;
   final List<Correction> corrections;
-  final MasterData masterData;
   final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
   final bool considerCorrections;
   final ValueChanged<bool> onConsiderCorrectionsChanged;
   final bool qrCodeEditable;
+
+  final Widget icon;
+  final List<DenpaMenRecord> parentCandidates;
+  final Future<List<DenpaMenRecord>?> Function(BuildContext) onPickParents;
+  final Future<MonsterExp?> Function(BuildContext) onPickMonsterExp;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,7 +98,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    EditableDenpaMenIcon(denpaMenId: denpaMen.id, size: 56),
+                    icon,
                     const SizedBox(width: 8),
                     Expanded(
                       child: Container(
@@ -167,9 +195,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
           SelectionTile(
             label: t.editableStatus.monsterExp,
             onTap: () async {
-              final result = await MonsterExpRoute(
-                $extra: denpaMen.monsterExp,
-              ).push<MonsterExp>(context);
+              final result = await onPickMonsterExp(context);
               if (result != null) {
                 onChanged(denpaMen.copyWith(monsterExp: result));
               }
@@ -311,7 +337,8 @@ class EditableDenpaMenStatus extends ConsumerWidget {
           const SizedBox(height: 8),
           EditableParents(
             denpaMen: denpaMen,
-            masterData: masterData,
+            records: parentCandidates,
+            onPickParents: onPickParents,
             onChanged: onChanged,
           ),
           const SizedBox(height: 8),

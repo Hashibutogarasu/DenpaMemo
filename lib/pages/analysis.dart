@@ -2,7 +2,6 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTrans
 import 'package:flutter/material.dart';
 
 import '../i18n/gen/strings.g.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 
 class Analysis extends StatelessWidget {
   const Analysis({super.key});

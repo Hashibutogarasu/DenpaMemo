@@ -1,16 +1,19 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'denpa_men_status.dart';
 import 'editable_denpa_men_status.dart';
+import 'theme/app_colors.dart';
 
 /// Bundles the read-only preview ([DenpaMenStatus]) and the editable pane
-/// ([EditableDenpaMenStatus]) used to add or edit a [DenpaMen].
+/// ([EditableDenpaMenStatus]) used to add or edit a [DenpaMen]. See
+/// [EditableDenpaMenStatus] for [icon]/[parentCandidates]/[onPickParents]/
+/// [onPickMonsterExp]; [iconFile] backs the read-only preview's icon.
 ///
 /// On a wide viewport the two panes sit side by side; on a narrow one they
 /// become swipeable pages with a dot indicator, also reachable by mouse
@@ -25,6 +28,11 @@ class AddDenpaMen extends StatefulWidget {
     required this.masterData,
     required this.qrCodeCandidates,
     required this.onChanged,
+    required this.icon,
+    required this.parentCandidates,
+    required this.onPickParents,
+    required this.onPickMonsterExp,
+    this.iconFile,
     this.qrCodeEditable = true,
     this.minPaneWidth = 360,
     this.paneGap = 16,
@@ -39,6 +47,12 @@ class AddDenpaMen extends StatefulWidget {
   final double minPaneWidth;
   final double paneGap;
   final double wheelPageChangeThreshold;
+
+  final Widget icon;
+  final File? iconFile;
+  final List<DenpaMenRecord> parentCandidates;
+  final Future<List<DenpaMenRecord>?> Function(BuildContext) onPickParents;
+  final Future<MonsterExp?> Function(BuildContext) onPickMonsterExp;
 
   @override
   State<AddDenpaMen> createState() => _AddDenpaMenState();
@@ -88,13 +102,13 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       totalAttributeCount: widget.masterData.attributes.length,
       includeStatBonus: widget.denpaMen.considerCorrections,
       showIcon: true,
+      iconFile: widget.iconFile,
     );
     final editable = EditableDenpaMenStatus(
       denpaMen: widget.denpaMen,
       headShapes: widget.masterData.headShapes,
       anntenas: widget.masterData.anntenas,
       corrections: widget.masterData.corrections,
-      masterData: widget.masterData,
       qrCodeCandidates: widget.qrCodeCandidates,
       onChanged: widget.onChanged,
       qrCodeEditable: widget.qrCodeEditable,
@@ -102,6 +116,10 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       onConsiderCorrectionsChanged: (value) => widget.onChanged(
         widget.denpaMen.copyWith(considerCorrections: value),
       ),
+      icon: widget.icon,
+      parentCandidates: widget.parentCandidates,
+      onPickParents: widget.onPickParents,
+      onPickMonsterExp: widget.onPickMonsterExp,
     );
 
     return LayoutBuilder(

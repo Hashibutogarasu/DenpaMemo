@@ -1,38 +1,45 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/master_data/antenna_display_name.dart';
+import '../color/color_dot.dart';
+import '../dialog/antenna_selection_dialog.dart';
+import '../dialog/body_color_selection_dialog.dart';
+import '../dialog/head_shape_selection_dialog.dart';
+import '../domain/antenna_display_name.dart';
 import '../../i18n/gen/strings.g.dart';
-import '../../providers/search_providers.dart';
 import 'search_filter_tile.dart';
+import 'search_stat_grid.dart';
 
-/// The filter form bound to [searchFormDraftProvider], shared by the search
-/// page and any other flow that needs the same filters (e.g. the
-/// individual-selection page's search tab).
-class SearchForm extends ConsumerStatefulWidget {
-  const SearchForm({super.key, required this.headShapes, required this.anntenas});
+/// The filter form for [query], shared by the search page and any other
+/// flow that needs the same filters (e.g. the individual-selection page's
+/// search tab). Every edit is reported through [onChanged] with a new
+/// draft query.
+class SearchForm extends StatefulWidget {
+  const SearchForm({
+    super.key,
+    required this.headShapes,
+    required this.anntenas,
+    required this.query,
+    required this.onChanged,
+  });
 
   final List<HeadShape> headShapes;
   final List<Anntena> anntenas;
+  final DenpaMenSearchQuery query;
+  final ValueChanged<DenpaMenSearchQuery> onChanged;
 
   @override
-  ConsumerState<SearchForm> createState() => _SearchFormState();
+  State<SearchForm> createState() => _SearchFormState();
 }
 
-class _SearchFormState extends ConsumerState<SearchForm> {
-  late final _nameController = TextEditingController(
-    text: ref.read(searchFormDraftProvider).name,
-  );
-  late final _memoController = TextEditingController(
-    text: ref.read(searchFormDraftProvider).memo,
-  );
+class _SearchFormState extends State<SearchForm> {
+  late final _nameController = TextEditingController(text: widget.query.name);
+  late final _memoController = TextEditingController(text: widget.query.memo);
 
   void _update(
     DenpaMenSearchQuery Function(DenpaMenSearchQuery query) update,
   ) {
-    ref.read(searchFormDraftProvider.notifier).update(update);
+    widget.onChanged(update(widget.query));
   }
 
   @override
@@ -45,7 +52,7 @@ class _SearchFormState extends ConsumerState<SearchForm> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final query = ref.watch(searchFormDraftProvider);
+    final query = widget.query;
     final headShapes = widget.headShapes;
     final anntenas = widget.anntenas;
 
@@ -63,8 +70,7 @@ class _SearchFormState extends ConsumerState<SearchForm> {
           SearchStatGrid(
             query: query,
             columns: 1,
-            onChanged: (value) =>
-                ref.read(searchFormDraftProvider.notifier).state = value,
+            onChanged: widget.onChanged,
           ),
           SearchFilterTile<HeadShape>(
             label: t.editableStatus.headShape,
@@ -82,8 +88,9 @@ class _SearchFormState extends ConsumerState<SearchForm> {
                 orElse: () => headShapes.first,
               ),
             ),
-            apply: (q, selected) => q.copyWith(headShapeId: selected.id),
-            clear: (q) => q.copyWith(headShapeId: null),
+            onApply: (selected) =>
+                _update((q) => q.copyWith(headShapeId: selected.id)),
+            onClear: () => _update((q) => q.copyWith(headShapeId: null)),
           ),
           SearchFilterTile<BodyColorSelectionResult>(
             label: t.editableStatus.bodyColor,
@@ -105,11 +112,14 @@ class _SearchFormState extends ConsumerState<SearchForm> {
               selected: query.bodyColors,
               isSpColor: query.isSpColor ?? false,
             ),
-            apply: (q, result) => q.copyWith(
-              bodyColors: result.bodyColors,
-              isSpColor: result.isSpColor,
+            onApply: (result) => _update(
+              (q) => q.copyWith(
+                bodyColors: result.bodyColors,
+                isSpColor: result.isSpColor,
+              ),
             ),
-            clear: (q) => q.copyWith(bodyColors: const [], isSpColor: null),
+            onClear: () =>
+                _update((q) => q.copyWith(bodyColors: const [], isSpColor: null)),
           ),
           SearchFilterTile<AntennaSelectionResult>(
             label: t.editableStatus.antenna,
@@ -135,11 +145,14 @@ class _SearchFormState extends ConsumerState<SearchForm> {
               ),
               level: query.minAntennaLevel ?? 0,
             ),
-            apply: (q, result) => q.copyWith(
-              antennaId: result.anntena.id,
-              minAntennaLevel: result.level,
+            onApply: (result) => _update(
+              (q) => q.copyWith(
+                antennaId: result.anntena.id,
+                minAntennaLevel: result.level,
+              ),
             ),
-            clear: (q) => q.copyWith(antennaId: null, minAntennaLevel: null),
+            onClear: () =>
+                _update((q) => q.copyWith(antennaId: null, minAntennaLevel: null)),
           ),
           TextField(
             controller: _memoController,

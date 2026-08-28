@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import '../denpa_men_list_tile.dart';
 
-/// Shared section layout for [ImportCompleteDialog](import_complete_dialog.dart)
-/// and [ExportCompleteDialog](export_complete_dialog.dart): a heading with
-/// [denpaMens]'s count, followed by a read-only
-/// [DenpaMenListTile] per entry. Renders nothing when [denpaMens]
-/// is empty.
+/// Shared section layout for the app's import/export summary dialogs
+/// ([ExportCompleteDialog](export_complete_dialog.dart) and the root-only
+/// `ImportCompleteDialog`): a heading with [denpaMens]'s count, followed by
+/// a read-only [DenpaMenListTile] per entry. Renders nothing when
+/// [denpaMens] is empty.
 class BackupResultSection extends StatelessWidget {
   const BackupResultSection({super.key, required this.title, required this.denpaMens});
 

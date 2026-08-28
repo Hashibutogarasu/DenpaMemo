@@ -1,7 +1,6 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:denpa_memo/utils/responsive.dart';
 
 void main() {
   Future<bool> pumpIsMobileWidth(WidgetTester tester, double width) async {

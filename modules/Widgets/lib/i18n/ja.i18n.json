@@ -9,11 +9,21 @@
     "errorMessage": "系譜データの読み込みに失敗しました",
     "errorTitle": "エラー"
   },
+  "home": {
+    "searchHint": "検索"
+  },
+  "search": {
+    "name": "名前"
+  },
   "denpaMenStatus": {
+    "happiness": "幸福度",
+    "level": "レベル",
     "max": "MAX",
+    "noAttributeResistance": "ぞくせいたいせいなし",
     "untilNextLevel": "つぎのLvまで"
   },
   "stat": {
+    "antenna": "アンテナ",
     "ap": "AP",
     "attack": "こうげきりょく",
     "currentExp": "経験値",
@@ -37,10 +47,22 @@
     "bodyColorShadeDark": "濃い",
     "bodyColorShadeNormal": "通常",
     "bodyColorShadeThin": "薄い",
+    "considerCorrections": "補正を考慮する",
     "correction": "補正",
     "headShape": "頭の形",
+    "memo": "メモ",
+    "monsterExp": "モンスターから獲得した経験値を記録",
+    "parents": "親",
     "qrCode": "QRコード",
     "spColor": "SPカラー"
+  },
+  "backup": {
+    "exportCompleteTitle": "エクスポート結果",
+    "exportExportedSection": "エクスポート完了",
+    "exportOrphanedSection": "親が同梱されていない個体"
+  },
+  "monster": {
+    "swordmouse": "ねずみけんし"
   },
   "antenna": {
     "none": "アンテナなし",
@@ -165,5 +187,34 @@
     "sparkle": "きらきら",
     "onigiri": "おにぎり",
     "beans": "まめ"
+  },
+  "attribute": {
+    "fire": "火",
+    "water": "水",
+    "thunder": "雷",
+    "earth": "土",
+    "ice": "氷",
+    "wind": "風",
+    "light": "光",
+    "dark": "闇",
+    "physical": "物理",
+    "suddenDeath": "突然死"
+  },
+  "abnormality": {
+    "poison": "どく",
+    "burn": "やけど",
+    "frostbite": "しもやけ",
+    "cold": "かぜっぴき",
+    "mud": "どろだらけ",
+    "electrocution": "かんでん",
+    "soaked": "みずびだし",
+    "blind": "ブラインド",
+    "curse": "のろい",
+    "suddenDeath": "とつぜんし",
+    "paralysis": "マヒ",
+    "sleep": "ねむり",
+    "charm": "みりょう",
+    "fear": "きょうふ",
+    "jack": "ジャック"
   }
 }

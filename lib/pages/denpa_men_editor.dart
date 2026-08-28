@@ -5,12 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../i18n/gen/strings.g.dart';
+import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/add_denpa_men.dart';
-import '../widgets/scaffold/app_scaffold.dart';
+import '../widgets/icon/editable_denpa_men_icon.dart';
+import 'denpa_men_selection.dart';
 
 /// Arguments passed as `$extra` by `AddDenpaMenRoute` (see
 /// `routing/app_router.dart`), since [MasterData] and [DenpaMenRecord] carry
@@ -239,6 +240,20 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         qrCodeCandidates: qrCodeCandidates,
         onChanged: _applyEdit,
         qrCodeEditable: !widget.sessionMode,
+        icon: EditableDenpaMenIcon(denpaMenId: _denpaMen.id, size: 56),
+        iconFile: ref.watch(denpaMenIconProvider(_denpaMen.id)).value,
+        parentCandidates:
+            ref.watch(denpaMenListProvider(widget.masterData)).value ?? [],
+        onPickParents: (context) => DenpaMenSelectionRoute(
+          $extra: DenpaMenSelectionArgs(
+            excludeId: _denpaMen.id,
+            initialSelectedIds: _denpaMen.parentIds,
+            maxSelectable: 2,
+          ),
+        ).push<List<DenpaMenRecord>>(context),
+        onPickMonsterExp: (context) => MonsterExpRoute(
+          $extra: _denpaMen.monsterExp,
+        ).push<MonsterExp>(context),
       ),
     );
   }

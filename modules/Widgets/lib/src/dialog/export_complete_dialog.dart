@@ -5,8 +5,8 @@ import '../../i18n/gen/strings.g.dart';
 import 'backup_result_section.dart';
 
 /// Summarizes one `.dm` export's outcome as read-only sections, shown via
-/// [show] after `_exportSelected` in `../../pages/home.dart` finishes.
-/// Follows the same "public class + static show()" shape as
+/// [show] after `_exportSelected` in the home page finishes. Follows the
+/// same "public class + static show()" shape as
 /// [DenpaMenPreviewDialog](denpa_men_preview_dialog.dart).
 class ExportCompleteDialog extends StatelessWidget {
   const ExportCompleteDialog({super.key, required this.result});
