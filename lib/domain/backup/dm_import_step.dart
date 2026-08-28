@@ -1,4 +1,5 @@
-import '../step.dart';
+import 'package:step_dialog/step_dialog.dart' hide Translations;
+
 import 'dm_import_context.dart';
 
 /// A `.dm` import's step (see `DmImportContext`), run in sequence by the

@@ -1,5 +1,5 @@
-import 'package:denpa_memo/domain/step_progress.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:step_dialog/step_dialog.dart';
 
 void main() {
   test('stepProgress returns step / totalSteps', () {

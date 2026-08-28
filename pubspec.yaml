@@ -45,6 +45,8 @@ dependencies:
   widgetbook_annotation: ^3.11.0
   data_pack:
     path: modules/DataPack
+  step_dialog:
+    path: modules/StepDialog
 dev_dependencies:
   flutter_test:
     sdk: flutter

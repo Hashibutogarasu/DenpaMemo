@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Step;
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/domain/step.dart' as domain_step;
-import 'package:denpa_memo/domain/step_batch.dart';
-import 'package:denpa_memo/domain/step_failure.dart';
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/dialog/error_dialog.dart';
+import 'package:step_dialog/step_dialog.dart';
 
 class _BatchContext {
   _BatchContext(this.label);
@@ -13,7 +9,7 @@ class _BatchContext {
   final String label;
 }
 
-class _CountingStep extends domain_step.Step<_BatchContext> {
+class _CountingStep extends Step<_BatchContext> {
   _CountingStep({this.failOnFirstRun = false});
 
   final bool failOnFirstRun;
@@ -66,8 +62,14 @@ void main() {
       Future<void> runBatch(_CountingStep step, _BatchContext context) async {
         try {
           await [step].runAll(context);
-        } on StepFailure<_BatchContext> catch (failure) {
-          await ErrorDialog.show(appContext, error: failure);
+        } on StepRunFailure<_BatchContext> catch (failure) {
+          await ErrorDialog.show(
+            appContext,
+            title: 'Step failed',
+            description: '${failure.error}',
+            retriable: failure.retriable,
+            onRetry: failure.retry,
+          );
         }
       }
 
@@ -78,7 +80,7 @@ void main() {
       await tester.pump();
 
       final t = Translations();
-      expect(find.text(t.step.failureDescription(error: 'Exception: boom in A')), findsOneWidget);
+      expect(find.text('Exception: boom in A'), findsOneWidget);
       expect(find.textContaining('boom in B'), findsNothing);
 
       expect(stepB.runCount, 1);

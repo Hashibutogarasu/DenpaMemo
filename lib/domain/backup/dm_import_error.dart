@@ -1,4 +1,4 @@
-import '../app_error.dart';
+import '../../errors/app_error.dart';
 import '../../i18n/gen/strings.g.dart';
 
 /// Base type for every error that can interrupt a `.dm` import.

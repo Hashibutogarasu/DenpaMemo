@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../../errors/app_error.dart';
 import '../../i18n/gen/strings.g.dart';
-import '../app_error.dart';
 
 /// Base type for every way `masterDataProvider` can fail to load
 /// [MasterData](master_data.dart) from the `modules/server` GraphQL API.

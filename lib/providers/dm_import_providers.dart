@@ -5,13 +5,14 @@ import 'package:data_pack/data_pack.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:step_dialog/step_dialog.dart'
+    hide Translations, BuildContextTranslationsExtension;
 
 import '../domain/backup/dm_file.dart';
 import '../domain/backup/dm_import_error.dart';
 import '../domain/backup/import_result.dart';
 import '../i18n/gen/strings.g.dart';
 import '../widgets/dialog/denpa_men_selection_dialog.dart';
-import '../widgets/dialog/error_dialog.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
 import 'import_export_progress_providers.dart';
@@ -74,7 +75,13 @@ class DmImportController {
       );
     } on DmImportError catch (error) {
       if (context.mounted) {
-        await ErrorDialog.show(context, error: error);
+        await ErrorDialog.show(
+          context,
+          title: error.title(t),
+          description: error.description(t),
+          retriable: error.retriable,
+          onRetry: error.retriable ? error.retry : null,
+        );
       }
       return null;
     } on DmInvalidImportFileException {

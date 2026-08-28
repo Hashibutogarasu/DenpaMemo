@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:step_dialog/step_dialog.dart'
+    hide Translations, BuildContextTranslationsExtension;
 
-import '../../domain/app_error.dart';
+import '../../errors/app_error.dart';
 import '../../domain/master_data/master_data_load_error.dart';
+import '../../i18n/gen/strings.g.dart';
 import '../../providers/master_data_providers.dart';
 import '../../providers/monster_providers.dart';
-import 'error_dialog.dart';
 
 /// Shows [ErrorDialog] once per `masterDataProvider` failure, shared by
 /// every page that watches it (`home.dart`, `search.dart`,
@@ -52,5 +54,12 @@ void _showAppError<T>(
     AppError() => error,
     _ => MasterDataServerError('$error'),
   };
-  ErrorDialog.show(context, error: appError);
+  final t = context.t;
+  ErrorDialog.show(
+    context,
+    title: appError.title(t),
+    description: appError.description(t),
+    retriable: appError.retriable,
+    onRetry: appError.retriable ? appError.retry : null,
+  );
 }

@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/app_error.dart';
-import '../../i18n/gen/strings.g.dart';
+import '../i18n/gen/strings.g.dart';
 
-/// Shows [error]'s [AppError.title]/[AppError.description] as a simple
-/// acknowledge-and-dismiss dialog: centered title, centered description,
-/// an OK button, plus a retry button to its left when
-/// [AppError.retriable] is true. Follows the same "public class +
-/// static show()" shape as
-/// [DenpaMenPreviewDialog](denpa_men_preview_dialog.dart).
+/// Generic acknowledge-and-dismiss dialog: centered title, centered
+/// description, an OK button, plus a retry button to its left when
+/// [retriable] is true.
 ///
-/// Tapping retry closes the dialog immediately and fires
-/// [AppError.retry] in the background rather than waiting on it: if that
-/// retry fails, it's up to whatever produced [error] to surface the new
-/// failure the same way it surfaced this one (e.g. `masterDataProvider`'s
-/// `ref.listen` in `master_data_error_listener.dart` shows a fresh dialog
-/// on its own the moment the retried request errors again).
+/// Tapping retry closes the dialog immediately and fires [onRetry] in the
+/// background rather than waiting on it.
 class ErrorDialog extends StatelessWidget {
-  const ErrorDialog({super.key, required this.error});
+  const ErrorDialog({
+    super.key,
+    required this.title,
+    required this.description,
+    this.retriable = false,
+    this.onRetry,
+  });
 
-  final AppError error;
+  final String title;
+  final String description;
+  final bool retriable;
+  final Future<void> Function()? onRetry;
 
-  static Future<void> show(BuildContext context, {required AppError error}) {
+  static Future<void> show(
+    BuildContext context, {
+    required String title,
+    required String description,
+    bool retriable = false,
+    Future<void> Function()? onRetry,
+  }) {
     return showDialog<void>(
       context: context,
-      builder: (context) => ErrorDialog(error: error),
+      builder: (context) => ErrorDialog(
+        title: title,
+        description: description,
+        retriable: retriable,
+        onRetry: onRetry,
+      ),
     );
   }
 
@@ -38,20 +50,20 @@ class ErrorDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              error.title(t),
+              title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
-            Text(error.description(t), textAlign: TextAlign.center),
+            Text(description, textAlign: TextAlign.center),
             const SizedBox(height: 20),
             Row(
               children: [
-                if (error.retriable) ...[
+                if (retriable) ...[
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        error.retry().catchError((_) {});
+                        onRetry?.call().catchError((_) {});
                         Navigator.of(context).pop();
                       },
                       child: Text(t.common.retry),

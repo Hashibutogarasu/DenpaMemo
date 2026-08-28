@@ -3,17 +3,26 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:denpa_memo/domain/backup/dm_import_error.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/dialog/error_dialog.dart';
+import 'package:step_dialog/step_dialog.dart' as step_dialog
+    hide BuildContextTranslationsExtension;
 
 void main() {
   Future<void> pumpAndShow(WidgetTester tester, DmImportError error) async {
     await tester.pumpWidget(
-      TranslationProvider(
-        child: MaterialApp(
-          home: Builder(
-            builder: (context) => ElevatedButton(
-              onPressed: () => ErrorDialog.show(context, error: error),
-              child: const Text('open'),
+      step_dialog.TranslationProvider(
+        child: TranslationProvider(
+          child: MaterialApp(
+            home: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () => step_dialog.ErrorDialog.show(
+                  context,
+                  title: error.title(context.t),
+                  description: error.description(context.t),
+                  retriable: error.retriable,
+                  onRetry: error.retriable ? error.retry : null,
+                ),
+                child: const Text('open'),
+              ),
             ),
           ),
         ),
@@ -54,6 +63,6 @@ void main() {
     await tester.tap(find.text(t.common.ok));
     await tester.pumpAndSettle();
 
-    expect(find.byType(ErrorDialog), findsNothing);
+    expect(find.byType(step_dialog.ErrorDialog), findsNothing);
   });
 }
