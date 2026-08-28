@@ -1,5 +1,5 @@
-import '../../domain/qr_code/qr_code.dart';
 import 'qr_code_entity.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// Converts a domain [QrCode] to its persisted [QrCodeEntity] form.
 extension QrCodeEntityMapper on QrCode {

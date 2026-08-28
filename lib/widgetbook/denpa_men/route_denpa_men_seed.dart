@@ -1,8 +1,8 @@
 import '../../data/denpa_men/objectbox_denpa_men_repository.dart';
 import '../../data/qr_code/objectbox_qr_code_repository.dart';
-import '../../domain/qr_code/qr_code_factory.dart';
 import '../core/widgetbook_scope.dart';
 import 'route_denpa_men_data.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// Seeds [widgetbookObjectBox] with [RouteDenpaMenData.all]. Idempotent:
 /// already-seeded QR codes/individuals (by hash/cuid) are skipped, so a

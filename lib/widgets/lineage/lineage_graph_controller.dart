@@ -1,7 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../domain/denpa_men/denpa_men_record.dart';
-import '../../domain/qr_code/qr_code_record.dart';
 import 'lineage_graph_builder.dart';
 import 'lineage_graph_data_snapshot.dart';
 import 'node_info.dart';

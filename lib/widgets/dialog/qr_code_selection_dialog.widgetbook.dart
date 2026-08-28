@@ -1,8 +1,8 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import '../../domain/qr_code/qr_code_record.dart';
 import '../../widgetbook/core/dialog_preview.dart';
 import '../../widgetbook/qr_code/qr_code_data.dart';
 import 'qr_code_selection_dialog.dart';

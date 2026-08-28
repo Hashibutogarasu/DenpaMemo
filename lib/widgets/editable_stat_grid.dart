@@ -1,11 +1,8 @@
 import 'dart:math' as math;
 
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_correction_calculator.dart';
-import '../domain/denpa_men/denpa_men_head_shape_stat_calculator.dart';
-import '../domain/denpa_men/denpa_men_stat_bonus.dart';
 import '../i18n/gen/strings.g.dart';
 import 'field/inline_number_field.dart';
 import 'label/correction_bonus_overlay.dart';

@@ -1,7 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/monster/monster.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/monster_providers.dart';
 import '../widgets/dialog/master_data_error_listener.dart';

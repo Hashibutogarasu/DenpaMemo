@@ -1,10 +1,8 @@
 import 'dart:convert';
 
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/services.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/master_data/body_color_resistance_rule.dart';
-import '../../domain/master_data/master_data.dart';
 import 'denpa_men_data.dart';
 
 /// Individuals loaded from `assets/routes/*.json`.

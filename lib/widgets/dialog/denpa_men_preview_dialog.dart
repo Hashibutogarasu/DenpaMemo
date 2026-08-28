@@ -1,7 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
 import '../../providers/master_data_providers.dart';
 import '../denpa_men_status.dart';
 

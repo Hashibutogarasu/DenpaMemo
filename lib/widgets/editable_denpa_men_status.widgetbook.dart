@@ -1,9 +1,9 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import '../domain/denpa_men/denpa_men.dart';
 import '../providers/master_data_providers.dart';
 import '../widgetbook/denpa_men/route_denpa_men_providers.dart';
 import 'editable_denpa_men_status.dart';

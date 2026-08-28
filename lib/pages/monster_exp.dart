@@ -1,7 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/monster/monster.dart';
-import '../domain/monster/monster_exp.dart';
 import '../i18n/gen/strings.g.dart';
 import '../routing/app_router.dart';
 import '../widgets/field/inline_number_field.dart';

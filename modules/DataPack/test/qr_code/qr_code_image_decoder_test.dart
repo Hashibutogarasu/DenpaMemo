@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:denpa_memo/domain/qr_code/qr_code_image_decoder.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:data_pack/data_pack.dart';
+import 'package:test/test.dart';
 import 'package:image/image.dart' as img;
 
-import '../../support/qr_image_test_utils.dart';
+import '../support/qr_image_test_utils.dart';
 
 void main() {
   test('decodes the raw value encoded in a rendered QR code image', () {

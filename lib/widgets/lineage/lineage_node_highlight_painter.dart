@@ -1,7 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
 import 'lineage_graph_highlight.dart';
 
 /// Paints the hover-highlight border and catch-order badge directly onto

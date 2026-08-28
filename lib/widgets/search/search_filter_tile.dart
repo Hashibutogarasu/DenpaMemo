@@ -1,7 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/search/denpa_men_search_query.dart';
 import '../../providers/search_providers.dart';
 import '../unfocus_on_tap.dart';
 

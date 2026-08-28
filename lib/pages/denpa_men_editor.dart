@@ -1,13 +1,8 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_factory.dart';
-import '../domain/denpa_men/denpa_men_record.dart';
-import '../domain/master_data/master_data.dart';
-import '../domain/qr_code/qr_code_factory.dart';
-import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';

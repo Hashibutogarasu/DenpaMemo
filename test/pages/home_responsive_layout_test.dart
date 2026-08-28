@@ -1,10 +1,9 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:denpa_memo/domain/denpa_men/denpa_men_record.dart';
-import 'package:denpa_memo/domain/master_data/master_data.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/pages/home.dart';
 import 'package:denpa_memo/providers/denpa_men_providers.dart';

@@ -1,6 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
 import '../denpa_men_status.dart';
 
 class BirthGuideIndividualSlide extends StatelessWidget {

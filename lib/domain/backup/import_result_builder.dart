@@ -1,9 +1,6 @@
-import '../denpa_men/denpa_men.dart';
-import '../denpa_men/denpa_men_backup_merge.dart';
-import '../denpa_men/denpa_men_repository.dart';
-import '../master_data/master_data.dart';
 import 'dm_import_error.dart';
 import 'import_result.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// Builds the final [ImportResult] from every entry's [DenpaMenMergeResult]
 /// plus whatever entries failed to parse ([failedEntries]). An individual

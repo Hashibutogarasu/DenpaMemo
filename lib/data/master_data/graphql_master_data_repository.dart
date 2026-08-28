@@ -1,18 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import '../../domain/master_data/abnormality_type.dart';
-import '../../domain/master_data/anntena.dart';
-import '../../domain/master_data/attribute.dart';
-import '../../domain/master_data/attribute_bonus.dart';
-import '../../domain/master_data/body_color_abnormality_resistance_rule.dart';
-import '../../domain/master_data/body_color_resistance_rule.dart';
-import '../../domain/master_data/correction.dart';
-import '../../domain/master_data/head_shape.dart';
-import '../../domain/master_data/master_data.dart';
 import '../../domain/master_data/master_data_load_error.dart';
-import '../../domain/master_data/pattern.dart';
-import '../../domain/master_data/personality.dart';
-import '../../domain/master_data/physique.dart';
 import 'master_data_graphql_queries.dart';
 
 /// [MasterDataRepository] implementation backed by the `modules/server`

@@ -1,7 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/master_data/graphql_master_data_repository.dart';
-import '../domain/master_data/master_data.dart';
 import 'graphql_client_provider.dart';
 
 final masterDataRepositoryProvider = Provider<MasterDataRepository>((ref) {

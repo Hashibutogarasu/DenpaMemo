@@ -1,3 +1,4 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -5,7 +6,6 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'data/master_data/graphql_master_data_repository.dart';
 import 'data/objectbox/objectbox.dart';
-import 'domain/denpa_men/denpa_men_hash_migration.dart';
 import 'i18n/gen/strings.g.dart';
 import 'providers/graphql_client_provider.dart';
 import 'providers/objectbox_providers.dart';

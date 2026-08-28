@@ -1,5 +1,5 @@
 import '../../i18n/gen/strings.g.dart';
-import 'anntena.dart';
+import 'package:data_pack/data_pack.dart';
 
 String antennaDisplayName(Translations t, Anntena anntena, int antennaLevel) {
   final translated = t.antenna[anntena.id];

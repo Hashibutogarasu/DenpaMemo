@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/search/denpa_men_search_query.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../field/inline_nullable_number_field.dart';
 import '../label/stat_value.dart';

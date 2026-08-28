@@ -1,8 +1,6 @@
 import 'package:collection/collection.dart';
+import 'package:data_pack/data_pack.dart';
 
-import '../../domain/denpa_men/denpa_men_catch_order.dart';
-import '../../domain/denpa_men/denpa_men_record.dart';
-import '../../domain/qr_code/qr_code_record.dart';
 
 typedef DenpaMenSignature = (
   String id,

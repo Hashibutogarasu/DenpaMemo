@@ -1,9 +1,8 @@
 import 'dart:math' as math;
 
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/denpa_men/denpa_men_record.dart';
 import '../denpa_men_container.dart';
 
 /// Scrollable icon grid of [DenpaMenRecord]s, laid out with

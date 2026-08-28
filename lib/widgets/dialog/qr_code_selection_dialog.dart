@@ -1,6 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/qr_code/qr_code_record.dart';
 import '../../i18n/gen/strings.g.dart';
 import 'bottom_slide_dialog.dart';
 

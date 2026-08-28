@@ -1,11 +1,5 @@
-import 'package:denpa_memo/domain/denpa_men/denpa_men.dart';
-import 'package:denpa_memo/domain/denpa_men/denpa_men_catch_order.dart';
-import 'package:denpa_memo/domain/master_data/anntena.dart';
-import 'package:denpa_memo/domain/master_data/head_shape.dart';
-import 'package:denpa_memo/domain/master_data/pattern.dart';
-import 'package:denpa_memo/domain/master_data/personality.dart';
-import 'package:denpa_memo/domain/master_data/physique.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:data_pack/data_pack.dart';
+import 'package:test/test.dart';
 
 DenpaMen _denpaMen({
   required String id,

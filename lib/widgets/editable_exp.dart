@@ -1,6 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/denpa_men/denpa_men.dart';
 import '../i18n/gen/strings.g.dart';
 import 'field/inline_nullable_number_field.dart';
 import 'label/exp_progress.dart';

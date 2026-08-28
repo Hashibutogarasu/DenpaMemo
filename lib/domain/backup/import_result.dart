@@ -1,6 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../denpa_men/denpa_men.dart';
 import 'dm_import_error.dart';
 
 part 'import_result.freezed.dart';

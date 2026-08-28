@@ -1,12 +1,10 @@
 import 'dart:math' as math;
 
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/master_data/master_data.dart';
-import '../domain/qr_code/qr_code_record.dart';
 import '../theme/app_colors.dart';
 import 'denpa_men_status.dart';
 import 'editable_denpa_men_status.dart';

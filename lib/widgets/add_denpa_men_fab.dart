@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:data_pack/data_pack.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/master_data/master_data.dart';
-import '../domain/qr_code/qr_code_image_decoder.dart';
 import '../i18n/gen/strings.g.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';

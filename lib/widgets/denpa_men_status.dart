@@ -1,13 +1,9 @@
 import 'dart:math' as math;
 
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/denpa_men/abnormality_resistance.dart';
-import '../domain/denpa_men/attribute_resistance.dart';
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_correction_calculator.dart';
-import '../domain/master_data/anntena.dart';
 import '../domain/master_data/antenna_display_name.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/responsive_providers.dart';

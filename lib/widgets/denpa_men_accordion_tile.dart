@@ -1,8 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/denpa_men/denpa_men_record.dart';
-import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../theme/app_colors.dart';
 import 'container/status.dart';

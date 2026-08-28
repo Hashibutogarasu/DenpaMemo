@@ -1,15 +1,4 @@
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/denpa_men/denpa_men_factory.dart';
-import '../../domain/denpa_men/denpa_men_record.dart';
-import '../../domain/master_data/abnormality_type.dart';
-import '../../domain/master_data/anntena.dart';
-import '../../domain/master_data/attribute.dart';
-import '../../domain/master_data/body_color_resistance_rule.dart';
-import '../../domain/master_data/head_shape.dart';
-import '../../domain/master_data/master_data.dart';
-import '../../domain/master_data/pattern.dart';
-import '../../domain/master_data/personality.dart';
-import '../../domain/master_data/physique.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// Minimal hand-built [MasterData] and sample [DenpaMen] for use in
 /// Widgetbook use cases, so they render without a live GraphQL server.

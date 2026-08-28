@@ -1,6 +1,4 @@
-import '../../domain/qr_code/qr_code.dart';
-import '../../domain/qr_code/qr_code_factory.dart';
-import '../../domain/qr_code/qr_code_record.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// Sample [QrCode] data for Widgetbook use cases.
 abstract final class QrCodeData {

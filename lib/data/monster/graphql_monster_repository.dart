@@ -1,8 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../domain/master_data/master_data_load_error.dart';
-import '../../domain/monster/monster.dart';
-import '../../domain/monster/monster_repository.dart';
 import 'monster_graphql_queries.dart';
 
 /// [MonsterRepository] implementation backed by the `modules/server`

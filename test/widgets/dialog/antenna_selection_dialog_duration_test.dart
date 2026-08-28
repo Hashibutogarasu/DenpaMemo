@@ -1,7 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/domain/master_data/anntena.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/widgets/dialog/antenna_selection_dialog.dart';
 

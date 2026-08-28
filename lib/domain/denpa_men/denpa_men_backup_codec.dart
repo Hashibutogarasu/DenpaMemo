@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../backup/dm_import_error.dart';
-import 'denpa_men_backup_entry.dart';
+import 'package:data_pack/data_pack.dart';
 
 List<Map<String, dynamic>> encodeDenpaMenBackup(List<DenpaMenBackupEntry> entries) =>
     [for (final entry in entries) entry.toJson()];

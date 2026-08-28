@@ -1,9 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_record.dart';
-import '../domain/master_data/master_data.dart';
 import 'dialog/denpa_men_action_menu.dart';
 import 'dialog/denpa_men_preview_dialog.dart';
 import 'icon/denpa_men_icon.dart';

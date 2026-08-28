@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/master_data/master_data.dart';
 import '../dialog/denpa_men_action_menu.dart';
 import '../middle_click_detector.dart';
 import 'denpa_men_node.dart';

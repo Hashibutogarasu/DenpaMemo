@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:data_pack/data_pack.dart';
 
-import 'package:denpa_memo/domain/denpa_men/denpa_men.dart';
 
 Directory _repoRoot() {
   var dir = Directory.current;

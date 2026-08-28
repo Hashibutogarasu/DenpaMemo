@@ -1,7 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/denpa_men/denpa_men_catch_order.dart';
 import '../color/body_color_palette.dart';
 
 /// Whether [nodeKey] is one of the actual parent graph nodes feeding into

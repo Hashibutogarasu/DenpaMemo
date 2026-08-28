@@ -1,7 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/qr_code/qr_code_record.dart';
 import '../i18n/gen/strings.g.dart';
 import 'container/selection_tile.dart';
 import 'dialog/qr_code_selection_dialog.dart';

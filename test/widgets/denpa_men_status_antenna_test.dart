@@ -1,14 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/domain/denpa_men/denpa_men_factory.dart';
-import 'package:denpa_memo/domain/master_data/anntena.dart';
-import 'package:denpa_memo/domain/master_data/body_color_resistance_rule.dart';
-import 'package:denpa_memo/domain/master_data/head_shape.dart';
-import 'package:denpa_memo/domain/master_data/master_data.dart';
-import 'package:denpa_memo/domain/master_data/pattern.dart';
-import 'package:denpa_memo/domain/master_data/personality.dart';
-import 'package:denpa_memo/domain/master_data/physique.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/widgets/denpa_men_status.dart';
 

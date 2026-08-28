@@ -1,8 +1,8 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import '../../domain/master_data/correction.dart';
 import '../../widgetbook/core/dialog_preview.dart';
 import 'correction_selection_dialog.dart';
 

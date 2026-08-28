@@ -1,7 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import '../../domain/denpa_men/denpa_men_record.dart';
 import '../../widgetbook/denpa_men/denpa_men_data.dart';
 import 'lineage_tree_node.dart';
 import 'node_info.dart';

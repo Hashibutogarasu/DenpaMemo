@@ -1,10 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/denpa_men/denpa_men_catch_order.dart';
-import '../../domain/denpa_men/denpa_men_record.dart';
-import '../../domain/qr_code/qr_code_record.dart';
 import 'lineage_edge_renderer.dart';
 import 'node_info.dart';
 

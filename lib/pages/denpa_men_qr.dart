@@ -1,10 +1,10 @@
 import 'package:cuid2/cuid2.dart';
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';

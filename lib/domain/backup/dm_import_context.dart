@@ -1,13 +1,8 @@
 import 'dart:io';
 
-import '../denpa_men/denpa_men.dart';
-import '../denpa_men/denpa_men_backup_entry.dart';
-import '../denpa_men/denpa_men_backup_merge.dart';
-import '../denpa_men/denpa_men_repository.dart';
-import '../master_data/master_data.dart';
-import '../qr_code/qr_code_repository.dart';
 import 'dm_import_error.dart';
 import 'import_result.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// Mutable working state shared across a `.dm` import's steps (see
 /// `DmImportStep`). Each step reads what earlier steps produced and fills

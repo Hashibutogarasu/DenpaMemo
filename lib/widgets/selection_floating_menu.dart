@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../pages/denpa_men_editor.dart';
 import '../providers/denpa_men_providers.dart';

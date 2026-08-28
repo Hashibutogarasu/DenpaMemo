@@ -1,4 +1,4 @@
-import '../../domain/denpa_men/denpa_men_record.dart';
+import 'package:data_pack/data_pack.dart';
 
 enum NodeKind { invisible, qrCode, caughtDenpaMen, bredDenpaMen }
 

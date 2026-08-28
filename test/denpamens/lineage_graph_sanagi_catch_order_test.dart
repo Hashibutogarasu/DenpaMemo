@@ -1,13 +1,9 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/domain/denpa_men/denpa_men_catch_order.dart';
-import 'package:denpa_memo/domain/denpa_men/denpa_men_record.dart';
-import 'package:denpa_memo/domain/master_data/master_data.dart';
-import 'package:denpa_memo/domain/qr_code/qr_code_factory.dart';
-import 'package:denpa_memo/domain/qr_code/qr_code_record.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/widgets/lineage/denpa_men_node.dart';
 import 'package:denpa_memo/widgets/lineage/lineage_graph.dart';

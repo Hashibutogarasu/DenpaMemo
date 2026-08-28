@@ -1,6 +1,6 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/denpa_men/denpa_men.dart';
 import 'denpa_men_selected_overlay.dart';
 import 'dialog/denpa_men_preview_dialog.dart';
 import 'icon/denpa_men_icon.dart';
