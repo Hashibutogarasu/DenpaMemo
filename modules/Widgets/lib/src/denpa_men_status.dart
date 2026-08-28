@@ -112,10 +112,6 @@ class DenpaMenStatus extends ConsumerWidget {
   final String? memo;
   final bool showContainer;
   final bool showIcon;
-
-  /// Already-resolved icon file shown when [showIcon] is true; renders a
-  /// placeholder while null. Resolving the icon (which `DenpaMen` it
-  /// belongs to, where it's stored) is the caller's responsibility.
   final File? iconFile;
   final int attributeResistanceColumns;
   final double entryHeight;

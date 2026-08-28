@@ -36,9 +36,6 @@ class DenpaMenBox extends StatelessWidget {
   final Set<int> cutIds;
   final void Function(int id, bool selected) onSelectedChanged;
   final ValueChanged<DenpaMen> onTapRecord;
-
-  /// Already-resolved icons keyed by [DenpaMen.id]; a missing entry
-  /// renders a placeholder.
   final Map<String, File?> iconsById;
 
   /// Fixed column count. When null, the column count is derived from the

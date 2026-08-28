@@ -17,13 +17,7 @@ class EditableParents extends StatelessWidget {
   });
 
   final DenpaMen denpaMen;
-
-  /// Every candidate parent, used to resolve [denpaMen]'s currently
-  /// selected parent names.
   final List<DenpaMenRecord> records;
-
-  /// Opens the parent picker and resolves to the chosen records, or null
-  /// if cancelled.
   final Future<List<DenpaMenRecord>?> Function(BuildContext) onPickParents;
   final ValueChanged<DenpaMen> onChanged;
 
