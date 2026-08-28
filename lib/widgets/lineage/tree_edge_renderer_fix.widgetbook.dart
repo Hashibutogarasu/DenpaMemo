@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
+import 'package:tree_graph/tree_graph.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import 'lineage_edge_renderer.dart';
-
-@widgetbook.UseCase(name: 'Default', type: LineageEdgeRenderer, path: 'lineage')
-Widget lineageEdgeRendererUseCase(BuildContext context) {
+@widgetbook.UseCase(name: 'Default', type: TreeEdgeRendererFix, path: 'lineage')
+Widget treeEdgeRendererFixUseCase(BuildContext context) {
   final graph = Graph()..isTree = true;
   graph.addEdge(Node.Id('parent'), Node.Id('child'));
 
@@ -15,7 +14,7 @@ Widget lineageEdgeRendererUseCase(BuildContext context) {
   return SizedBox.expand(
     child: GraphView.builder(
       graph: graph,
-      algorithm: BuchheimWalkerAlgorithm(config, LineageEdgeRenderer(config)),
+      algorithm: BuchheimWalkerAlgorithm(config, TreeEdgeRendererFix(config)),
       animated: false,
       builder: (node) => Container(
         width: 64,

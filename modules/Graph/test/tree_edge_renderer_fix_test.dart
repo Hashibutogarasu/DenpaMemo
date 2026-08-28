@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphview/GraphView.dart';
 
-import 'package:denpa_memo/widgets/lineage/lineage_edge_renderer.dart';
+import 'package:tree_graph/tree_graph.dart';
 
 /// Pumps a 2-node top-bottom tree (parent above child, both 64x64) through
 /// a real [GraphView] layout pass using [edgeRenderer], then returns the
@@ -72,13 +72,13 @@ void main() {
   );
 
   testWidgets(
-    'LineageEdgeRenderer stops the edge exactly at each node\'s border',
+    'TreeEdgeRendererFix stops the edge exactly at each node\'s border',
     (tester) async {
       final config = BuchheimWalkerConfiguration()
         ..orientation = BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM;
       final result = await _layoutAndRenderEdge(
         tester,
-        LineageEdgeRenderer(config),
+        TreeEdgeRendererFix(config),
       );
 
       final parentBottom = result.parent.position.dy + result.parent.height;

@@ -1,25 +1,29 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/lineage/lineage_graph.dart';
-import 'package:denpa_memo/widgets/lineage/qr_code_node.dart';
-
-final _masterData = MasterData(
-  headShapes: const [],
-  anntenas: const [],
-  attributes: const [],
-  abnormalityTypes: const [],
-  bodyColorResistanceRules: const [],
-  bodyColorAbnormalityResistanceRules: const [],
-  physiques: const [],
-  personalities: const [],
-  patterns: const [],
-  corrections: const [],
-);
+Widget _harness({
+  required List<QrCodeRecord> qrCodes,
+}) {
+  return TranslationProvider(
+    child: MaterialApp(
+      home: Scaffold(
+        body: DenpaMenLineageGraph(
+          qrCodes: qrCodes,
+          denpaMenRecords: const [],
+          iconsById: const {},
+          selectionMode: false,
+          selectedIds: const {},
+          onToggleSelection: (_) {},
+          onMiddleClickSelect: (_) {},
+          onTapNode: (context, denpaMen) {},
+        ),
+      ),
+    ),
+  );
+}
 
 void main() {
   testWidgets(
@@ -29,20 +33,7 @@ void main() {
       final qrCode = createQrCode('raw-value', id: 'qr-1', name: 'group');
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: TranslationProvider(
-            child: MaterialApp(
-              home: Scaffold(
-                body: LineageGraph(
-                  qrCodes: [QrCodeRecord(id: 1, qrCode: qrCode)],
-                  denpaMenRecords: const [],
-                  masterData: _masterData,
-                  iconsById: const {},
-                ),
-              ),
-            ),
-          ),
-        ),
+        _harness(qrCodes: [QrCodeRecord(id: 1, qrCode: qrCode)]),
       );
       await tester.pumpAndSettle();
 
@@ -79,22 +70,11 @@ void main() {
       final qrCode2 = createQrCode('raw-value-2', id: 'qr-2', name: 'group2');
 
       await tester.pumpWidget(
-        ProviderScope(
-          child: TranslationProvider(
-            child: MaterialApp(
-              home: Scaffold(
-                body: LineageGraph(
-                  qrCodes: [
-                    QrCodeRecord(id: 1, qrCode: qrCode1),
-                    QrCodeRecord(id: 2, qrCode: qrCode2),
-                  ],
-                  denpaMenRecords: const [],
-                  masterData: _masterData,
-                  iconsById: const {},
-                ),
-              ),
-            ),
-          ),
+        _harness(
+          qrCodes: [
+            QrCodeRecord(id: 1, qrCode: qrCode1),
+            QrCodeRecord(id: 2, qrCode: qrCode2),
+          ],
         ),
       );
       await tester.pumpAndSettle();

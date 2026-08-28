@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// A plain white circle behind [child], used to keep a small overlaid
 /// label legible against a photo icon.
-class CatchOrderBadgeBackground extends StatelessWidget {
-  const CatchOrderBadgeBackground({super.key, required this.child});
+class NodeBadgeBackground extends StatelessWidget {
+  const NodeBadgeBackground({super.key, required this.child});
 
   final Widget child;
 

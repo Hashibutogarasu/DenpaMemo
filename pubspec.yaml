@@ -51,6 +51,8 @@ dependencies:
     path: modules/GraphQLClient
   denpamemo_widgets:
     path: modules/Widgets
+  tree_graph:
+    path: modules/Graph
 dev_dependencies:
   flutter_test:
     sdk: flutter

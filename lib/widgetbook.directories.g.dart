@@ -148,36 +148,18 @@ import 'package:denpa_memo/widgets/label/stat_value.widgetbook.dart'
     as _denpa_memo_widgets_label_stat_value_widgetbook;
 import 'package:denpa_memo/widgets/label/status.widgetbook.dart'
     as _denpa_memo_widgets_label_status_widgetbook;
-import 'package:denpa_memo/widgets/lineage/catch_order_badge.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_catch_order_badge_widgetbook;
-import 'package:denpa_memo/widgets/lineage/catch_order_badge_background.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_catch_order_badge_background_widgetbook;
 import 'package:denpa_memo/widgets/lineage/denpa_men_node.widgetbook.dart'
     as _denpa_memo_widgets_lineage_denpa_men_node_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_edge_renderer.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_edge_renderer_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_graph.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_graph_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_graph_builder.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_graph_builder_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_graph_controller.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_graph_controller_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_graph_cursor_icon.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_graph_cursor_icon_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_graph_data_snapshot.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_graph_data_snapshot_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_graph_highlight.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_graph_highlight_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_node_highlight_painter.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_node_highlight_painter_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_node_selection_overlay.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_node_selection_overlay_widgetbook;
-import 'package:denpa_memo/widgets/lineage/lineage_tree_node.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_lineage_tree_node_widgetbook;
-import 'package:denpa_memo/widgets/lineage/node_info.widgetbook.dart'
-    as _denpa_memo_widgets_lineage_node_info_widgetbook;
+import 'package:denpa_memo/widgets/lineage/node_badge.widgetbook.dart'
+    as _denpa_memo_widgets_lineage_node_badge_widgetbook;
+import 'package:denpa_memo/widgets/lineage/node_badge_background.widgetbook.dart'
+    as _denpa_memo_widgets_lineage_node_badge_background_widgetbook;
 import 'package:denpa_memo/widgets/lineage/qr_code_node.widgetbook.dart'
     as _denpa_memo_widgets_lineage_qr_code_node_widgetbook;
+import 'package:denpa_memo/widgets/lineage/tree_edge_renderer_fix.widgetbook.dart'
+    as _denpa_memo_widgets_lineage_tree_edge_renderer_fix_widgetbook;
+import 'package:denpa_memo/widgets/lineage/tree_graph_cursor_icon.widgetbook.dart'
+    as _denpa_memo_widgets_lineage_tree_graph_cursor_icon_widgetbook;
 import 'package:denpa_memo/widgets/middle_click_detector.widgetbook.dart'
     as _denpa_memo_widgets_middle_click_detector_widgetbook;
 import 'package:denpa_memo/widgets/navigation/app_back_button.widgetbook.dart'
@@ -1180,38 +1162,6 @@ final directories = <_widgetbook.WidgetbookNode>[
     name: 'lineage',
     children: [
       _widgetbook.WidgetbookComponent(
-        name: 'CatchOrderBadge',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder: _denpa_memo_widgets_lineage_catch_order_badge_widgetbook
-                .catchOrderBadgeUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'CatchOrderBadgeBackground',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _denpa_memo_widgets_lineage_catch_order_badge_background_widgetbook
-                    .catchOrderBadgeBackgroundUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'Color',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_graph_highlight_widgetbook
-                    .lineageGraphHighlightUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
         name: 'DenpaMenNode',
         useCases: [
           _widgetbook.WidgetbookUseCase(
@@ -1222,120 +1172,23 @@ final directories = <_widgetbook.WidgetbookNode>[
         ],
       ),
       _widgetbook.WidgetbookComponent(
-        name: 'LineageEdgeRenderer',
+        name: 'NodeBadge',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder: _denpa_memo_widgets_lineage_node_badge_widgetbook
+                .nodeBadgeUseCase,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookComponent(
+        name: 'NodeBadgeBackground',
         useCases: [
           _widgetbook.WidgetbookUseCase(
             name: 'Default',
             builder:
-                _denpa_memo_widgets_lineage_lineage_edge_renderer_widgetbook
-                    .lineageEdgeRendererUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'LineageGraph',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder: _denpa_memo_widgets_lineage_lineage_graph_widgetbook
-                .lineageGraphUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'LineageGraphController',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_graph_controller_widgetbook
-                    .lineageGraphControllerUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'LineageGraphCursorIcon',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_graph_cursor_icon_widgetbook
-                    .lineageGraphCursorIconUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'LineageGraphData',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_graph_builder_widgetbook
-                    .lineageGraphDataUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'LineageNodeHighlightPainter',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_node_highlight_painter_widgetbook
-                    .lineageNodeHighlightPainterUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'LineageNodeSelectionOverlay',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Hidden',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_node_selection_overlay_widgetbook
-                    .lineageNodeSelectionOverlayHiddenUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'Selected',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_node_selection_overlay_widgetbook
-                    .lineageNodeSelectionOverlaySelectedUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'LineageTreeNode',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Bred',
-            builder: _denpa_memo_widgets_lineage_lineage_tree_node_widgetbook
-                .lineageTreeNodeBredUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'Caught',
-            builder: _denpa_memo_widgets_lineage_lineage_tree_node_widgetbook
-                .lineageTreeNodeCaughtUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'List<Object?>',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _denpa_memo_widgets_lineage_lineage_graph_data_snapshot_widgetbook
-                    .lineageDataSnapshotUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'NodeInfo',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder: _denpa_memo_widgets_lineage_node_info_widgetbook
-                .nodeInfoUseCase,
+                _denpa_memo_widgets_lineage_node_badge_background_widgetbook
+                    .nodeBadgeBackgroundUseCase,
           ),
         ],
       ),
@@ -1346,6 +1199,28 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'Default',
             builder: _denpa_memo_widgets_lineage_qr_code_node_widgetbook
                 .qrCodeNodeUseCase,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookComponent(
+        name: 'TreeEdgeRendererFix',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder:
+                _denpa_memo_widgets_lineage_tree_edge_renderer_fix_widgetbook
+                    .treeEdgeRendererFixUseCase,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookComponent(
+        name: 'TreeGraphCursorIcon',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder:
+                _denpa_memo_widgets_lineage_tree_graph_cursor_icon_widgetbook
+                    .treeGraphCursorIconUseCase,
           ),
         ],
       ),

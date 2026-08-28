@@ -1,13 +1,10 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphview/GraphView.dart';
-
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/lineage/denpa_men_node.dart';
-import 'package:denpa_memo/widgets/lineage/lineage_graph.dart';
+import 'package:tree_graph/tree_graph.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
 const _colorId = 'red';
@@ -82,16 +79,18 @@ class _HarnessState extends State<_Harness> {
   Widget build(BuildContext context) {
     final qrCode = createQrCode('raw-value', id: 'qr-1', name: 'group');
 
-    return ProviderScope(
-      child: TranslationProvider(
-        child: MaterialApp(
-          home: Scaffold(
-            body: LineageGraph(
-              qrCodes: [QrCodeRecord(id: 1, qrCode: qrCode)],
-              denpaMenRecords: records,
-              masterData: _masterData,
-              iconsById: const {},
-            ),
+    return TranslationProvider(
+      child: MaterialApp(
+        home: Scaffold(
+          body: DenpaMenLineageGraph(
+            qrCodes: [QrCodeRecord(id: 1, qrCode: qrCode)],
+            denpaMenRecords: records,
+            iconsById: const {},
+            selectionMode: false,
+            selectedIds: const {},
+            onToggleSelection: (_) {},
+            onMiddleClickSelect: (_) {},
+            onTapNode: (context, denpaMen) {},
           ),
         ),
       ),
@@ -172,15 +171,17 @@ void main() {
       await gesture.moveTo(tester.getCenter(bredFinder.first));
       await tester.pump();
 
-      final painterByDenpaMenId = {
+      final painterBySpecKey = {
         for (final node in tester.widgetList<DenpaMenNode>(
           find.byType(DenpaMenNode),
         ))
-          node.hoverHighlightPainter!.denpaMenId: node.hoverHighlightPainter!,
+          (node.hoverHighlightPainter! as TreeNodeHighlightPainter<DenpaMenNodeData>)
+                  .specKey:
+              node.hoverHighlightPainter! as TreeNodeHighlightPainter<DenpaMenNodeData>,
       };
 
-      expect(painterByDenpaMenId['c']!.hoveredBredId.value, 'e');
-      expect(painterByDenpaMenId['d']!.hoveredBredId.value, 'e');
+      expect(painterBySpecKey['c']!.hoveredKey.value, 'e');
+      expect(painterBySpecKey['d']!.hoveredKey.value, 'e');
     },
   );
 }

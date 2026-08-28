@@ -7,8 +7,8 @@ import 'package:graphview/GraphView.dart';
 /// center) instead of its bottom/top edge, making every edge line run
 /// straight through both connected nodes instead of stopping at their
 /// borders.
-class LineageEdgeRenderer extends TreeEdgeRenderer {
-  LineageEdgeRenderer(super.configuration);
+class TreeEdgeRendererFix extends TreeEdgeRenderer {
+  TreeEdgeRendererFix(super.configuration);
 
   @override
   void buildTopBottomPath(

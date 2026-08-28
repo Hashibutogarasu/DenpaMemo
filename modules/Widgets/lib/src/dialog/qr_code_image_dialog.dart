@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 /// Shows [rawValue] as a large [QrImageView] in a dialog, used when
-/// tapping a QR code node in
-/// [LineageGraph](../lineage/lineage_graph.dart).
+/// tapping a QR code node in `DenpaMenLineageGraph`.
 class QrCodeImageDialog extends StatelessWidget {
   const QrCodeImageDialog({super.key, required this.rawValue});
 
