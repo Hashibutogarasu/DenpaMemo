@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,6 @@ import '../i18n/gen/strings.g.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
 import '../routing/app_router.dart';
-import 'fab/mini_fab_option.dart';
 
 /// Home screen's add button: a plus [FloatingActionButton] that, when
 /// tapped, morphs into a close icon and reveals two mini FABs stacked above

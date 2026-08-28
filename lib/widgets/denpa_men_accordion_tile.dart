@@ -1,16 +1,12 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../i18n/gen/strings.g.dart';
-import '../theme/app_colors.dart';
-import 'container/status.dart';
 import 'denpa_men_status.dart';
 import 'dialog/denpa_men_action_menu.dart';
 import 'icon/denpa_men_icon.dart';
-import 'label/gauge_label.dart';
-import 'label/gauge_value.dart';
-import 'label/outlined_title.dart';
 
 /// Collapsed-by-default list entry for a saved [DenpaMenRecord]. Header and
 /// (once expanded) [DenpaMenStatus] share a single [StatusContainer] rather

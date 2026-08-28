@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../theme/app_colors.dart';
 import '../label/outlined_title.dart';
 import 'inline_text_field.dart';
 

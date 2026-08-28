@@ -1,4 +1,5 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
@@ -6,8 +7,6 @@ import 'package:graphql_client/graphql_client.dart';
 import '../i18n/gen/strings.g.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/icon/monster_icon.dart';
-import '../widgets/label/outlined_title.dart';
-import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 
 /// Single-select list of every [Monster], reached from

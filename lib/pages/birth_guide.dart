@@ -1,4 +1,5 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,10 +10,6 @@ import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/birth_guide/birth_guide_confirm_slide.dart';
 import '../widgets/birth_guide/birth_guide_individual_slide.dart';
-import '../widgets/birth_guide/birth_guide_progress_bar.dart';
-import '../widgets/birth_guide/birth_guide_qr_slide.dart';
-import '../widgets/dialog/birth_guide_error_dialog.dart';
-import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 
 class BirthGuideArgs {

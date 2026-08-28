@@ -1,10 +1,10 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import '../../widgetbook/core/dialog_preview.dart';
-import 'correction_selection_dialog.dart';
 
 @widgetbook.UseCase(name: 'Default', type: CorrectionSelectionDialog, path: 'dialog')
 Widget correctionSelectionDialogUseCase(BuildContext context) {

@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../icon/entity_icon.dart';
 import 'lineage_node_highlight_painter.dart';
 import 'lineage_node_selection_overlay.dart';
 

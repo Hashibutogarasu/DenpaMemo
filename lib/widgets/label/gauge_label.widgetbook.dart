@@ -1,9 +1,8 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import '../../i18n/gen/strings.g.dart';
-import 'gauge_label.dart';
-import 'gauge_value.dart';
 
 @widgetbook.UseCase(name: 'Default', type: GaugeLabel, path: 'label')
 Widget gaugeLabelUseCase(BuildContext context) {

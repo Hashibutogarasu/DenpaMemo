@@ -1,9 +1,9 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/editable_qr_code.dart';
+import '../support/all_translation_providers.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
 
@@ -57,7 +57,7 @@ void main() {
     );
 
     await tester.pumpWidget(
-      TranslationProvider(
+      AllTranslationProviders(
         child: MaterialApp(
           home: Scaffold(
             body: EditableQrCode(

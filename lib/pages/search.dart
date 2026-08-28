@@ -1,3 +1,4 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,8 +6,6 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/search_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
-import '../widgets/label/outlined_title.dart';
-import '../widgets/progress_bar.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 import '../widgets/search/search_form.dart';
 import 'package:graphql_client/graphql_client.dart';

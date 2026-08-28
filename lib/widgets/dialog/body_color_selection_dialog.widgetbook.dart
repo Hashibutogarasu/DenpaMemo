@@ -1,10 +1,9 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import '../../widgetbook/core/dialog_preview.dart';
-import '../color/body_color_palette.dart';
-import 'body_color_selection_dialog.dart';
 
 @widgetbook.UseCase(name: 'Default', type: BodyColorSelectionDialog, path: 'dialog')
 Widget bodyColorSelectionDialogUseCase(BuildContext context) {

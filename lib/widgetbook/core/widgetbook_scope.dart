@@ -1,5 +1,7 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import '../../data/objectbox/objectbox.dart';
 import '../../i18n/gen/strings.g.dart';
@@ -29,20 +31,24 @@ class _WidgetbookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TranslationProvider(
-      child: ProviderScope(
-        overrides: [
-          objectBoxProvider.overrideWithValue(widgetbookObjectBox),
-          masterDataProvider.overrideWithValue(AsyncData(RouteDenpaMenData.masterData)),
-          denpaMenIconProvider.overrideWith((ref, id) async => null),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-          home: Material(
-            child: ValueListenableBuilder<Widget>(
-              valueListenable: _widgetbookContent,
-              builder: (context, content, _) => content,
+    return denpamemo_widgets.TranslationProvider(
+      child: step_dialog.TranslationProvider(
+        child: TranslationProvider(
+          child: ProviderScope(
+            overrides: [
+              objectBoxProvider.overrideWithValue(widgetbookObjectBox),
+              masterDataProvider.overrideWithValue(AsyncData(RouteDenpaMenData.masterData)),
+              denpaMenIconProvider.overrideWith((ref, id) async => null),
+            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+              home: Material(
+                child: ValueListenableBuilder<Widget>(
+                  valueListenable: _widgetbookContent,
+                  builder: (context, content, _) => content,
+                ),
+              ),
             ),
           ),
         ),

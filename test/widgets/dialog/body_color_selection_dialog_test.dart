@@ -1,9 +1,8 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/color/color_dot.dart';
-import 'package:denpa_memo/widgets/dialog/body_color_selection_dialog.dart';
+import '../../support/all_translation_providers.dart';
 
 BodyColorSelectionResult? _result;
 
@@ -14,7 +13,7 @@ Future<void> _pumpDialog(
   bool isSpColor = false,
 }) async {
   await tester.pumpWidget(
-    TranslationProvider(
+    AllTranslationProviders(
       child: MaterialApp(
         home: Scaffold(
           body: Builder(

@@ -49,6 +49,8 @@ dependencies:
     path: modules/StepDialog
   graphql_client:
     path: modules/GraphQLClient
+  denpamemo_widgets:
+    path: modules/Widgets
 dev_dependencies:
   flutter_test:
     sdk: flutter

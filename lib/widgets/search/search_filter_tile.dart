@@ -1,9 +1,9 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/search_providers.dart';
-import '../unfocus_on_tap.dart';
 
 /// A dialog-backed filter row on the search page (head shape, body color,
 /// antenna). Owns the read-dialog-write cycle against

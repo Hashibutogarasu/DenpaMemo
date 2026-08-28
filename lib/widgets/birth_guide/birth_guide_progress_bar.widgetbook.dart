@@ -1,7 +1,7 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import 'birth_guide_progress_bar.dart';
 
 @widgetbook.UseCase(name: 'InProgress', type: BirthGuideProgressBar, path: 'birth_guide')
 Widget birthGuideProgressBarInProgressUseCase(BuildContext context) {

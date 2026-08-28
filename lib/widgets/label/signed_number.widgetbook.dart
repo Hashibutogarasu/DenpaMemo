@@ -1,7 +1,7 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import 'signed_number.dart';
 
 @widgetbook.UseCase(name: 'Positive', type: SignedNumberText, path: 'label')
 Widget signedNumberTextPositiveUseCase(BuildContext context) {

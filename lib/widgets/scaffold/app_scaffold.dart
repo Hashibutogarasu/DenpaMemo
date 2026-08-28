@@ -1,3 +1,4 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,8 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../providers/responsive_providers.dart';
 import '../../utils/responsive.dart';
-import '../header/slanted_app_bar.dart';
-import '../navigation/app_back_button.dart';
 
 /// Standard page shell: a [SlantedAppBar] header, plus [body] with the
 /// stack-aware [AppBackButton] (bottom-left, shown only when

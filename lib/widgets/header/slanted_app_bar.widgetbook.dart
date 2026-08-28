@@ -1,8 +1,8 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import '../../i18n/gen/strings.g.dart';
-import 'slanted_app_bar.dart';
 
 @widgetbook.UseCase(name: 'Default', type: SlantedAppBar, path: 'header')
 Widget slantedAppBarUseCase(BuildContext context) {

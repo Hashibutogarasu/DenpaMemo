@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../theme/app_colors.dart';
 
 /// App-wide header whose bottom edge slants at [angleDegrees]: higher on
 /// the left, lower on the right. The top edge stays flush with the top of

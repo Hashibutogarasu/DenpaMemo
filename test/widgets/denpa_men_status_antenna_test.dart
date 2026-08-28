@@ -2,8 +2,8 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/widgets/denpa_men_status.dart';
+import '../support/all_translation_providers.dart';
 
 const _healSolo1 = Anntena(
   id: 'heal_solo_1',
@@ -61,7 +61,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        TranslationProvider(
+        AllTranslationProviders(
           child: MaterialApp(
             home: Scaffold(
               body: SingleChildScrollView(

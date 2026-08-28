@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../dialog/denpa_men_action_menu.dart';
-import '../middle_click_detector.dart';
 import 'denpa_men_node.dart';
 import 'lineage_node_highlight_painter.dart';
 import 'node_info.dart';

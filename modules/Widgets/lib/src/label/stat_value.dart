@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../theme/app_colors.dart';
 
 /// Displays a single stat entry as a container with a rounded label whose
 /// right edge is cut at an angle (matching [StatusLabel]'s shape), with

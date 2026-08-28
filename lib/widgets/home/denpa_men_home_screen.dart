@@ -1,4 +1,5 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +17,6 @@ import '../denpa_men_list_tile.dart';
 import '../dialog/denpa_men_preview_dialog.dart';
 import '../scaffold/app_scaffold.dart';
 import '../selection_floating_menu.dart';
-import 'toggle_button_group.dart';
 
 /// Full home-style screen: view mode toggles and the individual
 /// list/grid/tree display. Takes [masterData] and [title] as properties

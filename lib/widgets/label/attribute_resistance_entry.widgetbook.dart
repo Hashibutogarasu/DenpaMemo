@@ -1,8 +1,8 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import '../../i18n/gen/strings.g.dart';
-import 'attribute_resistance_entry.dart';
 
 @widgetbook.UseCase(name: 'Positive', type: AttributeResistanceEntry, path: 'label')
 Widget attributeResistanceEntryPositiveUseCase(BuildContext context) {

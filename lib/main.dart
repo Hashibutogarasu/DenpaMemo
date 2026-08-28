@@ -1,8 +1,10 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:graphql_client/graphql_client.dart';
+import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'data/objectbox/objectbox.dart';
@@ -49,18 +51,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TranslationProvider(
-      child: ProviderScope(
-        overrides: [
-          objectBoxProvider.overrideWithValue(objectBox),
-          ...overrides,
-        ],
-        child: MaterialApp.router(
-          title: t.app.name,
-          theme: ThemeData(
-            colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+    return denpamemo_widgets.TranslationProvider(
+      child: step_dialog.TranslationProvider(
+        child: TranslationProvider(
+          child: ProviderScope(
+            overrides: [
+              objectBoxProvider.overrideWithValue(objectBox),
+              ...overrides,
+            ],
+            child: MaterialApp.router(
+              title: t.app.name,
+              theme: ThemeData(
+                colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+              ),
+              routerConfig: appRouter,
+            ),
           ),
-          routerConfig: appRouter,
         ),
       ),
     );

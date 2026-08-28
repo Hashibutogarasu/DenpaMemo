@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../theme/app_colors.dart';
 
 class StatusLabel extends StatelessWidget {
   const StatusLabel({super.key, required this.child, this.height = 30});

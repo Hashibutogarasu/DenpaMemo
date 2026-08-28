@@ -1,11 +1,10 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 
 import '../i18n/gen/strings.g.dart';
 import '../routing/app_router.dart';
-import '../widgets/field/inline_number_field.dart';
 import '../widgets/icon/monster_icon.dart';
-import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 
 /// Records the outcome of defeating a monster: which one, how many, and

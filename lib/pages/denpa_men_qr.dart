@@ -1,5 +1,6 @@
 import 'package:cuid2/cuid2.dart';
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,6 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../routing/app_router.dart';
 import 'denpa_men_editor.dart';
-import '../widgets/label/outlined_title.dart';
 import '../widgets/scaffold/app_scaffold.dart';
 
 class DenpaMenQrPageArgs {

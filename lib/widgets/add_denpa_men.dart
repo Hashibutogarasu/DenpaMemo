@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../theme/app_colors.dart';
 import 'denpa_men_status.dart';
 import 'editable_denpa_men_status.dart';
 

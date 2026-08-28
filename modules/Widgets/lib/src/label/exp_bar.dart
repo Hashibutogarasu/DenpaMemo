@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../theme/app_colors.dart';
 
 /// Level-up progress bar with a square right edge and a slanted left edge
 /// whose bottom corner juts out further left than its top corner. Fills

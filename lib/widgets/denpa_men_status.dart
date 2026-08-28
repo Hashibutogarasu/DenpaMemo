@@ -1,25 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/master_data/antenna_display_name.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/responsive_providers.dart';
-import '../theme/app_colors.dart';
-import 'container/indented_header.dart';
-import 'container/nested.dart';
-import 'container/status.dart';
 import 'icon/denpa_men_icon.dart';
-import 'label/abnormality_resistance_entry.dart';
-import 'label/attribute_resistance_entry.dart';
-import 'label/exp_progress.dart';
-import 'label/gauge_label.dart';
-import 'label/gauge_value.dart';
-import 'label/outlined_title.dart';
-import 'label/stat_value.dart';
-import 'label/status.dart';
 
 class DenpaMenStatus extends ConsumerWidget {
   const DenpaMenStatus({

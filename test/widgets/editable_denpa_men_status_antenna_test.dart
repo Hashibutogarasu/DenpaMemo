@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
 import 'package:denpa_memo/widgets/editable_denpa_men_status.dart';
+import '../support/all_translation_providers.dart';
 
 const _healSolo1 = Anntena(
   id: 'heal_solo_1',
@@ -72,7 +72,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: TranslationProvider(
+        child: AllTranslationProviders(
           child: MaterialApp(
             home: Scaffold(
               body: SingleChildScrollView(
@@ -117,7 +117,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: TranslationProvider(
+        child: AllTranslationProviders(
           child: MaterialApp(
             home: Scaffold(
               body: SingleChildScrollView(
@@ -199,7 +199,7 @@ void main() {
     Widget buildApp(DenpaMen current) {
       return ProviderScope(
         overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: TranslationProvider(
+        child: AllTranslationProviders(
           child: MaterialApp(
             home: Scaffold(
               body: SingleChildScrollView(
@@ -298,7 +298,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
-        child: TranslationProvider(
+        child: AllTranslationProviders(
           child: MaterialApp(
             home: Scaffold(
               body: SingleChildScrollView(

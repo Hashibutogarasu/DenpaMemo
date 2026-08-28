@@ -1,7 +1,7 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../denpa_men_selected_overlay.dart';
 
 /// Shows [DenpaMenSelectedOverlay] over a lineage tree node when [selectionMode]
 /// is on and [recordId] is in [selectedIds], reacting to both via nested

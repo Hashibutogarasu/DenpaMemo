@@ -1,10 +1,10 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_providers.dart';
 import '../../providers/search_providers.dart';
-import '../../theme/app_colors.dart';
 
 /// Overlay search bar that slides down from the top of the screen when
 /// Ctrl+F is pressed, and back up when dismissed. Binds its input directly

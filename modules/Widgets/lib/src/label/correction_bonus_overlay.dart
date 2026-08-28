@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../theme/app_colors.dart';
 import 'signed_number.dart';
 
 /// Positioned, right-aligned overlay showing a correction bonus on top of

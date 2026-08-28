@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
 import '../../providers/denpa_men_providers.dart';
 import '../dialog/denpa_men_preview_dialog.dart';
-import '../dialog/qr_code_image_dialog.dart';
 import 'lineage_graph_controller.dart';
 import 'lineage_graph_cursor_icon.dart';
 import 'lineage_tree_node.dart';

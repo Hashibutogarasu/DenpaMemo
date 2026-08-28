@@ -1,8 +1,8 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../denpa_men_list_tile.dart';
-import 'bottom_slide_dialog.dart';
 
 /// Lets the user pick individuals out of [candidates], returning the
 /// selected [DenpaMen] list or null if cancelled. Used for `.dm` import

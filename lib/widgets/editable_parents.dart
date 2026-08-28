@@ -1,4 +1,5 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,8 +7,6 @@ import '../i18n/gen/strings.g.dart';
 import '../pages/denpa_men_selection.dart';
 import '../providers/denpa_men_providers.dart';
 import '../routing/app_router.dart';
-import 'container/selection_tile.dart';
-import 'label/joined_labels_text.dart';
 
 /// Field for picking [DenpaMen.parentIds]: either empty or exactly 2
 /// parents, chosen via [DenpaMenSelectionRoute].

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,6 @@ import '../../providers/denpa_men_providers.dart';
 import '../../providers/dm_export_providers.dart';
 import '../../providers/qr_code_providers.dart';
 import '../../routing/app_router.dart';
-import 'qr_code_image_dialog.dart';
 
 Future<bool> confirmDenpaMenDelete(BuildContext context) async {
   final t = context.t;

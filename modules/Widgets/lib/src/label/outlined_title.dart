@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
+import '../theme/app_colors.dart';
 
 /// Renders [text] twice — once stroked in [outlineColor] behind a solid
 /// [fillColor] pass — so the title reads as an outlined header title.

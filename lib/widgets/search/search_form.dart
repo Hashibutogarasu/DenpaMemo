@@ -1,16 +1,12 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/master_data/antenna_display_name.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/search_providers.dart';
-import '../color/color_dot.dart';
-import '../dialog/antenna_selection_dialog.dart';
-import '../dialog/body_color_selection_dialog.dart';
-import '../dialog/head_shape_selection_dialog.dart';
 import 'search_filter_tile.dart';
-import 'search_stat_grid.dart';
 
 /// The filter form bound to [searchFormDraftProvider], shared by the search
 /// page and any other flow that needs the same filters (e.g. the

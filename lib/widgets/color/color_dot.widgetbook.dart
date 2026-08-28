@@ -1,8 +1,7 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import 'body_color_palette.dart';
-import 'color_dot.dart';
 
 @widgetbook.UseCase(name: 'Normal', type: ColorDot, path: 'color')
 Widget colorDotNormalUseCase(BuildContext context) {

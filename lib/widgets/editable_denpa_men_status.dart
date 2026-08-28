@@ -1,4 +1,5 @@
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,26 +7,8 @@ import '../domain/master_data/antenna_display_name.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/responsive_providers.dart';
 import '../routing/app_router.dart';
-import '../theme/app_colors.dart';
-import 'color/color_dot.dart';
-import 'container/indented_header.dart';
-import 'container/nested.dart';
-import 'container/selection_tile.dart';
-import 'container/status.dart';
-import 'dialog/antenna_selection_dialog.dart';
-import 'dialog/body_color_selection_dialog.dart';
-import 'dialog/correction_selection_dialog.dart';
-import 'dialog/head_shape_selection_dialog.dart';
-import 'editable_exp.dart';
 import 'editable_parents.dart';
-import 'editable_qr_code.dart';
-import 'editable_stat_grid.dart';
-import 'field/inline_text_field.dart';
-import 'field/outlined_inline_name_field.dart';
 import 'icon/editable_denpa_men_icon.dart';
-import 'label/gauge_value.dart';
-import 'label/inline_gauge_label.dart';
-import 'label/joined_labels_text.dart';
 
 /// Right-hand desktop pane letting the user edit [denpaMen] in place. Name
 /// and numeric stats are edited inline; head shape, body color, and
