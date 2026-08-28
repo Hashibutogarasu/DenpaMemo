@@ -7,13 +7,11 @@ class NodeInfo {
     required this.kind,
     this.rawValue,
     this.name,
-    this.catchIndex,
     this.record,
   });
 
   final NodeKind kind;
   final String? rawValue;
   final String? name;
-  final int? catchIndex;
   final DenpaMenRecord? record;
 }

@@ -6,6 +6,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
+import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../routing/app_router.dart';
 import 'denpa_men_editor.dart';
@@ -46,9 +47,17 @@ class _DenpaMenQrPageState extends ConsumerState<DenpaMenQrPage> {
     HardwareKeyboard.instance.addHandler(_handleKeyEvent);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
+        final denpaMenRecords =
+            ref.read(denpaMenListProvider(widget.masterData)).value ?? [];
+        final existingDenpaMenCount = denpaMenRecords
+            .where((r) => r.denpaMen.parentIds.isEmpty)
+            .length;
         ref
             .read(denpaMenSessionProvider.notifier)
-            .start(widget.initialRawValue ?? cuid());
+            .start(
+              widget.initialRawValue ?? cuid(),
+              existingDenpaMenCount: existingDenpaMenCount,
+            );
       }
     });
   }

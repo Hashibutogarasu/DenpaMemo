@@ -50,16 +50,20 @@ void main() {
     expect(caught.newCatchOrder({'a': caught}), 3);
   });
 
-  test('a bred individual resolves the last parent\'s catchOrder', () {
-    final parentA = _denpaMen(id: 'a', catchOrder: 3);
-    final parentB = _denpaMen(id: 'b', catchOrder: 5);
-    final child = _denpaMen(id: 'c', parentIds: ['a', 'b']);
-    final byId = {'a': parentA, 'b': parentB, 'c': child};
+  test(
+    'a bred individual resolves the more recently caught parent\'s '
+    'catchOrder',
+    () {
+      final parentA = _denpaMen(id: 'a', catchOrder: 5);
+      final parentB = _denpaMen(id: 'b', catchOrder: 3);
+      final child = _denpaMen(id: 'c', parentIds: ['a', 'b']);
+      final byId = {'a': parentA, 'b': parentB, 'c': child};
 
-    expect(child.newCatchOrder(byId), 5);
-  });
+      expect(child.newCatchOrder(byId), 5);
+    },
+  );
 
-  test('a grandchild resolves through multiple generations', () {
+  test('a grandchild resolves the largest value across both lineages', () {
     final otherParent = _denpaMen(id: 'a', catchOrder: 7);
     final ancestor = _denpaMen(id: 'b', catchOrder: 9);
     final parent = _denpaMen(id: 'c', parentIds: ['a', 'b']);
@@ -73,10 +77,18 @@ void main() {
       'e': grandchild,
     };
 
-    expect(grandchild.newCatchOrder(byId), 9);
+    expect(grandchild.newCatchOrder(byId), 11);
   });
 
-  test('returns null when the last parent is missing', () {
+  test('resolves through the remaining parent when one is missing', () {
+    final parentB = _denpaMen(id: 'b', catchOrder: 5);
+    final child = _denpaMen(id: 'c', parentIds: ['a', 'b']);
+    final byId = {'b': parentB, 'c': child};
+
+    expect(child.newCatchOrder(byId), 5);
+  });
+
+  test('returns null when every parent is unresolvable', () {
     final child = _denpaMen(id: 'c', parentIds: ['a', 'missing']);
 
     expect(child.newCatchOrder({'c': child}), isNull);

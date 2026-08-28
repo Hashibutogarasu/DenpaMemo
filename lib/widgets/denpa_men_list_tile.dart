@@ -45,51 +45,56 @@ class DenpaMenListTile extends ConsumerWidget {
         !selectionMode && record != null && masterData != null;
     final leadingIcon = DenpaMenIcon(denpaMenId: denpaMen.id, size: 40);
 
-    return ListTile(
-      leading: onSelectedChanged == null
-          ? leadingIcon
-          : InkWell(
-              customBorder: const CircleBorder(),
-              onTap: selectionMode ? null : () => onSelectedChanged!(!selected),
-              child: leadingIcon,
-            ),
-      title: Text(denpaMen.name),
-      selected: selected,
-      trailing: selectionMode && onSelectedChanged != null
-          ? Checkbox(
-              value: selected,
-              onChanged: (value) => onSelectedChanged!(value ?? false),
-            )
-          : showActionMenu
-          ? PopupMenuButton<VoidCallback>(
-              icon: const Icon(Icons.more_vert),
-              onSelected: (action) => action(),
-              itemBuilder: (context) => denpaMenActionMenuItems(
-                context,
-                ref,
-                record: record,
-                masterData: masterData,
+    return Material(
+      type: MaterialType.transparency,
+      child: ListTile(
+        leading: onSelectedChanged == null
+            ? leadingIcon
+            : InkWell(
+                customBorder: const CircleBorder(),
+                onTap: selectionMode
+                    ? null
+                    : () => onSelectedChanged!(!selected),
+                child: leadingIcon,
               ),
-            )
-          : onSelectedChanged == null && selected
-          ? const Icon(Icons.check)
-          : null,
-      onTap: () {
-        if (selectionMode && onSelectedChanged != null) {
-          onSelectedChanged!(!selected);
-        } else {
-          onTap?.call();
-        }
-      },
-      onLongPress: enableLongPressPreview
-          ? () => DenpaMenPreviewDialog.show(context, denpaMen: denpaMen)
-          : onSelectedChanged != null
-          ? () {
-              if (!selectionMode) {
-                onSelectedChanged!(true);
+        title: Text(denpaMen.name),
+        selected: selected,
+        trailing: selectionMode && onSelectedChanged != null
+            ? Checkbox(
+                value: selected,
+                onChanged: (value) => onSelectedChanged!(value ?? false),
+              )
+            : showActionMenu
+            ? PopupMenuButton<VoidCallback>(
+                icon: const Icon(Icons.more_vert),
+                onSelected: (action) => action(),
+                itemBuilder: (context) => denpaMenActionMenuItems(
+                  context,
+                  ref,
+                  record: record,
+                  masterData: masterData,
+                ),
+              )
+            : onSelectedChanged == null && selected
+            ? const Icon(Icons.check)
+            : null,
+        onTap: () {
+          if (selectionMode && onSelectedChanged != null) {
+            onSelectedChanged!(!selected);
+          } else {
+            onTap?.call();
+          }
+        },
+        onLongPress: enableLongPressPreview
+            ? () => DenpaMenPreviewDialog.show(context, denpaMen: denpaMen)
+            : onSelectedChanged != null
+            ? () {
+                if (!selectionMode) {
+                  onSelectedChanged!(true);
+                }
               }
-            }
-          : null,
+            : null,
+      ),
     );
   }
 }

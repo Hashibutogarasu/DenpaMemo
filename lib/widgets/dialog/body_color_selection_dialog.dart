@@ -37,7 +37,7 @@ Future<BodyColorSelectionResult?> showBodyColorSelectionDialog(
 }) {
   return showBottomSlideDialog<BodyColorSelectionResult>(
     context: context,
-    builder: (context) => _BodyColorSelectionDialog(
+    builder: (context) => BodyColorSelectionDialog(
       initial: selected,
       initialShades: shades,
       initialIsSpColor: isSpColor,
@@ -45,8 +45,9 @@ Future<BodyColorSelectionResult?> showBodyColorSelectionDialog(
   );
 }
 
-class _BodyColorSelectionDialog extends StatefulWidget {
-  const _BodyColorSelectionDialog({
+class BodyColorSelectionDialog extends StatefulWidget {
+  const BodyColorSelectionDialog({
+    super.key,
     required this.initial,
     required this.initialShades,
     required this.initialIsSpColor,
@@ -57,12 +58,12 @@ class _BodyColorSelectionDialog extends StatefulWidget {
   final bool initialIsSpColor;
 
   @override
-  State<_BodyColorSelectionDialog> createState() =>
+  State<BodyColorSelectionDialog> createState() =>
       _BodyColorSelectionDialogState();
 }
 
 class _BodyColorSelectionDialogState
-    extends State<_BodyColorSelectionDialog> {
+    extends State<BodyColorSelectionDialog> {
   late final List<_BodyColorEntry> _entries = [
     for (var i = 0; i < widget.initial.length; i++)
       _BodyColorEntry(

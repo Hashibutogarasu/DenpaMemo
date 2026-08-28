@@ -31,14 +31,14 @@ class Search extends ConsumerWidget {
         loading: () => const ProgressBar(),
         error: (error, stackTrace) => const SizedBox.shrink(),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ref.read(searchQueryProvider.notifier).state = ref.read(
             searchFormDraftProvider,
           );
           const SearchResultsRoute().push(context);
         },
-        child: const Icon(Icons.search),
+        label: Text(t.page.search),
       ),
     );
   }

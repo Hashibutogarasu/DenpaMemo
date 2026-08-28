@@ -40,8 +40,7 @@ class DenpaMenHomeScreen extends ConsumerStatefulWidget {
   final List<Widget>? actions;
 
   @override
-  ConsumerState<DenpaMenHomeScreen> createState() =>
-      _DenpaMenHomeScreenState();
+  ConsumerState<DenpaMenHomeScreen> createState() => _DenpaMenHomeScreenState();
 }
 
 class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
@@ -65,6 +64,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final masterData = widget.masterData;
+    ref.watch(denpaMenCatchOrderMigrationProvider(masterData));
     final t = context.t;
     final selectionMode = ref.watch(selectionModeProvider);
     final viewMode = ref.watch(homeViewModeProvider);
@@ -75,10 +75,8 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
       title: widget.title,
       additionalShortcuts: selectionMode
           ? {
-              const SingleActivator(
-                LogicalKeyboardKey.keyA,
-                control: true,
-              ): _selectAll,
+              const SingleActivator(LogicalKeyboardKey.keyA, control: true):
+                  _selectAll,
               const SingleActivator(LogicalKeyboardKey.escape): _clearSelection,
             }
           : const {},
@@ -150,14 +148,13 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                 label: Text(t.home.resetTreePosition),
               ),
             ),
-            if (isMobile)
+            if (isMobile) ...[
               Positioned(
                 top: 112,
                 right: 16,
                 child: ElevatedButton.icon(
-                  onPressed: () => setState(
-                    () => _treeCursorEnabled = !_treeCursorEnabled,
-                  ),
+                  onPressed: () =>
+                      setState(() => _treeCursorEnabled = !_treeCursorEnabled),
                   icon: Icon(
                     _treeCursorEnabled ? Icons.add_circle : Icons.add,
                     size: 18,
@@ -165,6 +162,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
                   label: Text(t.home.toggleTreeCursor),
                 ),
               ),
+            ],
           ],
         ],
       ),

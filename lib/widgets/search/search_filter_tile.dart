@@ -39,17 +39,20 @@ class SearchFilterTile<T> extends ConsumerWidget {
               .update((q) => apply(q, result));
         }
       },
-      child: ListTile(
-        title: Text(label),
-        subtitle: subtitle,
-        trailing: isSet
-            ? IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => ref
-                    .read(searchFormDraftProvider.notifier)
-                    .update(clear),
-              )
-            : const Icon(Icons.chevron_right),
+      child: Material(
+        type: MaterialType.transparency,
+        child: ListTile(
+          title: Text(label),
+          subtitle: subtitle,
+          trailing: isSet
+              ? IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => ref
+                      .read(searchFormDraftProvider.notifier)
+                      .update(clear),
+                )
+              : const Icon(Icons.chevron_right),
+        ),
       ),
     );
   }

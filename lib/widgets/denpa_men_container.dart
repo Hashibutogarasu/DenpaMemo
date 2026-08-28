@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../domain/denpa_men/denpa_men.dart';
+import 'denpa_men_selected_overlay.dart';
 import 'dialog/denpa_men_preview_dialog.dart';
 import 'icon/denpa_men_icon.dart';
 
@@ -55,14 +56,7 @@ class DenpaMenContainer extends StatelessWidget {
             SizedBox(
               width: size,
               height: size,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  color: Colors.black.withValues(alpha: 0.4),
-                  alignment: Alignment.center,
-                  child: const Checkbox(value: true, onChanged: null),
-                ),
-              ),
+              child: const DenpaMenSelectedOverlay(),
             ),
         ],
       ),

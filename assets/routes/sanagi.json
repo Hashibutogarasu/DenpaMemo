@@ -1,0 +1,291 @@
+{
+  "id": "n19girll1iju0wg2ni6w8cs4",
+  "name": "さなぎ",
+  "abnormalityResistances": [
+    {
+      "abnormalityId": "cold",
+      "value": 2
+    }
+  ],
+  "bodyColors": [
+    "green",
+    "green"
+  ],
+  "bodyColorShades": [
+    1,
+    0
+  ],
+  "attributeResistance": [
+    {
+      "attribute": {
+        "id": "ice",
+        "index": 1,
+        "isElemental": true,
+        "resistantTo": [],
+        "weakTo": []
+      },
+      "value": -3
+    },
+    {
+      "attribute": {
+        "id": "wind",
+        "index": 2,
+        "isElemental": true,
+        "resistantTo": [],
+        "weakTo": []
+      },
+      "value": 3
+    }
+  ],
+  "physique": {
+    "id": "largest"
+  },
+  "personality": {
+    "id": "strawberry"
+  },
+  "pattern": {
+    "id": "d"
+  },
+  "headShape": {
+    "id": "triangle",
+    "abnormalityResistanceBonuses": {},
+    "hpBonus": 0,
+    "apBonus": 0,
+    "attackBonus": 0,
+    "defenseBonus": 0,
+    "speedBonus": 0,
+    "evasionRateBonus": 0
+  },
+  "anntena": {
+    "id": "none",
+    "category": "other",
+    "targetCount": null,
+    "targetsAll": false,
+    "dealsDamage": false,
+    "attackAttributes": [],
+    "isInheritable": false,
+    "evolvesToId": null,
+    "maxLevel": null,
+    "variantGroupId": null,
+    "hasLevel": false
+  },
+  "antennaLevel": 0,
+  "isSpColor": false,
+  "happiness": 0,
+  "maxHappiness": 20,
+  "level": 1,
+  "maxLevel": 20,
+  "currentExp": null,
+  "maxExp": null,
+  "hp": 26,
+  "ap": 0,
+  "attack": 11,
+  "defense": 12,
+  "speed": 5,
+  "evasionRate": 6,
+  "corrections": [],
+  "considerCorrections": false,
+  "parentIds": [
+    "kpelvifntq7ju4tz8bll8xjc",
+    "cug5bs8ofxmrwi7i31jkzqb2"
+  ],
+  "catchOrder": null,
+  "qrCodeId": null,
+  "memo": null,
+  "moveInDate": null,
+  "hash": "f6991f6d00a026bd8bbd00c9ae16f300fd211bf80b29eadd9e7c0e4e108e8487",
+  "monsterExp": null,
+  "newCatchOrder": 22,
+  "parents": [
+    {
+      "id": "kpelvifntq7ju4tz8bll8xjc",
+      "name": "つねのり",
+      "abnormalityResistances": [
+        {
+          "abnormalityId": "cold",
+          "value": 1
+        }
+      ],
+      "bodyColors": [
+        "green"
+      ],
+      "bodyColorShades": [
+        0
+      ],
+      "attributeResistance": [
+        {
+          "attribute": {
+            "id": "ice",
+            "index": 1,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": -2
+        },
+        {
+          "attribute": {
+            "id": "wind",
+            "index": 2,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": 2
+        }
+      ],
+      "physique": {
+        "id": "largest"
+      },
+      "personality": {
+        "id": "strawberry"
+      },
+      "pattern": {
+        "id": "d"
+      },
+      "headShape": {
+        "id": "triangle",
+        "abnormalityResistanceBonuses": {},
+        "hpBonus": 0,
+        "apBonus": 0,
+        "attackBonus": 0,
+        "defenseBonus": 0,
+        "speedBonus": 0,
+        "evasionRateBonus": 0
+      },
+      "anntena": {
+        "id": "beam_1",
+        "category": "attack",
+        "targetCount": 1,
+        "targetsAll": false,
+        "dealsDamage": true,
+        "attackAttributes": [],
+        "isInheritable": false,
+        "evolvesToId": null,
+        "maxLevel": null,
+        "variantGroupId": "beam",
+        "hasLevel": true
+      },
+      "antennaLevel": 0,
+      "isSpColor": false,
+      "happiness": 0,
+      "maxHappiness": 20,
+      "level": 1,
+      "maxLevel": 20,
+      "currentExp": null,
+      "maxExp": 26,
+      "hp": 26,
+      "ap": 0,
+      "attack": 10,
+      "defense": 11,
+      "speed": 5,
+      "evasionRate": 6,
+      "corrections": [],
+      "considerCorrections": false,
+      "parentIds": [],
+      "catchOrder": 19,
+      "qrCodeId": "75d05b48-6610-4a55-98dc-eb636563e6f1",
+      "memo": null,
+      "moveInDate": null,
+      "hash": "b727ab957d15353de5f124eba8b8142a6b5c419c0f2fbc67c9c89d28bfb06f2b",
+      "monsterExp": null,
+      "newCatchOrder": 19,
+      "parents": []
+    },
+    {
+      "id": "cug5bs8ofxmrwi7i31jkzqb2",
+      "name": "たかみつ",
+      "abnormalityResistances": [
+        {
+          "abnormalityId": "cold",
+          "value": 1
+        }
+      ],
+      "bodyColors": [
+        "green"
+      ],
+      "bodyColorShades": [
+        1
+      ],
+      "attributeResistance": [
+        {
+          "attribute": {
+            "id": "ice",
+            "index": 1,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": -2
+        },
+        {
+          "attribute": {
+            "id": "wind",
+            "index": 2,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": 2
+        }
+      ],
+      "physique": {
+        "id": "largest"
+      },
+      "personality": {
+        "id": "strawberry"
+      },
+      "pattern": {
+        "id": "d"
+      },
+      "headShape": {
+        "id": "soap",
+        "abnormalityResistanceBonuses": {},
+        "hpBonus": 0,
+        "apBonus": 0,
+        "attackBonus": 0,
+        "defenseBonus": 0,
+        "speedBonus": 0,
+        "evasionRateBonus": 0
+      },
+      "anntena": {
+        "id": "none",
+        "category": "other",
+        "targetCount": null,
+        "targetsAll": false,
+        "dealsDamage": false,
+        "attackAttributes": [],
+        "isInheritable": false,
+        "evolvesToId": null,
+        "maxLevel": null,
+        "variantGroupId": null,
+        "hasLevel": false
+      },
+      "antennaLevel": 0,
+      "isSpColor": false,
+      "happiness": 0,
+      "maxHappiness": 20,
+      "level": 1,
+      "maxLevel": 20,
+      "currentExp": null,
+      "maxExp": null,
+      "hp": 22,
+      "ap": 7,
+      "attack": 5,
+      "defense": 5,
+      "speed": 4,
+      "evasionRate": 7,
+      "corrections": [],
+      "considerCorrections": false,
+      "parentIds": [],
+      "catchOrder": 22,
+      "qrCodeId": "r2vuqia3zego6g3y3uts070q",
+      "memo": null,
+      "moveInDate": null,
+      "hash": "3c72d048f89d39f734ccba9769110118ed17570ad65fd39cabb1c143a7a5e92c",
+      "monsterExp": null,
+      "newCatchOrder": 22,
+      "parents": []
+    }
+  ]
+}

@@ -58,9 +58,12 @@
     "viewModeGrid": "グリッド表示",
     "resetTreePosition": "位置をリセット",
     "toggleTreeCursor": "カーソル表示の切り替え",
+    "selectHoveredTreeIndividual": "選択",
+    "deselectHoveredTreeIndividual": "選択解除",
     "catchOrderLabel": "${order}匹目: ${name}",
     "birthGuideAction": "出生ガイド",
-    "showQrCodeAction": "QRコードを表示"
+    "showQrCodeAction": "QRコードを表示",
+    "copyLineageTreeJsonAction": "系譜ツリーをJSONとしてコピー"
   },
   "search": {
     "name": "名前",

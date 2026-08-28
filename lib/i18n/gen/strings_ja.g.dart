@@ -404,6 +404,12 @@ class Translations$home$ja {
 	/// ja: 'カーソル表示の切り替え'
 	String get toggleTreeCursor => 'カーソル表示の切り替え';
 
+	/// ja: '選択'
+	String get selectHoveredTreeIndividual => '選択';
+
+	/// ja: '選択解除'
+	String get deselectHoveredTreeIndividual => '選択解除';
+
 	/// ja: '${order}匹目: ${name}'
 	String catchOrderLabel({required Object order, required Object name}) => '${order}匹目: ${name}';
 
@@ -412,6 +418,9 @@ class Translations$home$ja {
 
 	/// ja: 'QRコードを表示'
 	String get showQrCodeAction => 'QRコードを表示';
+
+	/// ja: '系譜ツリーをJSONとしてコピー'
+	String get copyLineageTreeJsonAction => '系譜ツリーをJSONとしてコピー';
 }
 
 // Path: search
@@ -751,9 +760,12 @@ extension on Translations {
 			'home.viewModeGrid' => 'グリッド表示',
 			'home.resetTreePosition' => '位置をリセット',
 			'home.toggleTreeCursor' => 'カーソル表示の切り替え',
+			'home.selectHoveredTreeIndividual' => '選択',
+			'home.deselectHoveredTreeIndividual' => '選択解除',
 			'home.catchOrderLabel' => ({required Object order, required Object name}) => '${order}匹目: ${name}',
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
+			'home.copyLineageTreeJsonAction' => '系譜ツリーをJSONとしてコピー',
 			'search.name' => '名前',
 			'search.tabList' => 'リスト',
 			'search.tabSearch' => '検索',

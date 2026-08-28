@@ -10,11 +10,11 @@ import '../../domain/denpa_men/denpa_men.dart';
 import '../../domain/denpa_men/denpa_men_record.dart';
 import '../../domain/master_data/master_data.dart';
 import '../../domain/qr_code/qr_code_record.dart';
+import '../../providers/denpa_men_providers.dart';
 import '../dialog/denpa_men_preview_dialog.dart';
 import '../dialog/qr_code_image_dialog.dart';
-import 'lineage_graph_builder.dart';
+import 'lineage_graph_controller.dart';
 import 'lineage_graph_cursor_icon.dart';
-import 'lineage_graph_data_snapshot.dart';
 import 'lineage_tree_node.dart';
 import 'node_info.dart';
 import 'qr_code_node.dart';
@@ -45,27 +45,20 @@ class LineageGraph extends ConsumerStatefulWidget {
 
 class _LineageGraphState extends ConsumerState<LineageGraph> {
   bool _qrDialogOpen = false;
-  int _generation = 0;
-  late List<Object?> _dataSnapshotValue;
-  final _hoveredBredId = ValueNotifier<String?>(null);
   Timer? _cursorHitTestTimer;
-  final _bredNodeEntriesByNodeKey = <Object, (GlobalKey, String)>{};
   final _stackKey = GlobalKey();
 
-  late LineageGraphData _graphData;
+  late final _controller = LineageGraphController(
+    qrCodes: widget.qrCodes,
+    denpaMenRecords: widget.denpaMenRecords,
+  );
   late Widget _graphView;
 
   @override
   void initState() {
     super.initState();
-    _dataSnapshotValue = lineageDataSnapshot(
-      widget.qrCodes,
-      widget.denpaMenRecords,
-    );
-    _graphData = buildLineageGraphData(
-      qrCodes: widget.qrCodes,
-      denpaMenRecords: widget.denpaMenRecords,
-    );
+    _controller.selectionMode.value = ref.read(selectionModeProvider);
+    _controller.selectedIds.value = ref.read(selectedDenpaMenIdsProvider);
     _graphView = _buildGraphView();
     if (widget.cursorEnabled) {
       _startCursorHitTesting();
@@ -75,19 +68,15 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
   @override
   void didUpdateWidget(covariant LineageGraph oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newSnapshot = lineageDataSnapshot(
+    final dataChanged = _controller.refreshIfChanged(
       widget.qrCodes,
       widget.denpaMenRecords,
     );
-    if (!lineageDataSnapshotsEqual(newSnapshot, _dataSnapshotValue) ||
-        widget.controller != oldWidget.controller) {
-      _dataSnapshotValue = newSnapshot;
-      _generation++;
-      _bredNodeEntriesByNodeKey.clear();
-      _graphData = buildLineageGraphData(
-        qrCodes: widget.qrCodes,
-        denpaMenRecords: widget.denpaMenRecords,
-      );
+    final controllerChanged = widget.controller != oldWidget.controller;
+    if (dataChanged || controllerChanged) {
+      if (!dataChanged) {
+        _controller.forceRefresh(widget.qrCodes, widget.denpaMenRecords);
+      }
       _graphView = _buildGraphView();
     } else if (!const MapEquality<String, File?>().equals(
       widget.iconsById,
@@ -107,8 +96,15 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
   @override
   void dispose() {
     _cursorHitTestTimer?.cancel();
-    _hoveredBredId.dispose();
+    _controller.dispose();
     super.dispose();
+  }
+
+  void _toggleSelected(int id) => toggleDenpaMenSelection(ref, id);
+
+  void _middleClickSelect(int id) {
+    ref.read(selectionModeProvider.notifier).state = true;
+    _toggleSelected(id);
   }
 
   void _startCursorHitTesting() {
@@ -122,7 +118,8 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
   void _stopCursorHitTesting() {
     _cursorHitTestTimer?.cancel();
     _cursorHitTestTimer = null;
-    _hoveredBredId.value = null;
+    _controller.hoveredBredId.value = null;
+    ref.read(hoveredTreeRecordIdProvider.notifier).state = null;
   }
 
   void _updateHoverFromCursor() {
@@ -131,26 +128,31 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
       return;
     }
     final center = stackBox.localToGlobal(stackBox.size.center(Offset.zero));
-    String? hoveredId;
-    for (final (key, denpaMenId) in _bredNodeEntriesByNodeKey.values) {
+    String? hoveredBredId;
+    int? hoveredRecordId;
+    for (final (key, info) in _controller.nodeEntriesByNodeKey.values) {
       final nodeBox = key.currentContext?.findRenderObject() as RenderBox?;
       if (nodeBox == null || !nodeBox.attached) {
         continue;
       }
       final rect = nodeBox.localToGlobal(Offset.zero) & nodeBox.size;
       if (rect.contains(center)) {
-        hoveredId = denpaMenId;
+        hoveredRecordId = info.record!.id;
+        if (info.kind == NodeKind.bredDenpaMen) {
+          hoveredBredId = info.record!.denpaMen.id;
+        }
         break;
       }
     }
-    _hoveredBredId.value = hoveredId;
+    _controller.hoveredBredId.value = hoveredBredId;
+    ref.read(hoveredTreeRecordIdProvider.notifier).state = hoveredRecordId;
   }
 
   void _setHoveredBredId(String? id) {
     if (widget.cursorEnabled) {
       return;
     }
-    _hoveredBredId.value = id;
+    _controller.hoveredBredId.value = id;
   }
 
   void _showPreview(BuildContext context, DenpaMen denpaMen) {
@@ -176,13 +178,13 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
 
   Widget _buildGraphView() {
     const nodeSize = 64.0;
-    final nodeInfoByKey = _graphData.nodeInfoByKey;
-    final denpaMenById = _graphData.denpaMenById;
+    final nodeInfoByKey = _controller.graphData.nodeInfoByKey;
+    final denpaMenById = _controller.graphData.denpaMenById;
 
     return GraphView.builder(
-      key: ValueKey(_generation),
-      graph: _graphData.graph,
-      algorithm: _graphData.algorithm,
+      key: ValueKey(_controller.generation),
+      graph: _controller.graphData.graph,
+      algorithm: _controller.graphData.algorithm,
       controller: widget.controller,
       autoZoomToFit: true,
       centerGraph: true,
@@ -210,9 +212,18 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
                 iconFile: widget.iconsById[info.record!.denpaMen.id],
                 nodeSize: nodeSize,
                 isBred: false,
-                hoveredBredId: _hoveredBredId,
+                hoveredBredId: _controller.hoveredBredId,
                 denpaMenById: denpaMenById,
+                incomingSourceKeysById: _controller.graphData.incomingSourceKeysById,
+                graphNodeKey: node.key!.value,
+                selectionMode: _controller.selectionMode,
+                selectedIds: _controller.selectedIds,
+                onToggleSelection: _toggleSelected,
+                onMiddleClick: _middleClickSelect,
                 onTap: () => _showPreview(context, info.record!.denpaMen),
+                nodeKey: _controller.nodeEntriesByNodeKey
+                    .putIfAbsent(node.key!.value, () => (GlobalKey(), info))
+                    .$1,
               ),
             ),
             NodeKind.bredDenpaMen => Builder(
@@ -223,16 +234,19 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
                 iconFile: widget.iconsById[info.record!.denpaMen.id],
                 nodeSize: nodeSize,
                 isBred: true,
-                hoveredBredId: _hoveredBredId,
+                hoveredBredId: _controller.hoveredBredId,
                 denpaMenById: denpaMenById,
+                incomingSourceKeysById: _controller.graphData.incomingSourceKeysById,
+                graphNodeKey: node.key!.value,
+                selectionMode: _controller.selectionMode,
+                selectedIds: _controller.selectedIds,
+                onToggleSelection: _toggleSelected,
+                onMiddleClick: _middleClickSelect,
                 onTap: () => _showPreview(context, info.record!.denpaMen),
                 onHoverEnter: () => _setHoveredBredId(info.record!.denpaMen.id),
                 onHoverExit: () => _setHoveredBredId(null),
-                nodeKey: _bredNodeEntriesByNodeKey
-                    .putIfAbsent(
-                      node.key!.value,
-                      () => (GlobalKey(), info.record!.denpaMen.id),
-                    )
+                nodeKey: _controller.nodeEntriesByNodeKey
+                    .putIfAbsent(node.key!.value, () => (GlobalKey(), info))
                     .$1,
               ),
             ),
@@ -246,6 +260,14 @@ class _LineageGraphState extends ConsumerState<LineageGraph> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool>(
+      selectionModeProvider,
+      (_, next) => _controller.selectionMode.value = next,
+    );
+    ref.listen<Set<int>>(
+      selectedDenpaMenIdsProvider,
+      (_, next) => _controller.selectedIds.value = next,
+    );
     return Stack(
       key: _stackKey,
       children: [

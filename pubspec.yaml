@@ -33,6 +33,8 @@ dependencies:
   archive: ^4.1.0
   package_info_plus: ^9.0.1
   graphql_flutter: ^5.2.1
+  widgetbook: ^3.25.0
+  widgetbook_annotation: ^3.11.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -46,8 +48,10 @@ dev_dependencies:
   objectbox_generator: ^5.3.2
   qr: ^3.0.2
   path_provider_platform_interface: ^2.1.3
+  widgetbook_generator: ^3.24.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/data/icons/monster/
+    - assets/routes/

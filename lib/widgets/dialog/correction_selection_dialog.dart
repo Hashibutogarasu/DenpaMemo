@@ -14,15 +14,16 @@ Future<List<Correction>?> showCorrectionSelectionDialog(
 }) {
   return showBottomSlideDialog<List<Correction>>(
     context: context,
-    builder: (context) => _CorrectionSelectionDialog(
+    builder: (context) => CorrectionSelectionDialog(
       corrections: corrections,
       initial: selected,
     ),
   );
 }
 
-class _CorrectionSelectionDialog extends StatefulWidget {
-  const _CorrectionSelectionDialog({
+class CorrectionSelectionDialog extends StatefulWidget {
+  const CorrectionSelectionDialog({
+    super.key,
     required this.corrections,
     required this.initial,
   });
@@ -31,12 +32,12 @@ class _CorrectionSelectionDialog extends StatefulWidget {
   final List<Correction> initial;
 
   @override
-  State<_CorrectionSelectionDialog> createState() =>
+  State<CorrectionSelectionDialog> createState() =>
       _CorrectionSelectionDialogState();
 }
 
 class _CorrectionSelectionDialogState
-    extends State<_CorrectionSelectionDialog> {
+    extends State<CorrectionSelectionDialog> {
   late final List<Correction> _selected = List.of(widget.initial);
 
   void _toggle(Correction correction) {

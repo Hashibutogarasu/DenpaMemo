@@ -17,12 +17,17 @@ class LineageGraphData {
     required this.algorithm,
     required this.nodeInfoByKey,
     required this.denpaMenById,
+    required this.incomingSourceKeysById,
   });
 
   final Graph graph;
   final Algorithm algorithm;
   final Map<Object, NodeInfo> nodeInfoByKey;
   final Map<String, DenpaMen> denpaMenById;
+
+  /// For each [DenpaMen.id], the graph node key(s) — including any
+  /// [duplicateParentNodeKeyFor] duplicates — that feed into it as parents.
+  final Map<String, List<Object>> incomingSourceKeysById;
 }
 
 /// Builds the QR-code roots, their directly caught individuals (in catch
@@ -77,11 +82,9 @@ LineageGraphData buildLineageGraphData({
       if (!addedIds.add(id)) {
         continue;
       }
-      final resolvedCatchOrder = record.denpaMen.newCatchOrder(denpaMenById);
       nodeInfoByKey[id] = NodeInfo(
         kind: NodeKind.caughtDenpaMen,
         name: record.denpaMen.name,
-        catchIndex: resolvedCatchOrder == null ? null : resolvedCatchOrder + 1,
         record: record,
       );
       incomingSourceKeysById[id] = [rootKey];
@@ -142,6 +145,7 @@ LineageGraphData buildLineageGraphData({
     algorithm: algorithm,
     nodeInfoByKey: nodeInfoByKey,
     denpaMenById: denpaMenById,
+    incomingSourceKeysById: incomingSourceKeysById,
   );
 }
 

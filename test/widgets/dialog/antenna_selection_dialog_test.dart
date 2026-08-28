@@ -297,6 +297,48 @@ void main() {
   );
 
   testWidgets(
+    'an antenna whose evolvesToId points outside the given list is treated '
+    'as a chain end instead of throwing',
+    (WidgetTester tester) async {
+      const danglingRoot = Anntena(
+        id: 'dangling_root',
+        category: AnntenaCategory.support,
+        targetCount: 1,
+        maxLevel: 9,
+        evolvesToId: 'not_in_the_list',
+        variantGroupId: 'dangling',
+      );
+
+      await tester.pumpWidget(
+        TranslationProvider(
+          child: MaterialApp(
+            home: Scaffold(
+              body: Builder(
+                builder: (context) => ElevatedButton(
+                  onPressed: () async {
+                    await showAntennaSelectionDialog(
+                      context,
+                      anntenas: [danglingRoot],
+                      selected: danglingRoot,
+                      level: 3,
+                    );
+                  },
+                  child: const Text('open'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('dangling_root'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
     'adjusting the effect-range slider to the all-target variant raises the '
     "level slider max enough to reach that variant's next evolution tier, "
     'not just its first tier',

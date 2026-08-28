@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/legacy.dart';
 
 import '../data/denpa_men/objectbox_denpa_men_repository.dart';
 import '../domain/denpa_men/denpa_men.dart';
+import '../domain/denpa_men/denpa_men_catch_order_migration.dart';
 import '../domain/denpa_men/denpa_men_record.dart';
 import '../domain/denpa_men/denpa_men_repository.dart';
 import '../domain/master_data/master_data.dart';
@@ -14,12 +15,23 @@ final denpaMenRepositoryProvider = Provider<DenpaMenRepository>((ref) {
 
 /// Streams the saved [DenpaMen] list resolved against [masterData].
 final denpaMenListProvider =
-    StreamProvider.family<List<DenpaMenRecord>, MasterData>((
-      ref,
-      masterData,
-    ) {
+    StreamProvider.family<List<DenpaMenRecord>, MasterData>((ref, masterData) {
       final repository = ref.watch(denpaMenRepositoryProvider);
       return repository.watchAll(masterData);
+    });
+
+/// Runs [migrateDenpaMenCatchOrders] exactly once per [masterData], right
+/// after [denpaMenListProvider] finishes its first load (the individuals
+/// the home screen's loading indicator waits on). Watch this from the
+/// screen that shows that loading indicator; its cached [AsyncValue] means
+/// re-watching it elsewhere never re-runs the migration.
+final denpaMenCatchOrderMigrationProvider =
+    FutureProvider.family<void, MasterData>((ref, masterData) async {
+      await ref.watch(denpaMenListProvider(masterData).future);
+      migrateDenpaMenCatchOrders(
+        ref.read(denpaMenRepositoryProvider),
+        masterData,
+      );
     });
 
 /// Whether the home accordion list is in multi-select mode. Turned on
@@ -33,6 +45,18 @@ final selectedDenpaMenIdsProvider = StateProvider<Set<int>>((ref) => {});
 /// [DenpaMen] entries most recently copied or cut from the home screen,
 /// held in memory for a future paste feature.
 final denpaMenClipboardProvider = StateProvider<List<DenpaMen>>((ref) => []);
+
+/// Id of the [DenpaMenRecord] the lineage tree's on-screen cursor is
+/// currently over, `null` when it's over nothing.
+final hoveredTreeRecordIdProvider = StateProvider<int?>((ref) => null);
+
+/// Adds [id] to [selectedDenpaMenIdsProvider] if absent, removes it otherwise.
+void toggleDenpaMenSelection(WidgetRef ref, int id) {
+  final current = ref.read(selectedDenpaMenIdsProvider);
+  ref.read(selectedDenpaMenIdsProvider.notifier).state = current.contains(id)
+      ? (Set<int>.from(current)..remove(id))
+      : (Set<int>.from(current)..add(id));
+}
 
 /// Ids of records that were cut and are pending a paste-driven removal.
 /// Rendered as greyed-out until consumed or the selection is cleared.
