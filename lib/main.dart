@@ -42,11 +42,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.objectBox, this.overrides = const []});
 
   final ObjectBox objectBox;
-
-  /// Additional provider overrides layered on top of [objectBoxProvider]'s.
-  /// Lets tests substitute a fast in-memory/file-backed
-  /// `masterDataRepositoryProvider` for the real GraphQL-backed one,
-  /// without needing a running `modules/server` instance.
   final List<Override> overrides;
 
   @override
