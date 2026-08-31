@@ -5,7 +5,7 @@ import 'package:data_pack/data_pack.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../denpa_men/denpa_men_backup_codec.dart';
+import '../denpa_men_backup_codec.dart';
 import 'dm_export_step.dart';
 
 /// Filters `context.candidates` down to those consistent with

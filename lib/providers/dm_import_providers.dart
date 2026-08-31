@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide Translations, BuildContextTranslationsExtension;
+import 'package:dm_file/dm_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,9 +12,6 @@ import 'package:graphql_client/graphql_client.dart';
 import 'package:step_dialog/step_dialog.dart'
     hide Translations, BuildContextTranslationsExtension;
 
-import '../domain/backup/dm_file.dart';
-import '../domain/backup/dm_import_error.dart';
-import '../domain/backup/import_result.dart';
 import '../i18n/gen/strings.g.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
@@ -75,14 +73,12 @@ class DmImportController {
         ),
         onProgress: (value) => progress.state = value,
       );
-    } on DmImportError catch (error) {
+    } on DmHeaderReadError {
       if (context.mounted) {
         await ErrorDialog.show(
           context,
-          title: error.title(t),
-          description: error.description(t),
-          retriable: error.retriable,
-          onRetry: error.retriable ? error.retry : null,
+          title: t.backup.importHeaderErrorTitle,
+          description: t.backup.importHeaderErrorDescription,
         );
       }
       return null;

@@ -1,8 +1,45 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
-import 'package:denpa_memo/data/objectbox/objectbox.dart';
-import 'package:denpa_memo/domain/backup/import_result_builder.dart';
+import 'package:dm_file/dm_file.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+class _InMemoryDenpaMenRepository implements DenpaMenRepository {
+  final Map<int, DenpaMen> _records = {};
+  int _nextId = 1;
+
+  @override
+  List<DenpaMenRecord> getAll(MasterData masterData) => [
+    for (final entry in _records.entries)
+      DenpaMenRecord(id: entry.key, denpaMen: entry.value),
+  ];
+
+  @override
+  Stream<List<DenpaMenRecord>> watchAll(MasterData masterData) =>
+      Stream.value(getAll(masterData));
+
+  @override
+  int save(DenpaMen denpaMen, {int id = 0}) {
+    final recordId = id == 0 ? _nextId++ : id;
+    _records[recordId] = denpaMen;
+    return recordId;
+  }
+
+  @override
+  DenpaMenRecord? findByCuid(String cuid, MasterData masterData) {
+    for (final entry in _records.entries) {
+      if (entry.value.id == cuid) {
+        return DenpaMenRecord(id: entry.key, denpaMen: entry.value);
+      }
+    }
+    return null;
+  }
+
+  @override
+  void delete(int id) => _records.remove(id);
+
+  @override
+  List<DenpaMenRecord> getChildrens(DenpaMen denpaMen, MasterData masterData) =>
+      throw UnimplementedError();
+}
 
 void main() {
   final headShape = const HeadShape(id: 'head-a');
@@ -30,9 +67,7 @@ void main() {
   test(
     'buildImportResult buckets by outcome and detects orphans across the batch and the DB',
     () {
-      final objectBox = ObjectBox.createInMemory();
-      addTearDown(objectBox.store.close);
-      final denpaMenRepository = ObjectBoxDenpaMenRepository(objectBox);
+      final denpaMenRepository = _InMemoryDenpaMenRepository();
 
       final existingParent = createDenpaMen(
         name: 'existing-parent',

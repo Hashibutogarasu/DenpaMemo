@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:denpa_memo/domain/backup/dm_file.dart';
-import 'package:denpa_memo/domain/backup/dm_import_error.dart';
+import 'package:dm_file/dm_file.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

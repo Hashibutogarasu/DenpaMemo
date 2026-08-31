@@ -5,15 +5,15 @@ import 'dart:typed_data';
 import 'package:data_pack/data_pack.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'dm_export_step.dart';
-import 'dm_export_step_runner.dart';
-import 'dm_export_steps.dart';
-import 'dm_import_context.dart';
-import 'dm_import_error.dart';
-import 'dm_import_step.dart';
-import 'dm_import_step_runner.dart';
-import 'dm_import_steps.dart';
-import 'import_result.dart';
+import 'export/dm_export_step.dart';
+import 'export/dm_export_step_runner.dart';
+import 'export/dm_export_steps.dart';
+import 'import/dm_import_context.dart';
+import 'import/dm_import_error.dart';
+import 'import/dm_import_step.dart';
+import 'import/dm_import_step_runner.dart';
+import 'import/dm_import_steps.dart';
+import 'import/import_result.dart';
 
 part 'dm_file.freezed.dart';
 

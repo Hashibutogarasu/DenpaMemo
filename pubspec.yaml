@@ -12,6 +12,7 @@ workspace:
   - modules/GraphQLClient
   - modules/Graph
   - modules/Widgets
+  - modules/DMFile
   - apps/WidgetBook
 
 dependencies:
@@ -51,6 +52,8 @@ dependencies:
     path: modules/Widgets
   tree_graph:
     path: modules/Graph
+  dm_file:
+    path: modules/DMFile
 dev_dependencies:
   flutter_test:
     sdk: flutter

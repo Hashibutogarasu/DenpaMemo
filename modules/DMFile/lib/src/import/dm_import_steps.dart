@@ -5,8 +5,8 @@ import 'package:data_pack/data_pack.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../denpa_men/denpa_men_backup_codec.dart';
-import 'dm_file.dart';
+import '../denpa_men_backup_codec.dart';
+import '../dm_file.dart';
 import 'dm_import_context.dart';
 import 'dm_import_step.dart';
 import 'import_result_builder.dart';
