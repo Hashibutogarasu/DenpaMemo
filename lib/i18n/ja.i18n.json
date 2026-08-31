@@ -51,7 +51,14 @@
     "themeLight": "ライト",
     "themeDark": "ダーク",
     "languageJapanese": "日本語",
-    "dataManagementImport": "個体をインポート"
+    "dataManagementCleanupFolder": "アプリケーションフォルダのクリーンアップ",
+    "dataManagementCleanupConfirmTitle": "クリーンアップの確認",
+    "dataManagementCleanupConfirmMessage": "参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?",
+    "dataManagementCleanupResult": "不要なファイルを${count}件削除しました",
+    "dataManagementClearCache": "キャッシュデータをクリア",
+    "dataManagementClearCacheConfirmTitle": "キャッシュクリアの確認",
+    "dataManagementClearCacheConfirmMessage": "一時的なキャッシュデータを削除します。よろしいですか?",
+    "dataManagementClearCacheResult": "キャッシュデータを削除しました"
   },
   "home": {
     "empty": "電波人間が登録されていません",

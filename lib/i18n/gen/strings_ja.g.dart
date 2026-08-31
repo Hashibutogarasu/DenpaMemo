@@ -384,8 +384,29 @@ class Translations$settings$ja {
 	/// ja: '日本語'
 	String get languageJapanese => '日本語';
 
-	/// ja: '個体をインポート'
-	String get dataManagementImport => '個体をインポート';
+	/// ja: 'アプリケーションフォルダのクリーンアップ'
+	String get dataManagementCleanupFolder => 'アプリケーションフォルダのクリーンアップ';
+
+	/// ja: 'クリーンアップの確認'
+	String get dataManagementCleanupConfirmTitle => 'クリーンアップの確認';
+
+	/// ja: '参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?'
+	String get dataManagementCleanupConfirmMessage => '参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?';
+
+	/// ja: '不要なファイルを${count}件削除しました'
+	String dataManagementCleanupResult({required Object count}) => '不要なファイルを${count}件削除しました';
+
+	/// ja: 'キャッシュデータをクリア'
+	String get dataManagementClearCache => 'キャッシュデータをクリア';
+
+	/// ja: 'キャッシュクリアの確認'
+	String get dataManagementClearCacheConfirmTitle => 'キャッシュクリアの確認';
+
+	/// ja: '一時的なキャッシュデータを削除します。よろしいですか?'
+	String get dataManagementClearCacheConfirmMessage => '一時的なキャッシュデータを削除します。よろしいですか?';
+
+	/// ja: 'キャッシュデータを削除しました'
+	String get dataManagementClearCacheResult => 'キャッシュデータを削除しました';
 }
 
 // Path: home
@@ -820,7 +841,14 @@ extension on Translations {
 			'settings.themeLight' => 'ライト',
 			'settings.themeDark' => 'ダーク',
 			'settings.languageJapanese' => '日本語',
-			'settings.dataManagementImport' => '個体をインポート',
+			'settings.dataManagementCleanupFolder' => 'アプリケーションフォルダのクリーンアップ',
+			'settings.dataManagementCleanupConfirmTitle' => 'クリーンアップの確認',
+			'settings.dataManagementCleanupConfirmMessage' => '参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?',
+			'settings.dataManagementCleanupResult' => ({required Object count}) => '不要なファイルを${count}件削除しました',
+			'settings.dataManagementClearCache' => 'キャッシュデータをクリア',
+			'settings.dataManagementClearCacheConfirmTitle' => 'キャッシュクリアの確認',
+			'settings.dataManagementClearCacheConfirmMessage' => '一時的なキャッシュデータを削除します。よろしいですか?',
+			'settings.dataManagementClearCacheResult' => 'キャッシュデータを削除しました',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
