@@ -1,3 +1,4 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,17 +8,12 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/dm_export_providers.dart';
 import '../providers/dm_import_providers.dart';
 import '../providers/home_view_providers.dart';
-import '../providers/master_data_providers.dart';
-import '../providers/responsive_providers.dart';
-import '../theme/app_colors.dart';
+import '../providers/search_providers.dart';
 import '../widgets/add_denpa_men_fab.dart';
 import '../widgets/dialog/import_complete_dialog.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
-import '../widgets/label/outlined_title.dart';
-import '../widgets/progress_bar.dart';
-import '../widgets/scaffold/app_scaffold.dart';
-import '../widgets/search/search_overlay_bar.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 final _addFabLayerLink = LayerLink();
 
@@ -109,11 +105,19 @@ class Home extends ConsumerWidget {
                 body: const SizedBox.shrink(),
               ),
             ),
-            const Positioned(
+            Positioned(
               top: 0,
               left: 0,
               right: 0,
-              child: SearchOverlayBar(),
+              child: SearchOverlayBar(
+                open: searchOverlayOpen,
+                queryName: ref.watch(searchQueryProvider).name,
+                onQueryNameChanged: (value) => ref
+                    .read(searchQueryProvider.notifier)
+                    .update((q) => q.copyWith(name: value)),
+                onClose: () =>
+                    ref.read(searchOverlayOpenProvider.notifier).state = false,
+              ),
             ),
             if (isMobile)
               _TreeSelectHoveredButton(fabLayerLink: _addFabLayerLink),

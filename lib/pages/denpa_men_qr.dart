@@ -1,17 +1,16 @@
 import 'package:cuid2/cuid2.dart';
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../routing/app_router.dart';
 import 'denpa_men_editor.dart';
-import '../widgets/label/outlined_title.dart';
-import '../widgets/scaffold/app_scaffold.dart';
 
 class DenpaMenQrPageArgs {
   const DenpaMenQrPageArgs({required this.masterData, this.initialRawValue});

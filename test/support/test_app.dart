@@ -1,10 +1,10 @@
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/main.dart';
-import 'package:denpa_memo/providers/master_data_providers.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 
 import 'file_master_data_repository.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 /// Shared override swapping the real GraphQL-backed
 /// `masterDataRepositoryProvider` for [FileMasterDataRepository], so

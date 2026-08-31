@@ -1,21 +1,16 @@
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
-import '../domain/denpa_men/denpa_men_record.dart';
-import '../domain/search/denpa_men_search_query.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_selection_providers.dart';
-import '../providers/master_data_providers.dart';
 import '../providers/search_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/denpa_men_list_tile.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
-import '../widgets/label/outlined_title.dart';
-import '../widgets/progress_bar.dart';
-import '../widgets/scaffold/app_scaffold.dart';
-import '../widgets/search/search_form.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 class DenpaMenSelectionArgs {
   const DenpaMenSelectionArgs({
@@ -197,6 +192,10 @@ class _DenpaMenSelectionPageState extends ConsumerState<DenpaMenSelectionPage>
                         SearchForm(
                           headShapes: masterData.headShapes,
                           anntenas: masterData.anntenas,
+                          query: ref.watch(searchFormDraftProvider),
+                          onChanged: (value) => ref
+                              .read(searchFormDraftProvider.notifier)
+                              .state = value,
                         ),
                       ],
                     );

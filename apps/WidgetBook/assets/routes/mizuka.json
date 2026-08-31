@@ -1,0 +1,2352 @@
+{
+  "id": "qjs0ha8xrkzjl0kscm6aldxy",
+  "name": "みずか",
+  "abnormalityResistances": [
+    {
+      "abnormalityId": "cold",
+      "value": 4
+    },
+    {
+      "abnormalityId": "mud",
+      "value": 3
+    },
+    {
+      "abnormalityId": "burn",
+      "value": 3
+    },
+    {
+      "abnormalityId": "fear",
+      "value": 3
+    },
+    {
+      "abnormalityId": "blind",
+      "value": 3
+    },
+    {
+      "abnormalityId": "charm",
+      "value": 3
+    },
+    {
+      "abnormalityId": "curse",
+      "value": 3
+    },
+    {
+      "abnormalityId": "sleep",
+      "value": 3
+    },
+    {
+      "abnormalityId": "poison",
+      "value": 3
+    },
+    {
+      "abnormalityId": "soaked",
+      "value": 3
+    },
+    {
+      "abnormalityId": "frostbite",
+      "value": 3
+    },
+    {
+      "abnormalityId": "paralysis",
+      "value": 3
+    },
+    {
+      "abnormalityId": "suddenDeath",
+      "value": 3
+    },
+    {
+      "abnormalityId": "electrocution",
+      "value": 3
+    }
+  ],
+  "bodyColors": [
+    "green"
+  ],
+  "bodyColorShades": [
+    1
+  ],
+  "attributeResistance": [
+    {
+      "attribute": {
+        "id": "ice",
+        "index": 1,
+        "isElemental": true,
+        "resistantTo": [],
+        "weakTo": []
+      },
+      "value": -2
+    },
+    {
+      "attribute": {
+        "id": "wind",
+        "index": 2,
+        "isElemental": true,
+        "resistantTo": [],
+        "weakTo": []
+      },
+      "value": 2
+    }
+  ],
+  "physique": {
+    "id": "largest"
+  },
+  "personality": {
+    "id": "strawberry"
+  },
+  "pattern": {
+    "id": "d"
+  },
+  "headShape": {
+    "id": "sun",
+    "abnormalityResistanceBonuses": {
+      "mud": 3,
+      "burn": 3,
+      "cold": 3,
+      "fear": 3,
+      "blind": 3,
+      "charm": 3,
+      "curse": 3,
+      "sleep": 3,
+      "poison": 3,
+      "soaked": 3,
+      "frostbite": 3,
+      "paralysis": 3,
+      "suddenDeath": 3,
+      "electrocution": 3
+    },
+    "hpBonus": 0,
+    "apBonus": 0,
+    "attackBonus": 50,
+    "defenseBonus": 100,
+    "speedBonus": 0,
+    "evasionRateBonus": 0
+  },
+  "anntena": {
+    "id": "none",
+    "category": "other",
+    "targetCount": null,
+    "targetsAll": false,
+    "dealsDamage": false,
+    "attackAttributes": [],
+    "isInheritable": false,
+    "evolvesToId": null,
+    "maxLevel": null,
+    "variantGroupId": null,
+    "hasLevel": false
+  },
+  "antennaLevel": 0,
+  "isSpColor": false,
+  "happiness": 0,
+  "maxHappiness": 20,
+  "level": 1,
+  "maxLevel": 20,
+  "currentExp": null,
+  "maxExp": 10,
+  "hp": 29,
+  "ap": 0,
+  "attack": 61,
+  "defense": 112,
+  "speed": 5,
+  "evasionRate": 3,
+  "corrections": [],
+  "considerCorrections": false,
+  "parentIds": [
+    "ptt7qd39mge7gs6espd8uteb",
+    "hpblwcp76ln3i9jcycrabrnk"
+  ],
+  "catchOrder": null,
+  "qrCodeId": null,
+  "memo": null,
+  "moveInDate": null,
+  "hash": "e32a9e6fc06d2324c64a1b1fe689aa026fc79dafdeadc1b117e13069adb6c39c",
+  "monsterExp": null,
+  "newCatchOrder": 1,
+  "parents": [
+    {
+      "id": "ptt7qd39mge7gs6espd8uteb",
+      "name": "かなん",
+      "abnormalityResistances": [
+        {
+          "abnormalityId": "cold",
+          "value": 1
+        }
+      ],
+      "bodyColors": [
+        "green"
+      ],
+      "bodyColorShades": [
+        1
+      ],
+      "attributeResistance": [
+        {
+          "attribute": {
+            "id": "ice",
+            "index": 1,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": -2
+        },
+        {
+          "attribute": {
+            "id": "wind",
+            "index": 2,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": 2
+        }
+      ],
+      "physique": {
+        "id": "largest"
+      },
+      "personality": {
+        "id": "strawberry"
+      },
+      "pattern": {
+        "id": "d"
+      },
+      "headShape": {
+        "id": "battery",
+        "abnormalityResistanceBonuses": {},
+        "hpBonus": 0,
+        "apBonus": 0,
+        "attackBonus": 0,
+        "defenseBonus": 0,
+        "speedBonus": 0,
+        "evasionRateBonus": 0
+      },
+      "anntena": {
+        "id": "none",
+        "category": "other",
+        "targetCount": null,
+        "targetsAll": false,
+        "dealsDamage": false,
+        "attackAttributes": [],
+        "isInheritable": false,
+        "evolvesToId": null,
+        "maxLevel": null,
+        "variantGroupId": null,
+        "hasLevel": false
+      },
+      "antennaLevel": 0,
+      "isSpColor": false,
+      "happiness": 0,
+      "maxHappiness": 20,
+      "level": 1,
+      "maxLevel": 20,
+      "currentExp": null,
+      "maxExp": 10,
+      "hp": 34,
+      "ap": 0,
+      "attack": 12,
+      "defense": 13,
+      "speed": 5,
+      "evasionRate": 0,
+      "corrections": [],
+      "considerCorrections": false,
+      "parentIds": [
+        "xfmc8gf8cwtfw2z6hzerte0t",
+        "m2h15gb6ij1gby40v15qu3f0"
+      ],
+      "catchOrder": null,
+      "qrCodeId": null,
+      "memo": null,
+      "moveInDate": null,
+      "hash": "04db06ad79ca5c1a6a2ac29db04a919d716846a77bfaf0208707263ab0ed84cf",
+      "monsterExp": null,
+      "newCatchOrder": 0,
+      "parents": [
+        {
+          "id": "xfmc8gf8cwtfw2z6hzerte0t",
+          "name": "みかど",
+          "abnormalityResistances": [
+            {
+              "abnormalityId": "cold",
+              "value": 1
+            }
+          ],
+          "bodyColors": [
+            "green"
+          ],
+          "bodyColorShades": [
+            1
+          ],
+          "attributeResistance": [
+            {
+              "attribute": {
+                "id": "ice",
+                "index": 1,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": -2
+            },
+            {
+              "attribute": {
+                "id": "wind",
+                "index": 2,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": 2
+            }
+          ],
+          "physique": {
+            "id": "largest"
+          },
+          "personality": {
+            "id": "strawberry"
+          },
+          "pattern": {
+            "id": "d"
+          },
+          "headShape": {
+            "id": "onigiri",
+            "abnormalityResistanceBonuses": {},
+            "hpBonus": 0,
+            "apBonus": 0,
+            "attackBonus": 0,
+            "defenseBonus": 0,
+            "speedBonus": 0,
+            "evasionRateBonus": 0
+          },
+          "anntena": {
+            "id": "none",
+            "category": "other",
+            "targetCount": null,
+            "targetsAll": false,
+            "dealsDamage": false,
+            "attackAttributes": [],
+            "isInheritable": false,
+            "evolvesToId": null,
+            "maxLevel": null,
+            "variantGroupId": null,
+            "hasLevel": false
+          },
+          "antennaLevel": 0,
+          "isSpColor": false,
+          "happiness": 0,
+          "maxHappiness": 20,
+          "level": 1,
+          "maxLevel": 20,
+          "currentExp": null,
+          "maxExp": 10,
+          "hp": 34,
+          "ap": 0,
+          "attack": 12,
+          "defense": 13,
+          "speed": 5,
+          "evasionRate": 0,
+          "corrections": [],
+          "considerCorrections": false,
+          "parentIds": [
+            "n19girll1iju0wg2ni6w8cs4",
+            "in6qxb5vj7r6dxe3eoy2p0w8"
+          ],
+          "catchOrder": null,
+          "qrCodeId": null,
+          "memo": null,
+          "moveInDate": null,
+          "hash": "724e7af901110f9454ba78b870ac6ce884a5f0340ad6d6f4273b9b4bcdc63e0d",
+          "monsterExp": null,
+          "newCatchOrder": 0,
+          "parents": [
+            {
+              "id": "n19girll1iju0wg2ni6w8cs4",
+              "name": "さなぎ",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "cold",
+                  "value": 2
+                }
+              ],
+              "bodyColors": [
+                "green",
+                "green"
+              ],
+              "bodyColorShades": [
+                1,
+                0
+              ],
+              "attributeResistance": [
+                {
+                  "attribute": {
+                    "id": "ice",
+                    "index": 1,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": -3
+                },
+                {
+                  "attribute": {
+                    "id": "wind",
+                    "index": 2,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": 3
+                }
+              ],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "triangle",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "none",
+                "category": "other",
+                "targetCount": null,
+                "targetsAll": false,
+                "dealsDamage": false,
+                "attackAttributes": [],
+                "isInheritable": false,
+                "evolvesToId": null,
+                "maxLevel": null,
+                "variantGroupId": null,
+                "hasLevel": false
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": null,
+              "hp": 26,
+              "ap": 0,
+              "attack": 11,
+              "defense": 12,
+              "speed": 5,
+              "evasionRate": 6,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [
+                "kpelvifntq7ju4tz8bll8xjc",
+                "cug5bs8ofxmrwi7i31jkzqb2"
+              ],
+              "catchOrder": null,
+              "qrCodeId": null,
+              "memo": null,
+              "moveInDate": null,
+              "hash": "f6991f6d00a026bd8bbd00c9ae16f300fd211bf80b29eadd9e7c0e4e108e8487",
+              "monsterExp": null,
+              "newCatchOrder": 0,
+              "parents": [
+                {
+                  "id": "kpelvifntq7ju4tz8bll8xjc",
+                  "name": "つねのり",
+                  "abnormalityResistances": [
+                    {
+                      "abnormalityId": "cold",
+                      "value": 1
+                    }
+                  ],
+                  "bodyColors": [
+                    "green"
+                  ],
+                  "bodyColorShades": [
+                    0
+                  ],
+                  "attributeResistance": [
+                    {
+                      "attribute": {
+                        "id": "ice",
+                        "index": 1,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": -2
+                    },
+                    {
+                      "attribute": {
+                        "id": "wind",
+                        "index": 2,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": 2
+                    }
+                  ],
+                  "physique": {
+                    "id": "largest"
+                  },
+                  "personality": {
+                    "id": "strawberry"
+                  },
+                  "pattern": {
+                    "id": "d"
+                  },
+                  "headShape": {
+                    "id": "triangle",
+                    "abnormalityResistanceBonuses": {},
+                    "hpBonus": 0,
+                    "apBonus": 0,
+                    "attackBonus": 0,
+                    "defenseBonus": 0,
+                    "speedBonus": 0,
+                    "evasionRateBonus": 0
+                  },
+                  "anntena": {
+                    "id": "beam_1",
+                    "category": "attack",
+                    "targetCount": 1,
+                    "targetsAll": false,
+                    "dealsDamage": true,
+                    "attackAttributes": [],
+                    "isInheritable": false,
+                    "evolvesToId": null,
+                    "maxLevel": null,
+                    "variantGroupId": "beam",
+                    "hasLevel": true
+                  },
+                  "antennaLevel": 0,
+                  "isSpColor": false,
+                  "happiness": 0,
+                  "maxHappiness": 20,
+                  "level": 1,
+                  "maxLevel": 20,
+                  "currentExp": null,
+                  "maxExp": 26,
+                  "hp": 26,
+                  "ap": 0,
+                  "attack": 10,
+                  "defense": 11,
+                  "speed": 5,
+                  "evasionRate": 6,
+                  "corrections": [],
+                  "considerCorrections": false,
+                  "parentIds": [],
+                  "catchOrder": 0,
+                  "qrCodeId": "75d05b48-6610-4a55-98dc-eb636563e6f1",
+                  "memo": null,
+                  "moveInDate": null,
+                  "hash": "b727ab957d15353de5f124eba8b8142a6b5c419c0f2fbc67c9c89d28bfb06f2b",
+                  "monsterExp": null,
+                  "newCatchOrder": 0,
+                  "parents": []
+                },
+                {
+                  "id": "cug5bs8ofxmrwi7i31jkzqb2",
+                  "name": "たかみつ",
+                  "abnormalityResistances": [
+                    {
+                      "abnormalityId": "cold",
+                      "value": 1
+                    }
+                  ],
+                  "bodyColors": [
+                    "green"
+                  ],
+                  "bodyColorShades": [
+                    1
+                  ],
+                  "attributeResistance": [
+                    {
+                      "attribute": {
+                        "id": "ice",
+                        "index": 1,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": -2
+                    },
+                    {
+                      "attribute": {
+                        "id": "wind",
+                        "index": 2,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": 2
+                    }
+                  ],
+                  "physique": {
+                    "id": "largest"
+                  },
+                  "personality": {
+                    "id": "strawberry"
+                  },
+                  "pattern": {
+                    "id": "d"
+                  },
+                  "headShape": {
+                    "id": "soap",
+                    "abnormalityResistanceBonuses": {},
+                    "hpBonus": 0,
+                    "apBonus": 0,
+                    "attackBonus": 0,
+                    "defenseBonus": 0,
+                    "speedBonus": 0,
+                    "evasionRateBonus": 0
+                  },
+                  "anntena": {
+                    "id": "none",
+                    "category": "other",
+                    "targetCount": null,
+                    "targetsAll": false,
+                    "dealsDamage": false,
+                    "attackAttributes": [],
+                    "isInheritable": false,
+                    "evolvesToId": null,
+                    "maxLevel": null,
+                    "variantGroupId": null,
+                    "hasLevel": false
+                  },
+                  "antennaLevel": 0,
+                  "isSpColor": false,
+                  "happiness": 0,
+                  "maxHappiness": 20,
+                  "level": 1,
+                  "maxLevel": 20,
+                  "currentExp": null,
+                  "maxExp": null,
+                  "hp": 22,
+                  "ap": 7,
+                  "attack": 5,
+                  "defense": 5,
+                  "speed": 4,
+                  "evasionRate": 7,
+                  "corrections": [],
+                  "considerCorrections": false,
+                  "parentIds": [],
+                  "catchOrder": 0,
+                  "qrCodeId": "r2vuqia3zego6g3y3uts070q",
+                  "memo": null,
+                  "moveInDate": null,
+                  "hash": "3c72d048f89d39f734ccba9769110118ed17570ad65fd39cabb1c143a7a5e92c",
+                  "monsterExp": null,
+                  "newCatchOrder": 0,
+                  "parents": []
+                }
+              ]
+            },
+            {
+              "id": "in6qxb5vj7r6dxe3eoy2p0w8",
+              "name": "みちき",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "sleep",
+                  "value": 1
+                }
+              ],
+              "bodyColors": [
+                "black"
+              ],
+              "bodyColorShades": [
+                0
+              ],
+              "attributeResistance": [],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "circle",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "none",
+                "category": "other",
+                "targetCount": null,
+                "targetsAll": false,
+                "dealsDamage": false,
+                "attackAttributes": [],
+                "isInheritable": false,
+                "evolvesToId": null,
+                "maxLevel": null,
+                "variantGroupId": null,
+                "hasLevel": false
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": null,
+              "hp": 34,
+              "ap": 0,
+              "attack": 12,
+              "defense": 13,
+              "speed": 5,
+              "evasionRate": 0,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [],
+              "catchOrder": 0,
+              "qrCodeId": "dxgfz7hb3ys1pteuf7n3mr95",
+              "memo": null,
+              "moveInDate": null,
+              "hash": "39a4fb7ddcfddddd385f0ddb1579becd3053a90a70d37dfe09f751d0125ad057",
+              "monsterExp": null,
+              "newCatchOrder": 0,
+              "parents": []
+            }
+          ]
+        },
+        {
+          "id": "m2h15gb6ij1gby40v15qu3f0",
+          "name": "ざくろ",
+          "abnormalityResistances": [
+            {
+              "abnormalityId": "frostbite",
+              "value": 1
+            },
+            {
+              "abnormalityId": "curse",
+              "value": 1
+            }
+          ],
+          "bodyColors": [
+            "lightBlue",
+            "purple"
+          ],
+          "bodyColorShades": [
+            0,
+            1
+          ],
+          "attributeResistance": [
+            {
+              "attribute": {
+                "id": "fire",
+                "index": 0,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": -1
+            },
+            {
+              "attribute": {
+                "id": "ice",
+                "index": 1,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": 1
+            },
+            {
+              "attribute": {
+                "id": "light",
+                "index": 6,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": -1
+            },
+            {
+              "attribute": {
+                "id": "dark",
+                "index": 7,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": 1
+            }
+          ],
+          "physique": {
+            "id": "largest"
+          },
+          "personality": {
+            "id": "strawberry"
+          },
+          "pattern": {
+            "id": "d"
+          },
+          "headShape": {
+            "id": "battery",
+            "abnormalityResistanceBonuses": {},
+            "hpBonus": 0,
+            "apBonus": 0,
+            "attackBonus": 0,
+            "defenseBonus": 0,
+            "speedBonus": 0,
+            "evasionRateBonus": 0
+          },
+          "anntena": {
+            "id": "none",
+            "category": "other",
+            "targetCount": null,
+            "targetsAll": false,
+            "dealsDamage": false,
+            "attackAttributes": [],
+            "isInheritable": false,
+            "evolvesToId": null,
+            "maxLevel": null,
+            "variantGroupId": null,
+            "hasLevel": false
+          },
+          "antennaLevel": 0,
+          "isSpColor": false,
+          "happiness": 0,
+          "maxHappiness": 20,
+          "level": 1,
+          "maxLevel": 20,
+          "currentExp": null,
+          "maxExp": 10,
+          "hp": 34,
+          "ap": 0,
+          "attack": 12,
+          "defense": 13,
+          "speed": 5,
+          "evasionRate": 0,
+          "corrections": [],
+          "considerCorrections": false,
+          "parentIds": [
+            "spujjwhnrg4txafzmq557zip",
+            "lvnt4cy4hwmw1mi16rv5rvdn"
+          ],
+          "catchOrder": null,
+          "qrCodeId": null,
+          "memo": null,
+          "moveInDate": null,
+          "hash": "a7e6282f097d4957a1be8dafdf60d92a0565d266b0bf5b63b15d92e719697b72",
+          "monsterExp": null,
+          "newCatchOrder": 0,
+          "parents": [
+            {
+              "id": "spujjwhnrg4txafzmq557zip",
+              "name": "つねゆき",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "curse",
+                  "value": 1
+                }
+              ],
+              "bodyColors": [
+                "purple"
+              ],
+              "bodyColorShades": [
+                1
+              ],
+              "attributeResistance": [
+                {
+                  "attribute": {
+                    "id": "light",
+                    "index": 6,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": -2
+                },
+                {
+                  "attribute": {
+                    "id": "dark",
+                    "index": 7,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": 2
+                }
+              ],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "battery",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "none",
+                "category": "other",
+                "targetCount": null,
+                "targetsAll": false,
+                "dealsDamage": false,
+                "attackAttributes": [],
+                "isInheritable": false,
+                "evolvesToId": null,
+                "maxLevel": null,
+                "variantGroupId": null,
+                "hasLevel": false
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": 10,
+              "hp": 32,
+              "ap": 0,
+              "attack": 11,
+              "defense": 12,
+              "speed": 5,
+              "evasionRate": 3,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [
+                "ue7wtxyox8aqbgib22vhffop",
+                "luyadwzl861arxwbd12hquk8"
+              ],
+              "catchOrder": null,
+              "qrCodeId": null,
+              "memo": null,
+              "moveInDate": null,
+              "hash": "51f482412e690fc6d9700ee8f2a716de4ba8899c099f2f31bc411d6a2a212a36",
+              "monsterExp": null,
+              "newCatchOrder": 0,
+              "parents": [
+                {
+                  "id": "ue7wtxyox8aqbgib22vhffop",
+                  "name": "うてな",
+                  "abnormalityResistances": [
+                    {
+                      "abnormalityId": "curse",
+                      "value": 1
+                    }
+                  ],
+                  "bodyColors": [
+                    "purple"
+                  ],
+                  "bodyColorShades": [
+                    0
+                  ],
+                  "attributeResistance": [
+                    {
+                      "attribute": {
+                        "id": "light",
+                        "index": 6,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": -2
+                    },
+                    {
+                      "attribute": {
+                        "id": "dark",
+                        "index": 7,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": 2
+                    }
+                  ],
+                  "physique": {
+                    "id": "largest"
+                  },
+                  "personality": {
+                    "id": "strawberry"
+                  },
+                  "pattern": {
+                    "id": "d"
+                  },
+                  "headShape": {
+                    "id": "horizontalOval",
+                    "abnormalityResistanceBonuses": {},
+                    "hpBonus": 0,
+                    "apBonus": 0,
+                    "attackBonus": 0,
+                    "defenseBonus": 0,
+                    "speedBonus": 0,
+                    "evasionRateBonus": 0
+                  },
+                  "anntena": {
+                    "id": "none",
+                    "category": "other",
+                    "targetCount": null,
+                    "targetsAll": false,
+                    "dealsDamage": false,
+                    "attackAttributes": [],
+                    "isInheritable": false,
+                    "evolvesToId": null,
+                    "maxLevel": null,
+                    "variantGroupId": null,
+                    "hasLevel": false
+                  },
+                  "antennaLevel": 0,
+                  "isSpColor": false,
+                  "happiness": 0,
+                  "maxHappiness": 20,
+                  "level": 1,
+                  "maxLevel": 20,
+                  "currentExp": null,
+                  "maxExp": null,
+                  "hp": 34,
+                  "ap": 0,
+                  "attack": 12,
+                  "defense": 13,
+                  "speed": 5,
+                  "evasionRate": 0,
+                  "corrections": [],
+                  "considerCorrections": false,
+                  "parentIds": [],
+                  "catchOrder": 0,
+                  "qrCodeId": "zgb69ofqspo5ojclyi9kto7v",
+                  "memo": null,
+                  "moveInDate": null,
+                  "hash": "2314b0947e424178f6e03b8d62c987c202e1097411fd81ada83ffce261b4e6f8",
+                  "monsterExp": null,
+                  "newCatchOrder": 0,
+                  "parents": []
+                },
+                {
+                  "id": "luyadwzl861arxwbd12hquk8",
+                  "name": "そうじろう",
+                  "abnormalityResistances": [
+                    {
+                      "abnormalityId": "soaked",
+                      "value": 1
+                    },
+                    {
+                      "abnormalityId": "curse",
+                      "value": 1
+                    }
+                  ],
+                  "bodyColors": [
+                    "blue",
+                    "purple"
+                  ],
+                  "bodyColorShades": [
+                    1,
+                    1
+                  ],
+                  "attributeResistance": [
+                    {
+                      "attribute": {
+                        "id": "thunder",
+                        "index": 4,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": -1
+                    },
+                    {
+                      "attribute": {
+                        "id": "water",
+                        "index": 5,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": 1
+                    },
+                    {
+                      "attribute": {
+                        "id": "light",
+                        "index": 6,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": -1
+                    },
+                    {
+                      "attribute": {
+                        "id": "dark",
+                        "index": 7,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      },
+                      "value": 1
+                    }
+                  ],
+                  "physique": {
+                    "id": "largest"
+                  },
+                  "personality": {
+                    "id": "strawberry"
+                  },
+                  "pattern": {
+                    "id": "d"
+                  },
+                  "headShape": {
+                    "id": "battery",
+                    "abnormalityResistanceBonuses": {},
+                    "hpBonus": 0,
+                    "apBonus": 0,
+                    "attackBonus": 0,
+                    "defenseBonus": 0,
+                    "speedBonus": 0,
+                    "evasionRateBonus": 0
+                  },
+                  "anntena": {
+                    "id": "waterGun_3",
+                    "category": "attack",
+                    "targetCount": 3,
+                    "targetsAll": false,
+                    "dealsDamage": true,
+                    "attackAttributes": [
+                      {
+                        "id": "water",
+                        "index": 5,
+                        "isElemental": true,
+                        "resistantTo": [],
+                        "weakTo": []
+                      }
+                    ],
+                    "isInheritable": false,
+                    "evolvesToId": null,
+                    "maxLevel": null,
+                    "variantGroupId": "waterGun",
+                    "hasLevel": true
+                  },
+                  "antennaLevel": 0,
+                  "isSpColor": false,
+                  "happiness": 0,
+                  "maxHappiness": 20,
+                  "level": 1,
+                  "maxLevel": 20,
+                  "currentExp": null,
+                  "maxExp": null,
+                  "hp": 29,
+                  "ap": 7,
+                  "attack": 3,
+                  "defense": 5,
+                  "speed": 4,
+                  "evasionRate": 3,
+                  "corrections": [],
+                  "considerCorrections": false,
+                  "parentIds": [
+                    "oj3frdmzb1i0q1nd53hn6cwf",
+                    "ez4cwliubywxpjqsdprl9zwd"
+                  ],
+                  "catchOrder": null,
+                  "qrCodeId": null,
+                  "memo": null,
+                  "moveInDate": null,
+                  "hash": "e3003534849ad64637e7ed3b4bcd6260b96fc3db7e670a5a617beec8469584e0",
+                  "monsterExp": null,
+                  "newCatchOrder": 0,
+                  "parents": [
+                    {
+                      "id": "oj3frdmzb1i0q1nd53hn6cwf",
+                      "name": "とうや",
+                      "abnormalityResistances": [
+                        {
+                          "abnormalityId": "curse",
+                          "value": 1
+                        },
+                        {
+                          "abnormalityId": "soaked",
+                          "value": 1
+                        }
+                      ],
+                      "bodyColors": [
+                        "purple",
+                        "blue"
+                      ],
+                      "bodyColorShades": [
+                        1,
+                        1
+                      ],
+                      "attributeResistance": [
+                        {
+                          "attribute": {
+                            "id": "thunder",
+                            "index": 4,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          },
+                          "value": -1
+                        },
+                        {
+                          "attribute": {
+                            "id": "water",
+                            "index": 5,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          },
+                          "value": 1
+                        },
+                        {
+                          "attribute": {
+                            "id": "light",
+                            "index": 6,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          },
+                          "value": -1
+                        },
+                        {
+                          "attribute": {
+                            "id": "dark",
+                            "index": 7,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          },
+                          "value": 1
+                        }
+                      ],
+                      "physique": {
+                        "id": "largest"
+                      },
+                      "personality": {
+                        "id": "strawberry"
+                      },
+                      "pattern": {
+                        "id": "d"
+                      },
+                      "headShape": {
+                        "id": "horizontalOval",
+                        "abnormalityResistanceBonuses": {},
+                        "hpBonus": 0,
+                        "apBonus": 0,
+                        "attackBonus": 0,
+                        "defenseBonus": 0,
+                        "speedBonus": 0,
+                        "evasionRateBonus": 0
+                      },
+                      "anntena": {
+                        "id": "waterGun_1",
+                        "category": "attack",
+                        "targetCount": 1,
+                        "targetsAll": false,
+                        "dealsDamage": true,
+                        "attackAttributes": [
+                          {
+                            "id": "water",
+                            "index": 5,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          }
+                        ],
+                        "isInheritable": false,
+                        "evolvesToId": null,
+                        "maxLevel": null,
+                        "variantGroupId": "waterGun",
+                        "hasLevel": true
+                      },
+                      "antennaLevel": 0,
+                      "isSpColor": false,
+                      "happiness": 0,
+                      "maxHappiness": 20,
+                      "level": 1,
+                      "maxLevel": 20,
+                      "currentExp": null,
+                      "maxExp": null,
+                      "hp": 28,
+                      "ap": 7,
+                      "attack": 5,
+                      "defense": 5,
+                      "speed": 4,
+                      "evasionRate": 3,
+                      "corrections": [],
+                      "considerCorrections": false,
+                      "parentIds": [
+                        "ez4cwliubywxpjqsdprl9zwd",
+                        "y9g19b4psxvgfm11gbg5hqwj"
+                      ],
+                      "catchOrder": null,
+                      "qrCodeId": null,
+                      "memo": null,
+                      "moveInDate": null,
+                      "hash": "f29b7d027a50a73cdc0605b77e7545af41d6f6a3237fa88c042921ea896702e3",
+                      "monsterExp": null,
+                      "newCatchOrder": 0,
+                      "parents": [
+                        {
+                          "id": "ez4cwliubywxpjqsdprl9zwd",
+                          "name": "たかみち",
+                          "abnormalityResistances": [
+                            {
+                              "abnormalityId": "soaked",
+                              "value": 1
+                            }
+                          ],
+                          "bodyColors": [
+                            "blue"
+                          ],
+                          "bodyColorShades": [
+                            1
+                          ],
+                          "attributeResistance": [
+                            {
+                              "attribute": {
+                                "id": "thunder",
+                                "index": 4,
+                                "isElemental": true,
+                                "resistantTo": [],
+                                "weakTo": []
+                              },
+                              "value": -2
+                            },
+                            {
+                              "attribute": {
+                                "id": "water",
+                                "index": 5,
+                                "isElemental": true,
+                                "resistantTo": [],
+                                "weakTo": []
+                              },
+                              "value": 2
+                            }
+                          ],
+                          "physique": {
+                            "id": "largest"
+                          },
+                          "personality": {
+                            "id": "strawberry"
+                          },
+                          "pattern": {
+                            "id": "d"
+                          },
+                          "headShape": {
+                            "id": "horizontalOval",
+                            "abnormalityResistanceBonuses": {},
+                            "hpBonus": 0,
+                            "apBonus": 0,
+                            "attackBonus": 0,
+                            "defenseBonus": 0,
+                            "speedBonus": 0,
+                            "evasionRateBonus": 0
+                          },
+                          "anntena": {
+                            "id": "waterGun_all",
+                            "category": "attack",
+                            "targetCount": null,
+                            "targetsAll": true,
+                            "dealsDamage": true,
+                            "attackAttributes": [
+                              {
+                                "id": "water",
+                                "index": 5,
+                                "isElemental": true,
+                                "resistantTo": [],
+                                "weakTo": []
+                              }
+                            ],
+                            "isInheritable": false,
+                            "evolvesToId": null,
+                            "maxLevel": null,
+                            "variantGroupId": "waterGun",
+                            "hasLevel": true
+                          },
+                          "antennaLevel": 0,
+                          "isSpColor": false,
+                          "happiness": 0,
+                          "maxHappiness": 20,
+                          "level": 1,
+                          "maxLevel": 20,
+                          "currentExp": null,
+                          "maxExp": null,
+                          "hp": 28,
+                          "ap": 7,
+                          "attack": 5,
+                          "defense": 5,
+                          "speed": 4,
+                          "evasionRate": 3,
+                          "corrections": [],
+                          "considerCorrections": false,
+                          "parentIds": [],
+                          "catchOrder": 0,
+                          "qrCodeId": "pfe9hfn6f9w5e00b1d6hrfb3",
+                          "memo": null,
+                          "moveInDate": null,
+                          "hash": "68d517ab4195a3b250f7d2eca1cb93c2c1e806d9cc930a651539499da3762b2f",
+                          "monsterExp": null,
+                          "newCatchOrder": 0,
+                          "parents": []
+                        },
+                        {
+                          "id": "y9g19b4psxvgfm11gbg5hqwj",
+                          "name": "かがみ",
+                          "abnormalityResistances": [
+                            {
+                              "abnormalityId": "curse",
+                              "value": 1
+                            }
+                          ],
+                          "bodyColors": [
+                            "purple"
+                          ],
+                          "bodyColorShades": [
+                            1
+                          ],
+                          "attributeResistance": [
+                            {
+                              "attribute": {
+                                "id": "light",
+                                "index": 6,
+                                "isElemental": true,
+                                "resistantTo": [],
+                                "weakTo": []
+                              },
+                              "value": -2
+                            },
+                            {
+                              "attribute": {
+                                "id": "dark",
+                                "index": 7,
+                                "isElemental": true,
+                                "resistantTo": [],
+                                "weakTo": []
+                              },
+                              "value": 2
+                            }
+                          ],
+                          "physique": {
+                            "id": "largest"
+                          },
+                          "personality": {
+                            "id": "strawberry"
+                          },
+                          "pattern": {
+                            "id": "d"
+                          },
+                          "headShape": {
+                            "id": "roundedSquare",
+                            "abnormalityResistanceBonuses": {},
+                            "hpBonus": 0,
+                            "apBonus": 0,
+                            "attackBonus": 0,
+                            "defenseBonus": 0,
+                            "speedBonus": 0,
+                            "evasionRateBonus": 0
+                          },
+                          "anntena": {
+                            "id": "darkBall_1",
+                            "category": "attack",
+                            "targetCount": 1,
+                            "targetsAll": false,
+                            "dealsDamage": true,
+                            "attackAttributes": [
+                              {
+                                "id": "dark",
+                                "index": 7,
+                                "isElemental": true,
+                                "resistantTo": [],
+                                "weakTo": []
+                              }
+                            ],
+                            "isInheritable": false,
+                            "evolvesToId": null,
+                            "maxLevel": null,
+                            "variantGroupId": "darkBall",
+                            "hasLevel": true
+                          },
+                          "antennaLevel": 0,
+                          "isSpColor": false,
+                          "happiness": 0,
+                          "maxHappiness": 20,
+                          "level": 1,
+                          "maxLevel": 20,
+                          "currentExp": null,
+                          "maxExp": null,
+                          "hp": 24,
+                          "ap": 7,
+                          "attack": 6,
+                          "defense": 5,
+                          "speed": 4,
+                          "evasionRate": 3,
+                          "corrections": [],
+                          "considerCorrections": false,
+                          "parentIds": [],
+                          "catchOrder": 0,
+                          "qrCodeId": "m0loacc8sd1jytzvftep405s",
+                          "memo": null,
+                          "moveInDate": null,
+                          "hash": "3407c227590dba22b6ea1a57ce13a82512d499a01aa4066ccd35d312980bed66",
+                          "monsterExp": null,
+                          "newCatchOrder": 0,
+                          "parents": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ez4cwliubywxpjqsdprl9zwd",
+                      "name": "たかみち",
+                      "abnormalityResistances": [
+                        {
+                          "abnormalityId": "soaked",
+                          "value": 1
+                        }
+                      ],
+                      "bodyColors": [
+                        "blue"
+                      ],
+                      "bodyColorShades": [
+                        1
+                      ],
+                      "attributeResistance": [
+                        {
+                          "attribute": {
+                            "id": "thunder",
+                            "index": 4,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          },
+                          "value": -2
+                        },
+                        {
+                          "attribute": {
+                            "id": "water",
+                            "index": 5,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          },
+                          "value": 2
+                        }
+                      ],
+                      "physique": {
+                        "id": "largest"
+                      },
+                      "personality": {
+                        "id": "strawberry"
+                      },
+                      "pattern": {
+                        "id": "d"
+                      },
+                      "headShape": {
+                        "id": "horizontalOval",
+                        "abnormalityResistanceBonuses": {},
+                        "hpBonus": 0,
+                        "apBonus": 0,
+                        "attackBonus": 0,
+                        "defenseBonus": 0,
+                        "speedBonus": 0,
+                        "evasionRateBonus": 0
+                      },
+                      "anntena": {
+                        "id": "waterGun_all",
+                        "category": "attack",
+                        "targetCount": null,
+                        "targetsAll": true,
+                        "dealsDamage": true,
+                        "attackAttributes": [
+                          {
+                            "id": "water",
+                            "index": 5,
+                            "isElemental": true,
+                            "resistantTo": [],
+                            "weakTo": []
+                          }
+                        ],
+                        "isInheritable": false,
+                        "evolvesToId": null,
+                        "maxLevel": null,
+                        "variantGroupId": "waterGun",
+                        "hasLevel": true
+                      },
+                      "antennaLevel": 0,
+                      "isSpColor": false,
+                      "happiness": 0,
+                      "maxHappiness": 20,
+                      "level": 1,
+                      "maxLevel": 20,
+                      "currentExp": null,
+                      "maxExp": null,
+                      "hp": 28,
+                      "ap": 7,
+                      "attack": 5,
+                      "defense": 5,
+                      "speed": 4,
+                      "evasionRate": 3,
+                      "corrections": [],
+                      "considerCorrections": false,
+                      "parentIds": [],
+                      "catchOrder": 0,
+                      "qrCodeId": "pfe9hfn6f9w5e00b1d6hrfb3",
+                      "memo": null,
+                      "moveInDate": null,
+                      "hash": "68d517ab4195a3b250f7d2eca1cb93c2c1e806d9cc930a651539499da3762b2f",
+                      "monsterExp": null,
+                      "newCatchOrder": 0,
+                      "parents": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "lvnt4cy4hwmw1mi16rv5rvdn",
+              "name": "むつや",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "frostbite",
+                  "value": 1
+                }
+              ],
+              "bodyColors": [
+                "lightBlue"
+              ],
+              "bodyColorShades": [
+                0
+              ],
+              "attributeResistance": [
+                {
+                  "attribute": {
+                    "id": "fire",
+                    "index": 0,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": -2
+                },
+                {
+                  "attribute": {
+                    "id": "ice",
+                    "index": 1,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": 2
+                }
+              ],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "horizontalOval",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "none",
+                "category": "other",
+                "targetCount": null,
+                "targetsAll": false,
+                "dealsDamage": false,
+                "attackAttributes": [],
+                "isInheritable": false,
+                "evolvesToId": null,
+                "maxLevel": null,
+                "variantGroupId": null,
+                "hasLevel": false
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": null,
+              "hp": 34,
+              "ap": 0,
+              "attack": 12,
+              "defense": 13,
+              "speed": 5,
+              "evasionRate": 0,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [],
+              "catchOrder": 0,
+              "qrCodeId": "nws5vtlyfewlkyh30dnrarov",
+              "memo": null,
+              "moveInDate": null,
+              "hash": "1925a0ff646253c5a2840d47686e5b4c883f7872bb2c6d63ef6ac9606155591f",
+              "monsterExp": null,
+              "newCatchOrder": 0,
+              "parents": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hpblwcp76ln3i9jcycrabrnk",
+      "name": "ゆうか",
+      "abnormalityResistances": [
+        {
+          "abnormalityId": "cold",
+          "value": 1
+        },
+        {
+          "abnormalityId": "sleep",
+          "value": 1
+        },
+        {
+          "abnormalityId": "charm",
+          "value": 1
+        }
+      ],
+      "bodyColors": [
+        "green",
+        "black"
+      ],
+      "bodyColorShades": [
+        0,
+        0
+      ],
+      "attributeResistance": [
+        {
+          "attribute": {
+            "id": "ice",
+            "index": 1,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": -1
+        },
+        {
+          "attribute": {
+            "id": "wind",
+            "index": 2,
+            "isElemental": true,
+            "resistantTo": [],
+            "weakTo": []
+          },
+          "value": 1
+        }
+      ],
+      "physique": {
+        "id": "largest"
+      },
+      "personality": {
+        "id": "strawberry"
+      },
+      "pattern": {
+        "id": "d"
+      },
+      "headShape": {
+        "id": "musician",
+        "abnormalityResistanceBonuses": {
+          "charm": 1
+        },
+        "hpBonus": 0,
+        "apBonus": 0,
+        "attackBonus": 0,
+        "defenseBonus": 0,
+        "speedBonus": 0,
+        "evasionRateBonus": 0
+      },
+      "anntena": {
+        "id": "none",
+        "category": "other",
+        "targetCount": null,
+        "targetsAll": false,
+        "dealsDamage": false,
+        "attackAttributes": [],
+        "isInheritable": false,
+        "evolvesToId": null,
+        "maxLevel": null,
+        "variantGroupId": null,
+        "hasLevel": false
+      },
+      "antennaLevel": 0,
+      "isSpColor": false,
+      "happiness": 0,
+      "maxHappiness": 20,
+      "level": 1,
+      "maxLevel": 20,
+      "currentExp": null,
+      "maxExp": null,
+      "hp": 29,
+      "ap": 0,
+      "attack": 11,
+      "defense": 12,
+      "speed": 5,
+      "evasionRate": 3,
+      "corrections": [],
+      "considerCorrections": false,
+      "parentIds": [
+        "lqhh96xawxatu2iyhl8se5f9",
+        "e87jrsd7ozijjg5568kowbie"
+      ],
+      "catchOrder": null,
+      "qrCodeId": null,
+      "memo": null,
+      "moveInDate": null,
+      "hash": "6dbd520d644be6f25ffd72a09c6e9e6bfd3116989fb2ec625b7f49a471c21a60",
+      "monsterExp": null,
+      "newCatchOrder": 1,
+      "parents": [
+        {
+          "id": "lqhh96xawxatu2iyhl8se5f9",
+          "name": "げんじ",
+          "abnormalityResistances": [
+            {
+              "abnormalityId": "sleep",
+              "value": 1
+            }
+          ],
+          "bodyColors": [
+            "black"
+          ],
+          "bodyColorShades": [
+            0
+          ],
+          "attributeResistance": [],
+          "physique": {
+            "id": "largest"
+          },
+          "personality": {
+            "id": "strawberry"
+          },
+          "pattern": {
+            "id": "d"
+          },
+          "headShape": {
+            "id": "battery",
+            "abnormalityResistanceBonuses": {},
+            "hpBonus": 0,
+            "apBonus": 0,
+            "attackBonus": 0,
+            "defenseBonus": 0,
+            "speedBonus": 0,
+            "evasionRateBonus": 0
+          },
+          "anntena": {
+            "id": "none",
+            "category": "other",
+            "targetCount": null,
+            "targetsAll": false,
+            "dealsDamage": false,
+            "attackAttributes": [],
+            "isInheritable": false,
+            "evolvesToId": null,
+            "maxLevel": null,
+            "variantGroupId": null,
+            "hasLevel": false
+          },
+          "antennaLevel": 0,
+          "isSpColor": false,
+          "happiness": 0,
+          "maxHappiness": 20,
+          "level": 1,
+          "maxLevel": 20,
+          "currentExp": null,
+          "maxExp": 10,
+          "hp": 29,
+          "ap": 0,
+          "attack": 11,
+          "defense": 12,
+          "speed": 5,
+          "evasionRate": 3,
+          "corrections": [],
+          "considerCorrections": false,
+          "parentIds": [
+            "eintuciph8u4dx7lhrejqx8s",
+            "q175t0g47bemuqbnv9qzzfr7"
+          ],
+          "catchOrder": null,
+          "qrCodeId": null,
+          "memo": null,
+          "moveInDate": null,
+          "hash": "054afdb89b2966664b071a945de8097e1bc135b9ea5513853a571f555f519627",
+          "monsterExp": null,
+          "newCatchOrder": 0,
+          "parents": [
+            {
+              "id": "eintuciph8u4dx7lhrejqx8s",
+              "name": "いお",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "sleep",
+                  "value": 1
+                }
+              ],
+              "bodyColors": [
+                "black"
+              ],
+              "bodyColorShades": [
+                0
+              ],
+              "attributeResistance": [],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "horizontalOval",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "hardToDodge_all_1",
+                "category": "other",
+                "targetCount": null,
+                "targetsAll": true,
+                "dealsDamage": false,
+                "attackAttributes": [],
+                "isInheritable": false,
+                "evolvesToId": "hardToDodge_all_2",
+                "maxLevel": null,
+                "variantGroupId": "hardToDodge",
+                "hasLevel": true
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": null,
+              "hp": 35,
+              "ap": 0,
+              "attack": 8,
+              "defense": 12,
+              "speed": 3,
+              "evasionRate": 7,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [],
+              "catchOrder": 0,
+              "qrCodeId": "o7gs92smvy3v3p18d49p5nc0",
+              "memo": null,
+              "moveInDate": null,
+              "hash": "80168a94c7c3a02351aba3159081c0ef59be59f663fe5d78da238f955117a2cc",
+              "monsterExp": null,
+              "newCatchOrder": 0,
+              "parents": []
+            },
+            {
+              "id": "q175t0g47bemuqbnv9qzzfr7",
+              "name": "りくや",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "sleep",
+                  "value": 1
+                }
+              ],
+              "bodyColors": [
+                "black"
+              ],
+              "bodyColorShades": [
+                0
+              ],
+              "attributeResistance": [],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "horizontalOval",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "none",
+                "category": "other",
+                "targetCount": null,
+                "targetsAll": false,
+                "dealsDamage": false,
+                "attackAttributes": [],
+                "isInheritable": false,
+                "evolvesToId": null,
+                "maxLevel": null,
+                "variantGroupId": null,
+                "hasLevel": false
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": null,
+              "hp": 32,
+              "ap": 0,
+              "attack": 12,
+              "defense": 12,
+              "speed": 5,
+              "evasionRate": 0,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [],
+              "catchOrder": 0,
+              "qrCodeId": "jv9et1dfbg3valiz9p02e1r7",
+              "memo": null,
+              "moveInDate": null,
+              "hash": "36e2da0a6fdb274bc5bb7b52a4d1217974f426de6d8e42a56c5214f5d23b77f1",
+              "monsterExp": null,
+              "newCatchOrder": 0,
+              "parents": []
+            }
+          ]
+        },
+        {
+          "id": "e87jrsd7ozijjg5568kowbie",
+          "name": "こうえい",
+          "abnormalityResistances": [
+            {
+              "abnormalityId": "cold",
+              "value": 1
+            }
+          ],
+          "bodyColors": [
+            "green"
+          ],
+          "bodyColorShades": [
+            0
+          ],
+          "attributeResistance": [
+            {
+              "attribute": {
+                "id": "ice",
+                "index": 1,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": -2
+            },
+            {
+              "attribute": {
+                "id": "wind",
+                "index": 2,
+                "isElemental": true,
+                "resistantTo": [],
+                "weakTo": []
+              },
+              "value": 2
+            }
+          ],
+          "physique": {
+            "id": "largest"
+          },
+          "personality": {
+            "id": "strawberry"
+          },
+          "pattern": {
+            "id": "d"
+          },
+          "headShape": {
+            "id": "onigiri",
+            "abnormalityResistanceBonuses": {},
+            "hpBonus": 0,
+            "apBonus": 0,
+            "attackBonus": 0,
+            "defenseBonus": 0,
+            "speedBonus": 0,
+            "evasionRateBonus": 0
+          },
+          "anntena": {
+            "id": "none",
+            "category": "other",
+            "targetCount": null,
+            "targetsAll": false,
+            "dealsDamage": false,
+            "attackAttributes": [],
+            "isInheritable": false,
+            "evolvesToId": null,
+            "maxLevel": null,
+            "variantGroupId": null,
+            "hasLevel": false
+          },
+          "antennaLevel": 0,
+          "isSpColor": false,
+          "happiness": 0,
+          "maxHappiness": 20,
+          "level": 1,
+          "maxLevel": 20,
+          "currentExp": null,
+          "maxExp": 10,
+          "hp": 32,
+          "ap": 0,
+          "attack": 12,
+          "defense": 12,
+          "speed": 5,
+          "evasionRate": 0,
+          "corrections": [],
+          "considerCorrections": false,
+          "parentIds": [
+            "waaccj4v2c79ujfgg7v6t7va",
+            "rxvw64e9ubmfvsb7ojbvqlhx"
+          ],
+          "catchOrder": null,
+          "qrCodeId": null,
+          "memo": null,
+          "moveInDate": null,
+          "hash": "90056c47126d616b42bedf7a6e7f7e72426293cb85e300a3a08949597b607961",
+          "monsterExp": null,
+          "newCatchOrder": 1,
+          "parents": [
+            {
+              "id": "waaccj4v2c79ujfgg7v6t7va",
+              "name": "うり",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "cold",
+                  "value": 1
+                }
+              ],
+              "bodyColors": [
+                "green"
+              ],
+              "bodyColorShades": [
+                0
+              ],
+              "attributeResistance": [
+                {
+                  "attribute": {
+                    "id": "ice",
+                    "index": 1,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": -2
+                },
+                {
+                  "attribute": {
+                    "id": "wind",
+                    "index": 2,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": 2
+                }
+              ],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "triangle",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "whirlwind_1",
+                "category": "attack",
+                "targetCount": 1,
+                "targetsAll": false,
+                "dealsDamage": true,
+                "attackAttributes": [
+                  {
+                    "id": "wind",
+                    "index": 2,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  }
+                ],
+                "isInheritable": false,
+                "evolvesToId": null,
+                "maxLevel": null,
+                "variantGroupId": "whirlwind",
+                "hasLevel": true
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": null,
+              "hp": 27,
+              "ap": 7,
+              "attack": 5,
+              "defense": 5,
+              "speed": 4,
+              "evasionRate": 4,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [],
+              "catchOrder": 1,
+              "qrCodeId": "75d05b48-6610-4a55-98dc-eb636563e6f1",
+              "memo": null,
+              "moveInDate": null,
+              "hash": "5b5806f43926344796d6310c3894bacda625890eec76813a841eeebe58b8c163",
+              "monsterExp": null,
+              "newCatchOrder": 1,
+              "parents": []
+            },
+            {
+              "id": "rxvw64e9ubmfvsb7ojbvqlhx",
+              "name": "ごえもん",
+              "abnormalityResistances": [
+                {
+                  "abnormalityId": "cold",
+                  "value": 1
+                }
+              ],
+              "bodyColors": [
+                "green"
+              ],
+              "bodyColorShades": [
+                0
+              ],
+              "attributeResistance": [
+                {
+                  "attribute": {
+                    "id": "ice",
+                    "index": 1,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": -2
+                },
+                {
+                  "attribute": {
+                    "id": "wind",
+                    "index": 2,
+                    "isElemental": true,
+                    "resistantTo": [],
+                    "weakTo": []
+                  },
+                  "value": 2
+                }
+              ],
+              "physique": {
+                "id": "largest"
+              },
+              "personality": {
+                "id": "strawberry"
+              },
+              "pattern": {
+                "id": "d"
+              },
+              "headShape": {
+                "id": "circle",
+                "abnormalityResistanceBonuses": {},
+                "hpBonus": 0,
+                "apBonus": 0,
+                "attackBonus": 0,
+                "defenseBonus": 0,
+                "speedBonus": 0,
+                "evasionRateBonus": 0
+              },
+              "anntena": {
+                "id": "none",
+                "category": "other",
+                "targetCount": null,
+                "targetsAll": false,
+                "dealsDamage": false,
+                "attackAttributes": [],
+                "isInheritable": false,
+                "evolvesToId": null,
+                "maxLevel": null,
+                "variantGroupId": null,
+                "hasLevel": false
+              },
+              "antennaLevel": 0,
+              "isSpColor": false,
+              "happiness": 0,
+              "maxHappiness": 20,
+              "level": 1,
+              "maxLevel": 20,
+              "currentExp": null,
+              "maxExp": 10,
+              "hp": 32,
+              "ap": 0,
+              "attack": 12,
+              "defense": 12,
+              "speed": 5,
+              "evasionRate": 0,
+              "corrections": [],
+              "considerCorrections": false,
+              "parentIds": [],
+              "catchOrder": 0,
+              "qrCodeId": "q8n9rjl0kmpl47whcymwfkyj",
+              "memo": null,
+              "moveInDate": null,
+              "hash": "d8cf50967990c31548dcc88bff1980c27d44ab62f1124a67ea627c8b961eb56a",
+              "monsterExp": null,
+              "newCatchOrder": 0,
+              "parents": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

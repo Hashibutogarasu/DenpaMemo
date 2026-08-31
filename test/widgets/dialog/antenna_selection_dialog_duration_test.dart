@@ -1,9 +1,9 @@
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/domain/master_data/anntena.dart';
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/dialog/antenna_selection_dialog.dart';
+import '../../support/all_translation_providers.dart';
 
 const _exciteSolo1 = Anntena(
   id: 'excite_solo_1',
@@ -63,7 +63,7 @@ Future<void> _pumpDialog(
   Anntena selected = _exciteSolo1,
 }) async {
   await tester.pumpWidget(
-    TranslationProvider(
+    AllTranslationProviders(
       child: MaterialApp(
         home: Scaffold(
           body: Builder(

@@ -1,12 +1,8 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 import '../data/denpa_men/objectbox_denpa_men_repository.dart';
-import '../domain/denpa_men/denpa_men.dart';
-import '../domain/denpa_men/denpa_men_catch_order_migration.dart';
-import '../domain/denpa_men/denpa_men_record.dart';
-import '../domain/denpa_men/denpa_men_repository.dart';
-import '../domain/master_data/master_data.dart';
 import 'objectbox_providers.dart';
 
 final denpaMenRepositoryProvider = Provider<DenpaMenRepository>((ref) {

@@ -1,0 +1,35 @@
+name: widgetbook_app
+description: denpa_memoのWidgetbook専用アプリ。
+publish_to: 'none'
+resolution: workspace
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  tree_graph:
+    path: ../../modules/Graph
+  denpamemo_widgets:
+    path: ../../modules/Widgets
+  step_dialog:
+    path: ../../modules/StepDialog
+  widgetbook: ^3.25.0
+  widgetbook_annotation: ^3.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  widgetbook_generator: ^3.24.0
+  build_runner: ^2.15.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/routes/

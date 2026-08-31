@@ -6,6 +6,16 @@ version: 1.0.0+1
 environment:
   sdk: ^3.10.1
 
+workspace:
+  - modules/DataPack
+  - modules/StepDialog
+  - modules/GraphQLClient
+  - modules/Graph
+  - modules/Widgets
+  - modules/DMFile
+  - modules/AppDatas
+  - apps/WidgetBook
+
 dependencies:
   flutter:
     sdk: flutter
@@ -33,8 +43,20 @@ dependencies:
   archive: ^4.1.0
   package_info_plus: ^9.0.1
   graphql_flutter: ^5.2.1
-  widgetbook: ^3.25.0
-  widgetbook_annotation: ^3.11.0
+  data_pack:
+    path: modules/DataPack
+  step_dialog:
+    path: modules/StepDialog
+  graphql_client:
+    path: modules/GraphQLClient
+  denpamemo_widgets:
+    path: modules/Widgets
+  tree_graph:
+    path: modules/Graph
+  dm_file:
+    path: modules/DMFile
+  app_datas:
+    path: modules/AppDatas
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -48,10 +70,27 @@ dev_dependencies:
   objectbox_generator: ^5.3.2
   qr: ^3.0.2
   path_provider_platform_interface: ^2.1.3
-  widgetbook_generator: ^3.24.0
+  melos: ^8.5.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/data/icons/monster/
     - assets/routes/
+
+melos:
+  scripts:
+    analyze:
+      exec:
+        command: flutter analyze .
+        concurrency: 1
+      packageFilters:
+        flutter: true
+      description: Run static analysis for every Flutter workspace package (data_pack is pure Dart and is analyzed separately with "dart analyze").
+    test:
+      exec:
+        command: flutter test
+        concurrency: 1
+      packageFilters:
+        flutter: true
+      description: Run the test suite for every Flutter workspace package (data_pack is pure Dart and is tested separately with "dart test").

@@ -1,8 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../domain/master_data/master_data.dart';
-import '../domain/monster/monster_exp.dart';
 import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
 import '../pages/denpa_men_editor.dart';

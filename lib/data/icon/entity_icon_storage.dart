@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_datas/app_datas.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 /// Reads and writes an entity's icon image file, stored alongside the
-/// ObjectBox database directory (`getApplicationDocumentsDirectory()`)
+/// ObjectBox database directory (under the app's [AppPaths.appDirectory])
 /// under `icons/<category>/<id>/`. That directory holds the image file
 /// itself plus a `metadata.json` recording its file name, so loading an
 /// icon means: resolve the directory, read `metadata.json`, read the file
@@ -24,10 +25,9 @@ class EntityIconStorage {
   final String fileNameKey;
 
   Future<Directory> _iconDirectory(String id) async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    return Directory(
-      path.join(documentsDirectory.path, 'icons', category, id),
-    );
+    final packageInfo = await PackageInfo.fromPlatform();
+    final appDirectory = await AppPaths.appDirectory(packageInfo.packageName);
+    return Directory(path.join(appDirectory.path, 'icons', category, id));
   }
 
   Future<File?> loadIcon(String id) async {

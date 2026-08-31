@@ -1,9 +1,7 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
-import '../domain/denpa_men/denpa_men_record.dart';
-import '../domain/master_data/master_data.dart';
-import '../domain/search/denpa_men_search_query.dart';
 import 'denpa_men_providers.dart';
 
 /// Filters applied to [filteredDenpaMenProvider]; reset by [SearchResults]

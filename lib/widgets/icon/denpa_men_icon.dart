@@ -1,8 +1,8 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/denpa_men_icon_providers.dart';
-import 'entity_icon.dart';
 
 /// Shows the icon image set for the `DenpaMen` with [denpaMenId], or a
 /// placeholder box if it has none set yet.

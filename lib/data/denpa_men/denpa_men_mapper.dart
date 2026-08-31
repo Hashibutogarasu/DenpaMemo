@@ -1,9 +1,6 @@
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/denpa_men/denpa_men_factory.dart';
-import '../../domain/master_data/master_data.dart';
-import '../../domain/monster/monster_exp.dart';
 import '../master_data/legacy_antenna_id_migrations.dart';
 import 'denpa_men_entity.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// Converts a domain [DenpaMen] to its persisted [DenpaMenEntity] form,
 /// keeping only master-data ids rather than the embedded objects.

@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql_client/graphql_client.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' show OperationException;
+import 'package:step_dialog/step_dialog.dart'
+    hide Translations, BuildContextTranslationsExtension;
 
-import '../../domain/app_error.dart';
 import '../../domain/master_data/master_data_load_error.dart';
-import '../../providers/master_data_providers.dart';
-import '../../providers/monster_providers.dart';
-import 'error_dialog.dart';
+import '../../errors/app_error.dart';
+import '../../i18n/gen/strings.g.dart';
 
 /// Shows [ErrorDialog] once per `masterDataProvider` failure, shared by
 /// every page that watches it (`home.dart`, `search.dart`,
@@ -25,7 +27,7 @@ void listenForMasterDataErrors(WidgetRef ref, BuildContext context) {
 
 /// Same as [listenForMasterDataErrors], but for `monsterListProvider`
 /// (`monster_selection.dart`), which throws the same
-/// [MasterDataLoadError] subtypes from `GraphqlMonsterRepository`.
+/// [OperationException]s from `GraphqlMonsterRepository`.
 void listenForMonsterListErrors(WidgetRef ref, BuildContext context) {
   ref.listen(monsterListProvider, (previous, next) {
     _showAppError(
@@ -48,9 +50,19 @@ void _showAppError<T>(
     return;
   }
   final appError = switch (error) {
-    MasterDataConnectionError() => MasterDataConnectionError(onRetry: retry),
+    OperationException() => switch (MasterDataLoadError.fromOperationException(error)) {
+      MasterDataConnectionError() => MasterDataConnectionError(onRetry: retry),
+      final other => other,
+    },
     AppError() => error,
     _ => MasterDataServerError('$error'),
   };
-  ErrorDialog.show(context, error: appError);
+  final t = context.t;
+  ErrorDialog.show(
+    context,
+    title: appError.title(t),
+    description: appError.description(t),
+    retriable: appError.retriable,
+    onRetry: appError.retriable ? appError.retry : null,
+  );
 }

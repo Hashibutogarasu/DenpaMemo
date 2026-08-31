@@ -1,5 +1,5 @@
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
+import 'package:app_datas/app_datas.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../objectbox.g.dart';
 import '../denpa_men/denpa_men_entity.dart';
@@ -21,9 +21,11 @@ class ObjectBox {
   }
 
   static Future<ObjectBox> create() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final storeDirectory = path.join(documentsDirectory.path, 'objectbox');
-    final store = await openStore(directory: storeDirectory);
+    final packageInfo = await PackageInfo.fromPlatform();
+    final storeDirectory = await AppPaths.objectboxDirectory(
+      packageInfo.packageName,
+    );
+    final store = await openStore(directory: storeDirectory.path);
     return ObjectBox._create(store);
   }
 

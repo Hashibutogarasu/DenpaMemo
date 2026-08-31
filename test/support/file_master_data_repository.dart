@@ -1,18 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:data_pack/data_pack.dart';
 
-import 'package:denpa_memo/domain/master_data/abnormality_type.dart';
-import 'package:denpa_memo/domain/master_data/anntena.dart';
-import 'package:denpa_memo/domain/master_data/attribute.dart';
-import 'package:denpa_memo/domain/master_data/attribute_bonus.dart';
-import 'package:denpa_memo/domain/master_data/body_color_abnormality_resistance_rule.dart';
-import 'package:denpa_memo/domain/master_data/body_color_resistance_rule.dart';
-import 'package:denpa_memo/domain/master_data/correction.dart';
-import 'package:denpa_memo/domain/master_data/head_shape.dart';
-import 'package:denpa_memo/domain/master_data/master_data.dart';
-import 'package:denpa_memo/domain/master_data/pattern.dart';
-import 'package:denpa_memo/domain/master_data/personality.dart';
-import 'package:denpa_memo/domain/master_data/physique.dart';
 
 /// Offline [MasterDataRepository] for widget/integration tests: reads the
 /// same real game data the server seeds from, straight off disk at

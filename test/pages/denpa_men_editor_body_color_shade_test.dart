@@ -1,9 +1,9 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import '../support/test_app.dart';
-import 'package:denpa_memo/widgets/color/color_dot.dart';
 
 void main() {
   testWidgets(

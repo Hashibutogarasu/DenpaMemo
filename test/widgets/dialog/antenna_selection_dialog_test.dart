@@ -1,10 +1,9 @@
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/domain/master_data/anntena.dart';
-import 'package:denpa_memo/domain/master_data/attribute.dart';
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/dialog/antenna_selection_dialog.dart';
+import '../../support/all_translation_providers.dart';
 
 const _water = Attribute(id: 'water', index: 5);
 
@@ -104,7 +103,7 @@ Future<void> _pumpDialog(
   Anntena selected = _healSolo1,
 }) async {
   await tester.pumpWidget(
-    TranslationProvider(
+    AllTranslationProviders(
       child: MaterialApp(
         home: Scaffold(
           body: Builder(
@@ -138,7 +137,7 @@ void main() {
     'the "no antenna" entry appears exactly once in the other-category tab',
     (WidgetTester tester) async {
       await tester.pumpWidget(
-        TranslationProvider(
+        AllTranslationProviders(
           child: MaterialApp(
             home: Scaffold(
               body: Builder(
@@ -310,7 +309,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        TranslationProvider(
+        AllTranslationProviders(
           child: MaterialApp(
             home: Scaffold(
               body: Builder(

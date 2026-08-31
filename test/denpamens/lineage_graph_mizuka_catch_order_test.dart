@@ -1,20 +1,13 @@
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tree_graph/tree_graph.dart';
 
 import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/data/qr_code/qr_code_mapper.dart';
-import 'package:denpa_memo/domain/denpa_men/denpa_men_catch_order_migration.dart';
-import 'package:denpa_memo/domain/denpa_men/denpa_men_record.dart';
-import 'package:denpa_memo/domain/master_data/master_data.dart';
-import 'package:denpa_memo/domain/qr_code/qr_code_factory.dart';
-import 'package:denpa_memo/domain/qr_code/qr_code_record.dart';
-import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/widgets/lineage/denpa_men_node.dart';
-import 'package:denpa_memo/widgets/lineage/lineage_graph.dart';
-import 'package:denpa_memo/widgets/lineage/lineage_graph_highlight.dart';
 
 import '../support/file_master_data_repository.dart';
 import '../support/lineage_tree_fixture.dart';
@@ -24,21 +17,25 @@ const _tsunenoriId = 'kpelvifntq7ju4tz8bll8xjc';
 const _takamitsuId = 'cug5bs8ofxmrwi7i31jkzqb2';
 const _sanagiId = 'n19girll1iju0wg2ni6w8cs4';
 
+DenpaMenNodeData _data(DenpaMen denpaMen) =>
+    DenpaMenNodeData(record: DenpaMenRecord(id: 0, denpaMen: denpaMen), isBred: false);
+
 Widget _harness({
-  required MasterData masterData,
   required List<QrCodeRecord> qrCodes,
   required List<DenpaMenRecord> denpaMenRecords,
 }) {
-  return ProviderScope(
-    child: TranslationProvider(
-      child: MaterialApp(
-        home: Scaffold(
-          body: LineageGraph(
-            qrCodes: qrCodes,
-            denpaMenRecords: denpaMenRecords,
-            masterData: masterData,
-            iconsById: const {},
-          ),
+  return TranslationProvider(
+    child: MaterialApp(
+      home: Scaffold(
+        body: DenpaMenLineageGraph(
+          qrCodes: qrCodes,
+          denpaMenRecords: denpaMenRecords,
+          iconsById: const {},
+          selectionMode: false,
+          selectedIds: const {},
+          onToggleSelection: (_) {},
+          onMiddleClickSelect: (_) {},
+          onTapNode: (context, denpaMen) {},
         ),
       ),
     ),
@@ -93,11 +90,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        _harness(
-          masterData: masterData,
-          qrCodes: qrCodes,
-          denpaMenRecords: denpaMenRecords,
-        ),
+        _harness(qrCodes: qrCodes, denpaMenRecords: denpaMenRecords),
       );
       await tester.pumpAndSettle();
 
@@ -113,22 +106,26 @@ void main() {
       await gesture.moveTo(tester.getCenter(bredFinder.first));
       await tester.pump();
 
-      final painterByDenpaMenId = {
+      final painterBySpecKey = {
         for (final node in tester.widgetList<DenpaMenNode>(
           find.byType(DenpaMenNode),
         ))
-          node.hoverHighlightPainter!.denpaMenId: node.hoverHighlightPainter!,
+          (node.hoverHighlightPainter! as TreeNodeHighlightPainter<DenpaMenNodeData>)
+                  .specKey:
+              node.hoverHighlightPainter! as TreeNodeHighlightPainter<DenpaMenNodeData>,
       };
 
-      expect(painterByDenpaMenId[_tsunenoriId]!.hoveredBredId.value, _sanagiId);
-      expect(painterByDenpaMenId[_takamitsuId]!.hoveredBredId.value, _sanagiId);
+      expect(painterBySpecKey[_tsunenoriId]!.hoveredKey.value, _sanagiId);
+      expect(painterBySpecKey[_takamitsuId]!.hoveredKey.value, _sanagiId);
+
+      final strategy = DenpaMenHighlightStrategy(denpaMenById: byId);
       expect(
-        lineageNodeParentBadgeValue(_tsunenoriId, _sanagiId, byId),
-        1,
+        strategy.badgeText(_data(byId[_tsunenoriId]!), _data(byId[_sanagiId]!)),
+        '1',
       );
       expect(
-        lineageNodeParentBadgeValue(_takamitsuId, _sanagiId, byId),
-        2,
+        strategy.badgeText(_data(byId[_takamitsuId]!), _data(byId[_sanagiId]!)),
+        '2',
       );
     },
   );

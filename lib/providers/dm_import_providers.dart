@@ -1,21 +1,21 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide Translations, BuildContextTranslationsExtension;
+import 'package:dm_file/dm_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql_client/graphql_client.dart';
+import 'package:step_dialog/step_dialog.dart'
+    hide Translations, BuildContextTranslationsExtension;
 
-import '../domain/backup/dm_file.dart';
-import '../domain/backup/dm_import_error.dart';
-import '../domain/backup/dm_import_exceptions.dart';
-import '../domain/backup/import_result.dart';
 import '../i18n/gen/strings.g.dart';
-import '../widgets/dialog/denpa_men_selection_dialog.dart';
-import '../widgets/dialog/error_dialog.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
 import 'import_export_progress_providers.dart';
-import 'master_data_providers.dart';
 import 'qr_code_providers.dart';
 
 /// Drives the "import individuals from a `.dm` file" flow: prompts for a
@@ -69,12 +69,17 @@ class DmImportController {
           title: t.home.importMergeConfirmTitle,
           candidates: candidates,
           initial: candidates,
+          totalAttributeCount: masterData.attributes.length,
         ),
         onProgress: (value) => progress.state = value,
       );
-    } on DmImportError catch (error) {
+    } on DmHeaderReadError {
       if (context.mounted) {
-        await ErrorDialog.show(context, error: error);
+        await ErrorDialog.show(
+          context,
+          title: t.backup.importHeaderErrorTitle,
+          description: t.backup.importHeaderErrorDescription,
+        );
       }
       return null;
     } on DmInvalidImportFileException {

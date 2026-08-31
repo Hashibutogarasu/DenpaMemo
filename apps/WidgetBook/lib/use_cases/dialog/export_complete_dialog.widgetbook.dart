@@ -1,0 +1,28 @@
+import 'package:data_pack/data_pack.dart';
+import 'package:flutter/material.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
+import 'package:denpamemo_widgets/testing.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import '../../core/dialog_preview.dart';
+
+
+@widgetbook.UseCase(name: 'Default', type: ExportCompleteDialog, path: 'dialog')
+Widget exportCompleteDialogUseCase(BuildContext context) {
+  return DialogPreview(
+    builder: (context) => ExportCompleteDialog(
+      result: ExportResult(
+        exported: [DenpaMenData.denpaMen, DenpaMenData.build('みらい')],
+        orphaned: [DenpaMenData.build('はぐれ')],
+      ),
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'NoOrphans', type: ExportCompleteDialog, path: 'dialog')
+Widget exportCompleteDialogNoOrphansUseCase(BuildContext context) {
+  return DialogPreview(
+    builder: (context) => ExportCompleteDialog(
+      result: ExportResult(exported: [DenpaMenData.denpaMen]),
+    ),
+  );
+}

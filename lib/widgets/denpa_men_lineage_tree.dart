@@ -1,21 +1,18 @@
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
-import '../domain/master_data/master_data.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../providers/search_providers.dart';
-import 'lineage/lineage_graph.dart';
+import 'dialog/denpa_men_action_menu.dart';
 
-/// Shows every saved QR code as the root of a tree, in a single shared
-/// canvas: individuals caught directly under it (ordered by catch order),
-/// then any bred descendants reached by following `DenpaMen.parentIds` —
-/// connected with an edge from each of its (up to two) parents, so shared
-/// offspring visibly converge. Every QR code hangs off one invisible
-/// super-root so the whole forest lays out as a single connected diagram.
+/// Shows every saved QR code as the root of a tree of caught/bred
+/// individuals, all in one shared canvas.
 class DenpaMenLineageTree extends ConsumerWidget {
   const DenpaMenLineageTree({
     super.key,
@@ -68,17 +65,39 @@ class DenpaMenLineageTree extends ConsumerWidget {
             return Center(child: Text(context.t.home.empty));
           }
 
-          return LineageGraph(
+          final iconsById = {
+            for (final record in lineageRecords)
+              record.denpaMen.id: ref
+                  .watch(denpaMenIconProvider(record.denpaMen.id))
+                  .value,
+          };
+
+          return DenpaMenLineageGraph(
             qrCodes: qrCodes,
             denpaMenRecords: lineageRecords,
-            masterData: masterData,
-            iconsById: {
-              for (final record in lineageRecords)
-                record.denpaMen.id: ref
-                    .watch(denpaMenIconProvider(record.denpaMen.id))
-                    .value,
+            iconsById: iconsById,
+            selectionMode: ref.watch(selectionModeProvider),
+            selectedIds: ref.watch(selectedDenpaMenIdsProvider),
+            onToggleSelection: (id) => toggleDenpaMenSelection(ref, id),
+            onMiddleClickSelect: (id) {
+              ref.read(selectionModeProvider.notifier).state = true;
+              toggleDenpaMenSelection(ref, id);
             },
-            controller: controller,
+            onTapNode: (context, denpaMen) => DenpaMenPreviewDialog.show(
+              context,
+              denpaMen: denpaMen,
+              totalAttributeCount: masterData.attributes.length,
+              iconFile: iconsById[denpaMen.id],
+            ),
+            onHoveredRecordChanged: (id) =>
+                ref.read(hoveredTreeRecordIdProvider.notifier).state = id,
+            contextMenuBuilder: (context, record, child) =>
+                DenpaMenContextMenuArea(
+                  record: record,
+                  masterData: masterData,
+                  child: child,
+                ),
+            graphViewController: controller,
             cursorEnabled: cursorEnabled,
           );
         },

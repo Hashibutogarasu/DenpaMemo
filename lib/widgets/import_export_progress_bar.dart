@@ -1,8 +1,8 @@
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/import_export_progress_providers.dart';
-import 'progress_bar.dart';
 
 /// A bottom-of-screen progress indicator for the currently running `.dm`
 /// export/import operation. Renders nothing while

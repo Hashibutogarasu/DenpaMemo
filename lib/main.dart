@@ -1,13 +1,14 @@
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
+import 'package:graphql_client/graphql_client.dart';
+import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/denpa_men/objectbox_denpa_men_repository.dart';
-import 'data/master_data/graphql_master_data_repository.dart';
 import 'data/objectbox/objectbox.dart';
-import 'domain/denpa_men/denpa_men_hash_migration.dart';
 import 'i18n/gen/strings.g.dart';
-import 'providers/graphql_client_provider.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 
@@ -41,27 +42,26 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.objectBox, this.overrides = const []});
 
   final ObjectBox objectBox;
-
-  /// Additional provider overrides layered on top of [objectBoxProvider]'s.
-  /// Lets tests substitute a fast in-memory/file-backed
-  /// `masterDataRepositoryProvider` for the real GraphQL-backed one,
-  /// without needing a running `modules/server` instance.
   final List<Override> overrides;
 
   @override
   Widget build(BuildContext context) {
-    return TranslationProvider(
-      child: ProviderScope(
-        overrides: [
-          objectBoxProvider.overrideWithValue(objectBox),
-          ...overrides,
-        ],
-        child: MaterialApp.router(
-          title: t.app.name,
-          theme: ThemeData(
-            colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+    return denpamemo_widgets.TranslationProvider(
+      child: step_dialog.TranslationProvider(
+        child: TranslationProvider(
+          child: ProviderScope(
+            overrides: [
+              objectBoxProvider.overrideWithValue(objectBox),
+              ...overrides,
+            ],
+            child: MaterialApp.router(
+              title: t.app.name,
+              theme: ThemeData(
+                colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+              ),
+              routerConfig: appRouter,
+            ),
           ),
-          routerConfig: appRouter,
         ),
       ),
     );

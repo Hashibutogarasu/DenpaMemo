@@ -1,0 +1,21 @@
+name: tree_graph
+description: Tree widget library
+version: 0.1.0
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  collection: ^1.19.1
+  flutter:
+    sdk: flutter
+  graphview: ^1.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:

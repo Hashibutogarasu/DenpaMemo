@@ -1,11 +1,8 @@
-import '../../domain/denpa_men/denpa_men.dart';
-import '../../domain/denpa_men/denpa_men_record.dart';
-import '../../domain/denpa_men/denpa_men_repository.dart';
-import '../../domain/master_data/master_data.dart';
 import '../../objectbox.g.dart';
 import '../objectbox/objectbox.dart';
 import 'denpa_men_entity.dart';
 import 'denpa_men_mapper.dart';
+import 'package:data_pack/data_pack.dart';
 
 /// [DenpaMenRepository] backed by the [DenpaMenEntity] ObjectBox box, newest
 /// entries last.
