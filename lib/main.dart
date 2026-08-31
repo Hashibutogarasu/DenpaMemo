@@ -9,8 +9,10 @@ import 'package:step_dialog/step_dialog.dart' as step_dialog;
 import 'data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'data/objectbox/objectbox.dart';
 import 'i18n/gen/strings.g.dart';
+import 'providers/app_settings_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
+import 'theme/app_theme_mode_mapping.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,16 +56,33 @@ class MyApp extends StatelessWidget {
               objectBoxProvider.overrideWithValue(objectBox),
               ...overrides,
             ],
-            child: MaterialApp.router(
-              title: t.app.name,
-              theme: ThemeData(
-                colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-              ),
-              routerConfig: appRouter,
-            ),
+            child: const _ThemedMaterialApp(),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ThemedMaterialApp extends ConsumerWidget {
+  const _ThemedMaterialApp();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(appSettingsProvider).themeMode;
+    return MaterialApp.router(
+      title: t.app.name,
+      theme: ThemeData(
+        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+      ),
+      darkTheme: ThemeData(
+        colorScheme: .fromSeed(
+          seedColor: Colors.deepPurple,
+          brightness: Brightness.dark,
+        ),
+      ),
+      themeMode: themeMode.toFlutterThemeMode(),
+      routerConfig: appRouter,
     );
   }
 }

@@ -17,6 +17,10 @@ List<RouteBase> get $appRoutes => [
   $monsterExpRoute,
   $monsterSelectionRoute,
   $birthGuideRoute,
+  $accountSettingsRoute,
+  $themeSettingsRoute,
+  $languageSettingsRoute,
+  $dataManagementRoute,
 ];
 
 RouteBase get $appShellRouteData => ShellRouteData.$route(
@@ -402,4 +406,112 @@ mixin $BirthGuideRoute on GoRouteData {
   @override
   void replace(BuildContext context) =>
       context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $accountSettingsRoute => GoRouteData.$route(
+  path: '/settings/account',
+  hasOverriddenOnExit: false,
+  factory: $AccountSettingsRoute._fromState,
+);
+
+mixin $AccountSettingsRoute on GoRouteData {
+  static AccountSettingsRoute _fromState(GoRouterState state) =>
+      const AccountSettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/account');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $themeSettingsRoute => GoRouteData.$route(
+  path: '/settings/theme',
+  hasOverriddenOnExit: false,
+  factory: $ThemeSettingsRoute._fromState,
+);
+
+mixin $ThemeSettingsRoute on GoRouteData {
+  static ThemeSettingsRoute _fromState(GoRouterState state) =>
+      const ThemeSettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/theme');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $languageSettingsRoute => GoRouteData.$route(
+  path: '/settings/language',
+  hasOverriddenOnExit: false,
+  factory: $LanguageSettingsRoute._fromState,
+);
+
+mixin $LanguageSettingsRoute on GoRouteData {
+  static LanguageSettingsRoute _fromState(GoRouterState state) =>
+      const LanguageSettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/language');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $dataManagementRoute => GoRouteData.$route(
+  path: '/settings/data',
+  hasOverriddenOnExit: false,
+  factory: $DataManagementRoute._fromState,
+);
+
+mixin $DataManagementRoute on GoRouteData {
+  static DataManagementRoute _fromState(GoRouterState state) =>
+      const DataManagementRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/data');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
 }

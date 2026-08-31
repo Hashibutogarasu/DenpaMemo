@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:app_datas/app_datas.dart';
 import 'package:flutter/services.dart' show AssetManifest, rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
 
 import '../data/icon/entity_icon_storage.dart';
+import 'account_scoped_paths_providers.dart';
 
 final monsterIconStorageProvider = Provider<EntityIconStorage>((ref) {
-  return const EntityIconStorage('monsters');
+  return EntityIconStorage('monsters', ref);
 });
 
 /// Loads the icon file for the [Monster] with the given id. Monsters are
@@ -33,10 +32,7 @@ final monsterIconProvider = FutureProvider.family<File?, String>((
   }
 
   final bytes = await rootBundle.load(assetPath);
-  final packageInfo = await PackageInfo.fromPlatform();
-  final tempDirectory = await AppPaths.tempAppDirectory(
-    packageInfo.packageName,
-  );
+  final tempDirectory = await ref.read(accountScopedTempDirectoryProvider.future);
   final tempFile = await File(
     path.join(tempDirectory.path, '$monsterId.png'),
   ).writeAsBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));

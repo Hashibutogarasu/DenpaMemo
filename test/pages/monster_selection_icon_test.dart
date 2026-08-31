@@ -7,9 +7,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_client/graphql_client.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
+import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/pages/monster_selection.dart';
 import 'package:denpa_memo/providers/monster_providers.dart';
+import 'package:denpa_memo/providers/objectbox_providers.dart';
 
 import '../support/fake_path_provider_platform.dart';
 
@@ -20,6 +22,8 @@ void main() {
     'selection list',
     (WidgetTester tester) async {
       late Directory tempRoot;
+      final objectBox = ObjectBox.createInMemory();
+      addTearDown(objectBox.store.close);
 
       await tester.runAsync(() async {
         tempRoot = await Directory.systemTemp.createTemp(
@@ -36,6 +40,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            objectBoxProvider.overrideWithValue(objectBox),
             monsterListProvider.overrideWith(
               (ref) async => const [Monster(id: 'swordmouse')],
             ),

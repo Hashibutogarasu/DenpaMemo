@@ -11,28 +11,36 @@ import 'package:path_provider/path_provider.dart';
 class AppPaths {
   const AppPaths._();
 
-  /// The app's persistent data directory:
-  /// `<ApplicationDocumentsDirectory>/<appId>/`.
-  static Future<Directory> appDirectory(String appId) async {
+  /// The current account's persistent data directory:
+  /// `<ApplicationDocumentsDirectory>/<appId>/<accountId>/`.
+  static Future<Directory> appDirectory(String appId, String accountId) async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
-    final directory = Directory(path.join(documentsDirectory.path, appId));
+    final directory = Directory(
+      path.join(documentsDirectory.path, appId, accountId),
+    );
     await directory.create(recursive: true);
     return directory;
   }
 
-  /// The app's temporary data directory:
-  /// `<TemporaryDirectory>/<appId>/`.
-  static Future<Directory> tempAppDirectory(String appId) async {
+  /// The current account's temporary data directory:
+  /// `<TemporaryDirectory>/<appId>/<accountId>/`.
+  static Future<Directory> tempAppDirectory(
+    String appId,
+    String accountId,
+  ) async {
     final temporaryDirectory = await getTemporaryDirectory();
-    final directory = Directory(path.join(temporaryDirectory.path, appId));
+    final directory = Directory(
+      path.join(temporaryDirectory.path, appId, accountId),
+    );
     await directory.create(recursive: true);
     return directory;
   }
 
   /// The directory the ObjectBox store should open in:
-  /// `<appDirectory>/objectbox`.
+  /// `<ApplicationDocumentsDirectory>/<appId>/objectbox`. Not scoped by
+  /// account, since the store itself is what accounts are read from.
   static Future<Directory> objectboxDirectory(String appId) async {
-    final appDir = await appDirectory(appId);
-    return Directory(path.join(appDir.path, 'objectbox'));
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    return Directory(path.join(documentsDirectory.path, appId, 'objectbox'));
   }
 }
