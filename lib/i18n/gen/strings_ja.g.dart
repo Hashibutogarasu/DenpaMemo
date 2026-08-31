@@ -44,6 +44,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
 	late final Translations$step$ja step = Translations$step$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
+	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$search$ja search = Translations$search$ja.internal(_root);
 	Map<String, String> get monster => {
@@ -319,6 +320,72 @@ class Translations$page$ja {
 
 	/// ja: '分析'
 	String get analysis => '分析';
+
+	/// ja: 'アカウント'
+	String get accountSettings => 'アカウント';
+
+	/// ja: 'テーマ'
+	String get themeSettings => 'テーマ';
+
+	/// ja: '言語'
+	String get languageSettings => '言語';
+
+	/// ja: 'データ管理'
+	String get dataManagement => 'データ管理';
+}
+
+// Path: settings
+class Translations$settings$ja {
+	Translations$settings$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'アカウント'
+	String get account => 'アカウント';
+
+	/// ja: 'テーマ'
+	String get theme => 'テーマ';
+
+	/// ja: '言語'
+	String get language => '言語';
+
+	/// ja: '通知'
+	String get notifications => '通知';
+
+	/// ja: '詳細設定'
+	String get advanced => '詳細設定';
+
+	/// ja: '統計'
+	String get statistics => '統計';
+
+	/// ja: 'オープンソースライセンス'
+	String get openSourceLicenses => 'オープンソースライセンス';
+
+	/// ja: 'データ管理'
+	String get dataManagement => 'データ管理';
+
+	/// ja: 'アカウントID'
+	String get accountCuidLabel => 'アカウントID';
+
+	/// ja: '作成日時'
+	String get accountCreatedAtLabel => '作成日時';
+
+	/// ja: 'システム設定に合わせる'
+	String get themeSystem => 'システム設定に合わせる';
+
+	/// ja: 'ライト'
+	String get themeLight => 'ライト';
+
+	/// ja: 'ダーク'
+	String get themeDark => 'ダーク';
+
+	/// ja: '日本語'
+	String get languageJapanese => '日本語';
+
+	/// ja: '個体をインポート'
+	String get dataManagementImport => '個体をインポート';
 }
 
 // Path: home
@@ -735,6 +802,25 @@ extension on Translations {
 			'page.search' => '検索',
 			'page.searchResults' => '検索結果',
 			'page.analysis' => '分析',
+			'page.accountSettings' => 'アカウント',
+			'page.themeSettings' => 'テーマ',
+			'page.languageSettings' => '言語',
+			'page.dataManagement' => 'データ管理',
+			'settings.account' => 'アカウント',
+			'settings.theme' => 'テーマ',
+			'settings.language' => '言語',
+			'settings.notifications' => '通知',
+			'settings.advanced' => '詳細設定',
+			'settings.statistics' => '統計',
+			'settings.openSourceLicenses' => 'オープンソースライセンス',
+			'settings.dataManagement' => 'データ管理',
+			'settings.accountCuidLabel' => 'アカウントID',
+			'settings.accountCreatedAtLabel' => '作成日時',
+			'settings.themeSystem' => 'システム設定に合わせる',
+			'settings.themeLight' => 'ライト',
+			'settings.themeDark' => 'ダーク',
+			'settings.languageJapanese' => '日本語',
+			'settings.dataManagementImport' => '個体をインポート',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

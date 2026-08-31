@@ -30,7 +30,28 @@
     "birthGuide": "出生ガイド",
     "search": "検索",
     "searchResults": "検索結果",
-    "analysis": "分析"
+    "analysis": "分析",
+    "accountSettings": "アカウント",
+    "themeSettings": "テーマ",
+    "languageSettings": "言語",
+    "dataManagement": "データ管理"
+  },
+  "settings": {
+    "account": "アカウント",
+    "theme": "テーマ",
+    "language": "言語",
+    "notifications": "通知",
+    "advanced": "詳細設定",
+    "statistics": "統計",
+    "openSourceLicenses": "オープンソースライセンス",
+    "dataManagement": "データ管理",
+    "accountCuidLabel": "アカウントID",
+    "accountCreatedAtLabel": "作成日時",
+    "themeSystem": "システム設定に合わせる",
+    "themeLight": "ライト",
+    "themeDark": "ダーク",
+    "languageJapanese": "日本語",
+    "dataManagementImport": "個体をインポート"
   },
   "home": {
     "empty": "電波人間が登録されていません",

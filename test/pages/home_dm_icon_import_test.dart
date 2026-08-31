@@ -11,9 +11,10 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
-import 'package:denpa_memo/data/icon/entity_icon_storage.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/data/qr_code/objectbox_qr_code_repository.dart';
+import 'package:denpa_memo/i18n/gen/strings.g.dart';
+import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
 import '../support/test_app.dart';
 
 import '../support/fake_path_provider_platform.dart';
@@ -24,7 +25,6 @@ void main() {
     'individual and its icon, updating the home list',
     (WidgetTester tester) async {
       late Directory tempRoot;
-      const storage = EntityIconStorage('denpamens');
 
       await tester.runAsync(() async {
         tempRoot = await Directory.systemTemp.createTemp(
@@ -45,11 +45,12 @@ void main() {
         await tester.pump(const Duration(milliseconds: 200));
       }
 
-      expect(find.text('電波人間が登録されていません'), findsOneWidget);
+      expect(find.text(t.home.empty), findsOneWidget);
 
       final container = ProviderScope.containerOf(
         tester.element(find.byType(MaterialApp)),
       );
+      final storage = container.read(denpaMenIconStorageProvider);
       final masterData = container.read(masterDataProvider).value!;
 
       final denpaMen = createDenpaMen(
@@ -88,7 +89,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 200));
       }
 
-      expect(find.text('電波人間が登録されていません'), findsNothing);
+      expect(find.text(t.home.empty), findsNothing);
       expect(find.text('imported-individual'), findsWidgets);
       expect(objectBox.denpaMenBox.count(), 1);
 

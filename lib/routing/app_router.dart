@@ -2,19 +2,23 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../pages/account_settings.dart';
 import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
+import '../pages/data_management.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
 import '../pages/denpa_men_selection.dart';
 import '../pages/denpa_men_selection_results.dart';
 import '../pages/home.dart';
+import '../pages/language_settings.dart';
 import '../pages/monster_exp.dart';
 import '../pages/monster_selection.dart';
 import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
 import '../pages/search_results.dart';
 import '../pages/settings.dart';
+import '../pages/theme_settings.dart';
 import '../widgets/scaffold/app_shell.dart';
 
 part 'app_router.g.dart';
@@ -220,4 +224,44 @@ class BirthGuideRoute extends GoRouteData with $BirthGuideRoute {
     masterData: $extra!.masterData,
     target: $extra!.target,
   );
+}
+
+/// Pushed from the settings list's "account" tile.
+@TypedGoRoute<AccountSettingsRoute>(path: '/settings/account')
+class AccountSettingsRoute extends GoRouteData with $AccountSettingsRoute {
+  const AccountSettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AccountSettingsPage();
+}
+
+/// Pushed from the settings list's "theme" tile.
+@TypedGoRoute<ThemeSettingsRoute>(path: '/settings/theme')
+class ThemeSettingsRoute extends GoRouteData with $ThemeSettingsRoute {
+  const ThemeSettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ThemeSettingsPage();
+}
+
+/// Pushed from the settings list's "language" tile.
+@TypedGoRoute<LanguageSettingsRoute>(path: '/settings/language')
+class LanguageSettingsRoute extends GoRouteData with $LanguageSettingsRoute {
+  const LanguageSettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const LanguageSettingsPage();
+}
+
+/// Pushed from the settings list's "data management" tile.
+@TypedGoRoute<DataManagementRoute>(path: '/settings/data')
+class DataManagementRoute extends GoRouteData with $DataManagementRoute {
+  const DataManagementRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const DataManagementPage();
 }

@@ -1,5 +1,8 @@
 library;
 
+export 'src/account/account.dart';
+export 'src/account/account_record.dart';
+export 'src/account/account_repository.dart';
 export 'src/backup/dm_duplicate_detection.dart';
 export 'src/backup/dm_export_context.dart';
 export 'src/backup/dm_export_validation.dart';
@@ -50,3 +53,6 @@ export 'src/qr_code/qr_code_image_decoder.dart';
 export 'src/qr_code/qr_code_record.dart';
 export 'src/qr_code/qr_code_repository.dart';
 export 'src/search/denpa_men_search_query.dart';
+export 'src/settings/app_settings.dart';
+export 'src/settings/app_settings_repository.dart';
+export 'src/settings/app_theme_mode.dart';

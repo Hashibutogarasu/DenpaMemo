@@ -250,9 +250,52 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:2266005383558530467",
+      "lastPropertyId": "3:4252119000389484836",
+      "name": "AccountEntity",
+      "properties": [
+        {
+          "id": "1:4844081604036356953",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6200677842527024505",
+          "name": "cuid",
+          "type": 9
+        },
+        {
+          "id": "3:4252119000389484836",
+          "name": "createdAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:6878201578847630111",
+      "lastPropertyId": "2:9203438851673389464",
+      "name": "AppSettingsEntity",
+      "properties": [
+        {
+          "id": "1:2010282659651696172",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:9203438851673389464",
+          "name": "themeMode",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:7586720445347852204",
+  "lastEntityId": "4:6878201578847630111",
   "lastIndexId": "2:2492110792462433612",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

@@ -14,8 +14,10 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import 'data/account/account_entity.dart';
 import 'data/denpa_men/denpa_men_entity.dart';
 import 'data/qr_code/qr_code_entity.dart';
+import 'data/settings/app_settings_entity.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -314,6 +316,56 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(3, 2266005383558530467),
+    name: 'AccountEntity',
+    lastPropertyId: const obx_int.IdUid(3, 4252119000389484836),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 4844081604036356953),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 6200677842527024505),
+        name: 'cuid',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 4252119000389484836),
+        name: 'createdAt',
+        type: 10,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(4, 6878201578847630111),
+    name: 'AppSettingsEntity',
+    lastPropertyId: const obx_int.IdUid(2, 9203438851673389464),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 2010282659651696172),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 9203438851673389464),
+        name: 'themeMode',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -359,7 +411,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(2, 7586720445347852204),
+    lastEntityId: const obx_int.IdUid(4, 6878201578847630111),
     lastIndexId: const obx_int.IdUid(2, 2492110792462433612),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
@@ -740,6 +792,83 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    AccountEntity: obx_int.EntityDefinition<AccountEntity>(
+      model: _entities[2],
+      toOneRelations: (AccountEntity object) => [],
+      toManyRelations: (AccountEntity object) => {},
+      getId: (AccountEntity object) => object.id,
+      setId: (AccountEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (AccountEntity object, fb.Builder fbb) {
+        final cuidOffset = fbb.writeString(object.cuid);
+        fbb.startTable(4);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, cuidOffset);
+        fbb.addInt64(2, object.createdAt.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final cuidParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
+        );
+        final object = AccountEntity(
+          id: idParam,
+          cuid: cuidParam,
+          createdAt: createdAtParam,
+        );
+
+        return object;
+      },
+    ),
+    AppSettingsEntity: obx_int.EntityDefinition<AppSettingsEntity>(
+      model: _entities[3],
+      toOneRelations: (AppSettingsEntity object) => [],
+      toManyRelations: (AppSettingsEntity object) => {},
+      getId: (AppSettingsEntity object) => object.id,
+      setId: (AppSettingsEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (AppSettingsEntity object, fb.Builder fbb) {
+        final themeModeOffset = fbb.writeString(object.themeMode);
+        fbb.startTable(3);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, themeModeOffset);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final themeModeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final object = AppSettingsEntity(
+          id: idParam,
+          themeMode: themeModeParam,
+        );
+
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -971,5 +1100,36 @@ class QrCodeEntity_ {
   /// See [QrCodeEntity.name].
   static final name = obx.QueryStringProperty<QrCodeEntity>(
     _entities[1].properties[5],
+  );
+}
+
+/// [AccountEntity] entity fields to define ObjectBox queries.
+class AccountEntity_ {
+  /// See [AccountEntity.id].
+  static final id = obx.QueryIntegerProperty<AccountEntity>(
+    _entities[2].properties[0],
+  );
+
+  /// See [AccountEntity.cuid].
+  static final cuid = obx.QueryStringProperty<AccountEntity>(
+    _entities[2].properties[1],
+  );
+
+  /// See [AccountEntity.createdAt].
+  static final createdAt = obx.QueryDateProperty<AccountEntity>(
+    _entities[2].properties[2],
+  );
+}
+
+/// [AppSettingsEntity] entity fields to define ObjectBox queries.
+class AppSettingsEntity_ {
+  /// See [AppSettingsEntity.id].
+  static final id = obx.QueryIntegerProperty<AppSettingsEntity>(
+    _entities[3].properties[0],
+  );
+
+  /// See [AppSettingsEntity.themeMode].
+  static final themeMode = obx.QueryStringProperty<AppSettingsEntity>(
+    _entities[3].properties[1],
   );
 }
