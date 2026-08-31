@@ -50,6 +50,9 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	Map<String, String> get monster => {
 		'swordmouse': 'ねずみけんし',
 	};
+	Map<String, String> get languages => {
+		'ja': '日本語',
+	};
 	late final Translations$masterData$ja masterData = Translations$masterData$ja.internal(_root);
 	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
 	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
@@ -380,9 +383,6 @@ class Translations$settings$ja {
 
 	/// ja: 'ダーク'
 	String get themeDark => 'ダーク';
-
-	/// ja: '日本語'
-	String get languageJapanese => '日本語';
 
 	/// ja: 'アプリケーションフォルダのクリーンアップ'
 	String get dataManagementCleanupFolder => 'アプリケーションフォルダのクリーンアップ';
@@ -840,7 +840,6 @@ extension on Translations {
 			'settings.themeSystem' => 'システム設定に合わせる',
 			'settings.themeLight' => 'ライト',
 			'settings.themeDark' => 'ダーク',
-			'settings.languageJapanese' => '日本語',
 			'settings.dataManagementCleanupFolder' => 'アプリケーションフォルダのクリーンアップ',
 			'settings.dataManagementCleanupConfirmTitle' => 'クリーンアップの確認',
 			'settings.dataManagementCleanupConfirmMessage' => '参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?',
@@ -884,6 +883,7 @@ extension on Translations {
 			'search.tabList' => 'リスト',
 			'search.tabSearch' => '検索',
 			'monster.swordmouse' => 'ねずみけんし',
+			'languages.ja' => '日本語',
 			'masterData.loading' => 'マスターデータを読み込み中',
 			'masterData.connectionErrorTitle' => 'サーバーに接続できません',
 			'masterData.connectionErrorDescription' => 'サーバーに接続できませんでした。サーバーが起動しているか、接続先を確認してください。',

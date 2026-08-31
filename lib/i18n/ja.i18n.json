@@ -50,7 +50,6 @@
     "themeSystem": "システム設定に合わせる",
     "themeLight": "ライト",
     "themeDark": "ダーク",
-    "languageJapanese": "日本語",
     "dataManagementCleanupFolder": "アプリケーションフォルダのクリーンアップ",
     "dataManagementCleanupConfirmTitle": "クリーンアップの確認",
     "dataManagementCleanupConfirmMessage": "参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?",
@@ -100,6 +99,9 @@
   },
   "monster": {
     "swordmouse": "ねずみけんし"
+  },
+  "languages": {
+    "ja": "日本語"
   },
   "masterData": {
     "loading": "マスターデータを読み込み中",
