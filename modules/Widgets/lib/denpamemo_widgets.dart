@@ -8,6 +8,7 @@ export 'src/birth_guide/birth_guide_progress_bar.dart';
 export 'src/birth_guide/birth_guide_qr_slide.dart';
 export 'src/color/body_color_palette.dart';
 export 'src/color/color_dot.dart';
+export 'src/container/app_info_container.dart';
 export 'src/container/denpa_men_box.dart';
 export 'src/container/indented_header.dart';
 export 'src/container/nested.dart';

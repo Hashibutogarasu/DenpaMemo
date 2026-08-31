@@ -25,6 +25,8 @@ import 'package:widgetbook_app/use_cases/color/body_color_palette.widgetbook.dar
     as _widgetbook_app_use_cases_color_body_color_palette_widgetbook;
 import 'package:widgetbook_app/use_cases/color/color_dot.widgetbook.dart'
     as _widgetbook_app_use_cases_color_color_dot_widgetbook;
+import 'package:widgetbook_app/use_cases/container/app_info_container.widgetbook.dart'
+    as _widgetbook_app_use_cases_container_app_info_container_widgetbook;
 import 'package:widgetbook_app/use_cases/container/denpa_men_box.widgetbook.dart'
     as _widgetbook_app_use_cases_container_denpa_men_box_widgetbook;
 import 'package:widgetbook_app/use_cases/container/indented_header.widgetbook.dart'
@@ -300,6 +302,17 @@ final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
     name: 'container',
     children: [
+      _widgetbook.WidgetbookComponent(
+        name: 'AppInfoContainer',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder:
+                _widgetbook_app_use_cases_container_app_info_container_widgetbook
+                    .appInfoContainerUseCase,
+          ),
+        ],
+      ),
       _widgetbook.WidgetbookComponent(
         name: 'DenpaMenBox',
         useCases: [

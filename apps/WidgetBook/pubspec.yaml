@@ -18,8 +18,11 @@ dependencies:
     path: ../../modules/Widgets
   step_dialog:
     path: ../../modules/StepDialog
+  app_metadata:
+    path: ../../modules/AppMetaData
   widgetbook: ^3.25.0
   widgetbook_annotation: ^3.11.0
+  freezed_annotation: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -28,8 +31,13 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   widgetbook_generator: ^3.24.0
   build_runner: ^2.15.1
+  freezed: ^3.2.5
 
 flutter:
   uses-material-design: true
   assets:
     - assets/routes/
+
+app_metadata:
+  author: 'Hashibutogarasu'
+  license: 'MIT'

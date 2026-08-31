@@ -14,6 +14,7 @@ workspace:
   - modules/Widgets
   - modules/DMFile
   - modules/AppDatas
+  - modules/AppMetaData
   - apps/WidgetBook
 
 dependencies:
@@ -57,6 +58,9 @@ dependencies:
     path: modules/DMFile
   app_datas:
     path: modules/AppDatas
+  app_metadata:
+    path: modules/AppMetaData
+  app_launcher_icon_widget: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -93,4 +97,10 @@ melos:
         concurrency: 1
       packageFilters:
         flutter: true
-      description: Run the test suite for every Flutter workspace package (data_pack is pure Dart and is tested separately with "dart test").
+        dirExists:
+          - test
+      description: Run the test suite for every Flutter workspace package that has a test/ directory (data_pack is pure Dart and is tested separately with "dart test").
+
+app_metadata:
+  author: 'Hashibutogarasu'
+  license: 'MIT'
