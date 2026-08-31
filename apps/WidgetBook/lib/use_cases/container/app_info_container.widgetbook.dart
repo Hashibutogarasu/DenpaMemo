@@ -6,11 +6,11 @@ import '../../app_metadata.dart';
 
 @widgetbook.UseCase(name: 'Default', type: AppInfoContainer, path: 'container')
 Widget appInfoContainerUseCase(BuildContext context) {
-  return const AppInfoContainer(
-    icon: Icon(Icons.apps, size: 64),
+  return AppInfoContainer(
+    icon: const Icon(Icons.apps, size: 64),
     appName: 'App Name',
-    license: appMetadataLicense,
+    license: appMetadataConfig.license,
     packageId: 'com.example.app',
-    author: appMetadataAuthor,
+    author: appMetadataConfig.author,
   );
 }

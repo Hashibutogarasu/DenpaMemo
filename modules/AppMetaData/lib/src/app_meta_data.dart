@@ -1,9 +1,8 @@
-/// Marks a class as the trigger to generate `appMetadataAuthor`/
-/// `appMetadataLicense` constants into a `<file>.g.dart` part next to the
-/// annotated file. The annotation itself carries no data — it only decides
-/// *where* the constants get generated; the values are read from the
-/// annotated file's own package's `pubspec.yaml` `app_metadata` section
-/// (see `AppMetadataGenerator`).
+/// Marks a `@freezed` class (with `author`/`license` fields) whose values
+/// should be populated with a generated `const` instance in a
+/// `<file>.g.dart` part next to the annotated file, sourced from that
+/// file's own package's `pubspec.yaml` `app_metadata` section (see
+/// `AppMetadataGenerator`).
 class AppMetaData {
   const AppMetaData();
 }

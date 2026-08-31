@@ -80,9 +80,9 @@ class Settings extends ConsumerWidget {
             data: (info) => AppInfoContainer(
               icon: const AppIcon(),
               appName: info.appName,
-              license: appMetadataLicense,
+              license: appMetadataConfig.license,
               packageId: info.packageName,
-              author: appMetadataAuthor,
+              author: appMetadataConfig.author,
             ),
             loading: () => const SizedBox.shrink(),
             error: (error, stackTrace) => const SizedBox.shrink(),

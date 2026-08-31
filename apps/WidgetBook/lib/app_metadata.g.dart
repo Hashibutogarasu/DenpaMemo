@@ -6,5 +6,7 @@ part of 'app_metadata.dart';
 // AppMetadataGenerator
 // **************************************************************************
 
-const String appMetadataAuthor = 'Hashibutogarasu';
-const String appMetadataLicense = 'MIT';
+const appMetadataConfig = AppMetadataConfig(
+  author: 'Hashibutogarasu',
+  license: 'MIT',
+);
