@@ -13,6 +13,7 @@ workspace:
   - modules/Graph
   - modules/Widgets
   - modules/DMFile
+  - modules/AppDatas
   - apps/WidgetBook
 
 dependencies:
@@ -54,6 +55,8 @@ dependencies:
     path: modules/Graph
   dm_file:
     path: modules/DMFile
+  app_datas:
+    path: modules/AppDatas
 dev_dependencies:
   flutter_test:
     sdk: flutter

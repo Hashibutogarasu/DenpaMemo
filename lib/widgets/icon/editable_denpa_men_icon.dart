@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:app_datas/app_datas.dart';
 import 'package:croppy/croppy.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../../providers/denpa_men_icon_providers.dart';
 import 'denpa_men_icon.dart';
@@ -26,9 +27,15 @@ class EditableDenpaMenIcon extends ConsumerWidget {
 
   Future<File> _writeUiImageToTempFile(ui.Image image) async {
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-    final tempDirectory = await getTemporaryDirectory();
+    final packageInfo = await PackageInfo.fromPlatform();
+    final tempDirectory = await AppPaths.tempAppDirectory(
+      packageInfo.packageName,
+    );
     final file = File(
-      path.join(tempDirectory.path, 'denpa_men_icon_${DateTime.now().microsecondsSinceEpoch}.png'),
+      path.join(
+        tempDirectory.path,
+        '${DateTime.now().microsecondsSinceEpoch}.png',
+      ),
     );
     await file.writeAsBytes(bytes!.buffer.asUint8List());
     return file;
@@ -54,10 +61,16 @@ class EditableDenpaMenIcon extends ConsumerWidget {
     }
 
     final croppedFile = await _writeUiImageToTempFile(cropResult.uiImage);
-    await ref
-        .read(denpaMenIconStorageProvider)
-        .saveIcon(denpaMenId, croppedFile);
-    ref.invalidate(denpaMenIconProvider(denpaMenId));
+    try {
+      await ref
+          .read(denpaMenIconStorageProvider)
+          .saveIcon(denpaMenId, croppedFile);
+      ref.invalidate(denpaMenIconProvider(denpaMenId));
+    } finally {
+      if (await croppedFile.exists()) {
+        await croppedFile.delete();
+      }
+    }
   }
 
   @override
