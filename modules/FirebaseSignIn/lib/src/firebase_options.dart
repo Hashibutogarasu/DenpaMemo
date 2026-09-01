@@ -6,7 +6,9 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, Tar
 /// registered in the Firebase console — every other platform needs its own
 /// registered app and generated config, since a platform's `appId` (and
 /// often `apiKey`) differs per platform; reusing another platform's values
-/// there would silently fail at runtime.
+/// there would silently fail at runtime. [androidGoogleSignInServerClientId]
+/// is the Web OAuth client ID `google_sign_in` needs as `serverClientId`
+/// on Android (`google-services.json`'s `client_type: 3` entry).
 class DefaultFirebaseOptions {
   const DefaultFirebaseOptions._();
 
@@ -56,4 +58,7 @@ class DefaultFirebaseOptions {
     projectId: 'denpa-memo-29dda',
     storageBucket: 'denpa-memo-29dda.firebasestorage.app',
   );
+
+  static const androidGoogleSignInServerClientId =
+      '18613508464-m03ka3ndd8pi7j9kjibkpgqr22r91qkk.apps.googleusercontent.com';
 }

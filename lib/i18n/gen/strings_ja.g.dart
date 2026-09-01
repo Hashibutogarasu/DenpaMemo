@@ -266,6 +266,9 @@ class Translations$common$ja {
 
 	/// ja: '再試行'
 	String get retry => '再試行';
+
+	/// ja: 'エラー'
+	String get errorTitle => 'エラー';
 }
 
 // Path: step
@@ -855,6 +858,9 @@ class Translations$settings$accountSettings$ja {
 	/// ja: 'ローカルアカウント'
 	String get sectionLocal => 'ローカルアカウント';
 
+	/// ja: 'デンジャーゾーン'
+	String get sectionDangerZone => 'デンジャーゾーン';
+
 	/// ja: 'サインイン'
 	String get signIn => 'サインイン';
 
@@ -864,8 +870,20 @@ class Translations$settings$accountSettings$ja {
 	/// ja: 'サインアウト'
 	String get signOut => 'サインアウト';
 
+	/// ja: 'サインアウトの確認'
+	String get signOutConfirmTitle => 'サインアウトの確認';
+
+	/// ja: 'サインアウトしますか?'
+	String get signOutConfirmMessage => 'サインアウトしますか?';
+
 	/// ja: 'クラウドアカウントを削除'
 	String get deleteCloudAccount => 'クラウドアカウントを削除';
+
+	/// ja: 'クラウドアカウントを削除'
+	String get deleteCloudAccountConfirmTitle => 'クラウドアカウントを削除';
+
+	/// ja: 'クラウドアカウントを削除します。この操作は取り消せません。よろしいですか? クラウドに保存したバックアップファイルも削除されます。'
+	String get deleteCloudAccountConfirmMessage => 'クラウドアカウントを削除します。この操作は取り消せません。よろしいですか?\nクラウドに保存したバックアップファイルも削除されます。';
 
 	/// ja: 'ローカルアカウントを追加する'
 	String get addLocalAccount => 'ローカルアカウントを追加する';
@@ -915,6 +933,7 @@ extension on Translations {
 			'common.complete' => '完了',
 			'common.unset' => '未設定',
 			'common.retry' => '再試行',
+			'common.errorTitle' => 'エラー',
 			'step.failureTitle' => '処理に失敗しました',
 			'step.failureDescription' => ({required Object error}) => '処理中にエラーが発生しました: ${error}',
 			'page.home' => 'ホーム',
@@ -941,10 +960,15 @@ extension on Translations {
 			'settings.account' => 'アカウント',
 			'settings.accountSettings.sectionCloud' => 'クラウドアカウント',
 			'settings.accountSettings.sectionLocal' => 'ローカルアカウント',
+			'settings.accountSettings.sectionDangerZone' => 'デンジャーゾーン',
 			'settings.accountSettings.signIn' => 'サインイン',
 			'settings.accountSettings.cloudUidLabel' => 'UID',
 			'settings.accountSettings.signOut' => 'サインアウト',
+			'settings.accountSettings.signOutConfirmTitle' => 'サインアウトの確認',
+			'settings.accountSettings.signOutConfirmMessage' => 'サインアウトしますか?',
 			'settings.accountSettings.deleteCloudAccount' => 'クラウドアカウントを削除',
+			'settings.accountSettings.deleteCloudAccountConfirmTitle' => 'クラウドアカウントを削除',
+			'settings.accountSettings.deleteCloudAccountConfirmMessage' => 'クラウドアカウントを削除します。この操作は取り消せません。よろしいですか?\nクラウドに保存したバックアップファイルも削除されます。',
 			'settings.accountSettings.addLocalAccount' => 'ローカルアカウントを追加する',
 			'settings.accountSettings.deleteLocalAccount' => 'ローカルアカウントを削除',
 			'settings.accountSettings.manualAuthUrlMessage' => 'ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。',

@@ -13,7 +13,8 @@
     "next": "次へ",
     "complete": "完了",
     "unset": "未設定",
-    "retry": "再試行"
+    "retry": "再試行",
+    "errorTitle": "エラー"
   },
   "step": {
     "failureTitle": "処理に失敗しました",
@@ -49,10 +50,15 @@
     "accountSettings": {
       "sectionCloud": "クラウドアカウント",
       "sectionLocal": "ローカルアカウント",
+      "sectionDangerZone": "デンジャーゾーン",
       "signIn": "サインイン",
       "cloudUidLabel": "UID",
       "signOut": "サインアウト",
+      "signOutConfirmTitle": "サインアウトの確認",
+      "signOutConfirmMessage": "サインアウトしますか?",
       "deleteCloudAccount": "クラウドアカウントを削除",
+      "deleteCloudAccountConfirmTitle": "クラウドアカウントを削除",
+      "deleteCloudAccountConfirmMessage": "クラウドアカウントを削除します。この操作は取り消せません。よろしいですか?\nクラウドに保存したバックアップファイルも削除されます。",
       "addLocalAccount": "ローカルアカウントを追加する",
       "deleteLocalAccount": "ローカルアカウントを削除",
       "manualAuthUrlMessage": "ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。",

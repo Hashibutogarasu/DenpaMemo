@@ -122,6 +122,14 @@ melos:
         dirExists:
           - test
       description: Run the test suite for every Flutter workspace package that has a test/ directory (data_pack is pure Dart and is tested separately with "dart test").
+    slang:
+      exec:
+        command: dart run slang
+        concurrency: 1
+      packageFilters:
+        fileExists:
+          - slang.yaml
+      description: Regenerate slang translations for every workspace package that has its own slang.yaml (currently modules/StepDialog and modules/Widgets). The root app's own slang.yaml is outside the workspace member list, so regenerate it separately with "dart run slang" at the repo root.
 
 app_metadata:
   author: 'Hashibutogarasu'

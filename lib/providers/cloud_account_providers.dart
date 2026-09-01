@@ -5,7 +5,7 @@ import '../config/auth_config.dart';
 import '../data/cloud/auth_api_client.dart';
 
 final authApiClientProvider = Provider<AuthApiClient>(
-  (ref) => AuthApiClient(Uri.parse(authBaseUrl)),
+  (ref) => AuthApiClient(Uri.parse(authApiConfig.baseUrl)),
 );
 
 /// Thin adapter over [firebaseSignInProvider] that keeps this app's

@@ -48,19 +48,32 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
 
   Future<void> signInWithEmail(String email, String password) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => _backend!.signInWithEmail(email, password));
+    try {
+      state = AsyncData(await _backend!.signInWithEmail(email, password));
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      rethrow;
+    }
   }
 
   Future<void> signUpWithEmail(String email, String password) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => _backend!.signUpWithEmail(email, password));
+    try {
+      state = AsyncData(await _backend!.signUpWithEmail(email, password));
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      rethrow;
+    }
   }
 
   Future<void> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(
-      () => _backend!.signInWithGoogle(onManualAuthUrl: onManualAuthUrl),
-    );
+    try {
+      state = AsyncData(await _backend!.signInWithGoogle(onManualAuthUrl: onManualAuthUrl));
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      rethrow;
+    }
   }
 
   Future<void> signOut() async {

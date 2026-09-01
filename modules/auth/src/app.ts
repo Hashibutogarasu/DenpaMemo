@@ -14,7 +14,7 @@ import type { Env } from './env';
  * handler (see index.ts) instead of being constructed at module scope.
  */
 export function buildApp(env: Env) {
-  return new Elysia()
+  return new Elysia({ aot: false })
     .onError(({ error, set }) => {
       if (error instanceof HttpError) {
         set.status = error.status;
