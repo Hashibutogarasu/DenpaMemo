@@ -63,13 +63,23 @@ class GoogleLoopbackAuthorizer {
     }
   }
 
+  /// Ignores any request carrying none of `error`/`code`/`state` (e.g. a
+  /// stray `favicon.ico` fetch the browser makes against the loopback
+  /// origin) and keeps waiting for the actual OAuth redirect.
   Future<String> _awaitLoopbackRedirect(HttpServer server, String expectedState) async {
     await for (final request in server) {
       final params = request.uri.queryParameters;
-      request.response.headers.contentType = ContentType.html;
       final error = params['error'];
       final code = params['code'];
       final state = params['state'];
+
+      if (error == null && code == null && state == null) {
+        request.response.statusCode = HttpStatus.notFound;
+        await request.response.close();
+        continue;
+      }
+
+      request.response.headers.contentType = ContentType.html;
       if (error != null) {
         request.response.write('<html><body>Sign-in was cancelled. You may close this tab.</body></html>');
         await request.response.close();
