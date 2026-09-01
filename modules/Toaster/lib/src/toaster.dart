@@ -13,7 +13,11 @@ class Toaster {
 
   static Future<void> show(BuildContext context, String message) async {
     if (!kIsWeb && Platform.isLinux) {
-      FlutterToast().show(context, message);
+      FlutterToast().show(
+        context,
+        message,
+        position: ToastPosition.bottomRight,
+      );
       return;
     }
     await Fluttertoast.showToast(msg: message);
