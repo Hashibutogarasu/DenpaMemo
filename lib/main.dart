@@ -1,5 +1,6 @@
 import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
+import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -67,6 +68,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
     final themeMode = ref.watch(appSettingsProvider).themeMode;
     return MaterialApp.router(
       title: t.app.name,
+      scrollBehavior: const _DragAnywhereScrollBehavior(),
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
@@ -80,4 +82,19 @@ class _ThemedMaterialApp extends ConsumerWidget {
       routerConfig: appRouter,
     );
   }
+}
+
+/// [MaterialScrollBehavior] additionally treats the mouse as a drag
+/// device. Without this, pointer-drag gestures — including the overscroll
+/// `RefreshIndicator` needs for pull-to-refresh — never fire from a mouse
+/// on desktop/web, since Flutter's default excludes it (to leave mouse
+/// drags free for text selection).
+class _DragAnywhereScrollBehavior extends MaterialScrollBehavior {
+  const _DragAnywhereScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    ...super.dragDevices,
+    PointerDeviceKind.mouse,
+  };
 }
