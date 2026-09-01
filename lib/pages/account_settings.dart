@@ -2,6 +2,7 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTrans
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
 import '../i18n/gen/strings.g.dart';
 import '../providers/account_providers.dart';
@@ -85,7 +86,17 @@ Future<void> _signOut(BuildContext context, WidgetRef ref) async {
   if (!confirmed) {
     return;
   }
-  await ref.read(cloudAccountProvider.notifier).signOut();
+  try {
+    await ref.read(cloudAccountProvider.notifier).signOut();
+  } catch (error, stackTrace) {
+    if (!context.mounted) return;
+    await ErrorDialog.show(
+      context,
+      title: t.common.errorTitle,
+      description: '$error',
+      stackTrace: stackTrace,
+    );
+  }
 }
 
 Future<void> _deleteCloudAccount(BuildContext context, WidgetRef ref) async {
@@ -98,7 +109,17 @@ Future<void> _deleteCloudAccount(BuildContext context, WidgetRef ref) async {
   if (!confirmed) {
     return;
   }
-  await ref.read(cloudAccountProvider.notifier).deleteCloudAccount();
+  try {
+    await ref.read(cloudAccountProvider.notifier).deleteCloudAccount();
+  } catch (error, stackTrace) {
+    if (!context.mounted) return;
+    await ErrorDialog.show(
+      context,
+      title: t.common.errorTitle,
+      description: '$error',
+      stackTrace: stackTrace,
+    );
+  }
 }
 
 /// Shown instead of launching a browser when the REST sign-in backend's

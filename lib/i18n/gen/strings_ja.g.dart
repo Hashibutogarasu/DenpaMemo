@@ -266,6 +266,9 @@ class Translations$common$ja {
 
 	/// ja: '再試行'
 	String get retry => '再試行';
+
+	/// ja: 'エラー'
+	String get errorTitle => 'エラー';
 }
 
 // Path: step
@@ -930,6 +933,7 @@ extension on Translations {
 			'common.complete' => '完了',
 			'common.unset' => '未設定',
 			'common.retry' => '再試行',
+			'common.errorTitle' => 'エラー',
 			'step.failureTitle' => '処理に失敗しました',
 			'step.failureDescription' => ({required Object error}) => '処理中にエラーが発生しました: ${error}',
 			'page.home' => 'ホーム',

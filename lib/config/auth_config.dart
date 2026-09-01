@@ -12,13 +12,16 @@ class AuthApiConfig {
   const AuthApiConfig();
 
   static const _productionEndpoint = 'https://api.denpa_memo.karasu256.com';
+  static const _androidDebugEndpoint = 'https://denpa_memo_auth_dev.karasu256.com';
 
   String get baseUrl {
     if (!kDebugMode) {
       return _productionEndpoint;
     }
-    final host = Platform.isAndroid ? '10.0.2.2' : 'localhost';
-    return 'http://$host:8787';
+    if (Platform.isAndroid) {
+      return _androidDebugEndpoint;
+    }
+    return 'http://localhost:8787';
   }
 }
 
