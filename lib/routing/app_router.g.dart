@@ -20,6 +20,7 @@ List<RouteBase> get $appRoutes => [
   $accountSettingsRoute,
   $themeSettingsRoute,
   $languageSettingsRoute,
+  $openSourceLicensesRoute,
   $dataManagementRoute,
 ];
 
@@ -474,6 +475,33 @@ mixin $LanguageSettingsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings/language');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $openSourceLicensesRoute => GoRouteData.$route(
+  path: '/settings/licenses',
+  hasOverriddenOnExit: false,
+  factory: $OpenSourceLicensesRoute._fromState,
+);
+
+mixin $OpenSourceLicensesRoute on GoRouteData {
+  static OpenSourceLicensesRoute _fromState(GoRouterState state) =>
+      const OpenSourceLicensesRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/licenses');
 
   @override
   void go(BuildContext context) => context.go(location);

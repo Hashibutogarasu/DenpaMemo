@@ -2,7 +2,6 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../app_metadata.dart';
 import '../i18n/gen/strings.g.dart';
@@ -14,18 +13,6 @@ import '../widgets/settings/settings_tile.dart';
 
 class Settings extends ConsumerWidget {
   const Settings({super.key});
-
-  Future<void> _showOpenSourceLicenses(BuildContext context) async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    if (!context.mounted) {
-      return;
-    }
-    showLicensePage(
-      context: context,
-      applicationName: packageInfo.appName,
-      applicationVersion: packageInfo.version,
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,7 +55,7 @@ class Settings extends ConsumerWidget {
                 SettingsTile(
                   icon: Icons.description_outlined,
                   label: t.settings.openSourceLicenses,
-                  onTap: () => _showOpenSourceLicenses(context),
+                  onTap: () => const OpenSourceLicensesRoute().push(context),
                 ),
                 SettingsTile(
                   icon: Icons.storage_outlined,

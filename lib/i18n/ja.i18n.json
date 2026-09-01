@@ -34,7 +34,8 @@
     "accountSettings": "アカウント",
     "themeSettings": "テーマ",
     "languageSettings": "言語",
-    "dataManagement": "データ管理"
+    "dataManagement": "データ管理",
+    "openSourceLicenses": "オープンソースライセンス"
   },
   "settings": {
     "account": "アカウント",

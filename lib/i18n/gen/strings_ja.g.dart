@@ -335,6 +335,9 @@ class Translations$page$ja {
 
 	/// ja: 'データ管理'
 	String get dataManagement => 'データ管理';
+
+	/// ja: 'オープンソースライセンス'
+	String get openSourceLicenses => 'オープンソースライセンス';
 }
 
 // Path: settings
@@ -830,6 +833,7 @@ extension on Translations {
 			'page.themeSettings' => 'テーマ',
 			'page.languageSettings' => '言語',
 			'page.dataManagement' => 'データ管理',
+			'page.openSourceLicenses' => 'オープンソースライセンス',
 			'settings.account' => 'アカウント',
 			'settings.theme' => 'テーマ',
 			'settings.language' => '言語',
