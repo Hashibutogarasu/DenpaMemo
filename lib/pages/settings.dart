@@ -40,10 +40,6 @@ class Settings extends ConsumerWidget {
                   label: t.settings.account,
                   onTap: () => const AccountSettingsRoute().push(context),
                 ),
-                SettingsTile(
-                  icon: Icons.bar_chart_outlined,
-                  label: t.settings.statistics,
-                ),
               ],
             ),
             ListTileSection(title: t.settings.section.personal),
