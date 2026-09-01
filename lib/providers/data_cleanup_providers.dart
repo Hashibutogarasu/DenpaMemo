@@ -13,11 +13,10 @@ class DataCleanupController {
 
   final Ref _ref;
 
-  /// Deletes every file under the account's persistent app directory
-  /// (icons, and anything else stored there), and clears every ObjectBox
-  /// box that holds user data (denpa men, QR codes, settings). The account
-  /// record itself is left untouched, since account scoping — and
-  /// therefore this very directory's path — depends on it.
+  /// Deletes the account's persistent app directory outright, and clears
+  /// every ObjectBox box that holds user data. The account record itself
+  /// is left untouched, since account scoping — and therefore this very
+  /// directory's path — depends on it.
   Future<void> deleteAllAppData() async {
     final appDirectory = await _ref.read(
       accountScopedAppDirectoryProvider.future,
@@ -33,9 +32,8 @@ class DataCleanupController {
   }
 
   /// Wipes the account's temporary/cache directory and every entry in the
-  /// offline data cache. Safe to call anytime: the temp directory is
-  /// recreated empty on next access, and the offline cache treats every
-  /// key as new again afterward.
+  /// offline data cache, then bumps [cacheGenerationProvider] so anything
+  /// reading through the cache invalidates itself.
   Future<void> clearCache() async {
     final tempDirectory = await _ref.read(
       accountScopedTempDirectoryProvider.future,
@@ -44,6 +42,7 @@ class DataCleanupController {
       await tempDirectory.delete(recursive: true);
     }
     await _ref.read(dataCacheProvider).clearAll();
+    _ref.read(cacheGenerationProvider.notifier).state++;
   }
 }
 

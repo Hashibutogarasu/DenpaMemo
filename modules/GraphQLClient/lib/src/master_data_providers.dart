@@ -21,8 +21,9 @@ final masterDataRepositoryProvider = Provider<MasterDataRepository>((ref) {
 /// several times over ~30 seconds, each failure independently reaching
 /// `listenForMasterDataErrors` and stacking up a fresh `ErrorDialog` for
 /// every one of those unrequested attempts. Re-fetching should only ever
-/// happen from an explicit user action (the dialog's retry button).
+/// happen from an explicit user action or a [cacheGenerationProvider] bump.
 final masterDataProvider = FutureProvider<MasterData>((ref) {
+  ref.watch(cacheGenerationProvider);
   final repository = ref.watch(masterDataRepositoryProvider);
   return repository.load();
 }, retry: (_, _) => null);

@@ -16,6 +16,7 @@ final monsterRepositoryProvider = Provider<MonsterRepository>((ref) {
 });
 
 final monsterListProvider = FutureProvider<List<Monster>>((ref) {
+  ref.watch(cacheGenerationProvider);
   final repository = ref.watch(monsterRepositoryProvider);
   return repository.load();
 }, retry: (_, _) => null);
