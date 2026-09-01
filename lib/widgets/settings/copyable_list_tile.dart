@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../i18n/gen/strings.g.dart';
 
 /// A settings row showing [trailingText]; tapping copies it to the
-/// clipboard. With no [trailingText], the tile has nothing to copy and is
-/// disabled (no `onTap`), matching [SettingsTile]'s disabled-tile
+/// clipboard and toasts confirmation, naming [label] rather than the
+/// copied value. With no [trailingText], the tile has nothing to copy and
+/// is disabled (no `onTap`), matching [SettingsTile]'s disabled-tile
 /// convention.
 class CopyableListTile extends StatelessWidget {
   const CopyableListTile({
@@ -17,12 +21,13 @@ class CopyableListTile extends StatelessWidget {
   final String label;
   final String? trailingText;
 
-  Future<void> _copy() async {
+  Future<void> _copy(Translations t) async {
     final text = trailingText;
     if (text == null) {
       return;
     }
     await Clipboard.setData(ClipboardData(text: text));
+    await Fluttertoast.showToast(msg: t.settings.copiedToast(label: label));
   }
 
   @override
@@ -33,7 +38,7 @@ class CopyableListTile extends StatelessWidget {
       title: Text(label),
       trailing: value != null ? Text(value) : null,
       enabled: value != null,
-      onTap: value != null ? _copy : null,
+      onTap: value != null ? () => _copy(context.t) : null,
     );
   }
 }

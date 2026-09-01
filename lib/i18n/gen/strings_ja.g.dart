@@ -349,6 +349,9 @@ class Translations$settings$ja {
 	// Translations
 	late final Translations$settings$section$ja section = Translations$settings$section$ja.internal(_root);
 
+	/// ja: '${label}をコピーしました'
+	String copiedToast({required Object label}) => '${label}をコピーしました';
+
 	/// ja: 'アカウント'
 	String get account => 'アカウント';
 
@@ -878,6 +881,7 @@ extension on Translations {
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',
 			'settings.section.other' => 'その他',
+			'settings.copiedToast' => ({required Object label}) => '${label}をコピーしました',
 			'settings.account' => 'アカウント',
 			'settings.theme' => 'テーマ',
 			'settings.language' => '言語',

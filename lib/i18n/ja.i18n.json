@@ -44,6 +44,7 @@
       "data": "データ",
       "other": "その他"
     },
+    "copiedToast": "${label}をコピーしました",
     "account": "アカウント",
     "theme": "テーマ",
     "language": "言語",
