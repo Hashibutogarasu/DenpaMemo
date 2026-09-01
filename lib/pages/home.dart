@@ -36,7 +36,7 @@ class Home extends ConsumerWidget {
     final searchOverlayOpen = ref.watch(searchOverlayOpenProvider);
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
-    final isMobile = ref.watch(isMobileLayoutProvider);
+    final isMobile = ref.watch(appShellStateProvider).isMobile;
 
     listenForMasterDataErrors(ref, context);
 

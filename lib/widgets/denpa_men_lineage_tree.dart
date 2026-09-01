@@ -101,10 +101,10 @@ class DenpaMenLineageTree extends ConsumerWidget {
             cursorEnabled: cursorEnabled,
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const SizedBox.shrink(),
         error: (error, stackTrace) => Center(child: Text('$error')),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const SizedBox.shrink(),
       error: (error, stackTrace) => Center(child: Text('$error')),
     );
   }

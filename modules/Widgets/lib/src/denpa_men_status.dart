@@ -118,7 +118,7 @@ class DenpaMenStatus extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMobile = ref.watch(isMobileLayoutProvider);
+    final isMobile = ref.watch(appShellStateProvider).isMobile;
     final content = _buildContent(context, isMobile);
     if (!showContainer) {
       return content;
