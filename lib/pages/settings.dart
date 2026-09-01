@@ -9,6 +9,7 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/app_info_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/settings/app_icon.dart';
+import '../widgets/settings/copyable_list_tile.dart';
 import '../widgets/settings/list_tile_section.dart';
 import '../widgets/settings/settings_list_container.dart';
 import '../widgets/settings/settings_tile.dart';
@@ -90,16 +91,16 @@ class Settings extends ConsumerWidget {
                   label: t.settings.openSourceLicenses,
                   onTap: () => const OpenSourceLicensesRoute().push(context),
                 ),
-                SettingsTile(
+                CopyableListTile(
                   icon: Icons.numbers_outlined,
                   label: t.settings.buildNumber,
                 ),
-                SettingsTile(
+                CopyableListTile(
                   icon: Icons.info_outline,
                   label: t.settings.appVersion,
-                  trailingText: packageInfo.value?.version ?? '',
+                  trailingText: packageInfo.value?.version,
                 ),
-                SettingsTile(
+                CopyableListTile(
                   icon: Icons.rocket_launch_outlined,
                   label: t.settings.releaseChannel,
                   trailingText: _releaseChannelLabel(t),
