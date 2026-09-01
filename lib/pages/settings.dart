@@ -33,61 +33,63 @@ class Settings extends ConsumerWidget {
     final packageInfo = ref.watch(packageInfoProvider);
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.settings),
-      body: ListView(
-        children: [
-          SettingsListContainer(
-            children: [
-              SettingsTile(
-                icon: Icons.account_circle_outlined,
-                label: t.settings.account,
-                onTap: () => const AccountSettingsRoute().push(context),
-              ),
-              SettingsTile(
-                icon: Icons.palette_outlined,
-                label: t.settings.theme,
-                onTap: () => const ThemeSettingsRoute().push(context),
-              ),
-              SettingsTile(
-                icon: Icons.language_outlined,
-                label: t.settings.language,
-                onTap: () => const LanguageSettingsRoute().push(context),
-              ),
-              SettingsTile(
-                icon: Icons.notifications_outlined,
-                label: t.settings.notifications,
-              ),
-              SettingsTile(
-                icon: Icons.tune_outlined,
-                label: t.settings.advanced,
-              ),
-              SettingsTile(
-                icon: Icons.bar_chart_outlined,
-                label: t.settings.statistics,
-              ),
-              SettingsTile(
-                icon: Icons.description_outlined,
-                label: t.settings.openSourceLicenses,
-                onTap: () => _showOpenSourceLicenses(context),
-              ),
-              SettingsTile(
-                icon: Icons.storage_outlined,
-                label: t.settings.dataManagement,
-                onTap: () => const DataManagementRoute().push(context),
-              ),
-            ],
-          ),
-          packageInfo.when(
-            data: (info) => AppInfoContainer(
-              icon: const AppIcon(),
-              appName: info.appName,
-              license: appMetadataConfig.license,
-              packageId: info.packageName,
-              author: appMetadataConfig.author,
+      body: SmoothScrollContainer(
+        child: ListView(
+          children: [
+            SettingsListContainer(
+              children: [
+                SettingsTile(
+                  icon: Icons.account_circle_outlined,
+                  label: t.settings.account,
+                  onTap: () => const AccountSettingsRoute().push(context),
+                ),
+                SettingsTile(
+                  icon: Icons.palette_outlined,
+                  label: t.settings.theme,
+                  onTap: () => const ThemeSettingsRoute().push(context),
+                ),
+                SettingsTile(
+                  icon: Icons.language_outlined,
+                  label: t.settings.language,
+                  onTap: () => const LanguageSettingsRoute().push(context),
+                ),
+                SettingsTile(
+                  icon: Icons.notifications_outlined,
+                  label: t.settings.notifications,
+                ),
+                SettingsTile(
+                  icon: Icons.tune_outlined,
+                  label: t.settings.advanced,
+                ),
+                SettingsTile(
+                  icon: Icons.bar_chart_outlined,
+                  label: t.settings.statistics,
+                ),
+                SettingsTile(
+                  icon: Icons.description_outlined,
+                  label: t.settings.openSourceLicenses,
+                  onTap: () => _showOpenSourceLicenses(context),
+                ),
+                SettingsTile(
+                  icon: Icons.storage_outlined,
+                  label: t.settings.dataManagement,
+                  onTap: () => const DataManagementRoute().push(context),
+                ),
+              ],
             ),
-            loading: () => const SizedBox.shrink(),
-            error: (error, stackTrace) => const SizedBox.shrink(),
-          ),
-        ],
+            packageInfo.when(
+              data: (info) => AppInfoContainer(
+                icon: const AppIcon(),
+                appName: info.appName,
+                license: appMetadataConfig.license,
+                packageId: info.packageName,
+                author: appMetadataConfig.author,
+              ),
+              loading: () => const SizedBox.shrink(),
+              error: (error, stackTrace) => const SizedBox.shrink(),
+            ),
+          ],
+        ),
       ),
     );
   }
