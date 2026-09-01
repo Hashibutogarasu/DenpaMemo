@@ -2,18 +2,13 @@ import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:silky_scroll/silky_scroll.dart';
 
-/// Wraps `silky_scroll`'s [SilkyScroll].
-///
-/// The default constructor wires [child] up automatically: any descendant
-/// `ListView`/`GridView`/`SingleChildScrollView`/`CustomScrollView` that
-/// doesn't set its own `controller` picks up the managed
-/// [ScrollController] via [PrimaryScrollController], and the managed
-/// [ScrollPhysics] via [ScrollConfiguration].
-///
-/// [SmoothScrollContainer.builder] bypasses that, exposing [SilkyScroll]'s
-/// own `builder` signature (`context`, `controller`, `physics`,
-/// `pointerDeviceKind`) for callers that need to wire a scrollable
-/// themselves.
+/// Wraps `silky_scroll`'s [SilkyScroll] with this app's default feel.
+/// [child]'s descendant scrollables pick up the managed
+/// [ScrollController]/[ScrollPhysics] automatically (via
+/// [PrimaryScrollController]/[ScrollConfiguration]) as long as they don't
+/// set their own `controller`; [SmoothScrollContainer.builder] bypasses
+/// that and exposes [SilkyScroll]'s raw builder for callers that need to
+/// wire a scrollable themselves.
 class SmoothScrollContainer extends StatelessWidget {
   const SmoothScrollContainer({
     super.key,
