@@ -49,9 +49,12 @@
     "accountSettings": {
       "sectionCloud": "クラウドアカウント",
       "sectionLocal": "ローカルアカウント",
+      "sectionDangerZone": "デンジャーゾーン",
       "signIn": "サインイン",
       "cloudUidLabel": "UID",
       "signOut": "サインアウト",
+      "signOutConfirmTitle": "サインアウトの確認",
+      "signOutConfirmMessage": "サインアウトしますか?",
       "deleteCloudAccount": "クラウドアカウントを削除",
       "addLocalAccount": "ローカルアカウントを追加する",
       "deleteLocalAccount": "ローカルアカウントを削除",

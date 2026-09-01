@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/account_providers.dart';
 import '../providers/cloud_account_providers.dart';
+import '../widgets/dialog/confirm_dialog.dart';
 import '../widgets/settings/copyable_list_tile.dart';
 import '../widgets/settings/list_tile_section.dart';
 import '../widgets/settings/settings_list_container.dart';
@@ -74,6 +75,19 @@ Future<void> _showGoogleSignInFlow(
   );
 }
 
+Future<void> _signOut(BuildContext context, WidgetRef ref) async {
+  final t = context.t;
+  final confirmed = await ConfirmDialog.show(
+    context,
+    title: t.settings.accountSettings.signOutConfirmTitle,
+    message: t.settings.accountSettings.signOutConfirmMessage,
+  );
+  if (!confirmed) {
+    return;
+  }
+  await ref.read(cloudAccountProvider.notifier).signOut();
+}
+
 /// Shown instead of launching a browser when the REST sign-in backend's
 /// Google OAuth loopback flow has no display server to open one on (e.g.
 /// Linux without `DISPLAY`/`WAYLAND_DISPLAY`). Passing null hides it once
@@ -133,16 +147,7 @@ class AccountSettingsPage extends ConsumerWidget {
                 SettingsTile(
                   icon: Icons.logout,
                   label: t.settings.accountSettings.signOut,
-                  onTap: cloudAccount.isSignedIn
-                      ? () => ref.read(cloudAccountProvider.notifier).signOut()
-                      : null,
-                ),
-                SettingsTile(
-                  icon: Icons.delete_outline,
-                  label: t.settings.accountSettings.deleteCloudAccount,
-                  onTap: cloudAccount.isSignedIn
-                      ? () => ref.read(cloudAccountProvider.notifier).deleteCloudAccount()
-                      : null,
+                  onTap: cloudAccount.isSignedIn ? () => _signOut(context, ref) : null,
                 ),
               ],
             ),
@@ -158,9 +163,23 @@ class AccountSettingsPage extends ConsumerWidget {
                   icon: Icons.add_circle_outline,
                   label: t.settings.accountSettings.addLocalAccount,
                 ),
+              ],
+            ),
+            ListTileSection(title: t.settings.accountSettings.sectionDangerZone),
+            SettingsListContainer(
+              children: [
+                SettingsTile(
+                  icon: Icons.delete_outline,
+                  label: t.settings.accountSettings.deleteCloudAccount,
+                  color: Theme.of(context).colorScheme.error,
+                  onTap: cloudAccount.isSignedIn
+                      ? () => ref.read(cloudAccountProvider.notifier).deleteCloudAccount()
+                      : null,
+                ),
                 SettingsTile(
                   icon: Icons.delete_outline,
                   label: t.settings.accountSettings.deleteLocalAccount,
+                  color: Theme.of(context).colorScheme.error,
                 ),
               ],
             ),

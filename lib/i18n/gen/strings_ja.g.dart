@@ -855,6 +855,9 @@ class Translations$settings$accountSettings$ja {
 	/// ja: 'ローカルアカウント'
 	String get sectionLocal => 'ローカルアカウント';
 
+	/// ja: 'デンジャーゾーン'
+	String get sectionDangerZone => 'デンジャーゾーン';
+
 	/// ja: 'サインイン'
 	String get signIn => 'サインイン';
 
@@ -863,6 +866,12 @@ class Translations$settings$accountSettings$ja {
 
 	/// ja: 'サインアウト'
 	String get signOut => 'サインアウト';
+
+	/// ja: 'サインアウトの確認'
+	String get signOutConfirmTitle => 'サインアウトの確認';
+
+	/// ja: 'サインアウトしますか?'
+	String get signOutConfirmMessage => 'サインアウトしますか?';
 
 	/// ja: 'クラウドアカウントを削除'
 	String get deleteCloudAccount => 'クラウドアカウントを削除';
@@ -941,9 +950,12 @@ extension on Translations {
 			'settings.account' => 'アカウント',
 			'settings.accountSettings.sectionCloud' => 'クラウドアカウント',
 			'settings.accountSettings.sectionLocal' => 'ローカルアカウント',
+			'settings.accountSettings.sectionDangerZone' => 'デンジャーゾーン',
 			'settings.accountSettings.signIn' => 'サインイン',
 			'settings.accountSettings.cloudUidLabel' => 'UID',
 			'settings.accountSettings.signOut' => 'サインアウト',
+			'settings.accountSettings.signOutConfirmTitle' => 'サインアウトの確認',
+			'settings.accountSettings.signOutConfirmMessage' => 'サインアウトしますか?',
 			'settings.accountSettings.deleteCloudAccount' => 'クラウドアカウントを削除',
 			'settings.accountSettings.addLocalAccount' => 'ローカルアカウントを追加する',
 			'settings.accountSettings.deleteLocalAccount' => 'ローカルアカウントを削除',
