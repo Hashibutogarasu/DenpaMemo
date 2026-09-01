@@ -58,7 +58,8 @@ dist/
 .dev.vars
 
 # Firebase config (contains this project's API keys)
-/lib/firebase_options.dart
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist
+
+# Google OAuth desktop client config (contains this project's client secret)
 /assets/config/auth/google/google_client_secrets.json

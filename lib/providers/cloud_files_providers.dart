@@ -1,11 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
-import '../data/cloud/cloud_auth_exceptions.dart';
 import '../data/cloud_file/objectbox_cloud_file_repository.dart';
 import 'cloud_account_providers.dart';
 import 'objectbox_providers.dart';
@@ -24,7 +23,7 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   List<CloudFile> build() => ref.watch(cloudFileRepositoryProvider).getAll();
 
   Future<String> _requireIdToken() async {
-    final idToken = await FirebaseAuth.instance.currentUser?.getIdToken();
+    final idToken = await ref.read(firebaseSignInProvider.notifier).getIdToken();
     if (idToken == null) {
       throw const NotSignedInException();
     }

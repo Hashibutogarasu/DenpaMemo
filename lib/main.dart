@@ -1,15 +1,17 @@
+import 'dart:convert';
+
 import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/objectbox/objectbox.dart';
-import 'firebase_options.dart';
 import 'i18n/gen/strings.g.dart';
 import 'providers/app_settings_providers.dart';
 import 'providers/denpa_men_sync_providers.dart';
@@ -20,27 +22,37 @@ import 'widgets/restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await _initializeFirebase();
   final packageInfo = await PackageInfo.fromPlatform();
   final objectBox = await ObjectBox.create();
   final cacheIndexRepository = await CacheIndexRepository.open(
     packageInfo.packageName,
   );
+  final googleOAuthClientConfig = await _loadGoogleOAuthClientConfig();
+  final container = ProviderContainer(
+    overrides: [
+      objectBoxProvider.overrideWithValue(objectBox),
+      dataCacheProvider.overrideWithValue(cacheIndexRepository),
+      googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+    ],
+  );
+  await container.read(firebaseSignInProvider.future);
   runApp(
-    MyApp(objectBox: objectBox, cacheIndexRepository: cacheIndexRepository),
+    MyApp(
+      objectBox: objectBox,
+      cacheIndexRepository: cacheIndexRepository,
+      overrides: [
+        googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+      ],
+    ),
   );
 }
 
-/// Only the web app is registered in the Firebase console so far (see
-/// [DefaultFirebaseOptions]), so this must not crash startup on platforms
-/// that aren't yet configured — cloud features simply fail when used on
-/// those instead.
-Future<void> _initializeFirebase() async {
-  try {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  } on UnsupportedError {
-    return;
-  }
+/// Loads the Google OAuth "Desktop app" client config used by
+/// [RestFirebaseSignInBackend]'s Google sign-in loopback flow — bundled as
+/// an asset rather than checked into source (see `.gitignore`).
+Future<GoogleOAuthClientConfig> _loadGoogleOAuthClientConfig() async {
+  final raw = await rootBundle.loadString('assets/config/auth/google/google_client_secrets.json');
+  return GoogleOAuthClientConfig.fromInstalledAppJson(jsonDecode(raw) as Map<String, dynamic>);
 }
 
 class MyApp extends StatelessWidget {

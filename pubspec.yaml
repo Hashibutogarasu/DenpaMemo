@@ -13,6 +13,7 @@ workspace:
   - modules/GraphQLClient
   - modules/Graph
   - modules/Widgets
+  - modules/FirebaseSignIn
   - modules/DMFile
   - modules/AppDatas
   - modules/AppMetaData
@@ -54,6 +55,8 @@ dependencies:
     path: modules/GraphQLClient
   denpamemo_widgets:
     path: modules/Widgets
+  firebase_sign_in:
+    path: modules/FirebaseSignIn
   tree_graph:
     path: modules/Graph
   dm_file:
@@ -68,9 +71,6 @@ dependencies:
   toaster:
     path: modules/Toaster
   icons_launcher: ^3.1.0
-  firebase_core: ^4.14.0
-  firebase_auth: ^6.6.1
-  google_sign_in: ^7.2.0
   http: ^1.6.0
 dev_dependencies:
   flutter_test:
@@ -92,6 +92,7 @@ flutter:
   assets:
     - assets/data/icons/monster/
     - assets/routes/
+    - assets/config/auth/google/
 
 icons_launcher:
   image_path: "assets/icons/app_icon.png"
