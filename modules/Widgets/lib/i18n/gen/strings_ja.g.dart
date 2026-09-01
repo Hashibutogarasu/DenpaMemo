@@ -224,6 +224,9 @@ class Translations$common$ja {
 	/// ja: '決定'
 	String get confirm => '決定';
 
+	/// ja: 'コピー'
+	String get copy => 'コピー';
+
 	/// ja: 'エラー'
 	String get errorTitle => 'エラー';
 
@@ -493,6 +496,7 @@ extension on Translations {
 			'common.back' => '戻る',
 			'common.cancel' => 'キャンセル',
 			'common.confirm' => '決定',
+			'common.copy' => 'コピー',
 			'common.errorTitle' => 'エラー',
 			'common.unset' => '未設定',
 			'birthGuide.errorMessage' => '系譜データの読み込みに失敗しました',

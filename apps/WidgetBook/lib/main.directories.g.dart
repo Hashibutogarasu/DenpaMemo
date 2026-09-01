@@ -159,6 +159,8 @@ import 'package:widgetbook_app/use_cases/search/search_overlay_bar.widgetbook.da
     as _widgetbook_app_use_cases_search_search_overlay_bar_widgetbook;
 import 'package:widgetbook_app/use_cases/search/search_stat_grid.widgetbook.dart'
     as _widgetbook_app_use_cases_search_search_stat_grid_widgetbook;
+import 'package:widgetbook_app/use_cases/snackbar/copyable_snack_bar.widgetbook.dart'
+    as _widgetbook_app_use_cases_snackbar_copyable_snack_bar_widgetbook;
 import 'package:widgetbook_app/use_cases/unfocus_on_tap.widgetbook.dart'
     as _widgetbook_app_use_cases_unfocus_on_tap_widgetbook;
 
@@ -1199,6 +1201,22 @@ final directories = <_widgetbook.WidgetbookNode>[
             builder:
                 _widgetbook_app_use_cases_search_search_stat_grid_widgetbook
                     .searchStatGridUseCase,
+          ),
+        ],
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookFolder(
+    name: 'snackbar',
+    children: [
+      _widgetbook.WidgetbookComponent(
+        name: 'CopyableSnackBar',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder:
+                _widgetbook_app_use_cases_snackbar_copyable_snack_bar_widgetbook
+                    .copyableSnackBarUseCase,
           ),
         ],
       ),

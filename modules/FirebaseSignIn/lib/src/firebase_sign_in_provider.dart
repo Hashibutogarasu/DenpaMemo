@@ -56,9 +56,11 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
     state = await AsyncValue.guard(() => _backend!.signUpWithEmail(email, password));
   }
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => _backend!.signInWithGoogle());
+    state = await AsyncValue.guard(
+      () => _backend!.signInWithGoogle(onManualAuthUrl: onManualAuthUrl),
+    );
   }
 
   Future<void> signOut() async {
@@ -72,6 +74,24 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
   }
 
   Future<String?> getIdToken() => _backend!.getIdToken();
+
+  bool get isRestBackend => _backend is RestFirebaseSignInBackend;
+
+  /// The active [RestFirebaseSignInBackend], for callers (e.g.
+  /// [SignInFlowDialog]) that need to drive its step-based Google
+  /// sign-in flow directly. Null on platforms using the native backend.
+  RestFirebaseSignInBackend? get restBackendOrNull {
+    final backend = _backend;
+    return backend is RestFirebaseSignInBackend ? backend : null;
+  }
+
+  /// Commits [newState] directly, bypassing [AsyncValue.guard] — used once
+  /// a caller-driven flow (e.g. [SignInFlowDialog] running the Google
+  /// sign-in steps itself) has completed without throwing, so success is
+  /// never silently swallowed the way a guarded `AsyncError` would be.
+  void applySignedInState(CloudAccountState newState) {
+    state = AsyncData(newState);
+  }
 }
 
 final firebaseSignInProvider = AsyncNotifierProvider<FirebaseSignInNotifier, CloudAccountState>(

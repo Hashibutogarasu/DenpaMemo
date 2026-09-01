@@ -17,6 +17,10 @@ dependencies:
   google_sign_in: ^7.2.0
   http: ^1.6.0
   json_annotation: ^4.12.0
+  platform_utils:
+    path: ../PlatformUtils
+  step_dialog:
+    path: ../StepDialog
   url_launcher: ^6.3.2
 
 dev_dependencies:

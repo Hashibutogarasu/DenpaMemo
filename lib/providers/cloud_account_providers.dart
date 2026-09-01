@@ -18,19 +18,23 @@ final authApiClientProvider = Provider<AuthApiClient>(
 class CloudAccountNotifier extends Notifier<CloudAccountState> {
   @override
   CloudAccountState build() {
-    ref.listen(firebaseSignInProvider, (previous, next) {
-      state = next.value ?? state.copyWith(isLoading: next.isLoading);
-    });
-    final initial = ref.read(firebaseSignInProvider);
-    return initial.value ?? const CloudAccountState(isLoading: true);
+    final asyncState = ref.watch(firebaseSignInProvider);
+    return asyncState.when(
+      data: (data) => data,
+      loading: () => const CloudAccountState(isLoading: true),
+      error: (error, stackTrace) => const CloudAccountState(),
+    );
   }
 
   FirebaseSignInNotifier get _backend => ref.read(firebaseSignInProvider.notifier);
 
+  FirebaseSignInNotifier get firebaseSignIn => _backend;
+
   Future<void> signInWithEmail(String email, String password) =>
       _backend.signInWithEmail(email, password);
 
-  Future<void> signInWithGoogle() => _backend.signInWithGoogle();
+  Future<void> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) =>
+      _backend.signInWithGoogle(onManualAuthUrl: onManualAuthUrl);
 
   Future<void> signUpWithEmail(String email, String password) =>
       _backend.signUpWithEmail(email, password);

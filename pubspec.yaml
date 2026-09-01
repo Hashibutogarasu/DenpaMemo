@@ -14,6 +14,7 @@ workspace:
   - modules/Graph
   - modules/Widgets
   - modules/FirebaseSignIn
+  - modules/PlatformUtils
   - modules/DMFile
   - modules/AppDatas
   - modules/AppMetaData

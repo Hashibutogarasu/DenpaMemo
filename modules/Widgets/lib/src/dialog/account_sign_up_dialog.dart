@@ -45,9 +45,14 @@ class _AccountSignUpDialogState extends State<AccountSignUpDialog> {
       if (mounted) {
         Navigator.of(context).pop();
       }
-    } catch (error) {
+    } catch (error, stackTrace) {
       if (!mounted) return;
-      await ErrorDialog.show(context, title: t.common.errorTitle, description: '$error');
+      await ErrorDialog.show(
+        context,
+        title: t.common.errorTitle,
+        description: '$error',
+        stackTrace: stackTrace,
+      );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);

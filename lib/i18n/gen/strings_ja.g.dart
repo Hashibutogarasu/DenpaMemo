@@ -855,11 +855,14 @@ class Translations$settings$accountSettings$ja {
 	/// ja: 'ローカルアカウント'
 	String get sectionLocal => 'ローカルアカウント';
 
-	/// ja: 'ログイン'
-	String get signIn => 'ログイン';
+	/// ja: 'サインイン'
+	String get signIn => 'サインイン';
 
 	/// ja: 'UID'
 	String get cloudUidLabel => 'UID';
+
+	/// ja: 'サインアウト'
+	String get signOut => 'サインアウト';
 
 	/// ja: 'クラウドアカウントを削除'
 	String get deleteCloudAccount => 'クラウドアカウントを削除';
@@ -869,6 +872,27 @@ class Translations$settings$accountSettings$ja {
 
 	/// ja: 'ローカルアカウントを削除'
 	String get deleteLocalAccount => 'ローカルアカウントを削除';
+
+	/// ja: 'ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。'
+	String get manualAuthUrlMessage => 'ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。';
+
+	/// ja: 'Googleサインイン'
+	String get signInFlowTitle => 'Googleサインイン';
+
+	/// ja: '認証コードを受け取っています'
+	String get signInFlowStepReceiveAuthorization => '認証コードを受け取っています';
+
+	/// ja: 'トークンを交換しています'
+	String get signInFlowStepExchangeCode => 'トークンを交換しています';
+
+	/// ja: 'セッションを発行しています'
+	String get signInFlowStepIssueSession => 'セッションを発行しています';
+
+	/// ja: 'セッションをリフレッシュしています'
+	String get signInFlowStepRefreshSession => 'セッションをリフレッシュしています';
+
+	/// ja: 'アカウント情報を保存しています'
+	String get signInFlowStepExtractUid => 'アカウント情報を保存しています';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -917,11 +941,19 @@ extension on Translations {
 			'settings.account' => 'アカウント',
 			'settings.accountSettings.sectionCloud' => 'クラウドアカウント',
 			'settings.accountSettings.sectionLocal' => 'ローカルアカウント',
-			'settings.accountSettings.signIn' => 'ログイン',
+			'settings.accountSettings.signIn' => 'サインイン',
 			'settings.accountSettings.cloudUidLabel' => 'UID',
+			'settings.accountSettings.signOut' => 'サインアウト',
 			'settings.accountSettings.deleteCloudAccount' => 'クラウドアカウントを削除',
 			'settings.accountSettings.addLocalAccount' => 'ローカルアカウントを追加する',
 			'settings.accountSettings.deleteLocalAccount' => 'ローカルアカウントを削除',
+			'settings.accountSettings.manualAuthUrlMessage' => 'ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。',
+			'settings.accountSettings.signInFlowTitle' => 'Googleサインイン',
+			'settings.accountSettings.signInFlowStepReceiveAuthorization' => '認証コードを受け取っています',
+			'settings.accountSettings.signInFlowStepExchangeCode' => 'トークンを交換しています',
+			'settings.accountSettings.signInFlowStepIssueSession' => 'セッションを発行しています',
+			'settings.accountSettings.signInFlowStepRefreshSession' => 'セッションをリフレッシュしています',
+			'settings.accountSettings.signInFlowStepExtractUid' => 'アカウント情報を保存しています',
 			'settings.theme' => 'テーマ',
 			'settings.language' => '言語',
 			'settings.notifications' => '通知',

@@ -16,17 +16,25 @@ class AccountSignInDialog extends StatefulWidget {
     required this.onSignInWithEmail,
     required this.onSignInWithGoogle,
     required this.onCreateAccount,
+    this.messengerKey,
   });
 
   final Future<void> Function(String email, String password) onSignInWithEmail;
   final Future<void> Function() onSignInWithGoogle;
   final VoidCallback onCreateAccount;
 
+  /// When set, hosts a [ScaffoldMessenger] within this dialog's own overlay
+  /// entry so callers can target it (e.g. via [CopyableSnackBar]'s
+  /// `messengerKey`) to show a SnackBar above this still-open dialog,
+  /// rather than behind it.
+  final GlobalKey<ScaffoldMessengerState>? messengerKey;
+
   static Future<void> show(
     BuildContext context, {
     required Future<void> Function(String email, String password) onSignInWithEmail,
     required Future<void> Function() onSignInWithGoogle,
     required VoidCallback onCreateAccount,
+    GlobalKey<ScaffoldMessengerState>? messengerKey,
   }) {
     return showDialog<void>(
       context: context,
@@ -34,6 +42,7 @@ class AccountSignInDialog extends StatefulWidget {
         onSignInWithEmail: onSignInWithEmail,
         onSignInWithGoogle: onSignInWithGoogle,
         onCreateAccount: onCreateAccount,
+        messengerKey: messengerKey,
       ),
     );
   }
@@ -61,9 +70,14 @@ class _AccountSignInDialogState extends State<AccountSignInDialog> {
       if (mounted) {
         Navigator.of(context).pop();
       }
-    } catch (error) {
+    } catch (error, stackTrace) {
       if (!mounted) return;
-      await ErrorDialog.show(context, title: t.common.errorTitle, description: '$error');
+      await ErrorDialog.show(
+        context,
+        title: t.common.errorTitle,
+        description: '$error',
+        stackTrace: stackTrace,
+      );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -78,6 +92,18 @@ class _AccountSignInDialogState extends State<AccountSignInDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final dialog = _buildDialog(context);
+    final messengerKey = widget.messengerKey;
+    if (messengerKey == null) {
+      return dialog;
+    }
+    return ScaffoldMessenger(
+      key: messengerKey,
+      child: Scaffold(backgroundColor: Colors.transparent, body: dialog),
+    );
+  }
+
+  Widget _buildDialog(BuildContext context) {
     final dialogT = t.dialog.accountSignIn;
     return Dialog(
       child: ConstrainedBox(

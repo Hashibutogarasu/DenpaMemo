@@ -33,7 +33,7 @@ class NativeFirebaseSignInBackend implements FirebaseSignInBackend {
   }
 
   @override
-  Future<CloudAccountState> signInWithGoogle() async {
+  Future<CloudAccountState> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) async {
     await GoogleSignIn.instance.initialize();
     final account = await GoogleSignIn.instance.authenticate();
     final credential = GoogleAuthProvider.credential(idToken: account.authentication.idToken);

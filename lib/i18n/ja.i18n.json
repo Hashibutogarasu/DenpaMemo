@@ -49,11 +49,19 @@
     "accountSettings": {
       "sectionCloud": "クラウドアカウント",
       "sectionLocal": "ローカルアカウント",
-      "signIn": "ログイン",
+      "signIn": "サインイン",
       "cloudUidLabel": "UID",
+      "signOut": "サインアウト",
       "deleteCloudAccount": "クラウドアカウントを削除",
       "addLocalAccount": "ローカルアカウントを追加する",
-      "deleteLocalAccount": "ローカルアカウントを削除"
+      "deleteLocalAccount": "ローカルアカウントを削除",
+      "manualAuthUrlMessage": "ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。",
+      "signInFlowTitle": "Googleサインイン",
+      "signInFlowStepReceiveAuthorization": "認証コードを受け取っています",
+      "signInFlowStepExchangeCode": "トークンを交換しています",
+      "signInFlowStepIssueSession": "セッションを発行しています",
+      "signInFlowStepRefreshSession": "セッションをリフレッシュしています",
+      "signInFlowStepExtractUid": "アカウント情報を保存しています"
     },
     "theme": "テーマ",
     "language": "言語",

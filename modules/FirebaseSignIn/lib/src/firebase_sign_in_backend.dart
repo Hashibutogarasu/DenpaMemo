@@ -16,7 +16,7 @@ abstract interface class FirebaseSignInBackend {
 
   Future<CloudAccountState> signUpWithEmail(String email, String password);
 
-  Future<CloudAccountState> signInWithGoogle();
+  Future<CloudAccountState> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl});
 
   Future<void> signOut();
 
