@@ -48,6 +48,7 @@ Future<void> _cleanupApplicationFolder(
   final removedCount = await ref
       .read(dataCleanupControllerProvider)
       .cleanupApplicationFolder();
+  ref.invalidate(applicationFolderSizeProvider);
   if (!context.mounted) {
     return;
   }
@@ -95,6 +96,10 @@ class DataManagementPage extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.cleaning_services_outlined),
             title: Text(t.settings.dataManagementCleanupFolder),
+            trailing: switch (ref.watch(applicationFolderSizeProvider)) {
+              AsyncData(:final value) => FileSizeText(bytes: value),
+              _ => null,
+            },
             onTap: () => _cleanupApplicationFolder(context, ref),
           ),
           ListTile(
