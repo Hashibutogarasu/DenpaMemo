@@ -384,17 +384,17 @@ class Translations$settings$ja {
 	/// ja: 'ダーク'
 	String get themeDark => 'ダーク';
 
-	/// ja: 'アプリケーションフォルダのクリーンアップ'
-	String get dataManagementCleanupFolder => 'アプリケーションフォルダのクリーンアップ';
+	/// ja: 'アプリのデータを全て削除'
+	String get dataManagementDeleteAllData => 'アプリのデータを全て削除';
 
-	/// ja: 'クリーンアップの確認'
-	String get dataManagementCleanupConfirmTitle => 'クリーンアップの確認';
+	/// ja: 'アプリのデータを全て削除'
+	String get dataManagementDeleteAllDataConfirmTitle => 'アプリのデータを全て削除';
 
-	/// ja: '参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?'
-	String get dataManagementCleanupConfirmMessage => '参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?';
+	/// ja: '電波人間やQRコードなど、このアプリに保存されているすべてのデータを削除します。この操作は取り消せません。よろしいですか?'
+	String get dataManagementDeleteAllDataConfirmMessage => '電波人間やQRコードなど、このアプリに保存されているすべてのデータを削除します。この操作は取り消せません。よろしいですか?';
 
-	/// ja: '不要なファイルを${count}件削除しました'
-	String dataManagementCleanupResult({required Object count}) => '不要なファイルを${count}件削除しました';
+	/// ja: 'アプリのデータを全て削除しました'
+	String get dataManagementDeleteAllDataResult => 'アプリのデータを全て削除しました';
 
 	/// ja: 'キャッシュデータをクリア'
 	String get dataManagementClearCache => 'キャッシュデータをクリア';
@@ -407,6 +407,9 @@ class Translations$settings$ja {
 
 	/// ja: 'キャッシュデータを削除しました'
 	String get dataManagementClearCacheResult => 'キャッシュデータを削除しました';
+
+	/// ja: '削除しました'
+	String get dataManagementResultTitle => '削除しました';
 }
 
 // Path: home
@@ -840,14 +843,15 @@ extension on Translations {
 			'settings.themeSystem' => 'システム設定に合わせる',
 			'settings.themeLight' => 'ライト',
 			'settings.themeDark' => 'ダーク',
-			'settings.dataManagementCleanupFolder' => 'アプリケーションフォルダのクリーンアップ',
-			'settings.dataManagementCleanupConfirmTitle' => 'クリーンアップの確認',
-			'settings.dataManagementCleanupConfirmMessage' => '参照されなくなったアイコンファイルなどの不要なデータを削除します。よろしいですか?',
-			'settings.dataManagementCleanupResult' => ({required Object count}) => '不要なファイルを${count}件削除しました',
+			'settings.dataManagementDeleteAllData' => 'アプリのデータを全て削除',
+			'settings.dataManagementDeleteAllDataConfirmTitle' => 'アプリのデータを全て削除',
+			'settings.dataManagementDeleteAllDataConfirmMessage' => '電波人間やQRコードなど、このアプリに保存されているすべてのデータを削除します。この操作は取り消せません。よろしいですか?',
+			'settings.dataManagementDeleteAllDataResult' => 'アプリのデータを全て削除しました',
 			'settings.dataManagementClearCache' => 'キャッシュデータをクリア',
 			'settings.dataManagementClearCacheConfirmTitle' => 'キャッシュクリアの確認',
 			'settings.dataManagementClearCacheConfirmMessage' => '一時的なキャッシュデータを削除します。よろしいですか?',
 			'settings.dataManagementClearCacheResult' => 'キャッシュデータを削除しました',
+			'settings.dataManagementResultTitle' => '削除しました',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

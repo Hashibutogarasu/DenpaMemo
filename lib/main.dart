@@ -13,6 +13,7 @@ import 'providers/denpa_men_sync_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme_mode_mapping.dart';
+import 'widgets/restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
               dataCacheProvider.overrideWithValue(cacheIndexRepository),
               ...overrides,
             ],
-            child: const _ThemedMaterialApp(),
+            child: const RestartWidget(child: _ThemedMaterialApp()),
           ),
         ),
       ),
