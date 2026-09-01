@@ -1,3 +1,4 @@
+import 'package:data_cache/data_cache.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/settings/app_settings_entity.dart';
@@ -31,8 +32,10 @@ class DataCleanupController {
     objectBox.settingsBox.put(AppSettingsEntity());
   }
 
-  /// Wipes the account's temporary/cache directory. Safe to call anytime,
-  /// since it is recreated empty on next access.
+  /// Wipes the account's temporary/cache directory and every entry in the
+  /// offline data cache. Safe to call anytime: the temp directory is
+  /// recreated empty on next access, and the offline cache treats every
+  /// key as new again afterward.
   Future<void> clearCache() async {
     final tempDirectory = await _ref.read(
       accountScopedTempDirectoryProvider.future,
@@ -40,6 +43,7 @@ class DataCleanupController {
     if (await tempDirectory.exists()) {
       await tempDirectory.delete(recursive: true);
     }
+    await _ref.read(dataCacheProvider).clearAll();
   }
 }
 

@@ -45,13 +45,15 @@ class MyApp extends StatelessWidget {
     return denpamemo_widgets.TranslationProvider(
       child: step_dialog.TranslationProvider(
         child: TranslationProvider(
-          child: ProviderScope(
-            overrides: [
-              objectBoxProvider.overrideWithValue(objectBox),
-              dataCacheProvider.overrideWithValue(cacheIndexRepository),
-              ...overrides,
-            ],
-            child: const RestartWidget(child: _ThemedMaterialApp()),
+          child: RestartWidget(
+            child: ProviderScope(
+              overrides: [
+                objectBoxProvider.overrideWithValue(objectBox),
+                dataCacheProvider.overrideWithValue(cacheIndexRepository),
+                ...overrides,
+              ],
+              child: const _ThemedMaterialApp(),
+            ),
           ),
         ),
       ),

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/cache_file_providers.dart';
 import '../providers/data_cleanup_providers.dart';
+import '../routing/app_router.dart';
 import '../widgets/restart_widget.dart';
 
 Future<bool> _confirm(
@@ -55,8 +56,10 @@ Future<void> _notify(
 }
 
 /// Wipes every file under the account's app directory and every ObjectBox
-/// box that holds user data, then refetches the size providers and forces
-/// a full rebuild of the app so every screen reflects the now-empty state.
+/// box that holds user data, then navigates back to the home route and
+/// forces a full rebuild of the app — including a fresh `ProviderScope`,
+/// so every provider's cached state is dropped along with the data it
+/// described — rather than leaving stale in-memory state behind.
 Future<void> _deleteAllAppData(BuildContext context, WidgetRef ref) async {
   final t = context.t;
   final confirmed = await _confirm(
@@ -68,8 +71,6 @@ Future<void> _deleteAllAppData(BuildContext context, WidgetRef ref) async {
     return;
   }
   await ref.read(dataCleanupControllerProvider).deleteAllAppData();
-  ref.invalidate(applicationFolderSizeProvider);
-  ref.invalidate(cachedDataSizeProvider);
   if (!context.mounted) {
     return;
   }
@@ -81,9 +82,14 @@ Future<void> _deleteAllAppData(BuildContext context, WidgetRef ref) async {
   if (!context.mounted) {
     return;
   }
+  const HomeRoute().go(context);
   RestartWidget.restartApp(context);
 }
 
+/// Wipes the temp/cache directory and the offline data cache, then forces
+/// a full rebuild of the app (see [_deleteAllAppData]) so the size shown
+/// on this page — and every provider that read from either cache — starts
+/// from zero again instead of from stale in-memory state.
 Future<void> _clearCache(BuildContext context, WidgetRef ref) async {
   final t = context.t;
   final confirmed = await _confirm(
@@ -95,7 +101,6 @@ Future<void> _clearCache(BuildContext context, WidgetRef ref) async {
     return;
   }
   await ref.read(dataCleanupControllerProvider).clearCache();
-  ref.invalidate(cachedDataSizeProvider);
   if (!context.mounted) {
     return;
   }

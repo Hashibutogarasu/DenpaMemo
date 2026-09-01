@@ -53,6 +53,16 @@ class CacheIndexRepository {
         .toList();
   }
 
+  /// Deletes every entry from both tables and reclaims the freed space
+  /// (`VACUUM`), so the on-disk database file shrinks back down instead of
+  /// merely losing its rows. The next [canMerge]/[save] pair treats every
+  /// key as new, exactly as if the repository had just been opened.
+  Future<void> clearAll() async {
+    _database.execute('DELETE FROM cache_entries');
+    _database.execute('DELETE FROM cache_index');
+    _database.execute('VACUUM');
+  }
+
   /// Reports whether [save] would write a new or changed entry for [key],
   /// based only on comparing hashes.
   Future<bool> canMerge<I, O>(String key, I input, O output) async =>

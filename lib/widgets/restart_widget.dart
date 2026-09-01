@@ -1,12 +1,14 @@
 import 'package:flutter/widgets.dart';
 
 /// Wraps [child] behind a [Key] that [restartApp] can swap out, forcing
-/// every widget below this point (all pages, the router's navigation
-/// stack, and any local widget state) to be torn down and rebuilt from
-/// scratch. Anything above this widget (in particular the `ProviderScope`
-/// in `main.dart`) stays mounted, so Riverpod's own provider state is
-/// unaffected — callers that also need providers to reflect fresh data
-/// should invalidate them before calling [restartApp].
+/// everything below this point to be torn down and rebuilt from scratch:
+/// all pages, the router's navigation stack, any local widget state, and —
+/// when [child] is (or contains) a `ProviderScope`, as in `main.dart` —
+/// every Riverpod provider's cached state too, since the old
+/// `ProviderContainer` is disposed along with the old `ProviderScope`
+/// element and a fresh one takes its place. Override values passed into
+/// that `ProviderScope` (e.g. an already-open database connection) are
+/// themselves untouched, since they live in the caller, not the container.
 class RestartWidget extends StatefulWidget {
   const RestartWidget({super.key, required this.child});
 
