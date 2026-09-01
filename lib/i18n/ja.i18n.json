@@ -56,6 +56,8 @@
       "signOutConfirmTitle": "サインアウトの確認",
       "signOutConfirmMessage": "サインアウトしますか?",
       "deleteCloudAccount": "クラウドアカウントを削除",
+      "deleteCloudAccountConfirmTitle": "クラウドアカウントを削除",
+      "deleteCloudAccountConfirmMessage": "クラウドアカウントを削除します。この操作は取り消せません。よろしいですか?",
       "addLocalAccount": "ローカルアカウントを追加する",
       "deleteLocalAccount": "ローカルアカウントを削除",
       "manualAuthUrlMessage": "ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。",

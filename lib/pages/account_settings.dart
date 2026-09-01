@@ -88,6 +88,19 @@ Future<void> _signOut(BuildContext context, WidgetRef ref) async {
   await ref.read(cloudAccountProvider.notifier).signOut();
 }
 
+Future<void> _deleteCloudAccount(BuildContext context, WidgetRef ref) async {
+  final t = context.t;
+  final confirmed = await ConfirmDialog.show(
+    context,
+    title: t.settings.accountSettings.deleteCloudAccountConfirmTitle,
+    message: t.settings.accountSettings.deleteCloudAccountConfirmMessage,
+  );
+  if (!confirmed) {
+    return;
+  }
+  await ref.read(cloudAccountProvider.notifier).deleteCloudAccount();
+}
+
 /// Shown instead of launching a browser when the REST sign-in backend's
 /// Google OAuth loopback flow has no display server to open one on (e.g.
 /// Linux without `DISPLAY`/`WAYLAND_DISPLAY`). Passing null hides it once
@@ -173,7 +186,7 @@ class AccountSettingsPage extends ConsumerWidget {
                   label: t.settings.accountSettings.deleteCloudAccount,
                   color: Theme.of(context).colorScheme.error,
                   onTap: cloudAccount.isSignedIn
-                      ? () => ref.read(cloudAccountProvider.notifier).deleteCloudAccount()
+                      ? () => _deleteCloudAccount(context, ref)
                       : null,
                 ),
                 SettingsTile(

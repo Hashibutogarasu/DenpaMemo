@@ -876,6 +876,12 @@ class Translations$settings$accountSettings$ja {
 	/// ja: 'クラウドアカウントを削除'
 	String get deleteCloudAccount => 'クラウドアカウントを削除';
 
+	/// ja: 'クラウドアカウントを削除'
+	String get deleteCloudAccountConfirmTitle => 'クラウドアカウントを削除';
+
+	/// ja: 'クラウドアカウントを削除します。この操作は取り消せません。よろしいですか?'
+	String get deleteCloudAccountConfirmMessage => 'クラウドアカウントを削除します。この操作は取り消せません。よろしいですか?';
+
 	/// ja: 'ローカルアカウントを追加する'
 	String get addLocalAccount => 'ローカルアカウントを追加する';
 
@@ -957,6 +963,8 @@ extension on Translations {
 			'settings.accountSettings.signOutConfirmTitle' => 'サインアウトの確認',
 			'settings.accountSettings.signOutConfirmMessage' => 'サインアウトしますか?',
 			'settings.accountSettings.deleteCloudAccount' => 'クラウドアカウントを削除',
+			'settings.accountSettings.deleteCloudAccountConfirmTitle' => 'クラウドアカウントを削除',
+			'settings.accountSettings.deleteCloudAccountConfirmMessage' => 'クラウドアカウントを削除します。この操作は取り消せません。よろしいですか?',
 			'settings.accountSettings.addLocalAccount' => 'ローカルアカウントを追加する',
 			'settings.accountSettings.deleteLocalAccount' => 'ローカルアカウントを削除',
 			'settings.accountSettings.manualAuthUrlMessage' => 'ディスプレイが見つかりませんでした。以下のURLをコピーしてブラウザで認証してください。',
