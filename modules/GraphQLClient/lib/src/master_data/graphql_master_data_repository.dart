@@ -25,8 +25,11 @@ class GraphqlMasterDataRepository implements MasterDataRepository {
 
   final GraphQLClient _client;
 
-  @override
-  Future<MasterData> load() async {
+  /// Runs the `masterData` GraphQL query and returns its raw response map,
+  /// without mapping it to [MasterData] yet. Callers that need to cache the
+  /// server's response verbatim (see `CachingMasterDataRepository`) use this
+  /// instead of [load].
+  Future<Map<String, dynamic>> fetchRaw() async {
     final result = await _client.query(
       QueryOptions(
         document: gql(masterDataQuery),
@@ -38,69 +41,79 @@ class GraphqlMasterDataRepository implements MasterDataRepository {
       throw result.exception!;
     }
 
-    final masterData = result.data!['masterData'] as Map<String, dynamic>;
-
-    final attributes = [
-      for (final json in masterData['attributes'] as List<dynamic>)
-        _attributeFromGraphql(json as Map<String, dynamic>),
-    ];
-
-    return MasterData(
-      headShapes: [
-        for (final json in masterData['headShapes'] as List<dynamic>)
-          _headShapeFromGraphql(json as Map<String, dynamic>),
-      ],
-      anntenas: [
-        for (final json in masterData['anntenas'] as List<dynamic>)
-          _anntenaFromGraphql(json as Map<String, dynamic>),
-      ],
-      attributes: attributes,
-      abnormalityTypes: [
-        for (final json in masterData['abnormalityTypes'] as List<dynamic>)
-          AbnormalityType.fromJson({'id': json['legacyId']}),
-      ],
-      bodyColorResistanceRules: [
-        for (final json
-            in masterData['bodyColorResistanceRules'] as List<dynamic>)
-          _bodyColorResistanceRuleFromGraphql(json as Map<String, dynamic>),
-      ],
-      bodyColorAbnormalityResistanceRules: [
-        for (final json
-            in masterData['bodyColorAbnormalityResistanceRules']
-                as List<dynamic>)
-          BodyColorAbnormalityResistanceRule.fromJson({
-            'colorId': json['legacyId'],
-            'abnormalityResistanceBonuses': json['abnormalityResistanceBonuses'],
-          }),
-      ],
-      physiques: [
-        for (final json in masterData['physiques'] as List<dynamic>)
-          Physique.fromJson({'id': json['legacyId']}),
-      ],
-      personalities: [
-        for (final json in masterData['personalities'] as List<dynamic>)
-          Personality.fromJson({'id': json['legacyId']}),
-      ],
-      patterns: [
-        for (final json in masterData['patterns'] as List<dynamic>)
-          Pattern.fromJson({'id': json['legacyId']}),
-      ],
-      corrections: [
-        for (final json in masterData['corrections'] as List<dynamic>)
-          Correction.fromJson({
-            'id': json['legacyId'],
-            'hpBonus': json['hpBonus'],
-            'apBonus': json['apBonus'],
-            'attackBonus': json['attackBonus'],
-            'defenseBonus': json['defenseBonus'],
-            'speedBonus': json['speedBonus'],
-            'evasionRateBonus': json['evasionRateBonus'],
-            'abnormalityResistanceBonuses':
-                json['abnormalityResistanceBonuses'],
-          }),
-      ],
-    );
+    return result.data!['masterData'] as Map<String, dynamic>;
   }
+
+  @override
+  Future<MasterData> load() async {
+    return masterDataFromGraphqlJson(await fetchRaw());
+  }
+}
+
+/// Maps a `masterData` GraphQL response (as returned by
+/// [GraphqlMasterDataRepository.fetchRaw]) to [MasterData]. Shared by the
+/// live network path and any code that replays a cached response through
+/// the same mapping.
+MasterData masterDataFromGraphqlJson(Map<String, dynamic> masterData) {
+  final attributes = [
+    for (final json in masterData['attributes'] as List<dynamic>)
+      _attributeFromGraphql(json as Map<String, dynamic>),
+  ];
+
+  return MasterData(
+    headShapes: [
+      for (final json in masterData['headShapes'] as List<dynamic>)
+        _headShapeFromGraphql(json as Map<String, dynamic>),
+    ],
+    anntenas: [
+      for (final json in masterData['anntenas'] as List<dynamic>)
+        _anntenaFromGraphql(json as Map<String, dynamic>),
+    ],
+    attributes: attributes,
+    abnormalityTypes: [
+      for (final json in masterData['abnormalityTypes'] as List<dynamic>)
+        AbnormalityType.fromJson({'id': json['legacyId']}),
+    ],
+    bodyColorResistanceRules: [
+      for (final json
+          in masterData['bodyColorResistanceRules'] as List<dynamic>)
+        _bodyColorResistanceRuleFromGraphql(json as Map<String, dynamic>),
+    ],
+    bodyColorAbnormalityResistanceRules: [
+      for (final json
+          in masterData['bodyColorAbnormalityResistanceRules']
+              as List<dynamic>)
+        BodyColorAbnormalityResistanceRule.fromJson({
+          'colorId': json['legacyId'],
+          'abnormalityResistanceBonuses': json['abnormalityResistanceBonuses'],
+        }),
+    ],
+    physiques: [
+      for (final json in masterData['physiques'] as List<dynamic>)
+        Physique.fromJson({'id': json['legacyId']}),
+    ],
+    personalities: [
+      for (final json in masterData['personalities'] as List<dynamic>)
+        Personality.fromJson({'id': json['legacyId']}),
+    ],
+    patterns: [
+      for (final json in masterData['patterns'] as List<dynamic>)
+        Pattern.fromJson({'id': json['legacyId']}),
+    ],
+    corrections: [
+      for (final json in masterData['corrections'] as List<dynamic>)
+        Correction.fromJson({
+          'id': json['legacyId'],
+          'hpBonus': json['hpBonus'],
+          'apBonus': json['apBonus'],
+          'attackBonus': json['attackBonus'],
+          'defenseBonus': json['defenseBonus'],
+          'speedBonus': json['speedBonus'],
+          'evasionRateBonus': json['evasionRateBonus'],
+          'abnormalityResistanceBonuses': json['abnormalityResistanceBonuses'],
+        }),
+    ],
+  );
 }
 
 Attribute _attributeFromGraphql(Map<String, dynamic> json) {

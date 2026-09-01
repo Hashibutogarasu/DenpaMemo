@@ -29,6 +29,7 @@ export 'src/denpa_men/denpa_men_hash_migration.dart';
 export 'src/denpa_men/denpa_men_head_shape_stat_calculator.dart';
 export 'src/denpa_men/denpa_men_record.dart';
 export 'src/denpa_men/denpa_men_repository.dart';
+export 'src/denpa_men/denpa_men_resistance_cache_codec.dart';
 export 'src/denpa_men/denpa_men_resistance_calculator.dart';
 export 'src/denpa_men/denpa_men_stat_bonus.dart';
 export 'src/denpa_men/denpa_men_validation_exception.dart';

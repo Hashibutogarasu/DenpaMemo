@@ -1,15 +1,21 @@
+import 'package:data_cache/data_cache.dart';
+import 'package:data_pack/data_pack.dart';
+
 import '../../objectbox.g.dart';
 import '../objectbox/objectbox.dart';
 import 'denpa_men_entity.dart';
 import 'denpa_men_mapper.dart';
-import 'package:data_pack/data_pack.dart';
 
 /// [DenpaMenRepository] backed by the [DenpaMenEntity] ObjectBox box, newest
-/// entries last.
+/// entries last. [cacheIndexRepository], when provided, is used to persist
+/// and replay each record's resistance snapshot; omitting it preserves the
+/// original recompute-on-load behavior.
 class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
-  ObjectBoxDenpaMenRepository(this._objectBox);
+  ObjectBoxDenpaMenRepository(this._objectBox, {CacheIndexRepository? cacheIndexRepository})
+    : _cacheIndexRepository = cacheIndexRepository;
 
   final ObjectBox _objectBox;
+  final CacheIndexRepository? _cacheIndexRepository;
 
   Box<DenpaMenEntity> get _box => _objectBox.denpaMenBox;
 
@@ -22,7 +28,7 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
     try {
       return [
         for (final entity in query.find())
-          DenpaMenRecord(id: entity.id, denpaMen: entity.toDomain(masterData)),
+          DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData)),
       ];
     } finally {
       query.close();
@@ -38,7 +44,7 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
             for (final entity in query.find())
               DenpaMenRecord(
                 id: entity.id,
-                denpaMen: entity.toDomain(masterData),
+                denpaMen: _toDomain(entity, masterData),
               ),
           ],
         );
@@ -62,7 +68,16 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
         query.close();
       }
     }
-    return _box.put(entity);
+    final savedId = _box.put(entity);
+    _cacheIndexRepository?.saveSync(
+      denpaMen.id,
+      DenpaMenResistanceCacheInput.fromDenpaMen(denpaMen),
+      DenpaMenResistanceCacheOutput((
+        abnormalityResistances: denpaMen.abnormalityResistances,
+        attributeResistance: denpaMen.attributeResistance,
+      )),
+    );
+    return savedId;
   }
 
   @override
@@ -72,7 +87,7 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
       final entity = query.findFirst();
       return entity == null
           ? null
-          : DenpaMenRecord(id: entity.id, denpaMen: entity.toDomain(masterData));
+          : DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData));
     } finally {
       query.close();
     }
@@ -94,10 +109,13 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
     try {
       return [
         for (final entity in query.find())
-          DenpaMenRecord(id: entity.id, denpaMen: entity.toDomain(masterData)),
+          DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData)),
       ];
     } finally {
       query.close();
     }
   }
+
+  DenpaMen _toDomain(DenpaMenEntity entity, MasterData masterData) =>
+      entity.toDomain(masterData, cacheIndexRepository: _cacheIndexRepository);
 }
