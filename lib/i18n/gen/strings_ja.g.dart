@@ -347,6 +347,7 @@ class Translations$settings$ja {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
+	late final Translations$settings$section$ja section = Translations$settings$section$ja.internal(_root);
 
 	/// ja: 'アカウント'
 	String get account => 'アカウント';
@@ -371,6 +372,24 @@ class Translations$settings$ja {
 
 	/// ja: 'データ管理'
 	String get dataManagement => 'データ管理';
+
+	/// ja: 'ビルド番号'
+	String get buildNumber => 'ビルド番号';
+
+	/// ja: 'アプリバージョン'
+	String get appVersion => 'アプリバージョン';
+
+	/// ja: 'リリースチャンネル'
+	String get releaseChannel => 'リリースチャンネル';
+
+	/// ja: 'リリース'
+	String get releaseChannelStable => 'リリース';
+
+	/// ja: 'プロファイル'
+	String get releaseChannelProfile => 'プロファイル';
+
+	/// ja: 'デバッグ'
+	String get releaseChannelDebug => 'デバッグ';
 
 	/// ja: 'アカウントID'
 	String get accountCuidLabel => 'アカウントID';
@@ -796,6 +815,27 @@ class Translations$editableStatus$ja {
 	String get monsterExpRecipientCount => '経験値を獲得した人数';
 }
 
+// Path: settings.section
+class Translations$settings$section$ja {
+	Translations$settings$section$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '全般'
+	String get general => '全般';
+
+	/// ja: '個人設定'
+	String get personal => '個人設定';
+
+	/// ja: 'データ'
+	String get data => 'データ';
+
+	/// ja: 'その他'
+	String get other => 'その他';
+}
+
 /// The flat map containing all translations for locale <ja>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -834,6 +874,10 @@ extension on Translations {
 			'page.languageSettings' => '言語',
 			'page.dataManagement' => 'データ管理',
 			'page.openSourceLicenses' => 'オープンソースライセンス',
+			'settings.section.general' => '全般',
+			'settings.section.personal' => '個人設定',
+			'settings.section.data' => 'データ',
+			'settings.section.other' => 'その他',
 			'settings.account' => 'アカウント',
 			'settings.theme' => 'テーマ',
 			'settings.language' => '言語',
@@ -842,6 +886,12 @@ extension on Translations {
 			'settings.statistics' => '統計',
 			'settings.openSourceLicenses' => 'オープンソースライセンス',
 			'settings.dataManagement' => 'データ管理',
+			'settings.buildNumber' => 'ビルド番号',
+			'settings.appVersion' => 'アプリバージョン',
+			'settings.releaseChannel' => 'リリースチャンネル',
+			'settings.releaseChannelStable' => 'リリース',
+			'settings.releaseChannelProfile' => 'プロファイル',
+			'settings.releaseChannelDebug' => 'デバッグ',
 			'settings.accountCuidLabel' => 'アカウントID',
 			'settings.accountCreatedAtLabel' => '作成日時',
 			'settings.themeSystem' => 'システム設定に合わせる',

@@ -38,6 +38,12 @@
     "openSourceLicenses": "オープンソースライセンス"
   },
   "settings": {
+    "section": {
+      "general": "全般",
+      "personal": "個人設定",
+      "data": "データ",
+      "other": "その他"
+    },
     "account": "アカウント",
     "theme": "テーマ",
     "language": "言語",
@@ -46,6 +52,12 @@
     "statistics": "統計",
     "openSourceLicenses": "オープンソースライセンス",
     "dataManagement": "データ管理",
+    "buildNumber": "ビルド番号",
+    "appVersion": "アプリバージョン",
+    "releaseChannel": "リリースチャンネル",
+    "releaseChannelStable": "リリース",
+    "releaseChannelProfile": "プロファイル",
+    "releaseChannelDebug": "デバッグ",
     "accountCuidLabel": "アカウントID",
     "accountCreatedAtLabel": "作成日時",
     "themeSystem": "システム設定に合わせる",
