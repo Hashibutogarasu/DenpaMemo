@@ -11,8 +11,8 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 class AuthApiConfig {
   const AuthApiConfig();
 
-  static const _productionEndpoint = 'https://api.denpa_memo.karasu256.com';
-  static const _androidDebugEndpoint = 'https://denpamemo_auth_dev.karasu256.com';
+  static const _productionEndpoint = 'https://api.denpamemo.karasu256.com';
+  static const _androidDebugEndpoint = 'https://denpamemo-auth-dev.karasu256.com';
 
   String get baseUrl {
     if (!kDebugMode) {
