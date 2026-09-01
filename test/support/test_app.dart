@@ -1,3 +1,4 @@
+import 'package:data_cache/data_cache.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/main.dart';
 import 'package:flutter/widgets.dart';
@@ -27,6 +28,7 @@ class TestApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyApp(
       objectBox: objectBox,
+      cacheIndexRepository: CacheIndexRepository.createInMemory(),
       overrides: [testMasterDataRepositoryOverride, ...overrides],
     );
   }

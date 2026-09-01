@@ -1,5 +1,5 @@
-name: graphql_client
-description: Client for server module
+name: data_cache
+description: Offline data cache backed by SQLite, storing input/output pairs behind a hash index.
 version: 0.1.0
 publish_to: 'none'
 resolution: workspace
@@ -8,15 +8,14 @@ environment:
   sdk: ^3.10.1
 
 dependencies:
-  data_cache:
-    path: ../DataCache
-  data_pack:
-    path: ../DataPack
+  app_datas:
+    path: ../AppDatas
+  crypto: ^3.0.7
   flutter:
     sdk: flutter
   flutter_riverpod: ^3.4.2
-  graphql_flutter: ^5.3.0
-
+  path: ^1.9.1
+  sqlite3: ^3.5.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,72 +1,39 @@
-import 'dart:io';
-
-import 'package:flutter/services.dart' show AssetManifest, rootBundle;
+import 'package:data_cache/data_cache.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart' as path;
 
+import '../data/settings/app_settings_entity.dart';
 import 'account_scoped_paths_providers.dart';
 import 'objectbox_providers.dart';
 
-/// Drives the "data management" page's housekeeping actions: removing
-/// orphaned icon folders from the account's persistent data directory, and
-/// wiping its temporary/cache directory outright.
+/// Drives the "data management" page's housekeeping actions: wiping the
+/// account's persistent app directory and its ObjectBox data outright, and
+/// wiping the temporary/cache directory.
 class DataCleanupController {
   const DataCleanupController(this._ref);
 
   final Ref _ref;
 
-  /// Deletes icon folders under the account's app directory that no longer
-  /// correspond to an existing `DenpaMen` or a bundled monster asset.
-  /// Returns how many folders were removed.
-  Future<int> cleanupApplicationFolder() async {
+  /// Deletes the account's persistent app directory outright, and clears
+  /// every ObjectBox box that holds user data. The account record itself
+  /// is left untouched, since account scoping — and therefore this very
+  /// directory's path — depends on it.
+  Future<void> deleteAllAppData() async {
     final appDirectory = await _ref.read(
       accountScopedAppDirectoryProvider.future,
     );
+    if (await appDirectory.exists()) {
+      await appDirectory.delete(recursive: true);
+    }
     final objectBox = _ref.read(objectBoxProvider);
-    final validDenpaMenIds = objectBox.denpaMenBox
-        .getAll()
-        .map((entity) => entity.cuid)
-        .toSet();
-
-    final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
-    final assets = manifest.listAssets();
-    bool isValidMonsterId(String id) =>
-        assets.contains('assets/data/icons/monster/$id.png');
-
-    var removedCount = 0;
-    removedCount += await _removeOrphanedIconFolders(
-      Directory(path.join(appDirectory.path, 'icons', 'denpamens')),
-      isValidId: validDenpaMenIds.contains,
-    );
-    removedCount += await _removeOrphanedIconFolders(
-      Directory(path.join(appDirectory.path, 'icons', 'monsters')),
-      isValidId: isValidMonsterId,
-    );
-    return removedCount;
+    objectBox.denpaMenBox.removeAll();
+    objectBox.qrCodeBox.removeAll();
+    objectBox.settingsBox.removeAll();
+    objectBox.settingsBox.put(AppSettingsEntity());
   }
 
-  Future<int> _removeOrphanedIconFolders(
-    Directory categoryDirectory, {
-    required bool Function(String id) isValidId,
-  }) async {
-    if (!await categoryDirectory.exists()) {
-      return 0;
-    }
-    var removedCount = 0;
-    await for (final entry in categoryDirectory.list()) {
-      if (entry is! Directory) {
-        continue;
-      }
-      if (!isValidId(path.basename(entry.path))) {
-        await entry.delete(recursive: true);
-        removedCount++;
-      }
-    }
-    return removedCount;
-  }
-
-  /// Wipes the account's temporary/cache directory. Safe to call anytime,
-  /// since it is recreated empty on next access.
+  /// Wipes the account's temporary/cache directory and every entry in the
+  /// offline data cache, then bumps [cacheGenerationProvider] so anything
+  /// reading through the cache invalidates itself.
   Future<void> clearCache() async {
     final tempDirectory = await _ref.read(
       accountScopedTempDirectoryProvider.future,
@@ -74,6 +41,8 @@ class DataCleanupController {
     if (await tempDirectory.exists()) {
       await tempDirectory.delete(recursive: true);
     }
+    await _ref.read(dataCacheProvider).clearAll();
+    _ref.read(cacheGenerationProvider.notifier).state++;
   }
 }
 

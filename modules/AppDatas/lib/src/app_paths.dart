@@ -43,4 +43,12 @@ class AppPaths {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     return Directory(path.join(documentsDirectory.path, appId, 'objectbox'));
   }
+
+  /// The directory the offline data cache's SQLite database should open in:
+  /// `<ApplicationDocumentsDirectory>/<appId>/local_cache`. Not scoped by
+  /// account, matching [objectboxDirectory].
+  static Future<Directory> localCacheDirectory(String appId) async {
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    return Directory(path.join(documentsDirectory.path, appId, 'local_cache'));
+  }
 }

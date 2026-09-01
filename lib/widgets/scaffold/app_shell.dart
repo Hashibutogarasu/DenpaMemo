@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../import_export_progress_bar.dart';
 import '../navigation/app_bottom_navigation_bar.dart';
+import 'app_shell_progress_bar.dart';
 
 /// Root-tab shell: wraps the router's [ShellRoute] navigator for the four
 /// top-level destinations (home, search, analysis, settings) with the
@@ -19,7 +19,7 @@ class AppShell extends StatelessWidget {
       body: child,
       bottomNavigationBar: const Column(
         mainAxisSize: MainAxisSize.min,
-        children: [ImportExportProgressBar(), AppBottomNavigationBar()],
+        children: [AppShellProgressBar(), AppBottomNavigationBar()],
       ),
     );
   }

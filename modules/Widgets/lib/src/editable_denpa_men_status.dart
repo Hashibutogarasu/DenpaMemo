@@ -75,7 +75,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
-    final isMobile = ref.watch(isMobileLayoutProvider);
+    final isMobile = ref.watch(appShellStateProvider).isMobile;
 
     return StatusContainer(
       padding: const EdgeInsets.all(8),

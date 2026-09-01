@@ -42,11 +42,14 @@ class AppScaffold extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final canPop = Navigator.canPop(context);
 
+    final shellState = ref.watch(appShellStateProvider);
     final isMobile = isMobileWidth(context);
-    if (ref.read(isMobileLayoutProvider) != isMobile) {
+    if (shellState.isMobile != isMobile) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!context.mounted) return;
-        ref.read(isMobileLayoutProvider.notifier).state = isMobile;
+        ref.read(appShellStateProvider.notifier).update(
+          (state) => (isMobile: isMobile, isLoading: state.isLoading),
+        );
       });
     }
 

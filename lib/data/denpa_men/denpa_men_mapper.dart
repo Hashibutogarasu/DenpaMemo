@@ -1,6 +1,8 @@
+import 'package:data_cache/data_cache.dart';
+import 'package:data_pack/data_pack.dart';
+
 import '../master_data/legacy_antenna_id_migrations.dart';
 import 'denpa_men_entity.dart';
-import 'package:data_pack/data_pack.dart';
 
 /// Converts a domain [DenpaMen] to its persisted [DenpaMenEntity] form,
 /// keeping only master-data ids rather than the embedded objects.
@@ -56,7 +58,11 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
   DenpaMen toDomain(
     MasterData masterData, {
     AntennaIdMigrator antennaIdMigrator = const LegacyAntennaIdMigrator(),
+    CacheIndexRepository? cacheIndexRepository,
   }) {
+    final resistances = cacheIndexRepository == null
+        ? null
+        : _resistancesFromCache(cacheIndexRepository, cuid);
     final denpaMen = createDenpaMen(
       id: cuid,
       name: name,
@@ -113,9 +119,28 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
         maxLevelTeammateCount: monsterExpMaxLevelTeammateCount,
         expRecipientCount: monsterExpRecipientCount,
       ),
+      resistances: resistances,
     );
     return denpaMen.copyWith(hash: hash);
   }
+}
+
+DenpaMenResistances _resistancesFromCache(
+  CacheIndexRepository cacheIndexRepository,
+  String cuid,
+) {
+  final cached = cacheIndexRepository
+      .readSync<DenpaMenResistanceCacheInput, DenpaMenResistanceCacheOutput>(
+        cuid,
+        inputFromJson: DenpaMenResistanceCacheInput.fromJson,
+        outputFromJson: DenpaMenResistanceCacheOutput.fromJson,
+      );
+  return cached == null
+      ? (
+          abnormalityResistances: const <AbnormalityResistance>[],
+          attributeResistance: const <AttributeResistance>[],
+        )
+      : cached.output.resistances;
 }
 
 MonsterExp? _monsterExpFromColumns({

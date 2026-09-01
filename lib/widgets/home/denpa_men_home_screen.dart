@@ -9,6 +9,7 @@ import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';
 import '../../providers/home_view_providers.dart';
+import '../../providers/qr_code_providers.dart';
 import '../../providers/search_providers.dart';
 import '../denpa_men_lineage_tree.dart';
 import '../dialog/denpa_men_action_menu.dart';
@@ -65,7 +66,21 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
     final selectionMode = ref.watch(selectionModeProvider);
     final viewMode = ref.watch(homeViewModeProvider);
     final tileMode = ref.watch(homeTileModeProvider);
-    final isMobile = ref.watch(isMobileLayoutProvider);
+    final isMobile = ref.watch(appShellStateProvider).isMobile;
+
+    final isLoading =
+        ref.watch(denpaMenListProvider(masterData)).isLoading ||
+        (viewMode == HomeViewMode.tree &&
+            ref.watch(qrCodeListProvider).isLoading);
+    final shellState = ref.read(appShellStateProvider);
+    if (shellState.isLoading != isLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
+        ref.read(appShellStateProvider.notifier).update(
+          (state) => (isMobile: state.isMobile, isLoading: isLoading),
+        );
+      });
+    }
 
     return AppScaffold(
       title: widget.title,
@@ -197,7 +212,7 @@ class _HomeBody extends ConsumerWidget {
     final selectionMode = ref.watch(selectionModeProvider);
     final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
     final cutIds = ref.watch(cutDenpaMenIdsProvider);
-    final isMobile = ref.watch(isMobileLayoutProvider);
+    final isMobile = ref.watch(appShellStateProvider).isMobile;
     final tileMode = ref.watch(homeTileModeProvider);
     final totalAttributeCount = masterData.attributes.length;
     final iconsById = {
@@ -305,8 +320,7 @@ class _HomeBody extends ConsumerWidget {
                       ),
                     };
                   },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  loading: () => const SizedBox.shrink(),
                   error: (error, stackTrace) => Center(child: Text('$error')),
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
@@ -69,6 +70,9 @@ void main() {
             denpaMenIconProvider.overrideWith((ref, id) async => null),
             masterDataProvider.overrideWithValue(AsyncData(masterData)),
             objectBoxProvider.overrideWithValue(objectBox),
+            dataCacheProvider.overrideWithValue(
+              CacheIndexRepository.createInMemory(),
+            ),
           ],
           child: AllTranslationProviders(
             child: MaterialApp(

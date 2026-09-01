@@ -1,49 +1,43 @@
-import 'package:data_pack/data_pack.dart';
+import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
+import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
-import 'package:graphql_client/graphql_client.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
-import 'data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'data/objectbox/objectbox.dart';
 import 'i18n/gen/strings.g.dart';
 import 'providers/app_settings_providers.dart';
+import 'providers/denpa_men_sync_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme_mode_mapping.dart';
+import 'widgets/restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final packageInfo = await PackageInfo.fromPlatform();
   final objectBox = await ObjectBox.create();
-  await _migrateDenpaMenHashesIfServerReachable(objectBox);
-  runApp(MyApp(objectBox: objectBox));
-}
-
-/// The hash migration needs master data before any [ProviderScope] exists
-/// to read it from `masterDataProvider`, so it builds its own
-/// [GraphQLClient] via [GraphQlClientFactory]. Master data now requires
-/// the `modules/server` API, unlike the bundled-JSON repository this
-/// replaced; if it isn't reachable yet, skip the migration rather than
-/// crash the app before it can even show its own error screen.
-Future<void> _migrateDenpaMenHashesIfServerReachable(
-  ObjectBox objectBox,
-) async {
-  try {
-    final masterData = await GraphqlMasterDataRepository(
-      client: graphQlClientFactory.create(),
-    ).load();
-    migrateDenpaMenHashes(ObjectBoxDenpaMenRepository(objectBox), masterData);
-  } catch (error) {
-    debugPrint('Skipping hash migration: master data unavailable ($error)');
-  }
+  final cacheIndexRepository = await CacheIndexRepository.open(
+    packageInfo.packageName,
+  );
+  runApp(
+    MyApp(objectBox: objectBox, cacheIndexRepository: cacheIndexRepository),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.objectBox, this.overrides = const []});
+  const MyApp({
+    super.key,
+    required this.objectBox,
+    required this.cacheIndexRepository,
+    this.overrides = const [],
+  });
 
   final ObjectBox objectBox;
+  final CacheIndexRepository cacheIndexRepository;
   final List<Override> overrides;
 
   @override
@@ -51,12 +45,15 @@ class MyApp extends StatelessWidget {
     return denpamemo_widgets.TranslationProvider(
       child: step_dialog.TranslationProvider(
         child: TranslationProvider(
-          child: ProviderScope(
-            overrides: [
-              objectBoxProvider.overrideWithValue(objectBox),
-              ...overrides,
-            ],
-            child: const _ThemedMaterialApp(),
+          child: RestartWidget(
+            child: ProviderScope(
+              overrides: [
+                objectBoxProvider.overrideWithValue(objectBox),
+                dataCacheProvider.overrideWithValue(cacheIndexRepository),
+                ...overrides,
+              ],
+              child: const _ThemedMaterialApp(),
+            ),
           ),
         ),
       ),
@@ -69,9 +66,11 @@ class _ThemedMaterialApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(denpaMenSyncProvider);
     final themeMode = ref.watch(appSettingsProvider).themeMode;
     return MaterialApp.router(
       title: t.app.name,
+      scrollBehavior: const _DragAnywhereScrollBehavior(),
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
@@ -85,4 +84,19 @@ class _ThemedMaterialApp extends ConsumerWidget {
       routerConfig: appRouter,
     );
   }
+}
+
+/// [MaterialScrollBehavior] additionally treats the mouse as a drag
+/// device. Without this, pointer-drag gestures — including the overscroll
+/// `RefreshIndicator` needs for pull-to-refresh — never fire from a mouse
+/// on desktop/web, since Flutter's default excludes it (to leave mouse
+/// drags free for text selection).
+class _DragAnywhereScrollBehavior extends MaterialScrollBehavior {
+  const _DragAnywhereScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    ...super.dragDevices,
+    PointerDeviceKind.mouse,
+  };
 }

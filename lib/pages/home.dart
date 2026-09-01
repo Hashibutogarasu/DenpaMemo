@@ -32,10 +32,11 @@ class Home extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final masterDataAsync = ref.watch(masterDataProvider);
+    final masterData = masterDataAsync.value;
     final searchOverlayOpen = ref.watch(searchOverlayOpenProvider);
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
-    final isMobile = ref.watch(isMobileLayoutProvider);
+    final isMobile = ref.watch(appShellStateProvider).isMobile;
 
     listenForMasterDataErrors(ref, context);
 
@@ -53,58 +54,56 @@ class Home extends ConsumerWidget {
         autofocus: true,
         child: Stack(
           children: [
-            masterDataAsync.when(
-              data: (masterData) => DenpaMenHomeScreen(
-                title: OutlinedTitleText(text: t.page.home),
-                masterData: masterData,
-                actions: isMobile
-                    ? null
-                    : [
-                        PopupMenuButton<void>(
-                          icon: const Icon(
-                            Icons.more_vert,
-                            color: AppColors.accent,
-                          ),
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              enabled: selectedCount > 0,
-                              onTap: () => exportSelectedDenpaMen(
-                                context,
-                                ref,
-                                masterData,
+            masterData != null
+                ? DenpaMenHomeScreen(
+                    title: OutlinedTitleText(text: t.page.home),
+                    masterData: masterData,
+                    actions: isMobile
+                        ? null
+                        : [
+                            PopupMenuButton<void>(
+                              icon: const Icon(
+                                Icons.more_vert,
+                                color: AppColors.accent,
                               ),
-                              child: Text(t.home.exportSelected),
-                            ),
-                            PopupMenuItem(
-                              onTap: () => _importFromFile(context, ref),
-                              child: Text(t.home.importFromFile),
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  enabled: selectedCount > 0,
+                                  onTap: () => exportSelectedDenpaMen(
+                                    context,
+                                    ref,
+                                    masterData,
+                                  ),
+                                  child: Text(t.home.exportSelected),
+                                ),
+                                PopupMenuItem(
+                                  onTap: () => _importFromFile(context, ref),
+                                  child: Text(t.home.importFromFile),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                      ],
-                floatingActionButton: Padding(
-                  padding: EdgeInsets.only(bottom: isMobile ? 72 : 0),
-                  child: AddDenpaMenFab(
-                    masterData: masterData,
-                    onImport: isMobile
-                        ? () => _importFromFile(context, ref)
-                        : null,
-                    onExport: isMobile && selectedCount > 0
-                        ? () => exportSelectedDenpaMen(context, ref, masterData)
-                        : null,
-                    mainButtonLayerLink: _addFabLayerLink,
+                    floatingActionButton: Padding(
+                      padding: EdgeInsets.only(bottom: isMobile ? 72 : 0),
+                      child: AddDenpaMenFab(
+                        masterData: masterData,
+                        onImport: isMobile
+                            ? () => _importFromFile(context, ref)
+                            : null,
+                        onExport: isMobile && selectedCount > 0
+                            ? () =>
+                                  exportSelectedDenpaMen(context, ref, masterData)
+                            : null,
+                        mainButtonLayerLink: _addFabLayerLink,
+                      ),
+                    ),
+                  )
+                : AppScaffold(
+                    title: OutlinedTitleText(text: t.page.home),
+                    body: masterDataAsync.isLoading
+                        ? const ProgressBar()
+                        : const SizedBox.shrink(),
                   ),
-                ),
-              ),
-              loading: () => AppScaffold(
-                title: OutlinedTitleText(text: t.page.home),
-                body: const ProgressBar(),
-              ),
-              error: (error, stackTrace) => AppScaffold(
-                title: OutlinedTitleText(text: t.page.home),
-                body: const SizedBox.shrink(),
-              ),
-            ),
             Positioned(
               top: 0,
               left: 0,

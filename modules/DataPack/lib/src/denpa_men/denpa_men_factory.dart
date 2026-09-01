@@ -54,6 +54,7 @@ DenpaMen createDenpaMen({
   String? memo,
   DateTime? moveInDate,
   MonsterExp? monsterExp,
+  DenpaMenResistances? resistances,
 }) {
   if (bodyColors.length != 1 && bodyColors.length != 2) {
     throw InvalidBodyColorCountException(bodyColors.length);
@@ -117,10 +118,10 @@ DenpaMen createDenpaMen({
     monsterExp: monsterExp,
   );
 
-  final resistances = draft.calculateResistances(masterData);
+  final resolvedResistances = resistances ?? draft.calculateResistances(masterData);
   final withResistances = draft.copyWith(
-    abnormalityResistances: resistances.abnormalityResistances,
-    attributeResistance: resistances.attributeResistance,
+    abnormalityResistances: resolvedResistances.abnormalityResistances,
+    attributeResistance: resolvedResistances.attributeResistance,
   );
   return withResistances.copyWith(hash: computeDenpaMenHash(withResistances));
 }

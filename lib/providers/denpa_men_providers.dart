@@ -1,3 +1,4 @@
+import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -6,7 +7,10 @@ import '../data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'objectbox_providers.dart';
 
 final denpaMenRepositoryProvider = Provider<DenpaMenRepository>((ref) {
-  return ObjectBoxDenpaMenRepository(ref.watch(objectBoxProvider));
+  return ObjectBoxDenpaMenRepository(
+    ref.watch(objectBoxProvider),
+    cacheIndexRepository: ref.watch(dataCacheProvider),
+  );
 });
 
 /// Streams the saved [DenpaMen] list resolved against [masterData].

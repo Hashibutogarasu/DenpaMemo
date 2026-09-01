@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// in-progress state: [value] null renders an indeterminate animation
 /// (e.g. master data still loading), a value between 0 and 1 renders a
 /// determinate one (e.g. `.dm` import/export progress, see
-/// `ImportExportProgressBar`). Pins itself to the bottom of whatever
+/// `AppShellProgressBar`). Pins itself to the bottom of whatever
 /// space its parent gives it, so callers never need to wrap it in an
 /// `Align` themselves.
 class ProgressBar extends StatelessWidget {
