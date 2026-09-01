@@ -1,0 +1,57 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - release
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release
+          fetch-depth: 0
+
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          target-branch: release
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      # The release branch is protected (PR + 1 review required, no direct
+      # pushes), so the version bump is committed onto release-please's own
+      # PR branch instead of onto "release" directly. Merging that PR is
+      # what actually lands the bump on "release".
+      - uses: subosito/flutter-action@v2
+        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        with:
+          channel: stable
+
+      - name: Bump pubspec.yaml on the release-please PR branch via pub_version_plus
+        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        env:
+          PR_JSON: ${{ steps.release.outputs.pr }}
+        run: |
+          head_branch="$(echo "$PR_JSON" | jq -r '.headBranchName')"
+          pr_title="$(echo "$PR_JSON" | jq -r '.title')"
+          target_version="$(echo "$pr_title" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
+
+          git fetch origin "$head_branch"
+          git checkout "$head_branch"
+
+          dart pub get
+          dart pub run pub_version_plus:main set "$target_version"
+
+          if ! git diff --quiet -- pubspec.yaml; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -am "chore: bump pubspec.yaml version to ${target_version} via pub_version_plus"
+            git push origin "$head_branch"
+          fi
