@@ -14,6 +14,7 @@ import '../pages/home.dart';
 import '../pages/language_settings.dart';
 import '../pages/monster_exp.dart';
 import '../pages/monster_selection.dart';
+import '../pages/open_source_licenses.dart';
 import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
 import '../pages/search_results.dart';
@@ -254,6 +255,17 @@ class LanguageSettingsRoute extends GoRouteData with $LanguageSettingsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const LanguageSettingsPage();
+}
+
+/// Pushed from the settings list's "open source licenses" tile.
+@TypedGoRoute<OpenSourceLicensesRoute>(path: '/settings/licenses')
+class OpenSourceLicensesRoute extends GoRouteData
+    with $OpenSourceLicensesRoute {
+  const OpenSourceLicensesRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const OpenSourceLicensesPage();
 }
 
 /// Pushed from the settings list's "data management" tile.
