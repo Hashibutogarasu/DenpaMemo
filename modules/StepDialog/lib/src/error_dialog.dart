@@ -5,14 +5,9 @@ import 'package:toaster/toaster.dart';
 
 import '../i18n/gen/strings.g.dart';
 
-/// Generic acknowledge-and-dismiss dialog: centered title, centered
-/// description, an OK button, a retry button to its left when [retriable]
-/// is true, and a copy button to OK's left — copying [stackTrace] in debug
-/// builds (falling back to [description] if none was given), or
-/// [description] itself outside debug builds.
-///
-/// Tapping retry closes the dialog immediately and fires [onRetry] in the
-/// background rather than waiting on it.
+/// Generic acknowledge-and-dismiss dialog: title, description, then a
+/// vertical stack of buttons (retry when [retriable], copy, OK). Tapping
+/// retry closes the dialog and fires [onRetry] in the background.
 class ErrorDialog extends StatelessWidget {
   const ErrorDialog({
     super.key,
@@ -52,13 +47,14 @@ class ErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final copyLabel = kDebugMode ? t.common.copyStackTrace : t.common.copyMessage;
-    final copyText = kDebugMode ? '${stackTrace ?? description}' : description;
+    final copyLabel = kDebugMode ? t.common.copyError : t.common.copyMessage;
+    final copyText = kDebugMode && stackTrace != null ? '$description\n\n$stackTrace' : description;
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               title,
@@ -68,38 +64,28 @@ class ErrorDialog extends StatelessWidget {
             const SizedBox(height: 12),
             Text(description, textAlign: TextAlign.center),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                if (retriable) ...[
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        onRetry?.call().catchError((_) {});
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(t.common.retry),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                ],
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () async {
-                      await Clipboard.setData(ClipboardData(text: copyText));
-                      if (!context.mounted) return;
-                      await Toaster.show(context, t.common.copiedToast(label: copyLabel));
-                    },
-                    child: Text(copyLabel),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: FilledButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(t.common.ok),
-                  ),
-                ),
-              ],
+            if (retriable) ...[
+              OutlinedButton(
+                onPressed: () {
+                  onRetry?.call().catchError((_) {});
+                  Navigator.of(context).pop();
+                },
+                child: Text(t.common.retry),
+              ),
+              const SizedBox(height: 12),
+            ],
+            OutlinedButton(
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: copyText));
+                if (!context.mounted) return;
+                await Toaster.show(context, t.common.copiedToast(label: copyLabel));
+              },
+              child: Text(copyLabel),
+            ),
+            const SizedBox(height: 12),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(t.common.ok),
             ),
           ],
         ),

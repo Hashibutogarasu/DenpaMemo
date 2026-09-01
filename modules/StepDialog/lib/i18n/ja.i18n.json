@@ -2,7 +2,7 @@
   "common": {
     "ok": "OK",
     "retry": "再試行",
-    "copyStackTrace": "スタックトレースをコピー",
+    "copyError": "エラー全体をコピー",
     "copyMessage": "メッセージをコピー",
     "copiedToast": "${label}をコピーしました"
   }
