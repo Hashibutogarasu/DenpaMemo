@@ -1,7 +1,7 @@
 name: denpa_memo
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
   sdk: ^3.10.1
@@ -87,6 +87,7 @@ dev_dependencies:
   qr: ^3.0.2
   path_provider_platform_interface: ^2.1.3
   melos: ^8.5.0
+  pub_version_plus: ^3.1.3
 
 flutter:
   uses-material-design: true
@@ -130,6 +131,12 @@ melos:
         fileExists:
           - slang.yaml
       description: Regenerate slang translations for every workspace package that has its own slang.yaml (currently modules/StepDialog and modules/Widgets). The root app's own slang.yaml is outside the workspace member list, so regenerate it separately with "dart run slang" at the repo root.
+    app:run:
+      run: dart pub run pub_version_plus:main build && flutter run
+      description: Increment the pubspec.yaml build number, then run the root app with "flutter run".
+    app:build:
+      run: dart pub run pub_version_plus:main build && flutter build
+      description: Increment the pubspec.yaml build number, then build the root app with "flutter build".
 
 app_metadata:
   author: 'Hashibutogarasu'
