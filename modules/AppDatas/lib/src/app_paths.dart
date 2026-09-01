@@ -41,7 +41,11 @@ class AppPaths {
   /// account, since the store itself is what accounts are read from.
   static Future<Directory> objectboxDirectory(String appId) async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
-    return Directory(path.join(documentsDirectory.path, appId, 'objectbox'));
+    final directory = Directory(
+      path.join(documentsDirectory.path, appId, 'objectbox'),
+    );
+    await directory.create(recursive: true);
+    return directory;
   }
 
   /// The directory the offline data cache's SQLite database should open in:
