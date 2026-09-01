@@ -1,0 +1,21 @@
+name: toaster
+description: Cross-platform toast notifications, since fluttertoast doesn't support Linux.
+version: 0.1.0
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fluttertoast: ^10.0.0
+  flutter_toast_notification: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
