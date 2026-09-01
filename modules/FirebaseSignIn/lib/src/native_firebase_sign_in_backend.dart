@@ -1,8 +1,11 @@
+import 'dart:io' show Platform;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'cloud_account_state.dart';
 import 'exceptions.dart';
+import 'firebase_options.dart';
 import 'firebase_sign_in_backend.dart';
 
 /// Backend implementation for platforms with a registered native Firebase
@@ -34,7 +37,11 @@ class NativeFirebaseSignInBackend implements FirebaseSignInBackend {
 
   @override
   Future<CloudAccountState> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) async {
-    await GoogleSignIn.instance.initialize();
+    await GoogleSignIn.instance.initialize(
+      serverClientId: Platform.isAndroid
+          ? DefaultFirebaseOptions.androidGoogleSignInServerClientId
+          : null,
+    );
     final account = await GoogleSignIn.instance.authenticate();
     final credential = GoogleAuthProvider.credential(idToken: account.authentication.idToken);
     final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
