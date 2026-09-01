@@ -10,6 +10,8 @@ export 'src/backup/dm_header_codec.dart';
 export 'src/backup/dm_import_exceptions.dart';
 export 'src/backup/dm_zip_io.dart';
 export 'src/backup/export_result.dart';
+export 'src/cloud_file/cloud_file.dart';
+export 'src/cloud_file/cloud_file_repository.dart';
 export 'src/denpa_men/abnormality_resistance.dart';
 export 'src/denpa_men/attribute_resistance_calculator.dart';
 export 'src/denpa_men/attribute_resistance.dart';

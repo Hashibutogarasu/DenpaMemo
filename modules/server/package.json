@@ -1,11 +1,12 @@
 {
-  "name": "@denpa-memo/server",
+  "name": "@Hashibutogarasu/denpa-memo-server",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "db:remove": "docker compose down -v",
     "dev": "tsx watch src/index.ts",
+    "dev:deploy": "docker compose up -d --wait postgres && pnpm run db:migrate",
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",
     "start": "node dist/index.js",

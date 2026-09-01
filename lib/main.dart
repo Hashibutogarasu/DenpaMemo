@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
+import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -23,9 +27,32 @@ void main() async {
   final cacheIndexRepository = await CacheIndexRepository.open(
     packageInfo.packageName,
   );
-  runApp(
-    MyApp(objectBox: objectBox, cacheIndexRepository: cacheIndexRepository),
+  final googleOAuthClientConfig = await _loadGoogleOAuthClientConfig();
+  final container = ProviderContainer(
+    overrides: [
+      objectBoxProvider.overrideWithValue(objectBox),
+      dataCacheProvider.overrideWithValue(cacheIndexRepository),
+      googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+    ],
   );
+  await container.read(firebaseSignInProvider.future);
+  runApp(
+    MyApp(
+      objectBox: objectBox,
+      cacheIndexRepository: cacheIndexRepository,
+      overrides: [
+        googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+      ],
+    ),
+  );
+}
+
+/// Loads the Google OAuth "Desktop app" client config used by
+/// [RestFirebaseSignInBackend]'s Google sign-in loopback flow — bundled as
+/// an asset rather than checked into source (see `.gitignore`).
+Future<GoogleOAuthClientConfig> _loadGoogleOAuthClientConfig() async {
+  final raw = await rootBundle.loadString('assets/config/auth/google/google_client_secrets.json');
+  return GoogleOAuthClientConfig.fromInstalledAppJson(jsonDecode(raw) as Map<String, dynamic>);
 }
 
 class MyApp extends StatelessWidget {

@@ -22,6 +22,8 @@ dependencies:
   silky_scroll: ^2.6.4
   slang_flutter: ^4.19.0
   smooth_page_indicator: ^2.0.1
+  step_dialog:
+    path: ../StepDialog
   tree_graph:
     path: ../Graph
 

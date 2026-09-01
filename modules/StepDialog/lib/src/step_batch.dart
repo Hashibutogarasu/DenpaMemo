@@ -19,8 +19,13 @@ extension StepBatch<C> on List<Step<C>> {
         step.addListener(listener);
         try {
           await step.run(context);
-        } catch (error) {
-          throw StepRunFailure<C>(step: step, context: context, error: error);
+        } catch (error, stackTrace) {
+          throw StepRunFailure<C>(
+            step: step,
+            context: context,
+            error: error,
+            stackTrace: stackTrace,
+          );
         } finally {
           step.removeListener(listener);
         }

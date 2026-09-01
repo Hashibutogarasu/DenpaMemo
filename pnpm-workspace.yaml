@@ -1,0 +1,7 @@
+packages:
+  - modules/auth
+  - modules/CloudData
+  - modules/server
+allowBuilds:
+  esbuild: true
+  workerd: true

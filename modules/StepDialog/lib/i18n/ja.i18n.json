@@ -1,6 +1,9 @@
 {
   "common": {
     "ok": "OK",
-    "retry": "再試行"
+    "retry": "再試行",
+    "copyStackTrace": "スタックトレースをコピー",
+    "copyMessage": "メッセージをコピー",
+    "copiedToast": "${label}をコピーしました"
   }
 }

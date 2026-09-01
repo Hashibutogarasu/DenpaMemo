@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   slang_flutter: ^4.19.0
+  toaster:
+    path: ../Toaster
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,28 @@
+{
+  "name": "@Hashibutogarasu/denpa-memo-auth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "storage:deploy": "docker compose up -d minio",
+    "storage:remove": "docker compose down -v",
+    "dev:deploy": "docker compose up -d --wait minio",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@Hashibutogarasu/denpa-memo-cloud-data": "workspace:*",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "elysia": "^1.1.26"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.5.29",
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "wrangler": "^4.0.0"
+  }
+}

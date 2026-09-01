@@ -56,6 +56,15 @@ class Translations$common$ja {
 
 	/// ja: '再試行'
 	String get retry => '再試行';
+
+	/// ja: 'スタックトレースをコピー'
+	String get copyStackTrace => 'スタックトレースをコピー';
+
+	/// ja: 'メッセージをコピー'
+	String get copyMessage => 'メッセージをコピー';
+
+	/// ja: '${label}をコピーしました'
+	String copiedToast({required Object label}) => '${label}をコピーしました';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -68,6 +77,9 @@ extension on Translations {
 		return switch (path) {
 			'common.ok' => 'OK',
 			'common.retry' => '再試行',
+			'common.copyStackTrace' => 'スタックトレースをコピー',
+			'common.copyMessage' => 'メッセージをコピー',
+			'common.copiedToast' => ({required Object label}) => '${label}をコピーしました',
 			_ => null,
 		};
 	}
