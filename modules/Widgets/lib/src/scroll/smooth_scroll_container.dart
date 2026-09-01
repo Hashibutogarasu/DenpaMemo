@@ -36,6 +36,10 @@ class SmoothScrollContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SilkyScroll(
       direction: scrollDirection,
+      physics: const BouncingScrollPhysics(),
+      silkyScrollDuration: const Duration(milliseconds: 1000),
+      scrollSpeed: 1.5,
+      animationCurve: Curves.easeOutQuart,
       builder: builder ?? _wrapChild,
     );
   }
