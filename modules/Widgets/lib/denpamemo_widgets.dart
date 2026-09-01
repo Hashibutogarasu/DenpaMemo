@@ -73,6 +73,7 @@ export 'src/progress_bar.dart';
 export 'src/responsive/responsive.dart';
 export 'src/responsive/responsive_provider.dart';
 export 'src/scaffold/app_scaffold.dart';
+export 'src/scroll/smooth_scroll_container.dart';
 export 'src/search/search_filter_tile.dart';
 export 'src/search/search_form.dart';
 export 'src/search/search_overlay_bar.dart';

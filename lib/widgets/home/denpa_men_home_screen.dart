@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -76,9 +77,11 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
     if (shellState.isLoading != isLoading) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!context.mounted) return;
-        ref.read(appShellStateProvider.notifier).update(
-          (state) => (isMobile: state.isMobile, isLoading: isLoading),
-        );
+        ref
+            .read(appShellStateProvider.notifier)
+            .update(
+              (state) => (isMobile: state.isMobile, isLoading: isLoading),
+            );
       });
     }
 
@@ -217,9 +220,9 @@ class _HomeBody extends ConsumerWidget {
     final totalAttributeCount = masterData.attributes.length;
     final iconsById = {
       for (final record in records)
-        record.denpaMen.id: ref.watch(
-          denpaMenIconProvider(record.denpaMen.id),
-        ).value,
+        record.denpaMen.id: ref
+            .watch(denpaMenIconProvider(record.denpaMen.id))
+            .value,
     };
 
     final contentPadding = EdgeInsets.fromLTRB(
@@ -236,58 +239,84 @@ class _HomeBody extends ConsumerWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: recordsAsync.when(
-                  data: (_) {
-                    if (records.isEmpty) {
-                      return Center(child: Text(context.t.home.empty));
-                    }
-                    return switch (tileMode) {
-                      HomeTileMode.grid => DenpaMenBox(
-                        records: records,
-                        selectionMode: selectionMode,
-                        selectedIds: selectedIds,
-                        cutIds: cutIds,
-                        onSelectedChanged: (id, selected) =>
-                            _setSelected(ref, id, selected),
-                        onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
-                          context,
-                          denpaMen: denpaMen,
-                          totalAttributeCount: totalAttributeCount,
-                          iconFile: iconsById[denpaMen.id],
+                child: SmoothScrollContainer(
+                  child: recordsAsync.when(
+                    data: (_) {
+                      if (records.isEmpty) {
+                        return Center(child: Text(context.t.home.empty));
+                      }
+                      return switch (tileMode) {
+                        HomeTileMode.grid => DenpaMenBox(
+                          records: records,
+                          selectionMode: selectionMode,
+                          selectedIds: selectedIds,
+                          cutIds: cutIds,
+                          onSelectedChanged: (id, selected) =>
+                              _setSelected(ref, id, selected),
+                          onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
+                            context,
+                            denpaMen: denpaMen,
+                            totalAttributeCount: totalAttributeCount,
+                            iconFile: iconsById[denpaMen.id],
+                          ),
+                          iconsById: iconsById,
+                          padding: contentPadding,
                         ),
-                        iconsById: iconsById,
-                        padding: contentPadding,
-                      ),
-                      HomeTileMode.tile => ListView.builder(
-                        padding: contentPadding,
-                        itemCount: records.length,
-                        itemBuilder: (context, index) {
-                          final record = records[index];
-                          final denpaMen = record.denpaMen;
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: isMobile
-                                ? Opacity(
-                                    opacity: cutIds.contains(record.id)
-                                        ? 0.5
-                                        : 1,
-                                    child: DenpaMenListTile(
+                        HomeTileMode.tile => ListView.builder(
+                          padding: contentPadding,
+                          itemCount: records.length,
+                          itemBuilder: (context, index) {
+                            final record = records[index];
+                            final denpaMen = record.denpaMen;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: isMobile
+                                  ? Opacity(
+                                      opacity: cutIds.contains(record.id)
+                                          ? 0.5
+                                          : 1,
+                                      child: DenpaMenListTile(
+                                        denpaMen: denpaMen,
+                                        selectionMode: selectionMode,
+                                        selected: selectedIds.contains(
+                                          record.id,
+                                        ),
+                                        onSelectedChanged: (selected) =>
+                                            _setSelected(
+                                              ref,
+                                              record.id,
+                                              selected,
+                                            ),
+                                        onTap: () => DenpaMenPreviewDialog.show(
+                                          context,
+                                          denpaMen: denpaMen,
+                                          totalAttributeCount:
+                                              totalAttributeCount,
+                                          iconFile: iconsById[denpaMen.id],
+                                        ),
+                                        enableLongPressPreview: false,
+                                        iconFile: iconsById[denpaMen.id],
+                                        actionMenuItemsBuilder: (context) =>
+                                            denpaMenActionMenuItems(
+                                              context,
+                                              ref,
+                                              record: record,
+                                              masterData: masterData,
+                                            ),
+                                      ),
+                                    )
+                                  : DenpaMenAccordionTile(
                                       denpaMen: denpaMen,
+                                      totalAttributeCount: totalAttributeCount,
                                       selectionMode: selectionMode,
                                       selected: selectedIds.contains(record.id),
+                                      isCut: cutIds.contains(record.id),
                                       onSelectedChanged: (selected) =>
                                           _setSelected(
                                             ref,
                                             record.id,
                                             selected,
                                           ),
-                                      onTap: () => DenpaMenPreviewDialog.show(
-                                        context,
-                                        denpaMen: denpaMen,
-                                        totalAttributeCount: totalAttributeCount,
-                                        iconFile: iconsById[denpaMen.id],
-                                      ),
-                                      enableLongPressPreview: false,
                                       iconFile: iconsById[denpaMen.id],
                                       actionMenuItemsBuilder: (context) =>
                                           denpaMenActionMenuItems(
@@ -297,31 +326,14 @@ class _HomeBody extends ConsumerWidget {
                                             masterData: masterData,
                                           ),
                                     ),
-                                  )
-                                : DenpaMenAccordionTile(
-                                    denpaMen: denpaMen,
-                                    totalAttributeCount: totalAttributeCount,
-                                    selectionMode: selectionMode,
-                                    selected: selectedIds.contains(record.id),
-                                    isCut: cutIds.contains(record.id),
-                                    onSelectedChanged: (selected) =>
-                                        _setSelected(ref, record.id, selected),
-                                    iconFile: iconsById[denpaMen.id],
-                                    actionMenuItemsBuilder: (context) =>
-                                        denpaMenActionMenuItems(
-                                          context,
-                                          ref,
-                                          record: record,
-                                          masterData: masterData,
-                                        ),
-                                  ),
-                          );
-                        },
-                      ),
-                    };
-                  },
-                  loading: () => const SizedBox.shrink(),
-                  error: (error, stackTrace) => Center(child: Text('$error')),
+                            );
+                          },
+                        ),
+                      };
+                    },
+                    loading: () => const SizedBox.shrink(),
+                    error: (error, stackTrace) => Center(child: Text('$error')),
+                  ),
                 ),
               ),
               Positioned.fill(
