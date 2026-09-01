@@ -1,0 +1,20 @@
+services:
+  minio:
+    image: bitnami/minio:2025
+    environment:
+      MINIO_ROOT_USER: denpa_memo
+      MINIO_ROOT_PASSWORD: denpa_memo_dev
+      MINIO_DEFAULT_BUCKETS: denpa-memo-storage-dev
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio-data:/bitnami/minio/data
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9000/minio/health/live']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  minio-data:

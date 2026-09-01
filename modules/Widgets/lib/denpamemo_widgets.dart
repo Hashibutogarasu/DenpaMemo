@@ -19,6 +19,8 @@ export 'src/denpa_men_container.dart';
 export 'src/denpa_men_list_tile.dart';
 export 'src/denpa_men_selected_overlay.dart';
 export 'src/denpa_men_status.dart';
+export 'src/dialog/account_sign_in_dialog.dart';
+export 'src/dialog/account_sign_up_dialog.dart';
 export 'src/dialog/antenna_selection_dialog.dart';
 export 'src/dialog/backup_result_section.dart';
 export 'src/dialog/birth_guide_error_dialog.dart';

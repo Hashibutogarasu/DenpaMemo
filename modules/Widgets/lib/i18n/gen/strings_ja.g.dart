@@ -48,6 +48,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
 	late final Translations$editableStatus$ja editableStatus = Translations$editableStatus$ja.internal(_root);
 	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
+	late final Translations$dialog$ja dialog = Translations$dialog$ja.internal(_root);
 	Map<String, String> get monster => {
 		'swordmouse': 'ねずみけんし',
 	};
@@ -222,6 +223,9 @@ class Translations$common$ja {
 
 	/// ja: '決定'
 	String get confirm => '決定';
+
+	/// ja: 'エラー'
+	String get errorTitle => 'エラー';
 
 	/// ja: '未設定'
 	String get unset => '未設定';
@@ -416,6 +420,68 @@ class Translations$backup$ja {
 	String get exportOrphanedSection => '親が同梱されていない個体';
 }
 
+// Path: dialog
+class Translations$dialog$ja {
+	Translations$dialog$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	late final Translations$dialog$accountSignIn$ja accountSignIn = Translations$dialog$accountSignIn$ja.internal(_root);
+	late final Translations$dialog$accountSignUp$ja accountSignUp = Translations$dialog$accountSignUp$ja.internal(_root);
+}
+
+// Path: dialog.accountSignIn
+class Translations$dialog$accountSignIn$ja {
+	Translations$dialog$accountSignIn$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'クラウドアカウントにサインイン'
+	String get title => 'クラウドアカウントにサインイン';
+
+	/// ja: 'メールアドレス'
+	String get emailLabel => 'メールアドレス';
+
+	/// ja: 'パスワード'
+	String get passwordLabel => 'パスワード';
+
+	/// ja: 'または'
+	String get orDivider => 'または';
+
+	/// ja: 'Googleでサインイン'
+	String get googleButton => 'Googleでサインイン';
+
+	/// ja: 'アカウントを作成'
+	String get createAccountLink => 'アカウントを作成';
+
+	/// ja: 'サインイン'
+	String get confirmButton => 'サインイン';
+}
+
+// Path: dialog.accountSignUp
+class Translations$dialog$accountSignUp$ja {
+	Translations$dialog$accountSignUp$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'アカウントを作成'
+	String get title => 'アカウントを作成';
+
+	/// ja: 'メールアドレス'
+	String get emailLabel => 'メールアドレス';
+
+	/// ja: 'パスワード'
+	String get passwordLabel => 'パスワード';
+
+	/// ja: 'サインアップ'
+	String get confirmButton => 'サインアップ';
+}
+
 /// The flat map containing all translations for locale <ja>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -427,6 +493,7 @@ extension on Translations {
 			'common.back' => '戻る',
 			'common.cancel' => 'キャンセル',
 			'common.confirm' => '決定',
+			'common.errorTitle' => 'エラー',
 			'common.unset' => '未設定',
 			'birthGuide.errorMessage' => '系譜データの読み込みに失敗しました',
 			'birthGuide.errorTitle' => 'エラー',
@@ -470,6 +537,17 @@ extension on Translations {
 			'backup.exportCompleteTitle' => 'エクスポート結果',
 			'backup.exportExportedSection' => 'エクスポート完了',
 			'backup.exportOrphanedSection' => '親が同梱されていない個体',
+			'dialog.accountSignIn.title' => 'クラウドアカウントにサインイン',
+			'dialog.accountSignIn.emailLabel' => 'メールアドレス',
+			'dialog.accountSignIn.passwordLabel' => 'パスワード',
+			'dialog.accountSignIn.orDivider' => 'または',
+			'dialog.accountSignIn.googleButton' => 'Googleでサインイン',
+			'dialog.accountSignIn.createAccountLink' => 'アカウントを作成',
+			'dialog.accountSignIn.confirmButton' => 'サインイン',
+			'dialog.accountSignUp.title' => 'アカウントを作成',
+			'dialog.accountSignUp.emailLabel' => 'メールアドレス',
+			'dialog.accountSignUp.passwordLabel' => 'パスワード',
+			'dialog.accountSignUp.confirmButton' => 'サインアップ',
 			'monster.swordmouse' => 'ねずみけんし',
 			'antenna.none' => 'アンテナなし',
 			'antenna.antennaRoot' => 'アンテナのねっこ',

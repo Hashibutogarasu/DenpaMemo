@@ -1,0 +1,6 @@
+FIREBASE_PROJECT_ID=
+
+R2_ACCOUNT_ID=denpa_memo
+R2_ACCESS_KEY_ID=denpa_memo
+R2_SECRET_ACCESS_KEY=denpa_memo_dev
+R2_S3_ENDPOINT=http://localhost:9000

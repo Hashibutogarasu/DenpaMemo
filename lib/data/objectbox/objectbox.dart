@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../objectbox.g.dart';
 import '../account/account_entity.dart';
+import '../cloud_file/cloud_file_entity.dart';
 import '../denpa_men/denpa_men_entity.dart';
 import '../qr_code/qr_code_entity.dart';
 import '../settings/app_settings_entity.dart';
@@ -19,12 +20,14 @@ class ObjectBox {
   late final Box<QrCodeEntity> qrCodeBox;
   late final Box<AccountEntity> accountBox;
   late final Box<AppSettingsEntity> settingsBox;
+  late final Box<CloudFileEntity> cloudFileBox;
 
   ObjectBox._create(this.store) {
     denpaMenBox = Box<DenpaMenEntity>(store);
     qrCodeBox = Box<QrCodeEntity>(store);
     accountBox = Box<AccountEntity>(store);
     settingsBox = Box<AppSettingsEntity>(store);
+    cloudFileBox = Box<CloudFileEntity>(store);
 
     if (accountBox.isEmpty()) {
       accountBox.put(AccountEntity(cuid: cuid(), createdAt: DateTime.now()));

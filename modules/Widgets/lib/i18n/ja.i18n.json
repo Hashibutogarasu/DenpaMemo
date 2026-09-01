@@ -3,6 +3,7 @@
     "back": "戻る",
     "cancel": "キャンセル",
     "confirm": "決定",
+    "errorTitle": "エラー",
     "unset": "未設定"
   },
   "birthGuide": {
@@ -60,6 +61,23 @@
     "exportCompleteTitle": "エクスポート結果",
     "exportExportedSection": "エクスポート完了",
     "exportOrphanedSection": "親が同梱されていない個体"
+  },
+  "dialog": {
+    "accountSignIn": {
+      "title": "クラウドアカウントにサインイン",
+      "emailLabel": "メールアドレス",
+      "passwordLabel": "パスワード",
+      "orDivider": "または",
+      "googleButton": "Googleでサインイン",
+      "createAccountLink": "アカウントを作成",
+      "confirmButton": "サインイン"
+    },
+    "accountSignUp": {
+      "title": "アカウントを作成",
+      "emailLabel": "メールアドレス",
+      "passwordLabel": "パスワード",
+      "confirmButton": "サインアップ"
+    }
   },
   "monster": {
     "swordmouse": "ねずみけんし"

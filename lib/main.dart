@@ -1,5 +1,6 @@
 import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/objectbox/objectbox.dart';
+import 'firebase_options.dart';
 import 'i18n/gen/strings.g.dart';
 import 'providers/app_settings_providers.dart';
 import 'providers/denpa_men_sync_providers.dart';
@@ -18,6 +20,7 @@ import 'widgets/restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _initializeFirebase();
   final packageInfo = await PackageInfo.fromPlatform();
   final objectBox = await ObjectBox.create();
   final cacheIndexRepository = await CacheIndexRepository.open(
@@ -26,6 +29,18 @@ void main() async {
   runApp(
     MyApp(objectBox: objectBox, cacheIndexRepository: cacheIndexRepository),
   );
+}
+
+/// Only the web app is registered in the Firebase console so far (see
+/// [DefaultFirebaseOptions]), so this must not crash startup on platforms
+/// that aren't yet configured — cloud features simply fail when used on
+/// those instead.
+Future<void> _initializeFirebase() async {
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } on UnsupportedError {
+    return;
+  }
 }
 
 class MyApp extends StatelessWidget {

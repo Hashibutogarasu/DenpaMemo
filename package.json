@@ -1,0 +1,12 @@
+{
+  "name": "denpa-memo-workspace",
+  "private": true,
+  "packageManager": "pnpm@11.12.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:deploy": "turbo run dev:deploy"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  }
+}

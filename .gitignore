@@ -50,3 +50,15 @@ app.*.map.json
 # ObjectBox native library fetched by setup.sh for `flutter test`
 /download/
 /lib/libobjectbox.so
+
+# Node/pnpm related (modules/auth, modules/CloudData, modules/server)
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+
+# Firebase config (contains this project's API keys)
+/lib/firebase_options.dart
+/android/app/google-services.json
+/ios/Runner/GoogleService-Info.plist
+/assets/config/auth/google/google_client_secrets.json

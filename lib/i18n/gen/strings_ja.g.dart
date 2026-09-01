@@ -355,6 +355,8 @@ class Translations$settings$ja {
 	/// ja: 'アカウント'
 	String get account => 'アカウント';
 
+	late final Translations$settings$accountSettings$ja accountSettings = Translations$settings$accountSettings$ja.internal(_root);
+
 	/// ja: 'テーマ'
 	String get theme => 'テーマ';
 
@@ -839,6 +841,36 @@ class Translations$settings$section$ja {
 	String get other => 'その他';
 }
 
+// Path: settings.accountSettings
+class Translations$settings$accountSettings$ja {
+	Translations$settings$accountSettings$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'クラウドアカウント'
+	String get sectionCloud => 'クラウドアカウント';
+
+	/// ja: 'ローカルアカウント'
+	String get sectionLocal => 'ローカルアカウント';
+
+	/// ja: 'ログイン'
+	String get signIn => 'ログイン';
+
+	/// ja: 'UID'
+	String get cloudUidLabel => 'UID';
+
+	/// ja: 'クラウドアカウントを削除'
+	String get deleteCloudAccount => 'クラウドアカウントを削除';
+
+	/// ja: 'ローカルアカウントを追加する'
+	String get addLocalAccount => 'ローカルアカウントを追加する';
+
+	/// ja: 'ローカルアカウントを削除'
+	String get deleteLocalAccount => 'ローカルアカウントを削除';
+}
+
 /// The flat map containing all translations for locale <ja>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -883,6 +915,13 @@ extension on Translations {
 			'settings.section.other' => 'その他',
 			'settings.copiedToast' => ({required Object label}) => '${label}をコピーしました',
 			'settings.account' => 'アカウント',
+			'settings.accountSettings.sectionCloud' => 'クラウドアカウント',
+			'settings.accountSettings.sectionLocal' => 'ローカルアカウント',
+			'settings.accountSettings.signIn' => 'ログイン',
+			'settings.accountSettings.cloudUidLabel' => 'UID',
+			'settings.accountSettings.deleteCloudAccount' => 'クラウドアカウントを削除',
+			'settings.accountSettings.addLocalAccount' => 'ローカルアカウントを追加する',
+			'settings.accountSettings.deleteLocalAccount' => 'ローカルアカウントを削除',
 			'settings.theme' => 'テーマ',
 			'settings.language' => '言語',
 			'settings.notifications' => '通知',

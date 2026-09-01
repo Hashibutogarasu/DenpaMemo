@@ -46,6 +46,15 @@
     },
     "copiedToast": "${label}をコピーしました",
     "account": "アカウント",
+    "accountSettings": {
+      "sectionCloud": "クラウドアカウント",
+      "sectionLocal": "ローカルアカウント",
+      "signIn": "ログイン",
+      "cloudUidLabel": "UID",
+      "deleteCloudAccount": "クラウドアカウントを削除",
+      "addLocalAccount": "ローカルアカウントを追加する",
+      "deleteLocalAccount": "ローカルアカウントを削除"
+    },
     "theme": "テーマ",
     "language": "言語",
     "notifications": "通知",
