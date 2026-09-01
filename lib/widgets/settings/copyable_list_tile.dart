@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:toaster/toaster.dart';
 
 import '../../i18n/gen/strings.g.dart';
 
@@ -21,13 +21,16 @@ class CopyableListTile extends StatelessWidget {
   final String label;
   final String? trailingText;
 
-  Future<void> _copy(Translations t) async {
+  Future<void> _copy(BuildContext context) async {
     final text = trailingText;
     if (text == null) {
       return;
     }
     await Clipboard.setData(ClipboardData(text: text));
-    await Fluttertoast.showToast(msg: t.settings.copiedToast(label: label));
+    if (!context.mounted) {
+      return;
+    }
+    await Toaster.show(context, context.t.settings.copiedToast(label: label));
   }
 
   @override
@@ -38,7 +41,7 @@ class CopyableListTile extends StatelessWidget {
       title: Text(label),
       trailing: value != null ? Text(value) : null,
       enabled: value != null,
-      onTap: value != null ? () => _copy(context.t) : null,
+      onTap: value != null ? () => _copy(context) : null,
     );
   }
 }
