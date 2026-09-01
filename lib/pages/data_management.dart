@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../i18n/gen/strings.g.dart';
+import '../providers/cache_file_providers.dart';
 import '../providers/data_cleanup_providers.dart';
 
 Future<bool> _confirm(
@@ -70,6 +71,7 @@ Future<void> _clearCache(BuildContext context, WidgetRef ref) async {
     return;
   }
   await ref.read(dataCleanupControllerProvider).clearCache();
+  ref.invalidate(cachedDataSizeProvider);
   if (!context.mounted) {
     return;
   }
@@ -98,6 +100,10 @@ class DataManagementPage extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.delete_sweep_outlined),
             title: Text(t.settings.dataManagementClearCache),
+            trailing: switch (ref.watch(cachedDataSizeProvider)) {
+              AsyncData(:final value) => FileSizeText(bytes: value),
+              _ => null,
+            },
             onTap: () => _clearCache(context, ref),
           ),
         ],

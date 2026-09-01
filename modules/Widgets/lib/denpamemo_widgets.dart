@@ -52,6 +52,7 @@ export 'src/label/attribute_resistance_entry.dart';
 export 'src/label/correction_bonus_overlay.dart';
 export 'src/label/exp_bar.dart';
 export 'src/label/exp_progress.dart';
+export 'src/label/file_size_text.dart';
 export 'src/label/gauge_label.dart';
 export 'src/label/gauge_value.dart';
 export 'src/label/inline_gauge_label.dart';

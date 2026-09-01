@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:sqlite3/sqlite3.dart';
@@ -14,18 +15,42 @@ enum CacheSyncResult { created, merged, unchanged }
 /// JSON encoding/decoding is entirely internal: callers pass and receive
 /// domain values, never raw `Map<String, dynamic>`.
 class CacheIndexRepository {
-  CacheIndexRepository._(this._database);
+  CacheIndexRepository._(this._database, this._directory);
 
   final Database _database;
+  final Directory? _directory;
 
   static Future<CacheIndexRepository> open(String appId) async {
     final localCacheDatabase = await LocalCacheDatabase.open(appId);
-    return CacheIndexRepository._(localCacheDatabase.database);
+    return CacheIndexRepository._(
+      localCacheDatabase.database,
+      localCacheDatabase.directory,
+    );
   }
 
   /// Opens a throwaway in-memory repository, for use in tests only.
   factory CacheIndexRepository.createInMemory() {
-    return CacheIndexRepository._(LocalCacheDatabase.openInMemory().database);
+    final localCacheDatabase = LocalCacheDatabase.openInMemory();
+    return CacheIndexRepository._(
+      localCacheDatabase.database,
+      localCacheDatabase.directory,
+    );
+  }
+
+  /// Lists every file this repository has written to disk (the SQLite
+  /// database file and any companion files it creates, e.g. `-wal`/`-shm`
+  /// journals). Returns an empty list for [CacheIndexRepository.createInMemory],
+  /// which has no backing directory.
+  Future<List<File>> listCachedFiles() async {
+    final directory = _directory;
+    if (directory == null || !await directory.exists()) {
+      return const [];
+    }
+    return directory
+        .list()
+        .where((entity) => entity is File)
+        .cast<File>()
+        .toList();
   }
 
   /// Reports whether [save] would write a new or changed entry for [key],
