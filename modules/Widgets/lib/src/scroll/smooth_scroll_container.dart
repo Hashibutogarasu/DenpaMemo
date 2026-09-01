@@ -1,36 +1,57 @@
+import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:silky_scroll/silky_scroll.dart';
 
-/// Makes every `ListView`/`GridView`/`SingleChildScrollView`/
-/// `CustomScrollView` under [child] scroll via `silky_scroll`, with no
-/// per-widget wiring: [PrimaryScrollController] hands them the managed
-/// [ScrollController] (as long as they don't set their own explicit
-/// `controller`), and [ScrollConfiguration] hands them the managed
-/// [ScrollPhysics]. `SilkyScroll`'s own [Listener] wraps [child] as a
-/// whole, so pointer events from any descendant scrollable reach it too.
+/// Wraps `silky_scroll`'s [SilkyScroll].
+///
+/// The default constructor wires [child] up automatically: any descendant
+/// `ListView`/`GridView`/`SingleChildScrollView`/`CustomScrollView` that
+/// doesn't set its own `controller` picks up the managed
+/// [ScrollController] via [PrimaryScrollController], and the managed
+/// [ScrollPhysics] via [ScrollConfiguration].
+///
+/// [SmoothScrollContainer.builder] bypasses that, exposing [SilkyScroll]'s
+/// own `builder` signature (`context`, `controller`, `physics`,
+/// `pointerDeviceKind`) for callers that need to wire a scrollable
+/// themselves.
 class SmoothScrollContainer extends StatelessWidget {
   const SmoothScrollContainer({
     super.key,
-    required this.child,
+    required Widget child,
     this.scrollDirection = Axis.vertical,
-  });
+  }) : _child = child,
+       builder = null;
 
-  final Widget child;
+  const SmoothScrollContainer.builder({
+    super.key,
+    required SilkyScrollWidgetBuilder this.builder,
+    this.scrollDirection = Axis.vertical,
+  }) : _child = null;
+
+  final Widget? _child;
+  final SilkyScrollWidgetBuilder? builder;
   final Axis scrollDirection;
 
   @override
   Widget build(BuildContext context) {
     return SilkyScroll(
       direction: scrollDirection,
-      builder: (context, controller, physics, pointerDeviceKind) {
-        return PrimaryScrollController(
-          controller: controller,
-          child: ScrollConfiguration(
-            behavior: _SmoothScrollBehavior(physics),
-            child: child,
-          ),
-        );
-      },
+      builder: builder ?? _wrapChild,
+    );
+  }
+
+  Widget _wrapChild(
+    BuildContext context,
+    ScrollController controller,
+    ScrollPhysics physics,
+    PointerDeviceKind? pointerDeviceKind,
+  ) {
+    return PrimaryScrollController(
+      controller: controller,
+      child: ScrollConfiguration(
+        behavior: _SmoothScrollBehavior(physics),
+        child: _child!,
+      ),
     );
   }
 }
