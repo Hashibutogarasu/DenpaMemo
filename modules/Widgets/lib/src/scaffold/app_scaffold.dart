@@ -10,7 +10,8 @@ import '../responsive/responsive_provider.dart';
 
 /// Standard page shell: a [SlantedAppBar] header, plus [body] with the
 /// stack-aware [AppBackButton] (bottom-left, shown only when
-/// `Navigator.canPop(context)`) and [floatingActionButton] (bottom-right) laid out
+/// `GoRouter.of(context).canPop()` — shell-aware, unlike
+/// `Navigator.canPop`) and [floatingActionButton] (bottom-right) laid out
 /// as siblings in one [Stack]. Keeping both buttons in the same Stack —
 /// rather than routing one of them through [Scaffold.floatingActionButton]
 /// — is what keeps their height and bottom offset pixel-identical.
@@ -40,7 +41,7 @@ class AppScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canPop = Navigator.canPop(context);
+    final canPop = context.canPop();
 
     final shellState = ref.watch(appShellStateProvider);
     final isMobile = isMobileWidth(context);
