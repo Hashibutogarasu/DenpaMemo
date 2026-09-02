@@ -2,6 +2,7 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTrans
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_table_plus/flutter_table_plus.dart';
+import 'package:toaster/toaster.dart';
 
 import '../data/server/physique_table_args.dart';
 import '../data/server/physique_table_record.dart';
@@ -172,9 +173,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       rowValues: [for (final row in _rows!) row.values],
     );
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.t.physiqueTable.saved)),
-    );
+    await Toaster.show(context, context.t.physiqueTable.saved);
   }
 
   Future<void> _deleteTable() async {
