@@ -53,7 +53,7 @@ class CloudBackupPage extends ConsumerWidget {
     final masterData = ref.watch(masterDataProvider).value;
     final restoreNotification = cloudBackupRestoreNotificationOf(ref.watch(appNotificationsProvider));
     final isRestoring = restoreNotification?.status == AppNotificationStatus.running;
-    final isBusy = ref.watch(cloudBackupRunningNotificationProvider) != null;
+    final isBusy = ref.watch(cloudBackupBusyProvider);
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackup),
@@ -69,19 +69,31 @@ class CloudBackupPage extends ConsumerWidget {
           Column(
             children: [
               Expanded(
-                child: _CloudBackupEndpoint(
-                  icon: Icons.cloud_outlined,
-                  label: t.cloudBackup.latestBackupLabel,
-                  onTap: masterData == null || isBusy
-                      ? null
-                      : () => runCloudBackup(context, ref, masterData),
-                ),
+                child: masterData == null
+                    ? _CloudBackupEndpoint(
+                        icon: Icons.cloud_outlined,
+                        label: t.cloudBackup.latestBackupLabel,
+                        onTap: null,
+                      )
+                    : DisableWhileRunning(
+                        provider: cloudBackupBusyProvider,
+                        onPressed: () => runCloudBackup(context, ref, masterData),
+                        builder: (context, onPressed) => _CloudBackupEndpoint(
+                          icon: Icons.cloud_outlined,
+                          label: t.cloudBackup.latestBackupLabel,
+                          onTap: onPressed,
+                        ),
+                      ),
               ),
               Expanded(
-                child: _CloudBackupEndpoint(
-                  icon: Icons.smartphone_outlined,
-                  label: t.cloudBackup.localFileLabel,
-                  onTap: isBusy ? null : () => runCloudRestore(context, ref),
+                child: DisableWhileRunning(
+                  provider: cloudBackupBusyProvider,
+                  onPressed: () => runCloudRestore(context, ref),
+                  builder: (context, onPressed) => _CloudBackupEndpoint(
+                    icon: Icons.smartphone_outlined,
+                    label: t.cloudBackup.localFileLabel,
+                    onTap: onPressed,
+                  ),
                 ),
               ),
             ],

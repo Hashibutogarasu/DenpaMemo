@@ -5,7 +5,6 @@ import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/cloud_files_providers.dart';
-import 'cloud_backup_flows.dart';
 import 'confirm_dialog.dart';
 
 Future<void> _deleteOne(BuildContext context, WidgetRef ref, CloudFile cloudFile) async {
@@ -30,20 +29,20 @@ Future<void> _deleteOne(BuildContext context, WidgetRef ref, CloudFile cloudFile
 }
 
 /// The "restore"/"delete" menu shown from a backup history list item's `⋮`
-/// trailing button. [restoreEnabled] disables the restore entry while a
-/// backup/restore is already running elsewhere, since only one such
-/// operation can be in flight at a time.
+/// trailing button. The restore entry is disabled when [onRestore] is
+/// null — passed by the caller while a backup/restore is already running
+/// elsewhere, since only one such operation can be in flight at a time.
 List<PopupMenuEntry<VoidCallback>> cloudFileActionMenuItems(
   BuildContext context,
   WidgetRef ref, {
   required CloudFile cloudFile,
-  required bool restoreEnabled,
+  required VoidCallback? onRestore,
 }) {
   final t = context.t;
   return [
     PopupMenuItem(
-      enabled: restoreEnabled,
-      value: () => runCloudRestore(context, ref, target: cloudFile),
+      enabled: onRestore != null,
+      value: onRestore ?? () {},
       child: Text(t.cloudBackup.restoreAction),
     ),
     PopupMenuItem(

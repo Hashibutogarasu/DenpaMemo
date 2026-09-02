@@ -35,6 +35,12 @@ final cloudBackupRunningNotificationProvider = Provider<AppNotification?>((ref) 
       : null;
 });
 
+/// Whether either cloud backup operation is currently running, for
+/// `DisableWhileRunning.provider`.
+final cloudBackupBusyProvider = Provider<bool>(
+  (ref) => ref.watch(cloudBackupRunningNotificationProvider) != null,
+);
+
 /// Progress bar shared by `CloudBackupPage` and `CloudBackupHistoryPage`,
 /// so the progress is visible regardless of which page's endpoint started
 /// the operation. Passed as `AppScaffold.belowHeader` by each of the two

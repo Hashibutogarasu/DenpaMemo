@@ -161,7 +161,7 @@ class AccountSettingsPage extends ConsumerWidget {
       body: SmoothScrollContainer(
         child: ListView(
           children: [
-            ListTileSection(title: t.settings.accountSettings.sectionCloud),
+            ListTileSection(title: Text(t.settings.accountSettings.sectionCloud)),
             ListItemContainer(
               children: [
                 ListItemTile(
@@ -185,7 +185,7 @@ class AccountSettingsPage extends ConsumerWidget {
                 ),
               ],
             ),
-            ListTileSection(title: t.settings.accountSettings.sectionLocal),
+            ListTileSection(title: Text(t.settings.accountSettings.sectionLocal)),
             ListItemContainer(
               children: [
                 CopyableListTile(
@@ -199,7 +199,7 @@ class AccountSettingsPage extends ConsumerWidget {
                 ),
               ],
             ),
-            ListTileSection(title: t.settings.accountSettings.sectionDangerZone),
+            ListTileSection(title: Text(t.settings.accountSettings.sectionDangerZone)),
             ListItemContainer(
               children: [
                 ListItemTile(

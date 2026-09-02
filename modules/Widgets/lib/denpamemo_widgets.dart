@@ -51,6 +51,7 @@ export 'src/icon/arrow_icon.dart';
 export 'src/icon/attribute.dart';
 export 'src/icon/entity_icon.dart';
 export 'src/indicator/marker.dart';
+export 'src/interaction/disable_while_running.dart';
 export 'src/label/abnormality_resistance_entry.dart';
 export 'src/label/attribute.dart';
 export 'src/label/attribute_resistance_entry.dart';

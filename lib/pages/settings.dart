@@ -32,7 +32,7 @@ class Settings extends ConsumerWidget {
       body: SmoothScrollContainer(
         child: ListView(
           children: [
-            ListTileSection(title: t.settings.section.general),
+            ListTileSection(title: Text(t.settings.section.general)),
             ListItemContainer(
               children: [
                 ListItemTile(
@@ -47,7 +47,7 @@ class Settings extends ConsumerWidget {
                 ),
               ],
             ),
-            ListTileSection(title: t.settings.section.personal),
+            ListTileSection(title: Text(t.settings.section.personal)),
             ListItemContainer(
               children: [
                 ListItemTile(
@@ -70,7 +70,7 @@ class Settings extends ConsumerWidget {
                 ),
               ],
             ),
-            ListTileSection(title: t.settings.section.data),
+            ListTileSection(title: Text(t.settings.section.data)),
             ListItemContainer(
               children: [
                 ListItemTile(
@@ -84,7 +84,7 @@ class Settings extends ConsumerWidget {
                 ),
               ],
             ),
-            ListTileSection(title: t.settings.section.other),
+            ListTileSection(title: Text(t.settings.section.other)),
             ListItemContainer(
               children: [
                 ListItemTile(
