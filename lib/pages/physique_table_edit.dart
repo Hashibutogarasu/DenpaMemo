@@ -230,28 +230,37 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           : Column(
               children: [
                 Expanded(
-                  child: FlutterTablePlus<PhysiqueTableRow>(
-                    columns: buildPhysiqueTableColumns(
-                      editable: true,
-                      columnCount: rows.isEmpty
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final columnCount = rows.isEmpty
                           ? metadataAsync.requireValue.physiqueTableColumnCount
-                          : rows.first.values.length,
-                    ),
-                    data: rows,
-                    rowId: (row) => row.lineOffset.toString(),
-                    isEditable: true,
-                    onCellChanged: _onCellChanged,
-                    isSelectable: true,
-                    selectionMode: SelectionMode.multiple,
-                    selectedRows: _selectedRowIds,
-                    onCheckboxChanged: (rowId, isSelected) => setState(() {
-                      _selectedRowIds = Set.of(_selectedRowIds);
-                      if (isSelected) {
-                        _selectedRowIds.add(rowId);
-                      } else {
-                        _selectedRowIds.remove(rowId);
-                      }
-                    }),
+                          : rows.first.values.length;
+                      return FlutterTablePlus<PhysiqueTableRow>(
+                        columns: buildPhysiqueTableColumns(
+                          editable: true,
+                          columnCount: columnCount,
+                          valueColumnWidth: physiqueTableValueColumnWidth(
+                            availableWidth: constraints.maxWidth,
+                            columnCount: columnCount,
+                          ),
+                        ),
+                        data: rows,
+                        rowId: (row) => row.lineOffset.toString(),
+                        isEditable: true,
+                        onCellChanged: _onCellChanged,
+                        isSelectable: true,
+                        selectionMode: SelectionMode.multiple,
+                        selectedRows: _selectedRowIds,
+                        onCheckboxChanged: (rowId, isSelected) => setState(() {
+                          _selectedRowIds = Set.of(_selectedRowIds);
+                          if (isSelected) {
+                            _selectedRowIds.add(rowId);
+                          } else {
+                            _selectedRowIds.remove(rowId);
+                          }
+                        }),
+                      );
+                    },
                   ),
                 ),
                 Padding(

@@ -2,6 +2,7 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTrans
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_table_plus/flutter_table_plus.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
@@ -46,6 +47,7 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final metadataAsync = ref.watch(physiqueTableMetadataProvider);
     return AppScaffold(
       title: OutlinedTitleText(
         text: t.physiqueTable.tableTitle(
@@ -53,33 +55,46 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
-      body: FutureBuilder<List<PhysiqueTableRow>>(
-        future: _rowsFuture,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const ProgressBar();
-          }
-          final rows = snapshot.data!;
-          return Column(
-            children: [
-              Expanded(
-                child: FlutterTablePlus<PhysiqueTableRow>(
-                  columns: buildPhysiqueTableColumns(editable: false),
-                  data: rows,
-                  rowId: (row) => row.lineOffset.toString(),
+      body: metadataAsync.when(
+        data: (metadata) => FutureBuilder<List<PhysiqueTableRow>>(
+          future: _rowsFuture,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const ProgressBar();
+            }
+            final rows = snapshot.data!;
+            return Column(
+              children: [
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => FlutterTablePlus<PhysiqueTableRow>(
+                      columns: buildPhysiqueTableColumns(
+                        editable: false,
+                        columnCount: metadata.physiqueTableColumnCount,
+                        valueColumnWidth: physiqueTableValueColumnWidth(
+                          availableWidth: constraints.maxWidth,
+                          columnCount: metadata.physiqueTableColumnCount,
+                        ),
+                      ),
+                      data: rows,
+                      rowId: (row) => row.lineOffset.toString(),
+                    ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: FilledButton.icon(
-                  icon: const Icon(Icons.edit_outlined),
-                  label: Text(t.physiqueTable.edit),
-                  onPressed: () => PhysiqueTableEditRoute($extra: widget.args).push(context),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: FilledButton.icon(
+                    icon: const Icon(Icons.edit_outlined),
+                    label: Text(t.physiqueTable.edit),
+                    onPressed: () => PhysiqueTableEditRoute($extra: widget.args).push(context),
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
+        loading: () => const ProgressBar(),
+        error: (error, stackTrace) => const SizedBox.shrink(),
       ),
     );
   }
