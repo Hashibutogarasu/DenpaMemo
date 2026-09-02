@@ -10,6 +10,5 @@ export 'src/monster/graphql_monster_repository.dart';
 export 'src/monster/monster_graphql_queries.dart';
 export 'src/monster_providers.dart';
 export 'src/physique_table/graphql_physique_antenna_category_repository.dart';
-export 'src/physique_table/physique_antenna_category.dart';
 export 'src/physique_table/physique_antenna_category_graphql_queries.dart';
 export 'src/physique_table/physique_antenna_category_providers.dart';

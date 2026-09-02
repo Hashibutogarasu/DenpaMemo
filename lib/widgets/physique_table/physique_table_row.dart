@@ -19,11 +19,11 @@ class PhysiqueTableRow {
 /// Builds the `#` (row number) + one column per value column shared by the
 /// physique table's view and edit pages, labelled by their 1-based index
 /// (there is no established name for these columns). Value columns are
-/// editable only when [editable] is true. [columnCount] defaults to the
-/// value column count used by `PhysiqueTableEntity` on the server.
+/// editable only when [editable] is true. [columnCount] must come from the
+/// caller — see `PhysiqueTableMetadata.physiqueTableColumnCount`.
 Map<String, TablePlusColumn<PhysiqueTableRow>> buildPhysiqueTableColumns({
   required bool editable,
-  int columnCount = 10,
+  required int columnCount,
 }) {
   final builder = TableColumnsBuilder<PhysiqueTableRow>()
     ..addColumn(

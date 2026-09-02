@@ -1,3 +1,4 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,25 +90,25 @@ class PhysiqueTableListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
-    final categoriesAsync = ref.watch(physiqueAntennaCategoriesProvider);
+    final metadataAsync = ref.watch(physiqueTableMetadataProvider);
     final categoriesWithDataAsync = ref.watch(physiqueTableAnntenaCategoriesWithDataProvider);
     final categoriesWithData = categoriesWithDataAsync.value ?? const <String>{};
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.physiqueTable.title),
-      floatingActionButton: categoriesAsync.when(
-        data: (categories) => FloatingActionButton.extended(
+      floatingActionButton: metadataAsync.when(
+        data: (metadata) => FloatingActionButton.extended(
           icon: const Icon(Icons.add),
           label: Text(t.physiqueTable.createNewTable),
-          onPressed: () => _createNewTable(context, categories),
+          onPressed: () => _createNewTable(context, metadata.physiqueAntennaCategories),
         ),
         loading: () => null,
         error: (error, stackTrace) => null,
       ),
-      body: categoriesAsync.when(
-        data: (categories) {
+      body: metadataAsync.when(
+        data: (metadata) {
           final byCategory = <String, List<PhysiqueAntennaCategory>>{};
-          for (final row in categories) {
+          for (final row in metadata.physiqueAntennaCategories) {
             byCategory.putIfAbsent(row.category, () => []).add(row);
           }
 

@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { PHYSIQUE_TABLE_COLUMN_COUNT } from '../entities/physique-table.entity';
 
-/** Values for one physique table row: a fixed-length array of stat values. */
-export const physiqueTableValuesSchema = z.array(z.number()).length(PHYSIQUE_TABLE_COLUMN_COUNT);
+/** Values for one physique table row. */
+export const physiqueTableValuesSchema = z.array(z.number()).min(1);
 
 /** Body shape for a single record accepted by `POST /physiques`. */
 export const physiqueRecordInputSchema = z.object({

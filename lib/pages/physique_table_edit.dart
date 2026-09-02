@@ -2,6 +2,7 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTrans
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_table_plus/flutter_table_plus.dart';
+import 'package:graphql_client/graphql_client.dart';
 import 'package:toaster/toaster.dart';
 
 import '../data/server/physique_table_args.dart';
@@ -9,8 +10,6 @@ import '../data/server/physique_table_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/physiques_providers.dart';
 import '../widgets/physique_table/physique_table_row.dart';
-
-const int _defaultPhysiqueTableColumnCount = 10;
 
 Future<List<int>?> _promptNewRowValues(BuildContext context, int columnCount) {
   final controllers = List.generate(columnCount, (_) => TextEditingController(text: '0'));
@@ -85,9 +84,10 @@ Future<bool> _confirm(
 }
 
 /// Editable version of [PhysiqueTableViewPage]. Cell edits and row
-/// additions are staged locally; "保存" pushes every current row's values
-/// to `PUT /physiques` in one call starting at `lineOffset: 0`, which is
-/// always within the server's row-count bound since this page's row list
+/// additions are staged locally; the save button pushes every current
+/// row's values to `PUT /physiques` in one call starting at
+/// `lineOffset: 0`, which is always within the server's row-count bound
+/// since this page's row list
 /// is exactly the current table.
 class PhysiqueTableEditPage extends ConsumerStatefulWidget {
   const PhysiqueTableEditPage({required this.args, super.key});
@@ -142,7 +142,10 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   }
 
   Future<void> _addRow() async {
-    final columnCount = _rows!.isEmpty ? _defaultPhysiqueTableColumnCount : _rows!.first.values.length;
+    final columnCount = _rows!.isEmpty
+        ? (await ref.read(physiqueTableMetadataProvider.future)).physiqueTableColumnCount
+        : _rows!.first.values.length;
+    if (!mounted) return;
     final values = await _promptNewRowValues(context, columnCount);
     if (values == null) return;
     final client = ref.read(physiquesApiClientProvider);
@@ -214,6 +217,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   Widget build(BuildContext context) {
     final t = context.t;
     final rows = _rows;
+    final metadataAsync = ref.watch(physiqueTableMetadataProvider);
     return AppScaffold(
       title: OutlinedTitleText(
         text: t.physiqueTable.tableTitle(
@@ -221,13 +225,18 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
-      body: rows == null
+      body: rows == null || !metadataAsync.hasValue
           ? const ProgressBar()
           : Column(
               children: [
                 Expanded(
                   child: FlutterTablePlus<PhysiqueTableRow>(
-                    columns: buildPhysiqueTableColumns(editable: true),
+                    columns: buildPhysiqueTableColumns(
+                      editable: true,
+                      columnCount: rows.isEmpty
+                          ? metadataAsync.requireValue.physiqueTableColumnCount
+                          : rows.first.values.length,
+                    ),
                     data: rows,
                     rowId: (row) => row.lineOffset.toString(),
                     isEditable: true,

@@ -1,8 +1,8 @@
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../graphql_client_provider.dart';
 import 'graphql_physique_antenna_category_repository.dart';
-import 'physique_antenna_category.dart';
 
 final physiqueAntennaCategoryRepositoryProvider =
     Provider<GraphqlPhysiqueAntennaCategoryRepository>((ref) {
@@ -10,8 +10,9 @@ final physiqueAntennaCategoryRepositoryProvider =
       return GraphqlPhysiqueAntennaCategoryRepository(client: client);
     });
 
-final physiqueAntennaCategoriesProvider =
-    FutureProvider<List<PhysiqueAntennaCategory>>((ref) {
-      final repository = ref.watch(physiqueAntennaCategoryRepositoryProvider);
-      return repository.load();
-    });
+final physiqueTableMetadataProvider = FutureProvider<PhysiqueTableMetadata>((
+  ref,
+) {
+  final repository = ref.watch(physiqueAntennaCategoryRepositoryProvider);
+  return repository.load();
+});

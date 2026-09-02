@@ -1,9 +1,6 @@
 import { createId } from '@paralleldrive/cuid2';
 import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from 'typeorm';
 
-/** Number of value columns a physique table row holds. */
-export const PHYSIQUE_TABLE_COLUMN_COUNT = 10;
-
 /**
  * One row of a physique table: the growth values for a specific antenna
  * category at a specific physique level. Rows are created entirely
@@ -11,7 +8,9 @@ export const PHYSIQUE_TABLE_COLUMN_COUNT = 10;
  * `src/routes/physiques.route.ts`) — unlike the rest of
  * `modules/server`'s master data, there is no default JSON seed for this
  * entity. Does not extend `BaseEntity`: `legacyId` is specifically the
- * master-data seed loaders' concept.
+ * master-data seed loaders' concept. `values` has no fixed length: the
+ * number of columns a table has is whatever length its rows were written
+ * with, not a shared constant enforced here.
  */
 @Entity('physique_table')
 @Index(['level', 'anntenaCategory', 'lineOffset'], { unique: true })

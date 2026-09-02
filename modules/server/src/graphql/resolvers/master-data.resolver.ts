@@ -80,5 +80,6 @@ export async function resolveMasterData(dataSource: DataSource) {
     patterns,
     corrections,
     physiqueAntennaCategories,
+    physiqueTableColumnCount: 11,
   };
 }

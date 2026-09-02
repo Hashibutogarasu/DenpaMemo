@@ -10,6 +10,7 @@ query PhysiqueAntennaCategories {
       category
       anntenaCategory
     }
+    physiqueTableColumnCount
   }
 }
 ''';

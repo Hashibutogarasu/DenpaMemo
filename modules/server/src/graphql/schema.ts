@@ -124,6 +124,7 @@ const typeDefs = `
     patterns: [Pattern!]!
     corrections: [Correction!]!
     physiqueAntennaCategories: [PhysiqueAntennaCategory!]!
+    physiqueTableColumnCount: Int!
   }
 
   type Translation {
