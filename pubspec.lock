@@ -548,7 +548,7 @@ packages:
     source: hosted
     version: "4.1.0"
   flutter_table_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_table_plus
       sha256: e7e1c98400dbd9a3b8da58366c4c2235a657c66528aa6d4c5c5ec7664c662864

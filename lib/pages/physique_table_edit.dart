@@ -1,8 +1,8 @@
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_table_plus/flutter_table_plus.dart';
 import 'package:graphql_client/graphql_client.dart';
+import 'package:table_editor/table_editor.dart';
 import 'package:toaster/toaster.dart';
 
 import '../data/server/physique_table_args.dart';
@@ -123,21 +123,12 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     });
   }
 
-  void _onCellChanged(
-    PhysiqueTableRow row,
-    String columnKey,
-    int rowIndex,
-    dynamic oldValue,
-    dynamic newValue,
-  ) {
-    if (!columnKey.startsWith('v')) return;
-    final columnIndex = int.parse(columnKey.substring(1));
-    final parsed = int.tryParse(newValue.toString());
-    if (parsed == null) return;
+  void _onValueChanged(int lineOffset, int columnIndex, int newValue) {
     setState(() {
-      final rows = List<PhysiqueTableRow>.of(_rows!);
-      rows[rowIndex] = rows[rowIndex].copyWithValueAt(columnIndex, parsed);
-      _rows = rows;
+      _rows = [
+        for (final row in _rows!)
+          row.lineOffset == lineOffset ? row.copyWithValueAt(columnIndex, newValue) : row,
+      ];
     });
   }
 
@@ -235,19 +226,17 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                       final columnCount = rows.isEmpty
                           ? metadataAsync.requireValue.physiqueTableColumnCount
                           : rows.first.values.length;
-                      return FlutterTablePlus<PhysiqueTableRow>(
+                      return TableEditor<PhysiqueTableRow>(
                         columns: buildPhysiqueTableColumns(
-                          editable: true,
                           columnCount: columnCount,
                           valueColumnWidth: physiqueTableValueColumnWidth(
                             availableWidth: constraints.maxWidth,
                             columnCount: columnCount,
                           ),
+                          onValueChanged: _onValueChanged,
                         ),
                         data: rows,
                         rowId: (row) => row.lineOffset.toString(),
-                        isEditable: true,
-                        onCellChanged: _onCellChanged,
                         isSelectable: true,
                         selectionMode: SelectionMode.multiple,
                         selectedRows: _selectedRowIds,

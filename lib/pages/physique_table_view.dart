@@ -1,8 +1,8 @@
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_table_plus/flutter_table_plus.dart';
 import 'package:graphql_client/graphql_client.dart';
+import 'package:table_editor/table_editor.dart';
 
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
@@ -67,9 +67,8 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
               children: [
                 Expanded(
                   child: LayoutBuilder(
-                    builder: (context, constraints) => FlutterTablePlus<PhysiqueTableRow>(
+                    builder: (context, constraints) => TableEditor<PhysiqueTableRow>(
                       columns: buildPhysiqueTableColumns(
-                        editable: false,
                         columnCount: metadata.physiqueTableColumnCount,
                         valueColumnWidth: physiqueTableValueColumnWidth(
                           availableWidth: constraints.maxWidth,
