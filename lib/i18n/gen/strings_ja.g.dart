@@ -55,6 +55,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	};
 	late final Translations$masterData$ja masterData = Translations$masterData$ja.internal(_root);
 	late final Translations$backup$ja backup = Translations$backup$ja.internal(_root);
+	late final Translations$cloudBackup$ja cloudBackup = Translations$cloudBackup$ja.internal(_root);
 	late final Translations$birthGuide$ja birthGuide = Translations$birthGuide$ja.internal(_root);
 	late final Translations$denpaMenStatus$ja denpaMenStatus = Translations$denpaMenStatus$ja.internal(_root);
 	late final Translations$stat$ja stat = Translations$stat$ja.internal(_root);
@@ -341,6 +342,12 @@ class Translations$page$ja {
 
 	/// ja: 'オープンソースライセンス'
 	String get openSourceLicenses => 'オープンソースライセンス';
+
+	/// ja: 'クラウドバックアップ&復元'
+	String get cloudBackup => 'クラウドバックアップ&復元';
+
+	/// ja: 'バックアップ履歴'
+	String get cloudBackupHistory => 'バックアップ履歴';
 }
 
 // Path: settings
@@ -440,6 +447,9 @@ class Translations$settings$ja {
 
 	/// ja: '削除しました'
 	String get dataManagementResultTitle => '削除しました';
+
+	/// ja: 'クラウドバックアップ&復元'
+	String get cloudBackup => 'クラウドバックアップ&復元';
 }
 
 // Path: home
@@ -632,6 +642,57 @@ class Translations$backup$ja {
 
 	/// ja: '${index}件目のデータを読み込めませんでした'
 	String importEntryParseErrorDescriptionIndexed({required Object index}) => '${index}件目のデータを読み込めませんでした';
+}
+
+// Path: cloudBackup
+class Translations$cloudBackup$ja {
+	Translations$cloudBackup$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '最新のクラウドバックアップ'
+	String get latestBackupLabel => '最新のクラウドバックアップ';
+
+	/// ja: 'ローカルファイル'
+	String get localFileLabel => 'ローカルファイル';
+
+	/// ja: 'この機能を使うにはアカウントにサインインしてください。'
+	String get notSignedInDescription => 'この機能を使うにはアカウントにサインインしてください。';
+
+	/// ja: 'クラウドにバックアップが存在しません。先にバックアップを実行してください。'
+	String get noBackupFoundDescription => 'クラウドにバックアップが存在しません。先にバックアップを実行してください。';
+
+	/// ja: 'クラウドとの通信に失敗しました: ${message}'
+	String networkErrorDescription({required Object message}) => 'クラウドとの通信に失敗しました: ${message}';
+
+	/// ja: 'クラウドにバックアップしています'
+	String get backupRunning => 'クラウドにバックアップしています';
+
+	/// ja: 'クラウドから復元しています'
+	String get restoreRunning => 'クラウドから復元しています';
+
+	/// ja: 'キャンセルしました'
+	String get cancelled => 'キャンセルしました';
+
+	/// ja: 'バックアップ履歴を見る'
+	String get historyAction => 'バックアップ履歴を見る';
+
+	/// ja: 'バックアップ履歴がありません。'
+	String get historyEmptyDescription => 'バックアップ履歴がありません。';
+
+	/// ja: '復元'
+	String get restoreAction => '復元';
+
+	/// ja: 'バックアップを削除しますか?'
+	String get deleteConfirmTitle => 'バックアップを削除しますか?';
+
+	/// ja: 'このバックアップファイルを削除します。この操作は取り消せません。'
+	String get deleteConfirmMessage => 'このバックアップファイルを削除します。この操作は取り消せません。';
+
+	/// ja: '選択したバックアップファイルを削除します。この操作は取り消せません。'
+	String get deleteSelectedConfirmMessage => '選択したバックアップファイルを削除します。この操作は取り消せません。';
 }
 
 // Path: birthGuide
@@ -952,6 +1013,8 @@ extension on Translations {
 			'page.languageSettings' => '言語',
 			'page.dataManagement' => 'データ管理',
 			'page.openSourceLicenses' => 'オープンソースライセンス',
+			'page.cloudBackup' => 'クラウドバックアップ&復元',
+			'page.cloudBackupHistory' => 'バックアップ履歴',
 			'settings.section.general' => '全般',
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',
@@ -1005,6 +1068,7 @@ extension on Translations {
 			'settings.dataManagementClearCacheConfirmMessage' => '一時的なキャッシュデータを削除します。よろしいですか?',
 			'settings.dataManagementClearCacheResult' => 'キャッシュデータを削除しました',
 			'settings.dataManagementResultTitle' => '削除しました',
+			'settings.cloudBackup' => 'クラウドバックアップ&復元',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
@@ -1059,6 +1123,20 @@ extension on Translations {
 			'backup.importEntryParseErrorTitle' => '電波人間をインポート',
 			'backup.importEntryParseErrorDescriptionNamed' => ({required Object name}) => '"${name}"のデータを読み込めませんでした',
 			'backup.importEntryParseErrorDescriptionIndexed' => ({required Object index}) => '${index}件目のデータを読み込めませんでした',
+			'cloudBackup.latestBackupLabel' => '最新のクラウドバックアップ',
+			'cloudBackup.localFileLabel' => 'ローカルファイル',
+			'cloudBackup.notSignedInDescription' => 'この機能を使うにはアカウントにサインインしてください。',
+			'cloudBackup.noBackupFoundDescription' => 'クラウドにバックアップが存在しません。先にバックアップを実行してください。',
+			'cloudBackup.networkErrorDescription' => ({required Object message}) => 'クラウドとの通信に失敗しました: ${message}',
+			'cloudBackup.backupRunning' => 'クラウドにバックアップしています',
+			'cloudBackup.restoreRunning' => 'クラウドから復元しています',
+			'cloudBackup.cancelled' => 'キャンセルしました',
+			'cloudBackup.historyAction' => 'バックアップ履歴を見る',
+			'cloudBackup.historyEmptyDescription' => 'バックアップ履歴がありません。',
+			'cloudBackup.restoreAction' => '復元',
+			'cloudBackup.deleteConfirmTitle' => 'バックアップを削除しますか?',
+			'cloudBackup.deleteConfirmMessage' => 'このバックアップファイルを削除します。この操作は取り消せません。',
+			'cloudBackup.deleteSelectedConfirmMessage' => '選択したバックアップファイルを削除します。この操作は取り消せません。',
 			'birthGuide.catchQrInstruction' => 'このQRコードから個体をキャッチしてください',
 			'birthGuide.catchIndividualInstruction' => 'この個体をキャッチしてください',
 			'birthGuide.breedParentInstruction' => 'この個体を用意してください',

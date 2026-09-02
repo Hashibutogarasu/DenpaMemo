@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +10,22 @@ import '../denpa_men_list_tile.dart';
 /// `ImportCompleteDialog`): a heading with [denpaMens]'s count, followed by
 /// a read-only [DenpaMenListTile] per entry. Renders nothing when
 /// [denpaMens] is empty.
+///
+/// This widget has no Riverpod access of its own, so [iconsById] (each
+/// entry's already-resolved icon file, by [DenpaMen.id]) must be resolved
+/// by the caller — omitting it just renders every tile with the
+/// placeholder icon.
 class BackupResultSection extends StatelessWidget {
-  const BackupResultSection({super.key, required this.title, required this.denpaMens});
+  const BackupResultSection({
+    super.key,
+    required this.title,
+    required this.denpaMens,
+    this.iconsById,
+  });
 
   final String title;
   final List<DenpaMen> denpaMens;
+  final Map<String, File?>? iconsById;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +46,10 @@ class BackupResultSection extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: denpaMens.length,
-          itemBuilder: (context, index) =>
-              DenpaMenListTile(denpaMen: denpaMens[index]),
+          itemBuilder: (context, index) => DenpaMenListTile(
+            denpaMen: denpaMens[index],
+            iconFile: iconsById?[denpaMens[index].id],
+          ),
         ),
       ],
     );

@@ -7,7 +7,7 @@ import '../../i18n/gen/strings.g.dart';
 /// A settings row showing [trailingText]; tapping copies it to the
 /// clipboard and toasts confirmation, naming [label] rather than the
 /// copied value. With no [trailingText], the tile has nothing to copy and
-/// is disabled (no `onTap`), matching [SettingsTile]'s disabled-tile
+/// is disabled (no `onTap`), matching `ListItemTile`'s disabled-tile
 /// convention.
 class CopyableListTile extends StatelessWidget {
   const CopyableListTile({

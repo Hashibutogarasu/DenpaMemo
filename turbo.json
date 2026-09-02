@@ -1,7 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "container:run": {
+      "cache": false
+    },
     "dev": {
+      "dependsOn": ["container:run"],
       "cache": false,
       "persistent": true
     },

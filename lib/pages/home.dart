@@ -22,7 +22,7 @@ Future<void> _importFromFile(BuildContext context, WidgetRef ref) async {
       .read(dmImportControllerProvider)
       .importFromFile(context);
   if (result != null && context.mounted) {
-    await ImportCompleteDialog.show(context, result: result);
+    await ImportCompleteDialog.show(context, ref, result: result);
   }
 }
 

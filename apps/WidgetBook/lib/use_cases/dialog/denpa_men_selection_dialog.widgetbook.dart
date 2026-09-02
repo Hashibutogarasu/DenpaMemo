@@ -33,6 +33,7 @@ Widget denpaMenSelectionDialogUseCase(BuildContext context) {
       initial: initial == null ? const [] : [initial],
       minSelection: minSelection,
       totalAttributeCount: RouteDenpaMenData.masterData.attributes.length,
+      iconsById: const {},
     ),
   );
 }

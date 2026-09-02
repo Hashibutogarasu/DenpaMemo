@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// Wraps a settings page's list of [SettingsTile]s with a transparent,
+/// Wraps a list of items (typically [ListItemTile]s) with a transparent,
 /// rounded-corner, outer-padded container.
-class SettingsListContainer extends StatelessWidget {
-  const SettingsListContainer({super.key, required this.children});
+class ListItemContainer extends StatelessWidget {
+  const ListItemContainer({super.key, required this.children});
 
   final List<Widget> children;
 

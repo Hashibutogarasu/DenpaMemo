@@ -22,6 +22,7 @@ List<RouteBase> get $appRoutes => [
   $languageSettingsRoute,
   $openSourceLicensesRoute,
   $dataManagementRoute,
+  $cloudBackupShellRouteData,
 ];
 
 RouteBase get $appShellRouteData => ShellRouteData.$route(
@@ -529,6 +530,70 @@ mixin $DataManagementRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings/data');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $cloudBackupShellRouteData => ShellRouteData.$route(
+  factory: $CloudBackupShellRouteDataExtension._fromState,
+  routes: [
+    GoRouteData.$route(
+      path: '/settings/cloud-backup',
+      hasOverriddenOnExit: false,
+      factory: $CloudBackupRoute._fromState,
+    ),
+    GoRouteData.$route(
+      path: '/settings/cloud-backup/history',
+      hasOverriddenOnExit: false,
+      factory: $CloudBackupHistoryRoute._fromState,
+    ),
+  ],
+);
+
+extension $CloudBackupShellRouteDataExtension on CloudBackupShellRouteData {
+  static CloudBackupShellRouteData _fromState(GoRouterState state) =>
+      const CloudBackupShellRouteData();
+}
+
+mixin $CloudBackupRoute on GoRouteData {
+  static CloudBackupRoute _fromState(GoRouterState state) =>
+      const CloudBackupRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/cloud-backup');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $CloudBackupHistoryRoute on GoRouteData {
+  static CloudBackupHistoryRoute _fromState(GoRouterState state) =>
+      const CloudBackupHistoryRoute();
+
+  @override
+  String get location =>
+      GoRouteData.$location('/settings/cloud-backup/history');
 
   @override
   void go(BuildContext context) => context.go(location);

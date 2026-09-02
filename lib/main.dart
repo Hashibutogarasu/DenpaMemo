@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
@@ -22,6 +23,7 @@ import 'widgets/restart_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting();
   final packageInfo = await PackageInfo.fromPlatform();
   final objectBox = await ObjectBox.create();
   final cacheIndexRepository = await CacheIndexRepository.open(

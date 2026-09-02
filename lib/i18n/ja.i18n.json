@@ -36,7 +36,9 @@
     "themeSettings": "テーマ",
     "languageSettings": "言語",
     "dataManagement": "データ管理",
-    "openSourceLicenses": "オープンソースライセンス"
+    "openSourceLicenses": "オープンソースライセンス",
+    "cloudBackup": "クラウドバックアップ&復元",
+    "cloudBackupHistory": "バックアップ履歴"
   },
   "settings": {
     "section": {
@@ -95,7 +97,8 @@
     "dataManagementClearCacheConfirmTitle": "キャッシュクリアの確認",
     "dataManagementClearCacheConfirmMessage": "一時的なキャッシュデータを削除します。よろしいですか?",
     "dataManagementClearCacheResult": "キャッシュデータを削除しました",
-    "dataManagementResultTitle": "削除しました"
+    "dataManagementResultTitle": "削除しました",
+    "cloudBackup": "クラウドバックアップ&復元"
   },
   "home": {
     "empty": "電波人間が登録されていません",
@@ -162,6 +165,22 @@
     "importEntryParseErrorTitle": "電波人間をインポート",
     "importEntryParseErrorDescriptionNamed": "\"${name}\"のデータを読み込めませんでした",
     "importEntryParseErrorDescriptionIndexed": "${index}件目のデータを読み込めませんでした"
+  },
+  "cloudBackup": {
+    "latestBackupLabel": "最新のクラウドバックアップ",
+    "localFileLabel": "ローカルファイル",
+    "notSignedInDescription": "この機能を使うにはアカウントにサインインしてください。",
+    "noBackupFoundDescription": "クラウドにバックアップが存在しません。先にバックアップを実行してください。",
+    "networkErrorDescription": "クラウドとの通信に失敗しました: ${message}",
+    "backupRunning": "クラウドにバックアップしています",
+    "restoreRunning": "クラウドから復元しています",
+    "cancelled": "キャンセルしました",
+    "historyAction": "バックアップ履歴を見る",
+    "historyEmptyDescription": "バックアップ履歴がありません。",
+    "restoreAction": "復元",
+    "deleteConfirmTitle": "バックアップを削除しますか?",
+    "deleteConfirmMessage": "このバックアップファイルを削除します。この操作は取り消せません。",
+    "deleteSelectedConfirmMessage": "選択したバックアップファイルを削除します。この操作は取り消せません。"
   },
   "birthGuide": {
     "catchQrInstruction": "このQRコードから個体をキャッチしてください",
