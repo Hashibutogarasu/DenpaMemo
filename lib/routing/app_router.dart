@@ -281,10 +281,11 @@ class DataManagementRoute extends GoRouteData with $DataManagementRoute {
       const DataManagementPage();
 }
 
-/// Wraps the cloud backup page and its history page in
-/// [CloudBackupShell], which owns the progress bar tracking whichever
-/// cloud backup/restore is currently running — shared chrome, so it shows
-/// no matter which of the two pages started that operation.
+/// Wraps the cloud backup page and its history page in [CloudBackupShell],
+/// marking the pair as always-poppable so [AppScaffold] shows a back
+/// button on both, matching the "poppable subpage" tier: own header, back
+/// button, no bottom navigation bar. Declared as a top-level route (a
+/// sibling of [AppShellRouteData], not nested inside it).
 @TypedShellRoute<CloudBackupShellRouteData>(
   routes: [
     TypedGoRoute<CloudBackupRoute>(path: '/settings/cloud-backup'),

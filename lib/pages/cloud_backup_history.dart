@@ -14,6 +14,7 @@ import '../widgets/generic_selection_floating_menu.dart';
 import '../widgets/list/list_item_container.dart';
 import '../widgets/list/list_item_tile.dart';
 import '../widgets/list/list_tile_section.dart';
+import '../widgets/scaffold/cloud_backup_shell.dart';
 
 Future<void> _deleteSelected(BuildContext context, WidgetRef ref) async {
   final t = context.t;
@@ -51,6 +52,7 @@ class CloudBackupHistoryPage extends ConsumerWidget {
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackupHistory),
+      belowHeader: const CloudBackupProgressBar(),
       body: Stack(
         children: [
           SmoothScrollContainer(
