@@ -8,13 +8,26 @@ import '../navigation/app_back_button.dart';
 import '../responsive/responsive.dart';
 import '../responsive/responsive_provider.dart';
 
+/// Marks a `ShellRoute` branch as reachable only by push, so its first
+/// page shows a back button despite its own nested [Navigator] having
+/// nothing to pop yet. Unlike a global router-wide `canPop`, this is a
+/// static per-subtree flag, so it can't flicker onto an unrelated page.
+class AlwaysPoppableShellScope extends InheritedWidget {
+  const AlwaysPoppableShellScope({super.key, required super.child});
+
+  static bool of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<AlwaysPoppableShellScope>() != null;
+
+  @override
+  bool updateShouldNotify(AlwaysPoppableShellScope oldWidget) => false;
+}
+
 /// Standard page shell: a [SlantedAppBar] header, plus [body] with the
-/// stack-aware [AppBackButton] (bottom-left, shown only when
-/// `GoRouter.of(context).canPop()` — shell-aware, unlike
-/// `Navigator.canPop`) and [floatingActionButton] (bottom-right) laid out
-/// as siblings in one [Stack]. Keeping both buttons in the same Stack —
-/// rather than routing one of them through [Scaffold.floatingActionButton]
-/// — is what keeps their height and bottom offset pixel-identical.
+/// stack-aware [AppBackButton] (bottom-left, shown per [Navigator.canPop]
+/// or [AlwaysPoppableShellScope]) and [floatingActionButton] (bottom-right)
+/// laid out as siblings in one [Stack] — rather than routing one of them
+/// through [Scaffold.floatingActionButton] — so their height and bottom
+/// offset stay pixel-identical.
 ///
 /// Also binds Escape to the same pop, so keyboard users get the same
 /// stack-aware back behavior as the on-screen button.
@@ -41,7 +54,7 @@ class AppScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canPop = context.canPop();
+    final canPop = Navigator.canPop(context) || AlwaysPoppableShellScope.of(context);
 
     final shellState = ref.watch(appShellStateProvider);
     final isMobile = isMobileWidth(context);
