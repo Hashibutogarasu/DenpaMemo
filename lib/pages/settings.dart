@@ -40,6 +40,11 @@ class Settings extends ConsumerWidget {
                   label: t.settings.account,
                   onTap: () => const AccountSettingsRoute().push(context),
                 ),
+                SettingsTile(
+                  icon: Icons.cloud_sync_outlined,
+                  label: t.settings.cloudBackup,
+                  onTap: () => const CloudBackupRoute().push(context),
+                ),
               ],
             ),
             ListTileSection(title: t.settings.section.personal),

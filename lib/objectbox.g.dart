@@ -17,6 +17,7 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 import 'data/account/account_entity.dart';
 import 'data/cloud_file/cloud_file_entity.dart';
 import 'data/denpa_men/denpa_men_entity.dart';
+import 'data/notification/app_notification_entity.dart';
 import 'data/qr_code/qr_code_entity.dart';
 import 'data/settings/app_settings_entity.dart';
 
@@ -402,6 +403,53 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(6, 1041034640303658806),
+    name: 'AppNotificationEntity',
+    lastPropertyId: const obx_int.IdUid(6, 1668822914098962830),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 6117291953718388175),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 763670809449742568),
+        name: 'kind',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(4, 4652174802082127448),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 3833252191973640154),
+        name: 'status',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 1952451793274907652),
+        name: 'progress',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 6449983080828524443),
+        name: 'message',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 1668822914098962830),
+        name: 'updatedAt',
+        type: 10,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -447,8 +495,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(5, 6902740786696447818),
-    lastIndexId: const obx_int.IdUid(3, 8040983012357765277),
+    lastEntityId: const obx_int.IdUid(6, 1041034640303658806),
+    lastIndexId: const obx_int.IdUid(4, 4652174802082127448),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [],
@@ -952,6 +1000,68 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    AppNotificationEntity: obx_int.EntityDefinition<AppNotificationEntity>(
+      model: _entities[5],
+      toOneRelations: (AppNotificationEntity object) => [],
+      toManyRelations: (AppNotificationEntity object) => {},
+      getId: (AppNotificationEntity object) => object.id,
+      setId: (AppNotificationEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (AppNotificationEntity object, fb.Builder fbb) {
+        final kindOffset = fbb.writeString(object.kind);
+        final statusOffset = fbb.writeString(object.status);
+        final messageOffset = object.message == null
+            ? null
+            : fbb.writeString(object.message!);
+        fbb.startTable(7);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, kindOffset);
+        fbb.addOffset(2, statusOffset);
+        fbb.addFloat64(3, object.progress);
+        fbb.addOffset(4, messageOffset);
+        fbb.addInt64(5, object.updatedAt.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final kindParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final statusParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final progressParam = const fb.Float64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          10,
+        );
+        final messageParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 12);
+        final updatedAtParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
+        );
+        final object = AppNotificationEntity(
+          id: idParam,
+          kind: kindParam,
+          status: statusParam,
+          progress: progressParam,
+          message: messageParam,
+          updatedAt: updatedAtParam,
+        );
+
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -1237,5 +1347,38 @@ class CloudFileEntity_ {
   /// See [CloudFileEntity.uploadedAt].
   static final uploadedAt = obx.QueryDateProperty<CloudFileEntity>(
     _entities[4].properties[3],
+  );
+}
+
+/// [AppNotificationEntity] entity fields to define ObjectBox queries.
+class AppNotificationEntity_ {
+  /// See [AppNotificationEntity.id].
+  static final id = obx.QueryIntegerProperty<AppNotificationEntity>(
+    _entities[5].properties[0],
+  );
+
+  /// See [AppNotificationEntity.kind].
+  static final kind = obx.QueryStringProperty<AppNotificationEntity>(
+    _entities[5].properties[1],
+  );
+
+  /// See [AppNotificationEntity.status].
+  static final status = obx.QueryStringProperty<AppNotificationEntity>(
+    _entities[5].properties[2],
+  );
+
+  /// See [AppNotificationEntity.progress].
+  static final progress = obx.QueryDoubleProperty<AppNotificationEntity>(
+    _entities[5].properties[3],
+  );
+
+  /// See [AppNotificationEntity.message].
+  static final message = obx.QueryStringProperty<AppNotificationEntity>(
+    _entities[5].properties[4],
+  );
+
+  /// See [AppNotificationEntity.updatedAt].
+  static final updatedAt = obx.QueryDateProperty<AppNotificationEntity>(
+    _entities[5].properties[5],
   );
 }

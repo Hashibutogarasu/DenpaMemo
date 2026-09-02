@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../pages/account_settings.dart';
 import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
+import '../pages/cloud_backup.dart';
 import '../pages/data_management.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
@@ -276,4 +277,14 @@ class DataManagementRoute extends GoRouteData with $DataManagementRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const DataManagementPage();
+}
+
+/// Pushed from the settings list's "cloud backup" tile.
+@TypedGoRoute<CloudBackupRoute>(path: '/settings/cloud-backup')
+class CloudBackupRoute extends GoRouteData with $CloudBackupRoute {
+  const CloudBackupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const CloudBackupPage();
 }

@@ -324,10 +324,51 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "6:1041034640303658806",
+      "lastPropertyId": "6:1668822914098962830",
+      "name": "AppNotificationEntity",
+      "properties": [
+        {
+          "id": "1:6117291953718388175",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:763670809449742568",
+          "name": "kind",
+          "indexId": "4:4652174802082127448",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:3833252191973640154",
+          "name": "status",
+          "type": 9
+        },
+        {
+          "id": "4:1952451793274907652",
+          "name": "progress",
+          "type": 8
+        },
+        {
+          "id": "5:6449983080828524443",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "6:1668822914098962830",
+          "name": "updatedAt",
+          "type": 10
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "5:6902740786696447818",
-  "lastIndexId": "3:8040983012357765277",
+  "lastEntityId": "6:1041034640303658806",
+  "lastIndexId": "4:4652174802082127448",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

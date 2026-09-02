@@ -16,3 +16,15 @@ final denpaMenIconProvider = FutureProvider.family<File?, String>((
 ) {
   return ref.watch(denpaMenIconStorageProvider).loadIcon(denpaMenId);
 });
+
+/// Resolves every id in [denpaMenIds] to its icon file via
+/// [denpaMenIconProvider], for callers (e.g. `ExportCompleteDialog.show`,
+/// `ImportCompleteDialog.show`) that need a `Map<String, File?>` up front
+/// rather than resolving each icon reactively.
+Future<Map<String, File?>> resolveDenpaMenIcons(WidgetRef ref, Iterable<String> denpaMenIds) async {
+  final ids = denpaMenIds.toSet();
+  final files = await Future.wait(
+    ids.map((id) => ref.read(denpaMenIconProvider(id).future)),
+  );
+  return Map.fromIterables(ids, files);
+}

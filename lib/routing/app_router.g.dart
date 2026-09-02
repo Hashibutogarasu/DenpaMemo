@@ -22,6 +22,7 @@ List<RouteBase> get $appRoutes => [
   $languageSettingsRoute,
   $openSourceLicensesRoute,
   $dataManagementRoute,
+  $cloudBackupRoute,
 ];
 
 RouteBase get $appShellRouteData => ShellRouteData.$route(
@@ -529,6 +530,33 @@ mixin $DataManagementRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings/data');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $cloudBackupRoute => GoRouteData.$route(
+  path: '/settings/cloud-backup',
+  hasOverriddenOnExit: false,
+  factory: $CloudBackupRoute._fromState,
+);
+
+mixin $CloudBackupRoute on GoRouteData {
+  static CloudBackupRoute _fromState(GoRouterState state) =>
+      const CloudBackupRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/cloud-backup');
 
   @override
   void go(BuildContext context) => context.go(location);

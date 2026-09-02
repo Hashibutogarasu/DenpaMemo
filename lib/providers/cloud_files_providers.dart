@@ -22,7 +22,12 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   @override
   List<CloudFile> build() => ref.watch(cloudFileRepositoryProvider).getAll();
 
+  /// Awaits [firebaseSignInProvider]'s build before reading its notifier,
+  /// since [FirebaseSignInNotifier] only sets up its backend at the end of
+  /// that build — calling `.notifier` beforehand crashes with a null
+  /// check on the not-yet-assigned backend.
   Future<String> _requireIdToken() async {
+    await ref.read(firebaseSignInProvider.future);
     final idToken = await ref.read(firebaseSignInProvider.notifier).getIdToken();
     if (idToken == null) {
       throw const NotSignedInException();
@@ -32,10 +37,15 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
 
   /// Requests an upload link via GET /dmfile/link, PUTs [bytes] to the
   /// returned uploadUrl, then registers the resulting [CloudFile] locally.
+  /// Throws [CloudUploadFailedException] if R2 rejects the PUT, so a failed
+  /// upload is never mistaken for a completed one.
   Future<CloudFile> uploadDmFile(String filename, Uint8List bytes) async {
     final idToken = await _requireIdToken();
     final link = await ref.read(authApiClientProvider).requestUploadLink(idToken, filename);
-    await http.put(Uri.parse(link.uploadUrl), body: bytes);
+    final response = await http.put(Uri.parse(link.uploadUrl), body: bytes);
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw CloudUploadFailedException(response.statusCode);
+    }
     final cloudFile = CloudFile(
       fileId: link.fileId,
       filename: link.filename,
@@ -59,6 +69,17 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
     ref.read(cloudFileRepositoryProvider).delete(fileId);
     state = ref.read(cloudFileRepositoryProvider).getAll();
   }
+}
+
+/// Thrown by [CloudFilesNotifier.uploadDmFile] when R2 responds to the PUT
+/// with a non-2xx status.
+class CloudUploadFailedException implements Exception {
+  const CloudUploadFailedException(this.statusCode);
+
+  final int statusCode;
+
+  @override
+  String toString() => 'CloudUploadFailedException($statusCode)';
 }
 
 final cloudFilesProvider = NotifierProvider<CloudFilesNotifier, List<CloudFile>>(

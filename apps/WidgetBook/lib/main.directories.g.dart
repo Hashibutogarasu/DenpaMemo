@@ -65,8 +65,6 @@ import 'package:widgetbook_app/use_cases/dialog/denpa_men_selection_dialog.widge
     as _widgetbook_app_use_cases_dialog_denpa_men_selection_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/error_dialog.widgetbook.dart'
     as _widgetbook_app_use_cases_dialog_error_dialog_widgetbook;
-import 'package:widgetbook_app/use_cases/dialog/export_complete_dialog.widgetbook.dart'
-    as _widgetbook_app_use_cases_dialog_export_complete_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/head_shape_selection_dialog.widgetbook.dart'
     as _widgetbook_app_use_cases_dialog_head_shape_selection_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/qr_code_image_dialog.widgetbook.dart'
@@ -99,6 +97,8 @@ import 'package:widgetbook_app/use_cases/home/toggle_button_group.widgetbook.dar
     as _widgetbook_app_use_cases_home_toggle_button_group_widgetbook;
 import 'package:widgetbook_app/use_cases/icon/abnormality.widgetbook.dart'
     as _widgetbook_app_use_cases_icon_abnormality_widgetbook;
+import 'package:widgetbook_app/use_cases/icon/arrow_icon.widgetbook.dart'
+    as _widgetbook_app_use_cases_icon_arrow_icon_widgetbook;
 import 'package:widgetbook_app/use_cases/icon/attribute.widgetbook.dart'
     as _widgetbook_app_use_cases_icon_attribute_widgetbook;
 import 'package:widgetbook_app/use_cases/icon/entity_icon.widgetbook.dart'
@@ -656,23 +656,6 @@ final directories = <_widgetbook.WidgetbookNode>[
         ],
       ),
       _widgetbook.WidgetbookComponent(
-        name: 'ExportCompleteDialog',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _widgetbook_app_use_cases_dialog_export_complete_dialog_widgetbook
-                    .exportCompleteDialogUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'NoOrphans',
-            builder:
-                _widgetbook_app_use_cases_dialog_export_complete_dialog_widgetbook
-                    .exportCompleteDialogNoOrphansUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
         name: 'HeadShapeSelectionDialog',
         useCases: [
           _widgetbook.WidgetbookUseCase(
@@ -834,6 +817,26 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'Default',
             builder: _widgetbook_app_use_cases_icon_abnormality_widgetbook
                 .abnormalityIconUseCase,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookComponent(
+        name: 'ArrowIcon',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'To Cloud (Animating)',
+            builder: _widgetbook_app_use_cases_icon_arrow_icon_widgetbook
+                .arrowIconToCloudAnimatingUseCase,
+          ),
+          _widgetbook.WidgetbookUseCase(
+            name: 'To Cloud (Static)',
+            builder: _widgetbook_app_use_cases_icon_arrow_icon_widgetbook
+                .arrowIconToCloudStaticUseCase,
+          ),
+          _widgetbook.WidgetbookUseCase(
+            name: 'To Local (Animating)',
+            builder: _widgetbook_app_use_cases_icon_arrow_icon_widgetbook
+                .arrowIconToLocalAnimatingUseCase,
           ),
         ],
       ),

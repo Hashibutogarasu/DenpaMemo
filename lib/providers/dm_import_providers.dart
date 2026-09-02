@@ -13,18 +13,21 @@ import 'package:step_dialog/step_dialog.dart'
     hide Translations, BuildContextTranslationsExtension;
 
 import '../i18n/gen/strings.g.dart';
+import 'app_notification_providers.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
 import 'import_export_progress_providers.dart';
 import 'qr_code_providers.dart';
 
+const _notificationKind = 'dm_import';
+
 /// Drives the "import individuals from a `.dm` file" flow: prompts for a
 /// file to open, then delegates the actual data processing to
 /// [DMFile.readImport], reporting progress through
-/// [importExportProgressProvider] throughout. Any UI the import needs
-/// mid-way (resolving duplicate individuals, surfacing an invalid-file or
-/// header error) is handled here, so callers only ever see the final
-/// [ImportResult].
+/// [importExportProgressProvider] and [appNotificationsProvider]. Any UI
+/// the import needs mid-way (resolving duplicate individuals, surfacing an
+/// invalid-file or header error) is handled here, so callers only ever see
+/// the final [ImportResult].
 class DmImportController {
   const DmImportController(this._ref);
 
@@ -50,11 +53,13 @@ class DmImportController {
     final masterData = _ref.read(masterDataProvider).value!;
 
     final progress = _ref.read(importExportProgressProvider.notifier);
+    final notifications = _ref.read(appNotificationsProvider.notifier);
     progress.state = 0;
+    notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: 0);
 
     try {
       final storage = _ref.read(denpaMenIconStorageProvider);
-      return await DMFile.readImport(
+      final result = await DMFile.readImport(
         inputFile: File(pickedPath),
         masterData: masterData,
         denpaMenRepository: _ref.read(denpaMenRepositoryProvider),
@@ -71,9 +76,25 @@ class DmImportController {
           initial: candidates,
           totalAttributeCount: masterData.attributes.length,
         ),
-        onProgress: (value) => progress.state = value,
+        onProgress: (value) {
+          progress.state = value;
+          if (value != null) {
+            notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: value);
+          }
+        },
       );
+      notifications.setStatus(
+        _notificationKind,
+        status: result == null ? AppNotificationStatus.cancelled : AppNotificationStatus.completed,
+        progress: result == null ? null : 1,
+      );
+      return result;
     } on DmHeaderReadError {
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        message: t.backup.importHeaderErrorDescription,
+      );
       if (context.mounted) {
         await ErrorDialog.show(
           context,
@@ -83,6 +104,11 @@ class DmImportController {
       }
       return null;
     } on DmInvalidImportFileException {
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        message: t.home.importInvalidFile,
+      );
       if (context.mounted) {
         ScaffoldMessenger.of(
           context,

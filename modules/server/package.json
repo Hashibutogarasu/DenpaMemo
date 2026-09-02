@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "db:remove": "docker compose down -v",
+    "container:run": "docker compose up -d --wait postgres",
     "dev": "tsx watch src/index.ts",
     "dev:deploy": "docker compose up -d --wait postgres && pnpm run db:migrate",
     "build": "tsc -p tsconfig.build.json",
