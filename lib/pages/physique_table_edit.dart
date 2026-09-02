@@ -1,7 +1,6 @@
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:graphql_client/graphql_client.dart';
 import 'package:table_editor/table_editor.dart';
 import 'package:toaster/toaster.dart';
 
@@ -111,6 +110,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   Future<void> _load() async {
     final client = ref.read(physiquesApiClientProvider);
     final records = await client.fetch(
+      statusCategory: widget.args.statusCategory,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
     );
@@ -133,15 +133,12 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   }
 
   Future<void> _addRow() async {
-    final columnCount = _rows!.isEmpty
-        ? (await ref.read(physiqueTableMetadataProvider.future)).physiqueTableColumnCount
-        : _rows!.first.values.length;
-    if (!mounted) return;
-    final values = await _promptNewRowValues(context, columnCount);
+    final values = await _promptNewRowValues(context, widget.args.columnCount);
     if (values == null) return;
     final client = ref.read(physiquesApiClientProvider);
     final created = await client.create([
       PhysiqueTableRecord(
+        statusCategory: widget.args.statusCategory,
         level: widget.args.level,
         anntenaCategory: widget.args.anntenaCategory,
         lineOffset: _rows!.length,
@@ -162,6 +159,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     final client = ref.read(physiquesApiClientProvider);
     await client.update(
       lineOffset: 0,
+      statusCategory: widget.args.statusCategory,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
       rowValues: [for (final row in _rows!) row.values],
@@ -179,7 +177,11 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     );
     if (!confirmed || !mounted) return;
     final client = ref.read(physiquesApiClientProvider);
-    await client.delete(level: widget.args.level, anntenaCategory: widget.args.anntenaCategory);
+    await client.delete(
+      statusCategory: widget.args.statusCategory,
+      level: widget.args.level,
+      anntenaCategory: widget.args.anntenaCategory,
+    );
     if (!mounted) return;
     Navigator.of(context)
       ..pop()
@@ -197,6 +199,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     if (!confirmed || !mounted) return;
     final client = ref.read(physiquesApiClientProvider);
     await client.deleteRows(
+      statusCategory: widget.args.statusCategory,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
       lineOffsets: [for (final id in _selectedRowIds) int.parse(id)],
@@ -208,7 +211,6 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   Widget build(BuildContext context) {
     final t = context.t;
     final rows = _rows;
-    final metadataAsync = ref.watch(physiqueTableMetadataProvider);
     return AppScaffold(
       title: OutlinedTitleText(
         text: t.physiqueTable.tableTitle(
@@ -216,40 +218,29 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
-      body: rows == null || !metadataAsync.hasValue
+      body: rows == null
           ? const ProgressBar()
           : Column(
               children: [
                 Expanded(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final columnCount = rows.isEmpty
-                          ? metadataAsync.requireValue.physiqueTableColumnCount
-                          : rows.first.values.length;
-                      return TableEditor<PhysiqueTableRow>(
-                        columns: buildPhysiqueTableColumns(
-                          columnCount: columnCount,
-                          valueColumnWidth: physiqueTableValueColumnWidth(
-                            availableWidth: constraints.maxWidth,
-                            columnCount: columnCount,
-                          ),
-                          onValueChanged: _onValueChanged,
-                        ),
-                        data: rows,
-                        rowId: (row) => row.lineOffset.toString(),
-                        isSelectable: true,
-                        selectionMode: SelectionMode.multiple,
-                        selectedRows: _selectedRowIds,
-                        onCheckboxChanged: (rowId, isSelected) => setState(() {
-                          _selectedRowIds = Set.of(_selectedRowIds);
-                          if (isSelected) {
-                            _selectedRowIds.add(rowId);
-                          } else {
-                            _selectedRowIds.remove(rowId);
-                          }
-                        }),
-                      );
-                    },
+                  child: TableEditor<PhysiqueTableRow>(
+                    columns: buildPhysiqueTableColumns(
+                      columnCount: widget.args.columnCount,
+                      onValueChanged: _onValueChanged,
+                    ),
+                    data: rows,
+                    rowId: (row) => row.lineOffset.toString(),
+                    isSelectable: true,
+                    selectionMode: SelectionMode.multiple,
+                    selectedRows: _selectedRowIds,
+                    onCheckboxChanged: (rowId, isSelected) => setState(() {
+                      _selectedRowIds = Set.of(_selectedRowIds);
+                      if (isSelected) {
+                        _selectedRowIds.add(rowId);
+                      } else {
+                        _selectedRowIds.remove(rowId);
+                      }
+                    }),
                   ),
                 ),
                 Padding(

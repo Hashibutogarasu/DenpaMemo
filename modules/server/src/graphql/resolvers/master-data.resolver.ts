@@ -10,6 +10,7 @@ import { HeadShapeEntity } from '../../entities/head-shape.entity';
 import { PatternEntity } from '../../entities/pattern.entity';
 import { PersonalityEntity } from '../../entities/personality.entity';
 import { PhysiqueAntennaCategoryEntity } from '../../entities/physique-antenna-category.entity';
+import { PhysiqueStatusCategoryEntity } from '../../entities/physique-status-category.entity';
 import { PhysiqueEntity } from '../../entities/physique.entity';
 
 async function attributeResistanceBonusesFor(dataSource: DataSource, ownerType: AttributeBonusOwnerType, ownerId: string) {
@@ -35,6 +36,7 @@ export async function resolveMasterData(dataSource: DataSource) {
     patterns,
     corrections,
     physiqueAntennaCategories,
+    physiqueStatusCategories,
   ] = await Promise.all([
     headShapeRepo.find(),
     anntenaRepo.find(),
@@ -47,6 +49,7 @@ export async function resolveMasterData(dataSource: DataSource) {
     dataSource.getRepository(PatternEntity).find(),
     dataSource.getRepository(CorrectionEntity).find(),
     dataSource.getRepository(PhysiqueAntennaCategoryEntity).find(),
+    dataSource.getRepository(PhysiqueStatusCategoryEntity).find(),
   ]);
 
   const anntenaLegacyIdById = new Map(anntenas.map((anntena) => [anntena.id, anntena.legacyId]));
@@ -80,6 +83,6 @@ export async function resolveMasterData(dataSource: DataSource) {
     patterns,
     corrections,
     physiqueAntennaCategories,
-    physiqueTableColumnCount: 11,
+    physiqueStatusCategories,
   };
 }

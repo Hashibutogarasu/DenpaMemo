@@ -10,7 +10,10 @@ query PhysiqueAntennaCategories {
       category
       anntenaCategory
     }
-    physiqueTableColumnCount
+    physiqueStatusCategories {
+      name
+      columnCount
+    }
   }
 }
 ''';

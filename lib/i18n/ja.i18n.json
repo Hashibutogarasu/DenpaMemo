@@ -106,6 +106,7 @@
     "title": "体格表",
     "tableTitle": "レベル${level} - ${anntenaCategory} の体格表",
     "enterLevel": "レベルを入力",
+    "selectStatusCategory": "ステータスを選択",
     "selectAnntenaCategory": "アンテナを選択",
     "createNewTable": "新規作成",
     "edit": "編集",

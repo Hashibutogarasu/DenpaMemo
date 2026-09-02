@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueTableMetadata {
 
- List<PhysiqueAntennaCategory> get physiqueAntennaCategories; int get physiqueTableColumnCount;
+ List<PhysiqueAntennaCategory> get physiqueAntennaCategories; List<PhysiqueStatusCategory> get physiqueStatusCategories;
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PhysiqueTableMetadataCopyWith<PhysiqueTableMetadata> get copyWith => _$Physique
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other.physiqueAntennaCategories, physiqueAntennaCategories)&&(identical(other.physiqueTableColumnCount, physiqueTableColumnCount) || other.physiqueTableColumnCount == physiqueTableColumnCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other.physiqueAntennaCategories, physiqueAntennaCategories)&&const DeepCollectionEquality().equals(other.physiqueStatusCategories, physiqueStatusCategories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(physiqueAntennaCategories),physiqueTableColumnCount);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(physiqueAntennaCategories),const DeepCollectionEquality().hash(physiqueStatusCategories));
 
 @override
 String toString() {
-  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueTableColumnCount: $physiqueTableColumnCount)';
+  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueStatusCategories: $physiqueStatusCategories)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueTableMetadataCopyWith<$Res>  {
   factory $PhysiqueTableMetadataCopyWith(PhysiqueTableMetadata value, $Res Function(PhysiqueTableMetadata) _then) = _$PhysiqueTableMetadataCopyWithImpl;
 @useResult
 $Res call({
- List<PhysiqueAntennaCategory> physiqueAntennaCategories, int physiqueTableColumnCount
+ List<PhysiqueAntennaCategory> physiqueAntennaCategories, List<PhysiqueStatusCategory> physiqueStatusCategories
 });
 
 
@@ -65,11 +65,11 @@ class _$PhysiqueTableMetadataCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? physiqueAntennaCategories = null,Object? physiqueTableColumnCount = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? physiqueAntennaCategories = null,Object? physiqueStatusCategories = null,}) {
   return _then(_self.copyWith(
 physiqueAntennaCategories: null == physiqueAntennaCategories ? _self.physiqueAntennaCategories : physiqueAntennaCategories // ignore: cast_nullable_to_non_nullable
-as List<PhysiqueAntennaCategory>,physiqueTableColumnCount: null == physiqueTableColumnCount ? _self.physiqueTableColumnCount : physiqueTableColumnCount // ignore: cast_nullable_to_non_nullable
-as int,
+as List<PhysiqueAntennaCategory>,physiqueStatusCategories: null == physiqueStatusCategories ? _self.physiqueStatusCategories : physiqueStatusCategories // ignore: cast_nullable_to_non_nullable
+as List<PhysiqueStatusCategory>,
   ));
 }
 
@@ -154,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  int physiqueTableColumnCount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueTableMetadata() when $default != null:
-return $default(_that.physiqueAntennaCategories,_that.physiqueTableColumnCount);case _:
+return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);case _:
   return orElse();
 
 }
@@ -175,10 +175,10 @@ return $default(_that.physiqueAntennaCategories,_that.physiqueTableColumnCount);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  int physiqueTableColumnCount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableMetadata():
-return $default(_that.physiqueAntennaCategories,_that.physiqueTableColumnCount);case _:
+return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +195,10 @@ return $default(_that.physiqueAntennaCategories,_that.physiqueTableColumnCount);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  int physiqueTableColumnCount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableMetadata() when $default != null:
-return $default(_that.physiqueAntennaCategories,_that.physiqueTableColumnCount);case _:
+return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);case _:
   return null;
 
 }
@@ -210,7 +210,7 @@ return $default(_that.physiqueAntennaCategories,_that.physiqueTableColumnCount);
 @JsonSerializable()
 
 class _PhysiqueTableMetadata implements PhysiqueTableMetadata {
-  const _PhysiqueTableMetadata({required final  List<PhysiqueAntennaCategory> physiqueAntennaCategories, required this.physiqueTableColumnCount}): _physiqueAntennaCategories = physiqueAntennaCategories;
+  const _PhysiqueTableMetadata({required final  List<PhysiqueAntennaCategory> physiqueAntennaCategories, required final  List<PhysiqueStatusCategory> physiqueStatusCategories}): _physiqueAntennaCategories = physiqueAntennaCategories,_physiqueStatusCategories = physiqueStatusCategories;
   factory _PhysiqueTableMetadata.fromJson(Map<String, dynamic> json) => _$PhysiqueTableMetadataFromJson(json);
 
  final  List<PhysiqueAntennaCategory> _physiqueAntennaCategories;
@@ -220,7 +220,13 @@ class _PhysiqueTableMetadata implements PhysiqueTableMetadata {
   return EqualUnmodifiableListView(_physiqueAntennaCategories);
 }
 
-@override final  int physiqueTableColumnCount;
+ final  List<PhysiqueStatusCategory> _physiqueStatusCategories;
+@override List<PhysiqueStatusCategory> get physiqueStatusCategories {
+  if (_physiqueStatusCategories is EqualUnmodifiableListView) return _physiqueStatusCategories;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_physiqueStatusCategories);
+}
+
 
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other._physiqueAntennaCategories, _physiqueAntennaCategories)&&(identical(other.physiqueTableColumnCount, physiqueTableColumnCount) || other.physiqueTableColumnCount == physiqueTableColumnCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other._physiqueAntennaCategories, _physiqueAntennaCategories)&&const DeepCollectionEquality().equals(other._physiqueStatusCategories, _physiqueStatusCategories));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_physiqueAntennaCategories),physiqueTableColumnCount);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_physiqueAntennaCategories),const DeepCollectionEquality().hash(_physiqueStatusCategories));
 
 @override
 String toString() {
-  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueTableColumnCount: $physiqueTableColumnCount)';
+  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueStatusCategories: $physiqueStatusCategories)';
 }
 
 
@@ -255,7 +261,7 @@ abstract mixin class _$PhysiqueTableMetadataCopyWith<$Res> implements $PhysiqueT
   factory _$PhysiqueTableMetadataCopyWith(_PhysiqueTableMetadata value, $Res Function(_PhysiqueTableMetadata) _then) = __$PhysiqueTableMetadataCopyWithImpl;
 @override @useResult
 $Res call({
- List<PhysiqueAntennaCategory> physiqueAntennaCategories, int physiqueTableColumnCount
+ List<PhysiqueAntennaCategory> physiqueAntennaCategories, List<PhysiqueStatusCategory> physiqueStatusCategories
 });
 
 
@@ -272,11 +278,11 @@ class __$PhysiqueTableMetadataCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? physiqueAntennaCategories = null,Object? physiqueTableColumnCount = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? physiqueAntennaCategories = null,Object? physiqueStatusCategories = null,}) {
   return _then(_PhysiqueTableMetadata(
 physiqueAntennaCategories: null == physiqueAntennaCategories ? _self._physiqueAntennaCategories : physiqueAntennaCategories // ignore: cast_nullable_to_non_nullable
-as List<PhysiqueAntennaCategory>,physiqueTableColumnCount: null == physiqueTableColumnCount ? _self.physiqueTableColumnCount : physiqueTableColumnCount // ignore: cast_nullable_to_non_nullable
-as int,
+as List<PhysiqueAntennaCategory>,physiqueStatusCategories: null == physiqueStatusCategories ? _self._physiqueStatusCategories : physiqueStatusCategories // ignore: cast_nullable_to_non_nullable
+as List<PhysiqueStatusCategory>,
   ));
 }
 

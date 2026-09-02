@@ -15,12 +15,14 @@ _PhysiqueTableMetadata _$PhysiqueTableMetadataFromJson(
             (e) => PhysiqueAntennaCategory.fromJson(e as Map<String, dynamic>),
           )
           .toList(),
-  physiqueTableColumnCount: (json['physiqueTableColumnCount'] as num).toInt(),
+  physiqueStatusCategories: (json['physiqueStatusCategories'] as List<dynamic>)
+      .map((e) => PhysiqueStatusCategory.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$PhysiqueTableMetadataToJson(
   _PhysiqueTableMetadata instance,
 ) => <String, dynamic>{
   'physiqueAntennaCategories': instance.physiqueAntennaCategories,
-  'physiqueTableColumnCount': instance.physiqueTableColumnCount,
+  'physiqueStatusCategories': instance.physiqueStatusCategories,
 };

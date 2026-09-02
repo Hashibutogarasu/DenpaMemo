@@ -100,6 +100,11 @@ const typeDefs = `
     anntenaCategory: String!
   }
 
+  type PhysiqueStatusCategory {
+    name: String!
+    columnCount: Int!
+  }
+
   type Correction {
     id: String!
     legacyId: String!
@@ -124,7 +129,7 @@ const typeDefs = `
     patterns: [Pattern!]!
     corrections: [Correction!]!
     physiqueAntennaCategories: [PhysiqueAntennaCategory!]!
-    physiqueTableColumnCount: Int!
+    physiqueStatusCategories: [PhysiqueStatusCategory!]!
   }
 
   type Translation {

@@ -29,6 +29,7 @@ class PhysiquesApiClient {
   final Uri _baseUrl;
 
   Future<List<PhysiqueTableRecord>> fetch({
+    String? statusCategory,
     String? level,
     String? anntenaCategory,
     String? category,
@@ -37,6 +38,7 @@ class PhysiquesApiClient {
       _baseUrl.replace(
         path: '/physiques',
         queryParameters: {
+          'statusCategory': ?statusCategory,
           'level': ?level,
           'anntenaCategory': ?anntenaCategory,
           'category': ?category,
@@ -67,6 +69,7 @@ class PhysiquesApiClient {
 
   Future<List<PhysiqueTableRecord>> update({
     required int lineOffset,
+    required String statusCategory,
     required String level,
     required String anntenaCategory,
     required List<List<int>> rowValues,
@@ -76,6 +79,7 @@ class PhysiquesApiClient {
       headers: _jsonHeaders,
       body: jsonEncode({
         'lineOffset': lineOffset,
+        'statusCategory': statusCategory,
         'level': level,
         'anntenaCategory': anntenaCategory,
         'records': [
@@ -90,11 +94,16 @@ class PhysiquesApiClient {
     ];
   }
 
-  Future<void> delete({String? level, String? anntenaCategory}) async {
+  Future<void> delete({
+    String? statusCategory,
+    String? level,
+    String? anntenaCategory,
+  }) async {
     final response = await http.delete(
       _baseUrl.replace(
         path: '/physiques',
         queryParameters: {
+          'statusCategory': ?statusCategory,
           'level': ?level,
           'anntenaCategory': ?anntenaCategory,
         },
@@ -103,11 +112,12 @@ class PhysiquesApiClient {
     _requireSuccess(response);
   }
 
-  /// Deletes only the rows at [lineOffsets] within one `level`/
-  /// `anntenaCategory` table (server re-sequences the remaining rows'
-  /// `lineOffset`s afterwards — see `deletePhysiqueTableRows` in
+  /// Deletes only the rows at [lineOffsets] within one `statusCategory`/
+  /// `level`/`anntenaCategory` table (server re-sequences the remaining
+  /// rows' `lineOffset`s afterwards — see `deletePhysiqueTableRows` in
   /// `physiques.route.ts`), rather than the whole table.
   Future<void> deleteRows({
+    required String statusCategory,
     required String level,
     required String anntenaCategory,
     required List<int> lineOffsets,
@@ -116,6 +126,7 @@ class PhysiquesApiClient {
       _baseUrl.replace(
         path: '/physiques',
         queryParameters: {
+          'statusCategory': statusCategory,
           'level': level,
           'anntenaCategory': anntenaCategory,
           'lineOffsets': lineOffsets.join(','),

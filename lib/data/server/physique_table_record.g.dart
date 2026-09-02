@@ -8,6 +8,7 @@ part of 'physique_table_record.dart';
 
 _PhysiqueTableRecord _$PhysiqueTableRecordFromJson(Map<String, dynamic> json) =>
     _PhysiqueTableRecord(
+      statusCategory: json['statusCategory'] as String,
       level: json['level'] as String,
       anntenaCategory: json['anntenaCategory'] as String,
       lineOffset: (json['lineOffset'] as num).toInt(),
@@ -19,6 +20,7 @@ _PhysiqueTableRecord _$PhysiqueTableRecordFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PhysiqueTableRecordToJson(
   _PhysiqueTableRecord instance,
 ) => <String, dynamic>{
+  'statusCategory': instance.statusCategory,
   'level': instance.level,
   'anntenaCategory': instance.anntenaCategory,
   'lineOffset': instance.lineOffset,

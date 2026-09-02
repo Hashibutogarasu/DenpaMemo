@@ -5,6 +5,7 @@ export const physiqueTableValuesSchema = z.array(z.number()).min(1);
 
 /** Body shape for a single record accepted by `POST /physiques`. */
 export const physiqueRecordInputSchema = z.object({
+  statusCategory: z.string().min(1),
   level: z.string().min(1),
   anntenaCategory: z.string().min(1),
   lineOffset: z.number().int().nonnegative().optional(),
@@ -17,6 +18,7 @@ export const postPhysiquesBodySchema = z.union([
 ]);
 
 export const getPhysiquesQuerySchema = z.object({
+  statusCategory: z.string().min(1).optional(),
   level: z.string().min(1).optional(),
   anntenaCategory: z.string().min(1).optional(),
   category: z.string().min(1).optional(),
@@ -29,6 +31,7 @@ export const putPhysiquesRowSchema = z.object({
 
 export const putPhysiquesBodySchema = z.object({
   lineOffset: z.number().int().nonnegative(),
+  statusCategory: z.string().min(1),
   level: z.string().min(1),
   anntenaCategory: z.string().min(1),
   records: z.array(putPhysiquesRowSchema).min(1),
@@ -55,6 +58,7 @@ export const lineOffsetsQuerySchema = z
 
 export const deletePhysiquesQuerySchema = z
   .object({
+    statusCategory: z.string().min(1).optional(),
     level: z.string().min(1).optional(),
     anntenaCategory: z.string().min(1).optional(),
     lineOffsets: lineOffsetsQuerySchema.optional(),
@@ -63,9 +67,11 @@ export const deletePhysiquesQuerySchema = z
     message: 'At least one of level or anntenaCategory must be provided',
   })
   .refine(
-    (query) => query.lineOffsets === undefined || (query.level !== undefined && query.anntenaCategory !== undefined),
+    (query) =>
+      query.lineOffsets === undefined ||
+      (query.statusCategory !== undefined && query.level !== undefined && query.anntenaCategory !== undefined),
     {
-      message: 'lineOffsets requires both level and anntenaCategory',
+      message: 'lineOffsets requires statusCategory, level, and anntenaCategory',
       path: ['lineOffsets'],
     },
   );

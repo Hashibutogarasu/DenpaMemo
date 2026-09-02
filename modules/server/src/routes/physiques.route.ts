@@ -2,6 +2,7 @@ import { Elysia } from 'elysia';
 import type { DataSource } from 'typeorm';
 import type { z } from 'zod';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
+import { PhysiqueStatusCategoryEntity } from '../entities/physique-status-category.entity';
 import { PhysiqueTableEntity } from '../entities/physique-table.entity';
 import {
   deletePhysiquesQuerySchema,
@@ -15,15 +16,28 @@ function zodErrorResponse(error: z.ZodError) {
   return { error: 'validation_error', issues: error.issues };
 }
 
+function columnCountMismatchResponse(statusCategory: string, expected: number, actual: number) {
+  return {
+    error: 'validation_error',
+    issues: [
+      {
+        message: `"${statusCategory}" rows must have ${expected} values, got ${actual}`,
+        path: ['values'],
+      },
+    ],
+  };
+}
+
 /**
- * Deletes the rows at `lineOffsets` within one `level`/`anntenaCategory`
- * table, then re-sequences the remaining rows' `lineOffset`s back to a
- * contiguous `0..n-1` range so `PUT /physiques` (which indexes into the
- * table by array position, see below) and the row-number column Flutter
- * displays stay gap-free after a delete.
+ * Deletes the rows at `lineOffsets` within one `statusCategory`/`level`/
+ * `anntenaCategory` table, then re-sequences the remaining rows'
+ * `lineOffset`s back to a contiguous `0..n-1` range so `PUT /physiques`
+ * (which indexes into the table by array position, see below) and the
+ * row-number column Flutter displays stay gap-free after a delete.
  */
 async function deletePhysiqueTableRows(
   dataSource: DataSource,
+  statusCategory: string,
   level: string,
   anntenaCategory: string,
   lineOffsets: number[],
@@ -32,7 +46,7 @@ async function deletePhysiqueTableRows(
   await dataSource.transaction(async (manager) => {
     const txRepo = manager.getRepository(PhysiqueTableEntity);
     const rows = await txRepo.find({
-      where: { level, anntenaCategory },
+      where: { statusCategory, level, anntenaCategory },
       order: { lineOffset: 'ASC' },
     });
 
@@ -60,6 +74,12 @@ async function deletePhysiqueTableRows(
 export function physiquesRoutes(dataSource: DataSource) {
   const repo = dataSource.getRepository(PhysiqueTableEntity);
   const categoryRepo = dataSource.getRepository(PhysiqueAntennaCategoryEntity);
+  const statusCategoryRepo = dataSource.getRepository(PhysiqueStatusCategoryEntity);
+
+  async function columnCountFor(statusCategory: string): Promise<number | undefined> {
+    const row = await statusCategoryRepo.findOne({ where: { name: statusCategory } });
+    return row?.columnCount;
+  }
 
   return new Elysia().group('/physiques', (app) =>
     app
@@ -71,13 +91,28 @@ export function physiquesRoutes(dataSource: DataSource) {
         }
         const records = Array.isArray(parsed.data) ? parsed.data : [parsed.data];
 
+        for (const record of records) {
+          const columnCount = await columnCountFor(record.statusCategory);
+          if (columnCount !== undefined && record.values.length !== columnCount) {
+            set.status = 400;
+            return columnCountMismatchResponse(record.statusCategory, columnCount, record.values.length);
+          }
+        }
+
         const saved: PhysiqueTableEntity[] = [];
         for (const record of records) {
           let lineOffset = record.lineOffset;
           if (lineOffset === undefined) {
-            lineOffset = await repo.count({ where: { level: record.level, anntenaCategory: record.anntenaCategory } });
+            lineOffset = await repo.count({
+              where: {
+                statusCategory: record.statusCategory,
+                level: record.level,
+                anntenaCategory: record.anntenaCategory,
+              },
+            });
           }
           const entity = repo.create({
+            statusCategory: record.statusCategory,
             level: record.level,
             anntenaCategory: record.anntenaCategory,
             lineOffset,
@@ -95,7 +130,7 @@ export function physiquesRoutes(dataSource: DataSource) {
           set.status = 400;
           return zodErrorResponse(parsed.error);
         }
-        const { level, anntenaCategory, category } = parsed.data;
+        const { statusCategory, level, anntenaCategory, category } = parsed.data;
 
         let anntenaCategoryFilter: string[] | undefined;
         if (category !== undefined) {
@@ -111,6 +146,9 @@ export function physiquesRoutes(dataSource: DataSource) {
             .createQueryBuilder('row')
             .where('row.anntenaCategory IN (:...anntenaCategoryFilter)', { anntenaCategoryFilter })
             .orderBy('row.lineOffset', 'ASC');
+          if (statusCategory !== undefined) {
+            qb.andWhere('row.statusCategory = :statusCategory', { statusCategory });
+          }
           if (level !== undefined) {
             qb.andWhere('row.level = :level', { level });
           }
@@ -120,7 +158,8 @@ export function physiquesRoutes(dataSource: DataSource) {
           return qb.getMany();
         }
 
-        const where: Partial<Pick<PhysiqueTableEntity, 'level' | 'anntenaCategory'>> = {};
+        const where: Partial<Pick<PhysiqueTableEntity, 'statusCategory' | 'level' | 'anntenaCategory'>> = {};
+        if (statusCategory !== undefined) where.statusCategory = statusCategory;
         if (level !== undefined) where.level = level;
         if (anntenaCategory !== undefined) where.anntenaCategory = anntenaCategory;
 
@@ -132,9 +171,18 @@ export function physiquesRoutes(dataSource: DataSource) {
           set.status = 400;
           return zodErrorResponse(shapeParsed.error);
         }
-        const { lineOffset, level, anntenaCategory, records } = shapeParsed.data;
+        const { lineOffset, statusCategory, level, anntenaCategory, records } = shapeParsed.data;
 
-        const currentRowCount = await repo.count({ where: { level, anntenaCategory } });
+        const columnCount = await columnCountFor(statusCategory);
+        if (columnCount !== undefined) {
+          const mismatched = records.find((record) => record.values.length !== columnCount);
+          if (mismatched) {
+            set.status = 400;
+            return columnCountMismatchResponse(statusCategory, columnCount, mismatched.values.length);
+          }
+        }
+
+        const currentRowCount = await repo.count({ where: { statusCategory, level, anntenaCategory } });
         const boundedParsed = putPhysiquesBodySchemaWithBounds(currentRowCount).safeParse(body);
         if (!boundedParsed.success) {
           set.status = 400;
@@ -142,7 +190,7 @@ export function physiquesRoutes(dataSource: DataSource) {
         }
 
         const targetRows = await repo.find({
-          where: { level, anntenaCategory },
+          where: { statusCategory, level, anntenaCategory },
           order: { lineOffset: 'ASC' },
         });
 
@@ -161,17 +209,18 @@ export function physiquesRoutes(dataSource: DataSource) {
           set.status = 400;
           return zodErrorResponse(parsed.error);
         }
-        const { level, anntenaCategory, lineOffsets } = parsed.data;
+        const { statusCategory, level, anntenaCategory, lineOffsets } = parsed.data;
 
         if (lineOffsets !== undefined) {
-          // level and anntenaCategory are both required alongside lineOffsets
-          // (enforced by deletePhysiquesQuerySchema's refine).
-          await deletePhysiqueTableRows(dataSource, level!, anntenaCategory!, lineOffsets);
+          // statusCategory, level, and anntenaCategory are all required
+          // alongside lineOffsets (enforced by deletePhysiquesQuerySchema's refine).
+          await deletePhysiqueTableRows(dataSource, statusCategory!, level!, anntenaCategory!, lineOffsets);
           set.status = 204;
           return null;
         }
 
-        const where: Partial<Pick<PhysiqueTableEntity, 'level' | 'anntenaCategory'>> = {};
+        const where: Partial<Pick<PhysiqueTableEntity, 'statusCategory' | 'level' | 'anntenaCategory'>> = {};
+        if (statusCategory !== undefined) where.statusCategory = statusCategory;
         if (level !== undefined) where.level = level;
         if (anntenaCategory !== undefined) where.anntenaCategory = anntenaCategory;
 

@@ -48,6 +48,7 @@ export 'src/master_data/pattern.dart';
 export 'src/master_data/personality.dart';
 export 'src/master_data/physique.dart';
 export 'src/master_data/physique_antenna_category.dart';
+export 'src/master_data/physique_status_category.dart';
 export 'src/master_data/physique_table_metadata.dart';
 export 'src/monster/monster.dart';
 export 'src/monster/monster_exp.dart';

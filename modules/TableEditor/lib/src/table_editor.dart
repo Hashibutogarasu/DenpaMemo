@@ -4,27 +4,15 @@ import 'package:flutter_table_plus/flutter_table_plus.dart';
 import 'table_editor_cell_field.dart';
 import 'table_editor_column.dart';
 
-/// Even width for [columnCount] columns filling [availableWidth] after
-/// [reservedWidth] (e.g. any fixed-width leading column), clamped to
-/// [minWidth] — past that point the table scrolls horizontally instead of
-/// shrinking columns further.
-double evenTableEditorColumnWidth({
-  required double availableWidth,
-  required int columnCount,
-  double reservedWidth = 0,
-  double minWidth = 48,
-}) {
-  if (columnCount <= 0) return minWidth;
-  final evenWidth = (availableWidth - reservedWidth) / columnCount;
-  return evenWidth < minWidth ? minWidth : evenWidth;
-}
-
 /// A [FlutterTablePlus] wrapper of rows of type [T], described by
 /// [TableEditorColumn]s. Editable columns render as always-live
 /// [TableEditorCellField]s rather than the underlying library's
 /// tap-to-edit cells, wrapped in a [FocusTraversalGroup] so Tab moves
-/// between them in reading order — this is the only place in the app that
-/// needs to know how that navigation works.
+/// between them in reading order. Column widths are measured from each
+/// column's header label and actual row values via
+/// [TableColumnWidthCalculator], floored at [kMinInteractiveDimension]
+/// for editable columns so their [TableEditorCellField] stays a
+/// comfortable tap/edit target even when its content is just one digit.
 class TableEditor<T> extends StatelessWidget {
   const TableEditor({
     super.key,
@@ -47,18 +35,32 @@ class TableEditor<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final headerStyle = DefaultTextStyle.of(context).style;
+    final bodyStyle = DefaultTextStyle.of(context).style;
+
     final builder = TableColumnsBuilder<T>();
     for (final column in columns) {
+      final isEditable = column.editable && column.onChanged != null;
+      var width = TableColumnWidthCalculator.calculateColumnWidth<T>(
+        headerLabel: column.label,
+        headerTextStyle: headerStyle,
+        data: data,
+        valueAccessor: column.valueOf,
+        bodyTextStyle: bodyStyle,
+      );
+      if (isEditable && width < kMinInteractiveDimension) {
+        width = kMinInteractiveDimension;
+      }
       builder.addColumn(
         column.key,
         TablePlusColumn<T>(
           key: column.key,
           label: column.label,
           order: 0,
-          width: column.width,
-          minWidth: column.minWidth,
+          width: width,
+          minWidth: width,
           valueAccessor: column.valueOf,
-          statefulCellBuilder: column.editable && column.onChanged != null
+          statefulCellBuilder: isEditable
               ? (context, rowData, isSelected, isDim) => TableEditorCellField(
                   key: ValueKey('${rowId(rowData)}:${column.key}'),
                   initialValue: column.valueOf(rowData),

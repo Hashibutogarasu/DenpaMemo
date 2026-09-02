@@ -4,6 +4,7 @@ import { ANTENNA_CATEGORY_SEED_ROWS, AntennaCategoryEntity } from '../entities/a
 import { ATTRIBUTE_CATEGORY_SEED_ROWS, AttributeCategoryEntity } from '../entities/attribute-category.entity';
 import { HeadShapeEntity } from '../entities/head-shape.entity';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
+import { PhysiqueStatusCategoryEntity } from '../entities/physique-status-category.entity';
 import { TARGET_MODE_SEED_ROWS, TargetModeEntity } from '../entities/target-mode.entity';
 import { DuplicateIdGuard } from './duplicate-id-guard';
 import { loadAntennas } from './loaders/load-antennas';
@@ -13,6 +14,7 @@ import { loadCorrections } from './loaders/load-corrections';
 import { loadHeadShapes } from './loaders/load-head-shapes';
 import { loadMonsters } from './loaders/load-monsters';
 import { loadPhysiqueAntennaCategories } from './loaders/load-physique-antenna-categories';
+import { loadPhysiqueStatusCategories } from './loaders/load-physique-status-categories';
 import { loadSimpleList } from './loaders/load-simple-list';
 import { loadTranslations } from './loaders/load-translations';
 import { AbnormalityTypeEntity } from '../entities/abnormality-type.entity';
@@ -52,6 +54,7 @@ export async function runSeedIfNeeded(dataSource: DataSource, dataDir: string = 
   }
 
   await seedPhysiqueAntennaCategoriesIfNeeded(dataSource, dataDir);
+  await seedPhysiqueStatusCategoriesIfNeeded(dataSource, dataDir);
 }
 
 /**
@@ -66,4 +69,13 @@ async function seedPhysiqueAntennaCategoriesIfNeeded(dataSource: DataSource, dat
     return;
   }
   await loadPhysiqueAntennaCategories(dataSource, dataDir, new DuplicateIdGuard());
+}
+
+/** Same independent-gate reasoning as {@link seedPhysiqueAntennaCategoriesIfNeeded}. */
+async function seedPhysiqueStatusCategoriesIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const physiqueStatusCategoryCount = await dataSource.getRepository(PhysiqueStatusCategoryEntity).count();
+  if (physiqueStatusCategoryCount > 0) {
+    return;
+  }
+  await loadPhysiqueStatusCategories(dataSource, dataDir, new DuplicateIdGuard());
 }

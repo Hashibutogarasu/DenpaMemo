@@ -11,6 +11,7 @@ import '../routing/app_router.dart';
 import '../widgets/list/list_item_container.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/physique_table/physique_antenna_category_selection_dialog.dart';
+import '../widgets/physique_table/physique_status_category_selection_dialog.dart';
 
 /// Prompts for the character's experience-based level (a number), not a
 /// [Physique] size id — see [PhysiqueTableArgs].
@@ -48,33 +49,59 @@ Future<String?> _pickLevel(BuildContext context) {
 }
 
 /// Starts the edit-existing-table flow from the antenna category list:
-/// pick which level's table to edit, then push straight to
-/// [PhysiqueTableEditRoute].
-Future<void> _startEditingExistingTable(BuildContext context, String anntenaCategory) async {
-  final level = await _pickLevel(context);
-  if (level == null || !context.mounted) return;
-  PhysiqueTableEditRoute(
-    $extra: PhysiqueTableArgs(level: level, anntenaCategory: anntenaCategory),
-  ).push(context);
-}
-
-/// Starts the create-new-table flow: pick the level first, then
-/// the antenna category, then push straight to [PhysiqueTableEditRoute]
-/// (skipping the read-only view page, since there is nothing to view yet —
-/// the table is empty until rows are added there).
-Future<void> _createNewTable(
+/// pick which level's table to edit, then which status category (HP,
+/// speed, ...), then push straight to [PhysiqueTableEditRoute].
+Future<void> _startEditingExistingTable(
   BuildContext context,
-  List<PhysiqueAntennaCategory> categories,
+  List<PhysiqueStatusCategory> statusCategories,
+  String anntenaCategory,
 ) async {
   final level = await _pickLevel(context);
   if (level == null || !context.mounted) return;
-  final category = await showPhysiqueAntennaCategorySelectionDialog(
+  final statusCategory = await showPhysiqueStatusCategorySelectionDialog(
     context,
-    categories: categories,
+    statusCategories: statusCategories,
   );
-  if (category == null || !context.mounted) return;
+  if (statusCategory == null || !context.mounted) return;
   PhysiqueTableEditRoute(
-    $extra: PhysiqueTableArgs(level: level, anntenaCategory: category.anntenaCategory),
+    $extra: PhysiqueTableArgs(
+      statusCategory: statusCategory.name,
+      columnCount: statusCategory.columnCount,
+      level: level,
+      anntenaCategory: anntenaCategory,
+    ),
+  ).push(context);
+}
+
+/// Starts the create-new-table flow: pick the level, then the status
+/// category, then the antenna category, then push straight to
+/// [PhysiqueTableEditRoute] (skipping the read-only view page, since there
+/// is nothing to view yet — the table is empty until rows are added
+/// there).
+Future<void> _createNewTable(
+  BuildContext context,
+  List<PhysiqueAntennaCategory> antennaCategories,
+  List<PhysiqueStatusCategory> statusCategories,
+) async {
+  final level = await _pickLevel(context);
+  if (level == null || !context.mounted) return;
+  final statusCategory = await showPhysiqueStatusCategorySelectionDialog(
+    context,
+    statusCategories: statusCategories,
+  );
+  if (statusCategory == null || !context.mounted) return;
+  final antennaCategory = await showPhysiqueAntennaCategorySelectionDialog(
+    context,
+    categories: antennaCategories,
+  );
+  if (antennaCategory == null || !context.mounted) return;
+  PhysiqueTableEditRoute(
+    $extra: PhysiqueTableArgs(
+      statusCategory: statusCategory.name,
+      columnCount: statusCategory.columnCount,
+      level: level,
+      anntenaCategory: antennaCategory.anntenaCategory,
+    ),
   ).push(context);
 }
 
@@ -100,7 +127,11 @@ class PhysiqueTableListPage extends ConsumerWidget {
         data: (metadata) => FloatingActionButton.extended(
           icon: const Icon(Icons.add),
           label: Text(t.physiqueTable.createNewTable),
-          onPressed: () => _createNewTable(context, metadata.physiqueAntennaCategories),
+          onPressed: () => _createNewTable(
+            context,
+            metadata.physiqueAntennaCategories,
+            metadata.physiqueStatusCategories,
+          ),
         ),
         loading: () => null,
         error: (error, stackTrace) => null,
@@ -129,8 +160,11 @@ class PhysiqueTableListPage extends ConsumerWidget {
                               IconButton(
                                 icon: const Icon(Icons.edit_outlined),
                                 tooltip: t.physiqueTable.edit,
-                                onPressed: () =>
-                                    _startEditingExistingTable(context, row.anntenaCategory),
+                                onPressed: () => _startEditingExistingTable(
+                                  context,
+                                  metadata.physiqueStatusCategories,
+                                  row.anntenaCategory,
+                                ),
                               ),
                             const Icon(Icons.chevron_right),
                           ],
@@ -138,8 +172,15 @@ class PhysiqueTableListPage extends ConsumerWidget {
                         onTap: () async {
                           final level = await _pickLevel(context);
                           if (level == null || !context.mounted) return;
+                          final statusCategory = await showPhysiqueStatusCategorySelectionDialog(
+                            context,
+                            statusCategories: metadata.physiqueStatusCategories,
+                          );
+                          if (statusCategory == null || !context.mounted) return;
                           PhysiqueTableViewRoute(
                             $extra: PhysiqueTableArgs(
+                              statusCategory: statusCategory.name,
+                              columnCount: statusCategory.columnCount,
                               level: level,
                               anntenaCategory: row.anntenaCategory,
                             ),
