@@ -27,9 +27,10 @@ class ExportCompleteDialog extends StatelessWidget {
     WidgetRef ref, {
     required ExportResult result,
   }) async {
-    final iconsById = await resolveDenpaMenIcons(ref, [
-      for (final denpaMen in [...result.exported, ...result.orphaned]) denpaMen.id,
-    ]);
+    final iconsById = await resolveDenpaMenIcons(
+      (id) => ref.read(denpaMenIconProvider(id).future),
+      [for (final denpaMen in [...result.exported, ...result.orphaned]) denpaMen.id],
+    );
     if (!context.mounted) return;
     return showDialog<void>(
       context: context,

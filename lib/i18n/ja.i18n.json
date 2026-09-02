@@ -37,7 +37,8 @@
     "languageSettings": "言語",
     "dataManagement": "データ管理",
     "openSourceLicenses": "オープンソースライセンス",
-    "cloudBackup": "クラウドバックアップ&復元"
+    "cloudBackup": "クラウドバックアップ&復元",
+    "cloudBackupHistory": "バックアップ履歴"
   },
   "settings": {
     "section": {
@@ -171,9 +172,15 @@
     "notSignedInDescription": "この機能を使うにはアカウントにサインインしてください。",
     "noBackupFoundDescription": "クラウドにバックアップが存在しません。先にバックアップを実行してください。",
     "networkErrorDescription": "クラウドとの通信に失敗しました: ${message}",
-    "backupRunningMessage": "クラウドにバックアップしています",
-    "restoreRunningMessage": "クラウドから復元しています",
-    "cancelled": "キャンセルしました"
+    "backupRunning": "クラウドにバックアップしています",
+    "restoreRunning": "クラウドから復元しています",
+    "cancelled": "キャンセルしました",
+    "historyAction": "バックアップ履歴を見る",
+    "historyEmptyDescription": "バックアップ履歴がありません。",
+    "restoreAction": "復元",
+    "deleteConfirmTitle": "バックアップを削除しますか?",
+    "deleteConfirmMessage": "このバックアップファイルを削除します。この操作は取り消せません。",
+    "deleteSelectedConfirmMessage": "選択したバックアップファイルを削除します。この操作は取り消せません。"
   },
   "birthGuide": {
     "catchQrInstruction": "このQRコードから個体をキャッチしてください",

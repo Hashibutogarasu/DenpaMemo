@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +11,10 @@ import 'denpa_men_preview_dialog.dart';
 /// selected [DenpaMen] list or null if cancelled. Used for `.dm` import
 /// merge confirmation. [totalAttributeCount] backs the long-press preview
 /// each candidate tile opens.
+///
+/// This widget has no Riverpod access of its own, so [iconsById] (each
+/// candidate's already-resolved icon file, by [DenpaMen.id]) must be
+/// resolved by the caller — see `BackupResultSection.iconsById`.
 class DenpaMenSelectionDialog extends StatefulWidget {
   const DenpaMenSelectionDialog.internal({
     super.key,
@@ -17,16 +23,19 @@ class DenpaMenSelectionDialog extends StatefulWidget {
     required List<DenpaMen> initial,
     required int minSelection,
     required int totalAttributeCount,
+    required Map<String, File?> iconsById,
   }) : _candidates = candidates,
        _initial = initial,
        _minSelection = minSelection,
-       _totalAttributeCount = totalAttributeCount;
+       _totalAttributeCount = totalAttributeCount,
+       _iconsById = iconsById;
 
   final String title;
   final List<DenpaMen> _candidates;
   final List<DenpaMen> _initial;
   final int _minSelection;
   final int _totalAttributeCount;
+  final Map<String, File?> _iconsById;
 
   static Future<List<DenpaMen>?> show(
     BuildContext context, {
@@ -35,6 +44,7 @@ class DenpaMenSelectionDialog extends StatefulWidget {
     required int totalAttributeCount,
     List<DenpaMen> initial = const [],
     int minSelection = 1,
+    Map<String, File?> iconsById = const {},
   }) {
     return showBottomSlideDialog<List<DenpaMen>>(
       context: context,
@@ -44,6 +54,7 @@ class DenpaMenSelectionDialog extends StatefulWidget {
         initial: initial,
         minSelection: minSelection,
         totalAttributeCount: totalAttributeCount,
+        iconsById: iconsById,
       ),
     );
   }
@@ -78,11 +89,13 @@ class _DenpaMenSelectionDialogState extends State<DenpaMenSelectionDialog> {
             DenpaMenListTile(
               denpaMen: denpaMen,
               selected: _selected.any((d) => d.id == denpaMen.id),
+              iconFile: widget._iconsById[denpaMen.id],
               onTap: () => _toggle(denpaMen),
               onLongPress: (denpaMen) => DenpaMenPreviewDialog.show(
                 context,
                 denpaMen: denpaMen,
                 totalAttributeCount: widget._totalAttributeCount,
+                iconFile: widget._iconsById[denpaMen.id],
               ),
             ),
         ],

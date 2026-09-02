@@ -8,6 +8,7 @@ import '../i18n/gen/strings.g.dart';
 import '../pages/denpa_men_editor.dart';
 import '../providers/denpa_men_providers.dart';
 import '../routing/app_router.dart';
+import 'generic_selection_floating_menu.dart';
 
 /// Rounded floating action bar shown above the home list while the list is
 /// in multi-select mode, offering select-all/deselect-all and bulk
@@ -100,78 +101,42 @@ class SelectionFloatingMenu extends ConsumerWidget {
         records.isNotEmpty &&
         records.every((record) => selectedIds.contains(record.id));
 
-    return IgnorePointer(
-      ignoring: !visible,
-      child: AnimatedSlide(
-        duration: duration,
-        curve: Curves.easeOutCubic,
-        offset: visible ? Offset.zero : const Offset(0, 1.5),
-        child: AnimatedOpacity(
-          duration: duration,
-          curve: Curves.easeOutCubic,
-          opacity: visible ? 1 : 0,
-          child: Material(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            elevation: 8,
-            borderRadius: BorderRadius.circular(32),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      allSelected ? Icons.deselect : Icons.select_all,
-                      color: AppColors.accent,
-                    ),
-                    tooltip: allSelected
-                        ? t.home.deselectAll
-                        : t.home.selectAll,
-                    onPressed: () =>
-                        ref
-                            .read(selectedDenpaMenIdsProvider.notifier)
-                            .state = allSelected
-                        ? {}
-                        : {for (final record in records) record.id},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    color: AppColors.accent,
-                    disabledColor: AppColors.accent.withValues(alpha: 0.3),
-                    tooltip: t.common.edit,
-                    onPressed: selectedIds.length == 1
-                        ? () => _edit(context, ref)
-                        : null,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.copy, color: AppColors.accent),
-                    tooltip: t.home.copySelected,
-                    onPressed: () => _copy(ref),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.content_cut,
-                      color: AppColors.accent,
-                    ),
-                    tooltip: t.home.cutSelected,
-                    onPressed: () => _cut(ref),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, color: AppColors.accent),
-                    tooltip: t.common.delete,
-                    onPressed: () => _delete(context, ref),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: AppColors.accent),
-                    tooltip: t.common.cancel,
-                    onPressed: () => _clearSelection(ref),
-                  ),
-                ],
-              ),
-            ),
-          ),
+    return GenericSelectionFloatingMenu(
+      visible: visible,
+      allSelected: allSelected,
+      onToggleSelectAll: () =>
+          ref.read(selectedDenpaMenIdsProvider.notifier).state = allSelected
+          ? {}
+          : {for (final record in records) record.id},
+      selectAllTooltip: t.home.selectAll,
+      deselectAllTooltip: t.home.deselectAll,
+      onCancel: () => _clearSelection(ref),
+      cancelTooltip: t.common.cancel,
+      duration: duration,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.edit),
+          color: AppColors.accent,
+          disabledColor: AppColors.accent.withValues(alpha: 0.3),
+          tooltip: t.common.edit,
+          onPressed: selectedIds.length == 1 ? () => _edit(context, ref) : null,
         ),
-      ),
+        IconButton(
+          icon: const Icon(Icons.copy, color: AppColors.accent),
+          tooltip: t.home.copySelected,
+          onPressed: () => _copy(ref),
+        ),
+        IconButton(
+          icon: const Icon(Icons.content_cut, color: AppColors.accent),
+          tooltip: t.home.cutSelected,
+          onPressed: () => _cut(ref),
+        ),
+        IconButton(
+          icon: const Icon(Icons.delete, color: AppColors.accent),
+          tooltip: t.common.delete,
+          onPressed: () => _delete(context, ref),
+        ),
+      ],
     );
   }
 }

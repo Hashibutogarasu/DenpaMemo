@@ -8,11 +8,11 @@ import '../app_metadata.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_info_providers.dart';
 import '../routing/app_router.dart';
+import '../widgets/list/list_item_container.dart';
+import '../widgets/list/list_item_tile.dart';
+import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/app_icon.dart';
 import '../widgets/settings/copyable_list_tile.dart';
-import '../widgets/settings/list_tile_section.dart';
-import '../widgets/settings/settings_list_container.dart';
-import '../widgets/settings/settings_tile.dart';
 
 String _releaseChannelLabel(Translations t) {
   if (kReleaseMode) return t.settings.releaseChannelStable;
@@ -33,14 +33,14 @@ class Settings extends ConsumerWidget {
         child: ListView(
           children: [
             ListTileSection(title: t.settings.section.general),
-            SettingsListContainer(
+            ListItemContainer(
               children: [
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.account_circle_outlined,
                   label: t.settings.account,
                   onTap: () => const AccountSettingsRoute().push(context),
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.cloud_sync_outlined,
                   label: t.settings.cloudBackup,
                   onTap: () => const CloudBackupRoute().push(context),
@@ -48,22 +48,22 @@ class Settings extends ConsumerWidget {
               ],
             ),
             ListTileSection(title: t.settings.section.personal),
-            SettingsListContainer(
+            ListItemContainer(
               children: [
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.palette_outlined,
                   label: t.settings.theme,
                   onTap: () => const ThemeSettingsRoute().push(context),
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.tune_outlined,
                   label: t.settings.advanced,
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.notifications_outlined,
                   label: t.settings.notifications,
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.language_outlined,
                   label: t.settings.language,
                   onTap: () => const LanguageSettingsRoute().push(context),
@@ -71,13 +71,13 @@ class Settings extends ConsumerWidget {
               ],
             ),
             ListTileSection(title: t.settings.section.data),
-            SettingsListContainer(
+            ListItemContainer(
               children: [
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.bar_chart_outlined,
                   label: t.settings.statistics,
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.storage_outlined,
                   label: t.settings.dataManagement,
                   onTap: () => const DataManagementRoute().push(context),
@@ -85,9 +85,9 @@ class Settings extends ConsumerWidget {
               ],
             ),
             ListTileSection(title: t.settings.section.other),
-            SettingsListContainer(
+            ListItemContainer(
               children: [
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.description_outlined,
                   label: t.settings.openSourceLicenses,
                   onTap: () => const OpenSourceLicensesRoute().push(context),

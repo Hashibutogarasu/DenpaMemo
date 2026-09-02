@@ -345,6 +345,9 @@ class Translations$page$ja {
 
 	/// ja: 'クラウドバックアップ&復元'
 	String get cloudBackup => 'クラウドバックアップ&復元';
+
+	/// ja: 'バックアップ履歴'
+	String get cloudBackupHistory => 'バックアップ履歴';
 }
 
 // Path: settings
@@ -665,13 +668,31 @@ class Translations$cloudBackup$ja {
 	String networkErrorDescription({required Object message}) => 'クラウドとの通信に失敗しました: ${message}';
 
 	/// ja: 'クラウドにバックアップしています'
-	String get backupRunningMessage => 'クラウドにバックアップしています';
+	String get backupRunning => 'クラウドにバックアップしています';
 
 	/// ja: 'クラウドから復元しています'
-	String get restoreRunningMessage => 'クラウドから復元しています';
+	String get restoreRunning => 'クラウドから復元しています';
 
 	/// ja: 'キャンセルしました'
 	String get cancelled => 'キャンセルしました';
+
+	/// ja: 'バックアップ履歴を見る'
+	String get historyAction => 'バックアップ履歴を見る';
+
+	/// ja: 'バックアップ履歴がありません。'
+	String get historyEmptyDescription => 'バックアップ履歴がありません。';
+
+	/// ja: '復元'
+	String get restoreAction => '復元';
+
+	/// ja: 'バックアップを削除しますか?'
+	String get deleteConfirmTitle => 'バックアップを削除しますか?';
+
+	/// ja: 'このバックアップファイルを削除します。この操作は取り消せません。'
+	String get deleteConfirmMessage => 'このバックアップファイルを削除します。この操作は取り消せません。';
+
+	/// ja: '選択したバックアップファイルを削除します。この操作は取り消せません。'
+	String get deleteSelectedConfirmMessage => '選択したバックアップファイルを削除します。この操作は取り消せません。';
 }
 
 // Path: birthGuide
@@ -993,6 +1014,7 @@ extension on Translations {
 			'page.dataManagement' => 'データ管理',
 			'page.openSourceLicenses' => 'オープンソースライセンス',
 			'page.cloudBackup' => 'クラウドバックアップ&復元',
+			'page.cloudBackupHistory' => 'バックアップ履歴',
 			'settings.section.general' => '全般',
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',
@@ -1106,9 +1128,15 @@ extension on Translations {
 			'cloudBackup.notSignedInDescription' => 'この機能を使うにはアカウントにサインインしてください。',
 			'cloudBackup.noBackupFoundDescription' => 'クラウドにバックアップが存在しません。先にバックアップを実行してください。',
 			'cloudBackup.networkErrorDescription' => ({required Object message}) => 'クラウドとの通信に失敗しました: ${message}',
-			'cloudBackup.backupRunningMessage' => 'クラウドにバックアップしています',
-			'cloudBackup.restoreRunningMessage' => 'クラウドから復元しています',
+			'cloudBackup.backupRunning' => 'クラウドにバックアップしています',
+			'cloudBackup.restoreRunning' => 'クラウドから復元しています',
 			'cloudBackup.cancelled' => 'キャンセルしました',
+			'cloudBackup.historyAction' => 'バックアップ履歴を見る',
+			'cloudBackup.historyEmptyDescription' => 'バックアップ履歴がありません。',
+			'cloudBackup.restoreAction' => '復元',
+			'cloudBackup.deleteConfirmTitle' => 'バックアップを削除しますか?',
+			'cloudBackup.deleteConfirmMessage' => 'このバックアップファイルを削除します。この操作は取り消せません。',
+			'cloudBackup.deleteSelectedConfirmMessage' => '選択したバックアップファイルを削除します。この操作は取り消せません。',
 			'birthGuide.catchQrInstruction' => 'このQRコードから個体をキャッチしてください',
 			'birthGuide.catchIndividualInstruction' => 'この個体をキャッチしてください',
 			'birthGuide.breedParentInstruction' => 'この個体を用意してください',

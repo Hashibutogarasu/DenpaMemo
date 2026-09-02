@@ -45,12 +45,19 @@ class CloudBackupRestoreController {
 
   /// Returns the [ImportResult] once the download and merge complete, or
   /// null if the user declined to resolve duplicate individuals partway
-  /// through. Throws [CloudBackupNotFoundException] if no cloud backup
-  /// exists yet, or [CancelledException] if [cancellation] is requested
-  /// during the download.
-  Future<ImportResult?> restore(BuildContext context, {required Cancellation cancellation}) async {
+  /// through. Restores [target] if given, otherwise the most recently
+  /// uploaded cloud file across every device on the account. Throws
+  /// [CloudBackupNotFoundException] if no cloud backup exists yet, or
+  /// [CancelledException] if [cancellation] is requested during the
+  /// download.
+  Future<ImportResult?> restore(
+    BuildContext context, {
+    required Cancellation cancellation,
+    CloudFile? target,
+  }) async {
     final t = context.t;
-    final latest = _latestCloudFile();
+    await _ref.read(cloudFilesProvider.notifier).refreshFromServer();
+    final latest = target ?? _latestCloudFile();
     if (latest == null) {
       throw const CloudBackupNotFoundException();
     }
@@ -91,13 +98,21 @@ class CloudBackupRestoreController {
           await storage.saveIcon(denpaMenId, iconFile);
           _ref.invalidate(denpaMenIconProvider(denpaMenId));
         },
-        resolveDuplicates: (candidates) => DenpaMenSelectionDialog.show(
-          context,
-          title: t.home.importMergeConfirmTitle,
-          candidates: candidates,
-          initial: candidates,
-          totalAttributeCount: masterData.attributes.length,
-        ),
+        resolveDuplicates: (candidates) async {
+          final iconsById = await resolveDenpaMenIcons(
+            (id) => _ref.read(denpaMenIconProvider(id).future),
+            [for (final denpaMen in candidates) denpaMen.id],
+          );
+          if (!context.mounted) return null;
+          return DenpaMenSelectionDialog.show(
+            context,
+            title: t.home.importMergeConfirmTitle,
+            candidates: candidates,
+            initial: candidates,
+            totalAttributeCount: masterData.attributes.length,
+            iconsById: iconsById,
+          );
+        },
         onProgress: (value) {
           if (value == null) return;
           notifications.setStatus(

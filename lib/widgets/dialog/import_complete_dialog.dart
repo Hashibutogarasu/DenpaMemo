@@ -28,9 +28,10 @@ class ImportCompleteDialog extends StatelessWidget {
     WidgetRef ref, {
     required ImportResult result,
   }) async {
-    final iconsById = await resolveDenpaMenIcons(ref, [
-      for (final denpaMen in [...result.added, ...result.merged, ...result.orphaned]) denpaMen.id,
-    ]);
+    final iconsById = await resolveDenpaMenIcons(
+      (id) => ref.read(denpaMenIconProvider(id).future),
+      [for (final denpaMen in [...result.added, ...result.merged, ...result.orphaned]) denpaMen.id],
+    );
     if (!context.mounted) return;
     return showDialog<void>(
       context: context,

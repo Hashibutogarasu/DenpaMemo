@@ -6,6 +6,7 @@ import '../pages/account_settings.dart';
 import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
 import '../pages/cloud_backup.dart';
+import '../pages/cloud_backup_history.dart';
 import '../pages/data_management.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
@@ -22,6 +23,7 @@ import '../pages/search_results.dart';
 import '../pages/settings.dart';
 import '../pages/theme_settings.dart';
 import '../widgets/scaffold/app_shell.dart';
+import '../widgets/scaffold/cloud_backup_shell.dart';
 
 part 'app_router.g.dart';
 
@@ -279,12 +281,41 @@ class DataManagementRoute extends GoRouteData with $DataManagementRoute {
       const DataManagementPage();
 }
 
+/// Wraps the cloud backup page and its history page in
+/// [CloudBackupShell], which owns the progress bar tracking whichever
+/// cloud backup/restore is currently running — shared chrome, so it shows
+/// no matter which of the two pages started that operation.
+@TypedShellRoute<CloudBackupShellRouteData>(
+  routes: [
+    TypedGoRoute<CloudBackupRoute>(path: '/settings/cloud-backup'),
+    TypedGoRoute<CloudBackupHistoryRoute>(path: '/settings/cloud-backup/history'),
+  ],
+)
+class CloudBackupShellRouteData extends ShellRouteData {
+  const CloudBackupShellRouteData();
+
+  @override
+  Widget builder(
+    BuildContext context,
+    GoRouterState state,
+    Widget navigator,
+  ) => CloudBackupShell(child: navigator);
+}
+
 /// Pushed from the settings list's "cloud backup" tile.
-@TypedGoRoute<CloudBackupRoute>(path: '/settings/cloud-backup')
 class CloudBackupRoute extends GoRouteData with $CloudBackupRoute {
   const CloudBackupRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const CloudBackupPage();
+}
+
+/// Pushed from the cloud backup page's history FAB.
+class CloudBackupHistoryRoute extends GoRouteData with $CloudBackupHistoryRoute {
+  const CloudBackupHistoryRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const CloudBackupHistoryPage();
 }

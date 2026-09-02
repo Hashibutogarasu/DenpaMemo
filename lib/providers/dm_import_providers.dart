@@ -69,13 +69,21 @@ class DmImportController {
           await storage.saveIcon(denpaMenId, iconFile);
           _ref.invalidate(denpaMenIconProvider(denpaMenId));
         },
-        resolveDuplicates: (candidates) => DenpaMenSelectionDialog.show(
-          context,
-          title: t.home.importMergeConfirmTitle,
-          candidates: candidates,
-          initial: candidates,
-          totalAttributeCount: masterData.attributes.length,
-        ),
+        resolveDuplicates: (candidates) async {
+          final iconsById = await resolveDenpaMenIcons(
+            (id) => _ref.read(denpaMenIconProvider(id).future),
+            [for (final denpaMen in candidates) denpaMen.id],
+          );
+          if (!context.mounted) return null;
+          return DenpaMenSelectionDialog.show(
+            context,
+            title: t.home.importMergeConfirmTitle,
+            candidates: candidates,
+            initial: candidates,
+            totalAttributeCount: masterData.attributes.length,
+            iconsById: iconsById,
+          );
+        },
         onProgress: (value) {
           progress.state = value;
           if (value != null) {

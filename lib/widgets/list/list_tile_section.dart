@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// A section heading above a group of settings tiles (typically an
-/// immediately-following `SettingsListContainer`). Renders only the
-/// heading text — it holds no tiles itself.
+/// A section heading above a group of list tiles (typically an
+/// immediately-following [ListItemContainer]). Renders only the heading
+/// text — it holds no tiles itself.
 class ListTileSection extends StatelessWidget {
   const ListTileSection({super.key, required this.title});
 

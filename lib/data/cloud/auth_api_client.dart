@@ -11,6 +11,15 @@ class UploadLink {
   final String filename;
 }
 
+/// One entry of `GET /dmfiles`'s response.
+class CloudFileDto {
+  const CloudFileDto({required this.fileId, required this.filename, required this.uploaded});
+
+  final String fileId;
+  final String filename;
+  final DateTime uploaded;
+}
+
 /// Thrown when `modules/auth` responds with a non-2xx status, carrying the
 /// status code and its `{ error, code }` body (see `app.ts`'s `onError`)
 /// so callers see the real reason rather than treating the request as
@@ -61,6 +70,25 @@ class AuthApiClient {
       headers: _authHeaders(idToken),
     );
     _requireSuccess(response);
+  }
+
+  /// Lists every cloud file the account has uploaded from any device, via
+  /// GET /dmfiles.
+  Future<List<CloudFileDto>> listDmFiles(String idToken) async {
+    final response = await http.get(
+      _baseUrl.replace(path: '/dmfiles'),
+      headers: _authHeaders(idToken),
+    );
+    final body = _decodeOrThrow(response);
+    final files = body['files'] as List<dynamic>;
+    return [
+      for (final file in files.cast<Map<String, dynamic>>())
+        CloudFileDto(
+          fileId: file['fileId'] as String,
+          filename: file['filename'] as String,
+          uploaded: DateTime.parse(file['uploaded'] as String),
+        ),
+    ];
   }
 
   Future<void> deleteAccount(String idToken) async {

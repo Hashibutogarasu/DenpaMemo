@@ -8,10 +8,10 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/account_providers.dart';
 import '../providers/cloud_account_providers.dart';
 import '../widgets/dialog/confirm_dialog.dart';
+import '../widgets/list/list_item_container.dart';
+import '../widgets/list/list_item_tile.dart';
+import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/copyable_list_tile.dart';
-import '../widgets/settings/list_tile_section.dart';
-import '../widgets/settings/settings_list_container.dart';
-import '../widgets/settings/settings_tile.dart';
 
 /// Wires [AccountSignInDialog]'s callbacks to [cloudAccountProvider], and
 /// opens [AccountSignUpDialog] the same way when the sign-in dialog's
@@ -162,9 +162,9 @@ class AccountSettingsPage extends ConsumerWidget {
         child: ListView(
           children: [
             ListTileSection(title: t.settings.accountSettings.sectionCloud),
-            SettingsListContainer(
+            ListItemContainer(
               children: [
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.cloud_outlined,
                   label: cloudAccount.isSignedIn
                       ? (cloudAccount.email ?? t.settings.accountSettings.signIn)
@@ -178,7 +178,7 @@ class AccountSettingsPage extends ConsumerWidget {
                   label: t.settings.accountSettings.cloudUidLabel,
                   trailingText: cloudAccount.uid,
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.logout,
                   label: t.settings.accountSettings.signOut,
                   onTap: cloudAccount.isSignedIn ? () => _signOut(context, ref) : null,
@@ -186,23 +186,23 @@ class AccountSettingsPage extends ConsumerWidget {
               ],
             ),
             ListTileSection(title: t.settings.accountSettings.sectionLocal),
-            SettingsListContainer(
+            ListItemContainer(
               children: [
                 CopyableListTile(
                   icon: Icons.badge_outlined,
                   label: t.settings.accountCuidLabel,
                   trailingText: account.cuid,
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.add_circle_outline,
                   label: t.settings.accountSettings.addLocalAccount,
                 ),
               ],
             ),
             ListTileSection(title: t.settings.accountSettings.sectionDangerZone),
-            SettingsListContainer(
+            ListItemContainer(
               children: [
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.delete_outline,
                   label: t.settings.accountSettings.deleteCloudAccount,
                   color: Theme.of(context).colorScheme.error,
@@ -210,7 +210,7 @@ class AccountSettingsPage extends ConsumerWidget {
                       ? () => _deleteCloudAccount(context, ref)
                       : null,
                 ),
-                SettingsTile(
+                ListItemTile(
                   icon: Icons.delete_outline,
                   label: t.settings.accountSettings.deleteLocalAccount,
                   color: Theme.of(context).colorScheme.error,
