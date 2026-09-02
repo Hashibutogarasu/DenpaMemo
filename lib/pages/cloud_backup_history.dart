@@ -50,6 +50,8 @@ class CloudBackupHistoryPage extends ConsumerWidget {
         files.isNotEmpty && files.every((file) => selectedIds.contains(file.fileId));
     final groups = groupBy(files, (CloudFile file) => file.uploadedAt.startOfDay);
 
+    final isBusy = ref.watch(cloudBackupRunningNotificationProvider) != null;
+
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackupHistory),
       belowHeader: const CloudBackupProgressBar(),
@@ -76,8 +78,12 @@ class CloudBackupHistoryPage extends ConsumerWidget {
                                   ref.read(cloudFileSelectionModeProvider.notifier).state = true;
                                   toggleCloudFileSelected(ref, file.fileId);
                                 },
-                                actionMenuItemsBuilder: (context) =>
-                                    cloudFileActionMenuItems(context, ref, cloudFile: file),
+                                actionMenuItemsBuilder: (context) => cloudFileActionMenuItems(
+                                  context,
+                                  ref,
+                                  cloudFile: file,
+                                  restoreEnabled: !isBusy,
+                                ),
                               ),
                           ],
                         ),

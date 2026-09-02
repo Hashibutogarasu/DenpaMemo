@@ -7,7 +7,6 @@ import 'package:graphql_client/graphql_client.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_notification_providers.dart';
 import '../providers/cloud_backup_restore_providers.dart';
-import '../providers/cloud_backup_upload_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/dialog/cloud_backup_flows.dart';
 import '../widgets/scaffold/cloud_backup_shell.dart';
@@ -52,11 +51,9 @@ class CloudBackupPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
     final masterData = ref.watch(masterDataProvider).value;
-    final notifications = ref.watch(appNotificationsProvider);
-    final uploadNotification = cloudBackupUploadNotificationOf(notifications);
-    final restoreNotification = cloudBackupRestoreNotificationOf(notifications);
-    final isUploading = uploadNotification?.status == AppNotificationStatus.running;
+    final restoreNotification = cloudBackupRestoreNotificationOf(ref.watch(appNotificationsProvider));
     final isRestoring = restoreNotification?.status == AppNotificationStatus.running;
+    final isBusy = ref.watch(cloudBackupRunningNotificationProvider) != null;
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackup),
@@ -75,7 +72,7 @@ class CloudBackupPage extends ConsumerWidget {
                 child: _CloudBackupEndpoint(
                   icon: Icons.cloud_outlined,
                   label: t.cloudBackup.latestBackupLabel,
-                  onTap: masterData == null
+                  onTap: masterData == null || isBusy
                       ? null
                       : () => runCloudBackup(context, ref, masterData),
                 ),
@@ -84,7 +81,7 @@ class CloudBackupPage extends ConsumerWidget {
                 child: _CloudBackupEndpoint(
                   icon: Icons.smartphone_outlined,
                   label: t.cloudBackup.localFileLabel,
-                  onTap: () => runCloudRestore(context, ref),
+                  onTap: isBusy ? null : () => runCloudRestore(context, ref),
                 ),
               ),
             ],
@@ -93,7 +90,7 @@ class CloudBackupPage extends ConsumerWidget {
             child: Center(
               child: ArrowIcon(
                 direction: isRestoring ? ArrowDirection.toLocal : ArrowDirection.toCloud,
-                isAnimating: isUploading || isRestoring,
+                isAnimating: isBusy,
               ),
             ),
           ),

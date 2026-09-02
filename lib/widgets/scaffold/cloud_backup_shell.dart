@@ -20,25 +20,31 @@ class CloudBackupShell extends StatelessWidget {
   Widget build(BuildContext context) => AlwaysPoppableShellScope(child: child);
 }
 
+/// Whichever of the cloud backup upload/restore [AppNotification]s is
+/// currently running, or null if neither is — the single source [CloudBackupProgressBar]
+/// and every "disable while busy" check reads, instead of each re-deriving
+/// it from [appNotificationsProvider].
+final cloudBackupRunningNotificationProvider = Provider<AppNotification?>((ref) {
+  final notifications = ref.watch(appNotificationsProvider);
+  final uploadNotification = cloudBackupUploadNotificationOf(notifications);
+  final restoreNotification = cloudBackupRestoreNotificationOf(notifications);
+  return uploadNotification?.status == AppNotificationStatus.running
+      ? uploadNotification
+      : restoreNotification?.status == AppNotificationStatus.running
+      ? restoreNotification
+      : null;
+});
+
 /// Progress bar shared by `CloudBackupPage` and `CloudBackupHistoryPage`,
-/// tracking whichever cloud backup/restore [AppNotification] is currently
-/// running, so the progress is visible regardless of which page's
-/// endpoint started the operation. Passed as `AppScaffold.belowHeader` by
-/// each of the two pages.
+/// so the progress is visible regardless of which page's endpoint started
+/// the operation. Passed as `AppScaffold.belowHeader` by each of the two
+/// pages.
 class CloudBackupProgressBar extends ConsumerWidget {
   const CloudBackupProgressBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifications = ref.watch(appNotificationsProvider);
-    final uploadNotification = cloudBackupUploadNotificationOf(notifications);
-    final restoreNotification = cloudBackupRestoreNotificationOf(notifications);
-    final runningNotification = uploadNotification?.status == AppNotificationStatus.running
-        ? uploadNotification
-        : restoreNotification?.status == AppNotificationStatus.running
-        ? restoreNotification
-        : null;
-
+    final runningNotification = ref.watch(cloudBackupRunningNotificationProvider);
     if (runningNotification == null) return const SizedBox.shrink();
     return LinearProgressIndicator(value: runningNotification.progress);
   }
