@@ -22,12 +22,14 @@ class AlwaysPoppableShellScope extends InheritedWidget {
   bool updateShouldNotify(AlwaysPoppableShellScope oldWidget) => false;
 }
 
-/// Standard page shell: a [SlantedAppBar] header, plus [body] with the
-/// stack-aware [AppBackButton] (bottom-left, shown per [Navigator.canPop]
-/// or [AlwaysPoppableShellScope]) and [floatingActionButton] (bottom-right)
-/// laid out as siblings in one [Stack] — rather than routing one of them
-/// through [Scaffold.floatingActionButton] — so their height and bottom
-/// offset stay pixel-identical.
+/// Standard page shell: a [SlantedAppBar] header, then [belowHeader] (if
+/// given) and [body] stacked vertically in a [Column], so [belowHeader]
+/// takes its own row of space below the header instead of overlaying
+/// either. [body] itself holds the stack-aware [AppBackButton]
+/// (bottom-left, shown per [Navigator.canPop] or [AlwaysPoppableShellScope])
+/// and [floatingActionButton] (bottom-right) as siblings in one [Stack] —
+/// rather than routing one of them through [Scaffold.floatingActionButton]
+/// — so their height and bottom offset stay pixel-identical.
 ///
 /// Also binds Escape to the same pop, so keyboard users get the same
 /// stack-aware back behavior as the on-screen button.
@@ -41,6 +43,7 @@ class AppScaffold extends ConsumerWidget {
     this.buttonInset = 16,
     this.onBackPressed,
     this.additionalShortcuts = const {},
+    this.belowHeader,
   });
 
   final Widget title;
@@ -49,6 +52,7 @@ class AppScaffold extends ConsumerWidget {
   final List<Widget>? actions;
   final double buttonInset;
   final VoidCallback? onBackPressed;
+  final Widget? belowHeader;
 
   final Map<ShortcutActivator, VoidCallback> additionalShortcuts;
 
@@ -82,21 +86,28 @@ class AppScaffold extends ConsumerWidget {
             actions: actions,
             topSafeAreaInset: MediaQuery.paddingOf(context).top,
           ),
-          body: Stack(
+          body: Column(
             children: [
-              Positioned.fill(child: body),
-              if (canPop)
-                Positioned(
-                  left: buttonInset,
-                  bottom: buttonInset,
-                  child: AppBackButton(onPressed: onBackPressed),
+              ?belowHeader,
+              Expanded(
+                child: Stack(
+                  children: [
+                    Positioned.fill(child: body),
+                    if (canPop)
+                      Positioned(
+                        left: buttonInset,
+                        bottom: buttonInset,
+                        child: AppBackButton(onPressed: onBackPressed),
+                      ),
+                    if (floatingActionButton != null)
+                      Positioned(
+                        right: buttonInset,
+                        bottom: buttonInset,
+                        child: floatingActionButton!,
+                      ),
+                  ],
                 ),
-              if (floatingActionButton != null)
-                Positioned(
-                  right: buttonInset,
-                  bottom: buttonInset,
-                  child: floatingActionButton!,
-                ),
+              ),
             ],
           ),
         ),

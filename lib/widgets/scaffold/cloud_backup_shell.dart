@@ -7,18 +7,26 @@ import '../../providers/app_notification_providers.dart';
 import '../../providers/cloud_backup_restore_providers.dart';
 import '../../providers/cloud_backup_upload_providers.dart';
 
-/// Wraps `CloudBackupPage` and `CloudBackupHistoryPage` (see
-/// `CloudBackupShellRouteData` in `app_router.dart`) with a progress bar
-/// tracking whichever cloud backup/restore [AppNotification] is currently
-/// running, so the progress is visible regardless of which page's
-/// endpoint started the operation. Also marks the branch as
-/// [AlwaysPoppableShellScope], since it's only ever reached by push, so
-/// its pages get a back button even on the shell's own nested [Navigator]
-/// first entry.
-class CloudBackupShell extends ConsumerWidget {
+/// Marks `CloudBackupPage` and `CloudBackupHistoryPage` (see
+/// `CloudBackupShellRouteData` in `app_router.dart`) as [AlwaysPoppableShellScope],
+/// since the branch is only ever reached by push, so its pages get a back
+/// button even on the shell's own nested [Navigator] first entry.
+class CloudBackupShell extends StatelessWidget {
   const CloudBackupShell({super.key, required this.child});
 
   final Widget child;
+
+  @override
+  Widget build(BuildContext context) => AlwaysPoppableShellScope(child: child);
+}
+
+/// Progress bar shared by `CloudBackupPage` and `CloudBackupHistoryPage`,
+/// tracking whichever cloud backup/restore [AppNotification] is currently
+/// running, so the progress is visible regardless of which page's
+/// endpoint started the operation. Passed as `AppScaffold.belowHeader` by
+/// each of the two pages.
+class CloudBackupProgressBar extends ConsumerWidget {
+  const CloudBackupProgressBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,19 +39,7 @@ class CloudBackupShell extends ConsumerWidget {
         ? restoreNotification
         : null;
 
-    return AlwaysPoppableShellScope(
-      child: Stack(
-        children: [
-          child,
-          if (runningNotification != null)
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: LinearProgressIndicator(value: runningNotification.progress),
-            ),
-        ],
-      ),
-    );
+    if (runningNotification == null) return const SizedBox.shrink();
+    return LinearProgressIndicator(value: runningNotification.progress);
   }
 }
