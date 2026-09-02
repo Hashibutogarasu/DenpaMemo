@@ -6,10 +6,7 @@ import 'package:flutter_date_formatter/flutter_date_formatter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../i18n/gen/strings.g.dart';
-import '../providers/app_notification_providers.dart';
 import '../providers/cloud_backup_history_providers.dart';
-import '../providers/cloud_backup_restore_providers.dart';
-import '../providers/cloud_backup_upload_providers.dart';
 import '../providers/cloud_files_providers.dart';
 import '../widgets/dialog/cloud_file_action_menu.dart';
 import '../widgets/dialog/confirm_dialog.dart';
@@ -53,12 +50,7 @@ class CloudBackupHistoryPage extends ConsumerWidget {
         files.isNotEmpty && files.every((file) => selectedIds.contains(file.fileId));
     final groups = groupBy(files, (CloudFile file) => file.uploadedAt.startOfDay);
 
-    final notifications = ref.watch(appNotificationsProvider);
-    final uploadNotification = cloudBackupUploadNotificationOf(notifications);
-    final restoreNotification = cloudBackupRestoreNotificationOf(notifications);
-    final isBusy =
-        uploadNotification?.status == AppNotificationStatus.running ||
-        restoreNotification?.status == AppNotificationStatus.running;
+    final isBusy = ref.watch(cloudBackupRunningNotificationProvider) != null;
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackupHistory),
