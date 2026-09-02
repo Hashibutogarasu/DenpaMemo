@@ -2,6 +2,7 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../data/server/physique_table_args.dart';
 import '../pages/account_settings.dart';
 import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
@@ -17,6 +18,9 @@ import '../pages/language_settings.dart';
 import '../pages/monster_exp.dart';
 import '../pages/monster_selection.dart';
 import '../pages/open_source_licenses.dart';
+import '../pages/physique_table_edit.dart';
+import '../pages/physique_table_list.dart';
+import '../pages/physique_table_view.dart';
 import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
 import '../pages/search_results.dart';
@@ -279,6 +283,41 @@ class DataManagementRoute extends GoRouteData with $DataManagementRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const DataManagementPage();
+}
+
+/// Pushed from the settings list's "developer" section, debug builds only.
+/// Lists every antenna category (see `PhysiqueTableListPage`), from which a
+/// level is picked before pushing [PhysiqueTableViewRoute].
+@TypedGoRoute<PhysiqueTableListRoute>(path: '/settings/developer/physiques')
+class PhysiqueTableListRoute extends GoRouteData with $PhysiqueTableListRoute {
+  const PhysiqueTableListRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const PhysiqueTableListPage();
+}
+
+/// Pushed from [PhysiqueTableListPage] once a level/antenna category pair
+/// is chosen. `$extra` carries that pair, since it can't round-trip
+/// through a URL (see [DenpaMenSelectionRoute] for the same pattern).
+@TypedGoRoute<PhysiqueTableViewRoute>(path: '/settings/developer/physiques/view')
+class PhysiqueTableViewRoute extends GoRouteData with $PhysiqueTableViewRoute {
+  const PhysiqueTableViewRoute({required this.$extra});
+
+  final PhysiqueTableArgs $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => PhysiqueTableViewPage(args: $extra);
+}
+
+/// Pushed from [PhysiqueTableViewPage]'s edit button.
+@TypedGoRoute<PhysiqueTableEditRoute>(path: '/settings/developer/physiques/edit')
+class PhysiqueTableEditRoute extends GoRouteData with $PhysiqueTableEditRoute {
+  const PhysiqueTableEditRoute({required this.$extra});
+
+  final PhysiqueTableArgs $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => PhysiqueTableEditPage(args: $extra);
 }
 
 /// Wraps the cloud backup page and its history page in [CloudBackupShell],

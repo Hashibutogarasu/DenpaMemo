@@ -45,6 +45,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$step$ja step = Translations$step$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
+	late final Translations$physiqueTable$ja physiqueTable = Translations$physiqueTable$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$search$ja search = Translations$search$ja.internal(_root);
 	Map<String, String> get monster => {
@@ -450,6 +451,63 @@ class Translations$settings$ja {
 
 	/// ja: 'クラウドバックアップ&復元'
 	String get cloudBackup => 'クラウドバックアップ&復元';
+
+	/// ja: '体格表を編集'
+	String get editPhysiqueTable => '体格表を編集';
+}
+
+// Path: physiqueTable
+class Translations$physiqueTable$ja {
+	Translations$physiqueTable$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '体格表'
+	String get title => '体格表';
+
+	/// ja: 'レベル${level} - ${anntenaCategory} の体格表'
+	String tableTitle({required Object level, required Object anntenaCategory}) => 'レベル${level} - ${anntenaCategory} の体格表';
+
+	/// ja: 'レベルを入力'
+	String get enterLevel => 'レベルを入力';
+
+	/// ja: 'アンテナを選択'
+	String get selectAnntenaCategory => 'アンテナを選択';
+
+	/// ja: '新規作成'
+	String get createNewTable => '新規作成';
+
+	/// ja: '編集'
+	String get edit => '編集';
+
+	/// ja: '行を追加'
+	String get addRow => '行を追加';
+
+	/// ja: '保存'
+	String get save => '保存';
+
+	/// ja: '保存しました'
+	String get saved => '保存しました';
+
+	/// ja: 'この表を削除'
+	String get deleteTable => 'この表を削除';
+
+	/// ja: '体格表を削除'
+	String get deleteTableConfirmTitle => '体格表を削除';
+
+	/// ja: 'この体格表を削除します。この操作は取り消せません。よろしいですか?'
+	String get deleteTableConfirmMessage => 'この体格表を削除します。この操作は取り消せません。よろしいですか?';
+
+	/// ja: 'この行を削除'
+	String get deleteRow => 'この行を削除';
+
+	/// ja: '行を削除'
+	String get deleteRowConfirmTitle => '行を削除';
+
+	/// ja: '選択した行を削除します。この操作は取り消せません。よろしいですか?'
+	String get deleteRowConfirmMessage => '選択した行を削除します。この操作は取り消せません。よろしいですか?';
 }
 
 // Path: home
@@ -903,6 +961,9 @@ class Translations$settings$section$ja {
 
 	/// ja: 'その他'
 	String get other => 'その他';
+
+	/// ja: '開発者向け'
+	String get developer => '開発者向け';
 }
 
 // Path: settings.accountSettings
@@ -1019,6 +1080,7 @@ extension on Translations {
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',
 			'settings.section.other' => 'その他',
+			'settings.section.developer' => '開発者向け',
 			'settings.copiedToast' => ({required Object label}) => '${label}をコピーしました',
 			'settings.account' => 'アカウント',
 			'settings.accountSettings.sectionCloud' => 'クラウドアカウント',
@@ -1069,6 +1131,22 @@ extension on Translations {
 			'settings.dataManagementClearCacheResult' => 'キャッシュデータを削除しました',
 			'settings.dataManagementResultTitle' => '削除しました',
 			'settings.cloudBackup' => 'クラウドバックアップ&復元',
+			'settings.editPhysiqueTable' => '体格表を編集',
+			'physiqueTable.title' => '体格表',
+			'physiqueTable.tableTitle' => ({required Object level, required Object anntenaCategory}) => 'レベル${level} - ${anntenaCategory} の体格表',
+			'physiqueTable.enterLevel' => 'レベルを入力',
+			'physiqueTable.selectAnntenaCategory' => 'アンテナを選択',
+			'physiqueTable.createNewTable' => '新規作成',
+			'physiqueTable.edit' => '編集',
+			'physiqueTable.addRow' => '行を追加',
+			'physiqueTable.save' => '保存',
+			'physiqueTable.saved' => '保存しました',
+			'physiqueTable.deleteTable' => 'この表を削除',
+			'physiqueTable.deleteTableConfirmTitle' => '体格表を削除',
+			'physiqueTable.deleteTableConfirmMessage' => 'この体格表を削除します。この操作は取り消せません。よろしいですか?',
+			'physiqueTable.deleteRow' => 'この行を削除',
+			'physiqueTable.deleteRowConfirmTitle' => '行を削除',
+			'physiqueTable.deleteRowConfirmMessage' => '選択した行を削除します。この操作は取り消せません。よろしいですか?',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

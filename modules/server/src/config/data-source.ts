@@ -14,6 +14,8 @@ import { HeadShapeEntity } from '../entities/head-shape.entity';
 import { MonsterEntity } from '../entities/monster.entity';
 import { PatternEntity } from '../entities/pattern.entity';
 import { PersonalityEntity } from '../entities/personality.entity';
+import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
+import { PhysiqueTableEntity } from '../entities/physique-table.entity';
 import { PhysiqueEntity } from '../entities/physique.entity';
 import { TargetModeEntity } from '../entities/target-mode.entity';
 import { TranslationEntity } from '../entities/translation.entity';
@@ -37,7 +39,9 @@ export const AppDataSource = new DataSource({
     MonsterEntity,
     PatternEntity,
     PersonalityEntity,
+    PhysiqueAntennaCategoryEntity,
     PhysiqueEntity,
+    PhysiqueTableEntity,
     TargetModeEntity,
     TranslationEntity,
   ],

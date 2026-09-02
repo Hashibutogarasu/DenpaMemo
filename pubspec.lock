@@ -438,6 +438,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_checkbox:
+    dependency: transitive
+    description:
+      name: flutter_checkbox
+      sha256: fb377fcddf2909a69f6f8003ff216ad5abae57210b03150be64c7806c45b9aae
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   flutter_date_formatter:
     dependency: "direct main"
     description:
@@ -539,6 +547,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  flutter_table_plus:
+    dependency: "direct main"
+    description:
+      name: flutter_table_plus
+      sha256: e7e1c98400dbd9a3b8da58366c4c2235a657c66528aa6d4c5c5ec7664c662864
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.16.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -885,6 +901,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.14.1"
+  just_tooltip:
+    dependency: transitive
+    description:
+      name: just_tooltip
+      sha256: f4f7fe69f386b53ed06ae7fd365fd8ade26aef9e40696f1e97b61e742f6030f1
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.4"
   leak_tracker:
     dependency: transitive
     description:

@@ -9,6 +9,7 @@ import { CorrectionEntity } from '../../entities/correction.entity';
 import { HeadShapeEntity } from '../../entities/head-shape.entity';
 import { PatternEntity } from '../../entities/pattern.entity';
 import { PersonalityEntity } from '../../entities/personality.entity';
+import { PhysiqueAntennaCategoryEntity } from '../../entities/physique-antenna-category.entity';
 import { PhysiqueEntity } from '../../entities/physique.entity';
 
 async function attributeResistanceBonusesFor(dataSource: DataSource, ownerType: AttributeBonusOwnerType, ownerId: string) {
@@ -22,19 +23,31 @@ export async function resolveMasterData(dataSource: DataSource) {
   const attributeRepo = dataSource.getRepository(AttributeEntity);
   const bodyColorResistanceRuleRepo = dataSource.getRepository(BodyColorResistanceRuleEntity);
 
-  const [headShapes, anntenas, attributes, abnormalityTypes, bodyColorResistanceRules, bodyColorAbnormalityResistanceRules, physiques, personalities, patterns, corrections] =
-    await Promise.all([
-      headShapeRepo.find(),
-      anntenaRepo.find(),
-      attributeRepo.find({ relations: { resistantTo: true, weakTo: true } }),
-      dataSource.getRepository(AbnormalityTypeEntity).find(),
-      bodyColorResistanceRuleRepo.find(),
-      dataSource.getRepository(BodyColorAbnormalityResistanceRuleEntity).find(),
-      dataSource.getRepository(PhysiqueEntity).find(),
-      dataSource.getRepository(PersonalityEntity).find(),
-      dataSource.getRepository(PatternEntity).find(),
-      dataSource.getRepository(CorrectionEntity).find(),
-    ]);
+  const [
+    headShapes,
+    anntenas,
+    attributes,
+    abnormalityTypes,
+    bodyColorResistanceRules,
+    bodyColorAbnormalityResistanceRules,
+    physiques,
+    personalities,
+    patterns,
+    corrections,
+    physiqueAntennaCategories,
+  ] = await Promise.all([
+    headShapeRepo.find(),
+    anntenaRepo.find(),
+    attributeRepo.find({ relations: { resistantTo: true, weakTo: true } }),
+    dataSource.getRepository(AbnormalityTypeEntity).find(),
+    bodyColorResistanceRuleRepo.find(),
+    dataSource.getRepository(BodyColorAbnormalityResistanceRuleEntity).find(),
+    dataSource.getRepository(PhysiqueEntity).find(),
+    dataSource.getRepository(PersonalityEntity).find(),
+    dataSource.getRepository(PatternEntity).find(),
+    dataSource.getRepository(CorrectionEntity).find(),
+    dataSource.getRepository(PhysiqueAntennaCategoryEntity).find(),
+  ]);
 
   const anntenaLegacyIdById = new Map(anntenas.map((anntena) => [anntena.id, anntena.legacyId]));
 
@@ -66,5 +79,6 @@ export async function resolveMasterData(dataSource: DataSource) {
     personalities,
     patterns,
     corrections,
+    physiqueAntennaCategories,
   };
 }

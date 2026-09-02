@@ -95,6 +95,11 @@ const typeDefs = `
     legacyId: String!
   }
 
+  type PhysiqueAntennaCategory {
+    category: String!
+    anntenaCategory: String!
+  }
+
   type Correction {
     id: String!
     legacyId: String!
@@ -118,6 +123,7 @@ const typeDefs = `
     personalities: [Personality!]!
     patterns: [Pattern!]!
     corrections: [Correction!]!
+    physiqueAntennaCategories: [PhysiqueAntennaCategory!]!
   }
 
   type Translation {
