@@ -57,6 +57,7 @@ class CloudBackupPage extends ConsumerWidget {
     final restoreNotification = cloudBackupRestoreNotificationOf(notifications);
     final isUploading = uploadNotification?.status == AppNotificationStatus.running;
     final isRestoring = restoreNotification?.status == AppNotificationStatus.running;
+    final isBusy = isUploading || isRestoring;
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackup),
@@ -75,7 +76,7 @@ class CloudBackupPage extends ConsumerWidget {
                 child: _CloudBackupEndpoint(
                   icon: Icons.cloud_outlined,
                   label: t.cloudBackup.latestBackupLabel,
-                  onTap: masterData == null
+                  onTap: masterData == null || isBusy
                       ? null
                       : () => runCloudBackup(context, ref, masterData),
                 ),
@@ -84,7 +85,7 @@ class CloudBackupPage extends ConsumerWidget {
                 child: _CloudBackupEndpoint(
                   icon: Icons.smartphone_outlined,
                   label: t.cloudBackup.localFileLabel,
-                  onTap: () => runCloudRestore(context, ref),
+                  onTap: isBusy ? null : () => runCloudRestore(context, ref),
                 ),
               ),
             ],
