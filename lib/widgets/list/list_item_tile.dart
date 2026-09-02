@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 /// A single row for any list of items: a leading icon, a label, and a
 /// trailing slot that varies by what the caller passes in — a checkbox
-/// (selection mode), a `⋮` action menu, a chevron (navigable), plain text,
-/// or nothing.
+/// (selection mode), a `⋮` action menu, a chevron (navigable), [trailing],
+/// plain [trailingText], or nothing.
 ///
 /// Passing only [icon]/[label]/[onTap]/[trailingText]/[color] reproduces
 /// the settings-list tile this was generalized from exactly; the
-/// selection/action-menu parameters are additive.
+/// selection/action-menu/[trailing] parameters are additive. [trailing]
+/// takes priority over [trailingText] when both are given, for a trailing
+/// slot that isn't plain text (e.g. a formatted-date widget).
 class ListItemTile extends StatelessWidget {
   const ListItemTile({
     super.key,
@@ -15,6 +17,7 @@ class ListItemTile extends StatelessWidget {
     required this.label,
     this.onTap,
     this.trailingText,
+    this.trailing,
     this.color,
     this.selectionMode = false,
     this.selected = false,
@@ -27,6 +30,7 @@ class ListItemTile extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final String? trailingText;
+  final Widget? trailing;
   final Color? color;
   final bool selectionMode;
   final bool selected;
@@ -54,7 +58,7 @@ class ListItemTile extends StatelessWidget {
             )
           : onTap != null
           ? const Icon(Icons.chevron_right)
-          : (trailingText != null ? Text(trailingText!) : null),
+          : (trailing ?? (trailingText != null ? Text(trailingText!) : null)),
       enabled: enabled,
       onTap: showCheckbox ? () => onSelectedChanged!(!selected) : onTap,
       onLongPress: onLongPress,

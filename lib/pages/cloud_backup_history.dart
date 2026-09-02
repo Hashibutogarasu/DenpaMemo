@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/cloud_backup_history_providers.dart';
 import '../providers/cloud_files_providers.dart';
+import '../widgets/date/formatted_date_text.dart';
+import '../widgets/dialog/cloud_backup_flows.dart';
 import '../widgets/dialog/cloud_file_action_menu.dart';
 import '../widgets/dialog/confirm_dialog.dart';
 import '../widgets/generic_selection_floating_menu.dart';
@@ -50,8 +52,6 @@ class CloudBackupHistoryPage extends ConsumerWidget {
         files.isNotEmpty && files.every((file) => selectedIds.contains(file.fileId));
     final groups = groupBy(files, (CloudFile file) => file.uploadedAt.startOfDay);
 
-    final isBusy = ref.watch(cloudBackupRunningNotificationProvider) != null;
-
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackupHistory),
       belowHeader: const CloudBackupProgressBar(),
@@ -63,26 +63,32 @@ class CloudBackupHistoryPage extends ConsumerWidget {
                 : ListView(
                     children: [
                       for (final entry in groups.entries) ...[
-                        ListTileSection(title: entry.key.format(pattern: 'yyyy/MM/dd', locale: 'ja')),
+                        ListTileSection(
+                          title: FormattedDateText(dateTime: entry.key, pattern: 'yyyy/MM/dd'),
+                        ),
                         ListItemContainer(
                           children: [
                             for (final file in entry.value)
-                              ListItemTile(
-                                icon: Icons.description_outlined,
-                                label: file.filename,
-                                trailingText: file.uploadedAt.format(pattern: 'HH:mm', locale: 'ja'),
-                                selectionMode: selectionMode,
-                                selected: selectedIds.contains(file.fileId),
-                                onSelectedChanged: (_) => toggleCloudFileSelected(ref, file.fileId),
-                                onLongPress: () {
-                                  ref.read(cloudFileSelectionModeProvider.notifier).state = true;
-                                  toggleCloudFileSelected(ref, file.fileId);
-                                },
-                                actionMenuItemsBuilder: (context) => cloudFileActionMenuItems(
-                                  context,
-                                  ref,
-                                  cloudFile: file,
-                                  restoreEnabled: !isBusy,
+                              DisableWhileRunning(
+                                provider: cloudBackupBusyProvider,
+                                onPressed: () => runCloudRestore(context, ref, target: file),
+                                builder: (context, onRestore) => ListItemTile(
+                                  icon: Icons.description_outlined,
+                                  label: file.filename,
+                                  trailing: FormattedDateText(dateTime: file.uploadedAt, pattern: 'HH:mm'),
+                                  selectionMode: selectionMode,
+                                  selected: selectedIds.contains(file.fileId),
+                                  onSelectedChanged: (_) => toggleCloudFileSelected(ref, file.fileId),
+                                  onLongPress: () {
+                                    ref.read(cloudFileSelectionModeProvider.notifier).state = true;
+                                    toggleCloudFileSelected(ref, file.fileId);
+                                  },
+                                  actionMenuItemsBuilder: (context) => cloudFileActionMenuItems(
+                                    context,
+                                    ref,
+                                    cloudFile: file,
+                                    onRestore: onRestore,
+                                  ),
                                 ),
                               ),
                           ],
