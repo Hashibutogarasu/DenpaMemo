@@ -63,14 +63,12 @@ class _TableTypeSelectionDialogState extends State<TableTypeSelectionDialog> {
             ListTile(
               title: Text((t[row.translationKey] as String?) ?? row.type),
               selected: _selected?.type == row.type,
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (widget.dataAvailability?[row.type] case final hasData?)
-                    Icon(hasData ? Icons.circle_outlined : Icons.close),
-                  if (_selected?.type == row.type) const Icon(Icons.check),
-                ],
-              ),
+              trailing: _selected?.type == row.type
+                  ? const Icon(Icons.check)
+                  : switch (widget.dataAvailability?[row.type]) {
+                      final hasData? => Icon(hasData ? Icons.circle_outlined : Icons.close),
+                      null => null,
+                    },
               onTap: () => setState(() => _selected = row),
             ),
         ],
