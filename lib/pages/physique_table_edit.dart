@@ -74,13 +74,26 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       ..pop();
   }
 
-  Future<void> _deleteSelectedRows() async {
-    if (_selectedRowIds.isEmpty) return;
+  Future<void> _deleteRow(int lineOffset) async {
     final t = context.t;
     final confirmed = await _confirm(
       context,
       title: t.physiqueTable.deleteRowConfirmTitle,
       message: t.physiqueTable.deleteRowConfirmMessage,
+    );
+    if (!confirmed || !mounted) return;
+    await ref
+        .read(physiqueTableEditProvider(widget.args).notifier)
+        .deleteRows({lineOffset.toString()});
+  }
+
+  Future<void> _deleteSelectedRows() async {
+    if (_selectedRowIds.isEmpty) return;
+    final t = context.t;
+    final confirmed = await _confirm(
+      context,
+      title: t.physiqueTable.deleteSelectedRowsConfirmTitle,
+      message: t.physiqueTable.deleteSelectedRowsConfirmMessage,
     );
     if (!confirmed || !mounted) return;
     await ref.read(physiqueTableEditProvider(widget.args).notifier).deleteRows(_selectedRowIds);
@@ -145,6 +158,14 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                               _selectedRowIds.remove(rowId);
                             }
                           }),
+                          trailingCellBuilder: (row) => IconButton(
+                            icon: Icon(
+                              Icons.delete_outline,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            tooltip: t.physiqueTable.deleteRow,
+                            onPressed: () => _deleteRow(row.lineOffset),
+                          ),
                         ),
                 ),
                 Padding(
@@ -172,7 +193,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                           Icons.delete_outline,
                           color: Theme.of(context).colorScheme.error,
                         ),
-                        label: Text(t.physiqueTable.deleteRow),
+                        label: Text(t.physiqueTable.deleteSelectedRows),
                         onPressed: _selectedRowIds.isEmpty ? null : _deleteSelectedRows,
                       ),
                     ],
