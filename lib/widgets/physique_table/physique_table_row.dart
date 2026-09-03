@@ -2,19 +2,21 @@ import 'package:table_editor/table_editor.dart';
 
 /// One row of a physique table as displayed in [TableEditor]. Kept
 /// immutable: edits are applied by building a new [PhysiqueTableRow] and
-/// replacing it in the surrounding page's row list.
+/// replacing it in the surrounding page's row list. Cells hold raw text
+/// while being edited — parsing to an integer (and deciding what an
+/// empty cell means, e.g. `0`) happens only once the row is persisted.
 class PhysiqueTableRow {
   const PhysiqueTableRow({required this.lineOffset, required this.values});
 
   final int lineOffset;
-  final List<int> values;
+  final List<String> values;
 
-  int valueAt(int columnIndex) => columnIndex < values.length ? values[columnIndex] : 0;
+  String valueAt(int columnIndex) => columnIndex < values.length ? values[columnIndex] : '';
 
-  PhysiqueTableRow copyWithValueAt(int columnIndex, int value) {
-    final updated = List<int>.of(values);
+  PhysiqueTableRow copyWithValueAt(int columnIndex, String value) {
+    final updated = List<String>.of(values);
     while (updated.length <= columnIndex) {
-      updated.add(0);
+      updated.add('');
     }
     updated[columnIndex] = value;
     return PhysiqueTableRow(lineOffset: lineOffset, values: updated);
@@ -25,11 +27,11 @@ class PhysiqueTableRow {
 /// and edit pages, labelled by their 1-based index. Value columns are
 /// editable only when [onValueChanged] is given, which is then called
 /// with the row's `lineOffset`, the edited column's index, and the new
-/// value. [columnCount] must come from the caller (see
+/// raw text. [columnCount] must come from the caller (see
 /// `PhysiqueTableMetadata.physiqueTableColumnCount`).
 List<TableEditorColumn<PhysiqueTableRow>> buildPhysiqueTableColumns({
   required int columnCount,
-  void Function(int lineOffset, int columnIndex, int newValue)? onValueChanged,
+  void Function(int lineOffset, int columnIndex, String newValue)? onValueChanged,
 }) {
   final columns = <TableEditorColumn<PhysiqueTableRow>>[];
   for (var i = 0; i < columnCount; i++) {

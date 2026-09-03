@@ -509,8 +509,23 @@ class Translations$physiqueTable$ja {
 	/// ja: '行を削除'
 	String get deleteRowConfirmTitle => '行を削除';
 
+	/// ja: 'この行を削除します。この操作は取り消せません。よろしいですか?'
+	String get deleteRowConfirmMessage => 'この行を削除します。この操作は取り消せません。よろしいですか?';
+
+	/// ja: '行をまとめて削除'
+	String get deleteSelectedRows => '行をまとめて削除';
+
+	/// ja: '行をまとめて削除'
+	String get deleteSelectedRowsConfirmTitle => '行をまとめて削除';
+
 	/// ja: '選択した行を削除します。この操作は取り消せません。よろしいですか?'
-	String get deleteRowConfirmMessage => '選択した行を削除します。この操作は取り消せません。よろしいですか?';
+	String get deleteSelectedRowsConfirmMessage => '選択した行を削除します。この操作は取り消せません。よろしいですか?';
+
+	/// ja: 'この表にはまだデータがありません。'
+	String get empty => 'この表にはまだデータがありません。';
+
+	/// ja: '表の読み込みに失敗しました。'
+	String get loadError => '表の読み込みに失敗しました。';
 }
 
 // Path: home
@@ -1150,7 +1165,12 @@ extension on Translations {
 			'physiqueTable.deleteTableConfirmMessage' => 'この体格表を削除します。この操作は取り消せません。よろしいですか?',
 			'physiqueTable.deleteRow' => 'この行を削除',
 			'physiqueTable.deleteRowConfirmTitle' => '行を削除',
-			'physiqueTable.deleteRowConfirmMessage' => '選択した行を削除します。この操作は取り消せません。よろしいですか?',
+			'physiqueTable.deleteRowConfirmMessage' => 'この行を削除します。この操作は取り消せません。よろしいですか?',
+			'physiqueTable.deleteSelectedRows' => '行をまとめて削除',
+			'physiqueTable.deleteSelectedRowsConfirmTitle' => '行をまとめて削除',
+			'physiqueTable.deleteSelectedRowsConfirmMessage' => '選択した行を削除します。この操作は取り消せません。よろしいですか?',
+			'physiqueTable.empty' => 'この表にはまだデータがありません。',
+			'physiqueTable.loadError' => '表の読み込みに失敗しました。',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

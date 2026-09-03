@@ -20,6 +20,7 @@ workspace:
   - modules/AppMetaData
   - modules/Toaster
   - modules/TableEditor
+  - modules/APIClient
   - apps/WidgetBook
 
 dependencies:
@@ -74,6 +75,8 @@ dependencies:
     path: modules/Toaster
   table_editor:
     path: modules/TableEditor
+  api_client:
+    path: modules/APIClient
   icons_launcher: ^3.1.0
   http: ^1.6.0
   flutter_date_formatter: ^0.0.9

@@ -1,5 +1,6 @@
 import { createId } from '@paralleldrive/cuid2';
 import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from 'typeorm';
+import type { TableValues } from '../types/tables/table';
 
 /**
  * One row of a physique table: the growth values for a specific antenna
@@ -32,7 +33,7 @@ export class PhysiqueTableEntity {
   lineOffset!: number;
 
   @Column({ type: 'jsonb' })
-  values!: number[];
+  values!: TableValues;
 
   @BeforeInsert()
   generateId() {

@@ -13,6 +13,9 @@ import 'table_editor_column.dart';
 /// [TableColumnWidthCalculator], floored at [kMinInteractiveDimension]
 /// for editable columns so their [TableEditorCellField] stays a
 /// comfortable tap/edit target even when its content is just one digit.
+/// [trailingCellBuilder], when given, appends one fixed-width,
+/// non-editable column after every data column — e.g. a per-row delete
+/// button — sized by [trailingColumnWidth].
 class TableEditor<T> extends StatelessWidget {
   const TableEditor({
     super.key,
@@ -23,6 +26,8 @@ class TableEditor<T> extends StatelessWidget {
     this.selectionMode = SelectionMode.multiple,
     this.selectedRows = const <String>{},
     this.onCheckboxChanged,
+    this.trailingCellBuilder,
+    this.trailingColumnWidth = 48.0,
   });
 
   final List<TableEditorColumn<T>> columns;
@@ -32,6 +37,8 @@ class TableEditor<T> extends StatelessWidget {
   final SelectionMode selectionMode;
   final Set<String> selectedRows;
   final void Function(String rowId, bool isSelected)? onCheckboxChanged;
+  final Widget Function(T row)? trailingCellBuilder;
+  final double trailingColumnWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +74,23 @@ class TableEditor<T> extends StatelessWidget {
                   onChanged: (value) => column.onChanged!(rowData, value),
                 )
               : null,
+        ),
+      );
+    }
+
+    if (trailingCellBuilder case final trailingCellBuilder?) {
+      final trailingKey = GlobalKey().toString();
+      builder.addColumn(
+        trailingKey,
+        TablePlusColumn<T>(
+          key: trailingKey,
+          label: '',
+          order: columns.length,
+          width: trailingColumnWidth,
+          minWidth: trailingColumnWidth,
+          valueAccessor: (row) => '',
+          statefulCellBuilder: (context, rowData, isSelected, isDim) =>
+              trailingCellBuilder(rowData),
         ),
       );
     }

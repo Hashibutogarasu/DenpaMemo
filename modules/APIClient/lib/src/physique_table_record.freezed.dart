@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueTableRecord {
 
- String get statusCategory; String get level; String get anntenaCategory; int get lineOffset; List<int> get values;
+ String get type; String get level; String get anntenaCategory; int get lineOffset; List<int?> get values;
 /// Create a copy of PhysiqueTableRecord
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PhysiqueTableRecordCopyWith<PhysiqueTableRecord> get copyWith => _$PhysiqueTabl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueTableRecord&&(identical(other.statusCategory, statusCategory) || other.statusCategory == statusCategory)&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&const DeepCollectionEquality().equals(other.values, values));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueTableRecord&&(identical(other.type, type) || other.type == type)&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&const DeepCollectionEquality().equals(other.values, values));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,statusCategory,level,anntenaCategory,lineOffset,const DeepCollectionEquality().hash(values));
+int get hashCode => Object.hash(runtimeType,type,level,anntenaCategory,lineOffset,const DeepCollectionEquality().hash(values));
 
 @override
 String toString() {
-  return 'PhysiqueTableRecord(statusCategory: $statusCategory, level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, values: $values)';
+  return 'PhysiqueTableRecord(type: $type, level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, values: $values)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueTableRecordCopyWith<$Res>  {
   factory $PhysiqueTableRecordCopyWith(PhysiqueTableRecord value, $Res Function(PhysiqueTableRecord) _then) = _$PhysiqueTableRecordCopyWithImpl;
 @useResult
 $Res call({
- String statusCategory, String level, String anntenaCategory, int lineOffset, List<int> values
+ String type, String level, String anntenaCategory, int lineOffset, List<int?> values
 });
 
 
@@ -65,14 +65,14 @@ class _$PhysiqueTableRecordCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueTableRecord
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? statusCategory = null,Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? values = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? values = null,}) {
   return _then(_self.copyWith(
-statusCategory: null == statusCategory ? _self.statusCategory : statusCategory // ignore: cast_nullable_to_non_nullable
+type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as String,anntenaCategory: null == anntenaCategory ? _self.anntenaCategory : anntenaCategory // ignore: cast_nullable_to_non_nullable
 as String,lineOffset: null == lineOffset ? _self.lineOffset : lineOffset // ignore: cast_nullable_to_non_nullable
 as int,values: null == values ? _self.values : values // ignore: cast_nullable_to_non_nullable
-as List<int>,
+as List<int?>,
   ));
 }
 
@@ -157,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String statusCategory,  String level,  String anntenaCategory,  int lineOffset,  List<int> values)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int?> values)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueTableRecord() when $default != null:
-return $default(_that.statusCategory,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
+return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
   return orElse();
 
 }
@@ -178,10 +178,10 @@ return $default(_that.statusCategory,_that.level,_that.anntenaCategory,_that.lin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String statusCategory,  String level,  String anntenaCategory,  int lineOffset,  List<int> values)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int?> values)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableRecord():
-return $default(_that.statusCategory,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
+return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +198,10 @@ return $default(_that.statusCategory,_that.level,_that.anntenaCategory,_that.lin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String statusCategory,  String level,  String anntenaCategory,  int lineOffset,  List<int> values)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int?> values)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableRecord() when $default != null:
-return $default(_that.statusCategory,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
+return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
   return null;
 
 }
@@ -213,15 +213,15 @@ return $default(_that.statusCategory,_that.level,_that.anntenaCategory,_that.lin
 @JsonSerializable()
 
 class _PhysiqueTableRecord implements PhysiqueTableRecord {
-  const _PhysiqueTableRecord({required this.statusCategory, required this.level, required this.anntenaCategory, required this.lineOffset, required final  List<int> values}): _values = values;
+  const _PhysiqueTableRecord({required this.type, required this.level, required this.anntenaCategory, required this.lineOffset, required final  List<int?> values}): _values = values;
   factory _PhysiqueTableRecord.fromJson(Map<String, dynamic> json) => _$PhysiqueTableRecordFromJson(json);
 
-@override final  String statusCategory;
+@override final  String type;
 @override final  String level;
 @override final  String anntenaCategory;
 @override final  int lineOffset;
- final  List<int> _values;
-@override List<int> get values {
+ final  List<int?> _values;
+@override List<int?> get values {
   if (_values is EqualUnmodifiableListView) return _values;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_values);
@@ -241,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueTableRecord&&(identical(other.statusCategory, statusCategory) || other.statusCategory == statusCategory)&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&const DeepCollectionEquality().equals(other._values, _values));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueTableRecord&&(identical(other.type, type) || other.type == type)&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&const DeepCollectionEquality().equals(other._values, _values));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,statusCategory,level,anntenaCategory,lineOffset,const DeepCollectionEquality().hash(_values));
+int get hashCode => Object.hash(runtimeType,type,level,anntenaCategory,lineOffset,const DeepCollectionEquality().hash(_values));
 
 @override
 String toString() {
-  return 'PhysiqueTableRecord(statusCategory: $statusCategory, level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, values: $values)';
+  return 'PhysiqueTableRecord(type: $type, level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, values: $values)';
 }
 
 
@@ -261,7 +261,7 @@ abstract mixin class _$PhysiqueTableRecordCopyWith<$Res> implements $PhysiqueTab
   factory _$PhysiqueTableRecordCopyWith(_PhysiqueTableRecord value, $Res Function(_PhysiqueTableRecord) _then) = __$PhysiqueTableRecordCopyWithImpl;
 @override @useResult
 $Res call({
- String statusCategory, String level, String anntenaCategory, int lineOffset, List<int> values
+ String type, String level, String anntenaCategory, int lineOffset, List<int?> values
 });
 
 
@@ -278,14 +278,14 @@ class __$PhysiqueTableRecordCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueTableRecord
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? statusCategory = null,Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? values = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? type = null,Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? values = null,}) {
   return _then(_PhysiqueTableRecord(
-statusCategory: null == statusCategory ? _self.statusCategory : statusCategory // ignore: cast_nullable_to_non_nullable
+type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as String,anntenaCategory: null == anntenaCategory ? _self.anntenaCategory : anntenaCategory // ignore: cast_nullable_to_non_nullable
 as String,lineOffset: null == lineOffset ? _self.lineOffset : lineOffset // ignore: cast_nullable_to_non_nullable
 as int,values: null == values ? _self._values : values // ignore: cast_nullable_to_non_nullable
-as List<int>,
+as List<int?>,
   ));
 }
 
