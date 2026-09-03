@@ -9,23 +9,37 @@ import '../../i18n/gen/strings.g.dart';
 /// fetched from `GET /tables/types`, see `tableTypesProvider`). Mirrors
 /// [showPhysiqueAntennaCategorySelectionDialog]'s shell: same shell, same
 /// list-of-tiles content, just single-select over a flat list instead of
-/// one grouped by a `category` field.
+/// one grouped by a `category` field. When [dataAvailability] is given
+/// (keyed by [TableDefinition.type]), each row shows a ○/✕ mark for
+/// whether that type already has rows for the level/antenna category the
+/// caller is picking within.
 Future<TableDefinition?> showTableTypeSelectionDialog(
   BuildContext context, {
   required List<TableDefinition> types,
   TableDefinition? selected,
+  Map<String, bool>? dataAvailability,
 }) {
   return showBottomSlideDialog<TableDefinition>(
     context: context,
-    builder: (context) => TableTypeSelectionDialog(types: types, initial: selected),
+    builder: (context) => TableTypeSelectionDialog(
+      types: types,
+      initial: selected,
+      dataAvailability: dataAvailability,
+    ),
   );
 }
 
 class TableTypeSelectionDialog extends StatefulWidget {
-  const TableTypeSelectionDialog({super.key, required this.types, this.initial});
+  const TableTypeSelectionDialog({
+    super.key,
+    required this.types,
+    this.initial,
+    this.dataAvailability,
+  });
 
   final List<TableDefinition> types;
   final TableDefinition? initial;
+  final Map<String, bool>? dataAvailability;
 
   @override
   State<TableTypeSelectionDialog> createState() => _TableTypeSelectionDialogState();
@@ -49,7 +63,14 @@ class _TableTypeSelectionDialogState extends State<TableTypeSelectionDialog> {
             ListTile(
               title: Text((t[row.translationKey] as String?) ?? row.type),
               selected: _selected?.type == row.type,
-              trailing: _selected?.type == row.type ? const Icon(Icons.check) : null,
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.dataAvailability?[row.type] case final hasData?)
+                    Icon(hasData ? Icons.circle_outlined : Icons.close),
+                  if (_selected?.type == row.type) const Icon(Icons.check),
+                ],
+              ),
               onTap: () => setState(() => _selected = row),
             ),
         ],

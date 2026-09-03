@@ -49,17 +49,44 @@ Future<String?> _pickLevel(BuildContext context) {
   );
 }
 
+/// Fetches, for each of [types], whether it already has at least one row
+/// saved at [level]/[anntenaCategory] — shown as a ○/✕ mark in
+/// [showTableTypeSelectionDialog] so the user can tell which types are
+/// existing tables to view versus still-empty ones.
+Future<Map<String, bool>> _fetchTypeAvailability(
+  WidgetRef ref,
+  List<TableDefinition> types,
+  String level,
+  String anntenaCategory,
+) async {
+  final client = ref.read(physiquesApiClientProvider);
+  final entries = await Future.wait([
+    for (final type in types)
+      client
+          .fetch(type: type.type, level: level, anntenaCategory: anntenaCategory)
+          .then((rows) => MapEntry(type.type, rows.isNotEmpty)),
+  ]);
+  return Map.fromEntries(entries);
+}
+
 /// Starts the edit-existing-table flow from the antenna category list:
 /// pick which level's table to edit, then which table type (HP, speed,
 /// ...), then push straight to [PhysiqueTableEditRoute].
 Future<void> _startEditingExistingTable(
   BuildContext context,
+  WidgetRef ref,
   List<TableDefinition> types,
   String anntenaCategory,
 ) async {
   final level = await _pickLevel(context);
   if (level == null || !context.mounted) return;
-  final type = await showTableTypeSelectionDialog(context, types: types);
+  final dataAvailability = await _fetchTypeAvailability(ref, types, level, anntenaCategory);
+  if (!context.mounted) return;
+  final type = await showTableTypeSelectionDialog(
+    context,
+    types: types,
+    dataAvailability: dataAvailability,
+  );
   if (type == null || !context.mounted) return;
   PhysiqueTableEditRoute(
     $extra: PhysiqueTableArgs(
@@ -158,6 +185,7 @@ class PhysiqueTableListPage extends ConsumerWidget {
                                   tooltip: t.physiqueTable.edit,
                                   onPressed: () => _startEditingExistingTable(
                                     context,
+                                    ref,
                                     types,
                                     row.anntenaCategory,
                                   ),
@@ -168,9 +196,17 @@ class PhysiqueTableListPage extends ConsumerWidget {
                           onTap: () async {
                             final level = await _pickLevel(context);
                             if (level == null || !context.mounted) return;
+                            final dataAvailability = await _fetchTypeAvailability(
+                              ref,
+                              types,
+                              level,
+                              row.anntenaCategory,
+                            );
+                            if (!context.mounted) return;
                             final type = await showTableTypeSelectionDialog(
                               context,
                               types: types,
+                              dataAvailability: dataAvailability,
                             );
                             if (type == null || !context.mounted) return;
                             PhysiqueTableViewRoute(
