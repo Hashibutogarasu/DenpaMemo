@@ -100,6 +100,7 @@ class PhysiqueTableEditPage extends ConsumerStatefulWidget {
 class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   List<PhysiqueTableRow>? _rows;
   Set<String> _selectedRowIds = {};
+  bool _loadError = false;
 
   @override
   void initState() {
@@ -109,18 +110,25 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
 
   Future<void> _load() async {
     final client = ref.read(physiquesApiClientProvider);
-    final records = await client.fetch(
-      type: widget.args.type,
-      level: widget.args.level,
-      anntenaCategory: widget.args.anntenaCategory,
-    );
-    setState(() {
-      _rows = [
-        for (final record in records)
-          PhysiqueTableRow(lineOffset: record.lineOffset, values: record.values),
-      ];
-      _selectedRowIds = {};
-    });
+    try {
+      final records = await client.fetch(
+        type: widget.args.type,
+        level: widget.args.level,
+        anntenaCategory: widget.args.anntenaCategory,
+      );
+      if (!mounted) return;
+      setState(() {
+        _loadError = false;
+        _rows = [
+          for (final record in records)
+            PhysiqueTableRow(lineOffset: record.lineOffset, values: record.values),
+        ];
+        _selectedRowIds = {};
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _loadError = true);
+    }
   }
 
   void _onValueChanged(int lineOffset, int columnIndex, int newValue) {
@@ -218,30 +226,34 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
-      body: rows == null
+      body: _loadError
+          ? Center(child: Text(t.physiqueTable.loadError))
+          : rows == null
           ? const ProgressBar()
           : Column(
               children: [
                 Expanded(
-                  child: TableEditor<PhysiqueTableRow>(
-                    columns: buildPhysiqueTableColumns(
-                      columnCount: widget.args.columnCount,
-                      onValueChanged: _onValueChanged,
-                    ),
-                    data: rows,
-                    rowId: (row) => row.lineOffset.toString(),
-                    isSelectable: true,
-                    selectionMode: SelectionMode.multiple,
-                    selectedRows: _selectedRowIds,
-                    onCheckboxChanged: (rowId, isSelected) => setState(() {
-                      _selectedRowIds = Set.of(_selectedRowIds);
-                      if (isSelected) {
-                        _selectedRowIds.add(rowId);
-                      } else {
-                        _selectedRowIds.remove(rowId);
-                      }
-                    }),
-                  ),
+                  child: rows.isEmpty
+                      ? Center(child: Text(t.physiqueTable.empty))
+                      : TableEditor<PhysiqueTableRow>(
+                          columns: buildPhysiqueTableColumns(
+                            columnCount: widget.args.columnCount,
+                            onValueChanged: _onValueChanged,
+                          ),
+                          data: rows,
+                          rowId: (row) => row.lineOffset.toString(),
+                          isSelectable: true,
+                          selectionMode: SelectionMode.multiple,
+                          selectedRows: _selectedRowIds,
+                          onCheckboxChanged: (rowId, isSelected) => setState(() {
+                            _selectedRowIds = Set.of(_selectedRowIds);
+                            if (isSelected) {
+                              _selectedRowIds.add(rowId);
+                            } else {
+                              _selectedRowIds.remove(rowId);
+                            }
+                          }),
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),

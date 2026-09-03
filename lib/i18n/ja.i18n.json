@@ -118,7 +118,9 @@
     "deleteTableConfirmMessage": "この体格表を削除します。この操作は取り消せません。よろしいですか?",
     "deleteRow": "この行を削除",
     "deleteRowConfirmTitle": "行を削除",
-    "deleteRowConfirmMessage": "選択した行を削除します。この操作は取り消せません。よろしいですか?"
+    "deleteRowConfirmMessage": "選択した行を削除します。この操作は取り消せません。よろしいですか?",
+    "empty": "この表にはまだデータがありません。",
+    "loadError": "表の読み込みに失敗しました。"
   },
   "home": {
     "empty": "電波人間が登録されていません",

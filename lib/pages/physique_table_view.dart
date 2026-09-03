@@ -58,18 +58,23 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
       body: FutureBuilder<List<PhysiqueTableRow>>(
         future: _rowsFuture,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState != ConnectionState.done) {
             return const ProgressBar();
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text(t.physiqueTable.loadError));
           }
           final rows = snapshot.data!;
           return Column(
             children: [
               Expanded(
-                child: TableEditor<PhysiqueTableRow>(
-                  columns: buildPhysiqueTableColumns(columnCount: widget.args.columnCount),
-                  data: rows,
-                  rowId: (row) => row.lineOffset.toString(),
-                ),
+                child: rows.isEmpty
+                    ? Center(child: Text(t.physiqueTable.empty))
+                    : TableEditor<PhysiqueTableRow>(
+                        columns: buildPhysiqueTableColumns(columnCount: widget.args.columnCount),
+                        data: rows,
+                        rowId: (row) => row.lineOffset.toString(),
+                      ),
               ),
               Padding(
                 padding: const EdgeInsets.all(16),

@@ -511,6 +511,12 @@ class Translations$physiqueTable$ja {
 
 	/// ja: '選択した行を削除します。この操作は取り消せません。よろしいですか?'
 	String get deleteRowConfirmMessage => '選択した行を削除します。この操作は取り消せません。よろしいですか?';
+
+	/// ja: 'この表にはまだデータがありません。'
+	String get empty => 'この表にはまだデータがありません。';
+
+	/// ja: '表の読み込みに失敗しました。'
+	String get loadError => '表の読み込みに失敗しました。';
 }
 
 // Path: home
@@ -1151,6 +1157,8 @@ extension on Translations {
 			'physiqueTable.deleteRow' => 'この行を削除',
 			'physiqueTable.deleteRowConfirmTitle' => '行を削除',
 			'physiqueTable.deleteRowConfirmMessage' => '選択した行を削除します。この操作は取り消せません。よろしいですか?',
+			'physiqueTable.empty' => 'この表にはまだデータがありません。',
+			'physiqueTable.loadError' => '表の読み込みに失敗しました。',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',
