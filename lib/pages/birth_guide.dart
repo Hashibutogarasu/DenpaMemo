@@ -236,7 +236,7 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
             if (context.canPop())
               Positioned(
                 left: widget.buttonInset,
-                bottom: widget.buttonInset + 56 + widget.buttonGap,
+                bottom: widget.buttonInset + AppBackButton.height + widget.buttonGap,
                 child: FloatingActionButton.extended(
                   heroTag: 'birthGuideHome',
                   onPressed: () => const HomeRoute().go(context),

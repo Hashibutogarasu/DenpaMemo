@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import 'package:denpamemo_widgets/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -53,22 +54,20 @@ void main() {
     List<DenpaMen>? result;
     await tester.pumpWidget(
       ProviderScope(
-        child: TranslationProvider(
-          child: MaterialApp(
-            home: Builder(
-              builder: (context) => ElevatedButton(
-                onPressed: () async {
-                  result = await DenpaMenSelectionDialog.show(
-                    context,
-                    title: 'Select',
-                    candidates: candidates,
-                    initial: initial,
-                    minSelection: minSelection,
-                    totalAttributeCount: masterData.attributes.length,
-                  );
-                },
-                child: const Text('open'),
-              ),
+        child: TestApp(
+          home: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () async {
+                result = await DenpaMenSelectionDialog.show(
+                  context,
+                  title: 'Select',
+                  candidates: candidates,
+                  initial: initial,
+                  minSelection: minSelection,
+                  totalAttributeCount: masterData.attributes.length,
+                );
+              },
+              child: const Text('open'),
             ),
           ),
         ),
@@ -123,21 +122,19 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        child: TranslationProvider(
-          child: MaterialApp(
-            home: Builder(
-              builder: (context) => ElevatedButton(
-                onPressed: () async {
-                  result = await DenpaMenSelectionDialog.show(
-                    context,
-                    title: 'Select',
-                    candidates: [a, b],
-                    initial: [a],
-                    totalAttributeCount: masterData.attributes.length,
-                  );
-                },
-                child: const Text('open'),
-              ),
+        child: TestApp(
+          home: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () async {
+                result = await DenpaMenSelectionDialog.show(
+                  context,
+                  title: 'Select',
+                  candidates: [a, b],
+                  initial: [a],
+                  totalAttributeCount: masterData.attributes.length,
+                );
+              },
+              child: const Text('open'),
             ),
           ),
         ),

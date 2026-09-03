@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import 'package:denpamemo_widgets/testing.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -79,19 +80,17 @@ class _HarnessState extends State<_Harness> {
   Widget build(BuildContext context) {
     final qrCode = createQrCode('raw-value', id: 'qr-1', name: 'group');
 
-    return TranslationProvider(
-      child: MaterialApp(
-        home: Scaffold(
-          body: DenpaMenLineageGraph(
-            qrCodes: [QrCodeRecord(id: 1, qrCode: qrCode)],
-            denpaMenRecords: records,
-            iconsById: const {},
-            selectionMode: false,
-            selectedIds: const {},
-            onToggleSelection: (_) {},
-            onMiddleClickSelect: (_) {},
-            onTapNode: (context, denpaMen) {},
-          ),
+    return TestApp(
+      home: Scaffold(
+        body: DenpaMenLineageGraph(
+          qrCodes: [QrCodeRecord(id: 1, qrCode: qrCode)],
+          denpaMenRecords: records,
+          iconsById: const {},
+          selectionMode: false,
+          selectedIds: const {},
+          onToggleSelection: (_) {},
+          onMiddleClickSelect: (_) {},
+          onTapNode: (context, denpaMen) {},
         ),
       ),
     );

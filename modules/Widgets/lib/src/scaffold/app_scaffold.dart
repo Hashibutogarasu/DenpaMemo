@@ -7,6 +7,7 @@ import '../header/slanted_app_bar.dart';
 import '../navigation/app_back_button.dart';
 import '../responsive/responsive.dart';
 import '../responsive/responsive_provider.dart';
+import '../theme/slanted_header_theme.dart';
 
 /// Marks a `ShellRoute` branch as reachable only by push, so its first
 /// page shows a back button despite its own nested [Navigator] having
@@ -29,7 +30,9 @@ class AlwaysPoppableShellScope extends InheritedWidget {
 /// (bottom-left, shown per [Navigator.canPop] or [AlwaysPoppableShellScope])
 /// and [floatingActionButton] (bottom-right) as siblings in one [Stack] —
 /// rather than routing one of them through [Scaffold.floatingActionButton]
-/// — so their height and bottom offset stay pixel-identical.
+/// — so their bottom offset (both inset by [buttonInset] from the bottom
+/// edge) stays identical, even though the two buttons aren't the same
+/// widget and can differ in height.
 ///
 /// Also binds Escape to the same pop, so keyboard users get the same
 /// stack-aware back behavior as the on-screen button.
@@ -84,6 +87,7 @@ class AppScaffold extends ConsumerWidget {
           appBar: SlantedAppBar(
             title: title,
             actions: actions,
+            angleDegrees: Theme.of(context).extension<SlantedHeaderThemeData>()!.angleDegrees,
             topSafeAreaInset: MediaQuery.paddingOf(context).top,
           ),
           body: Column(

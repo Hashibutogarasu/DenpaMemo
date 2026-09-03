@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import 'package:denpamemo_widgets/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,24 +26,22 @@ Widget _buildApp(
   ValueChanged<DenpaMen> onChanged,
 ) {
   return ProviderScope(
-    child: TranslationProvider(
-      child: MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: EditableDenpaMenStatus(
-              denpaMen: denpaMen,
-              headShapes: masterData.headShapes,
-              anntenas: masterData.anntenas,
-              corrections: masterData.corrections,
-              qrCodeCandidates: const [],
-              onChanged: onChanged,
-              considerCorrections: true,
-              onConsiderCorrectionsChanged: (_) {},
-              icon: const SizedBox.shrink(),
-              parentCandidates: const [],
-              onPickParents: (_) async => null,
-              onPickMonsterExp: (_) async => null,
-            ),
+    child: TestApp(
+      home: Scaffold(
+        body: SingleChildScrollView(
+          child: EditableDenpaMenStatus(
+            denpaMen: denpaMen,
+            headShapes: masterData.headShapes,
+            anntenas: masterData.anntenas,
+            corrections: masterData.corrections,
+            qrCodeCandidates: const [],
+            onChanged: onChanged,
+            considerCorrections: true,
+            onConsiderCorrectionsChanged: (_) {},
+            icon: const SizedBox.shrink(),
+            parentCandidates: const [],
+            onPickParents: (_) async => null,
+            onPickMonsterExp: (_) async => null,
           ),
         ),
       ),

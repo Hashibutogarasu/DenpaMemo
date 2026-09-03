@@ -1,7 +1,52 @@
 import 'dart:convert';
 
 import 'package:data_pack/data_pack.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'i18n/gen/strings.g.dart';
+import 'src/navigation/app_back_button.dart';
+import 'src/theme/slanted_header_theme.dart';
+
+/// The theme every widget/Widgetbook test in this package should render
+/// under, so individual tests don't each assemble their own ad hoc
+/// `ThemeData`/`extensions` — they all share one theme, matching how the
+/// real app's own theme is one `ThemeData(...)` shared by the whole app.
+/// Kept in sync with `lib/main.dart`'s theme in the `denpa_memo` app.
+final ThemeData testAppTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      shape: const StadiumBorder(),
+      minimumSize: const Size(64, AppBackButton.height),
+    ),
+  ),
+  extensions: const [
+    SlantedHeaderThemeData(
+      fillColor: Color(0xFF52BBE5),
+      borderColor: Color(0xFF0865C2),
+      borderWidth: 6,
+      angleDegrees: 10,
+      contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
+    ),
+  ],
+);
+
+/// Wraps [home] with this package's [TranslationProvider] and a
+/// [MaterialApp] using [testAppTheme], for widget tests to pump instead of
+/// building their own `MaterialApp`.
+class TestApp extends StatelessWidget {
+  const TestApp({super.key, required this.home});
+
+  final Widget home;
+
+  @override
+  Widget build(BuildContext context) {
+    return TranslationProvider(
+      child: MaterialApp(theme: testAppTheme, home: home),
+    );
+  }
+}
 
 /// Minimal hand-built [MasterData] and sample [DenpaMen] for use in
 /// Widgetbook use cases and tests, so they render without a live GraphQL

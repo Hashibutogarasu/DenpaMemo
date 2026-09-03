@@ -100,20 +100,55 @@ class _ThemedMaterialApp extends ConsumerWidget {
     return MaterialApp.router(
       title: t.app.name,
       scrollBehavior: const _DragAnywhereScrollBehavior(),
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      darkTheme: ThemeData(
-        colorScheme: .fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.dark,
-        ),
-      ),
+      theme: _lightTheme,
+      darkTheme: _darkTheme,
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
     );
   }
 }
+
+final ThemeData _lightTheme = ThemeData(
+  colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+  elevatedButtonTheme: _elevatedButtonTheme,
+  extensions: const [
+    denpamemo_widgets.SlantedHeaderThemeData(
+      fillColor: Color(0xFF52BBE5),
+      borderColor: Color(0xFF0865C2),
+      borderWidth: 6,
+      angleDegrees: 10,
+      contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
+    ),
+  ],
+);
+
+final ThemeData _darkTheme = ThemeData(
+  colorScheme: .fromSeed(
+    seedColor: Colors.deepPurple,
+    brightness: Brightness.dark,
+  ),
+  elevatedButtonTheme: _elevatedButtonTheme,
+  extensions: const [
+    denpamemo_widgets.SlantedHeaderThemeData(
+      fillColor: Color(0xFF52BBE5),
+      borderColor: Color(0xFF0865C2),
+      borderWidth: 6,
+      angleDegrees: 10,
+      contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
+    ),
+  ],
+);
+
+/// Shared between light/dark: [AppBackButton] and every other
+/// [ElevatedButton] in the app get this shape/size, with colors resolved
+/// from each [ThemeData]'s own [ColorScheme]. [AppBackButton.height] must
+/// match this style's `minimumSize` height.
+final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
+  style: ElevatedButton.styleFrom(
+    shape: const StadiumBorder(),
+    minimumSize: const Size(64, denpamemo_widgets.AppBackButton.height),
+  ),
+);
 
 /// [MaterialScrollBehavior] additionally treats the mouse as a drag
 /// device. Without this, pointer-drag gestures — including the overscroll
