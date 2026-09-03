@@ -1,4 +1,5 @@
 import 'package:api_client/api_client.dart';
+import 'package:collection/collection.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -140,8 +141,8 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     });
   }
 
-  Future<void> _addRow() async {
-    final values = await _promptNewRowValues(context, widget.args.columnCount);
+  Future<void> _addRow(int columnCount) async {
+    final values = await _promptNewRowValues(context, columnCount);
     if (values == null) return;
     final client = ref.read(physiquesApiClientProvider);
     final created = await client.create([
@@ -219,6 +220,10 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   Widget build(BuildContext context) {
     final t = context.t;
     final rows = _rows;
+    final typesAsync = ref.watch(tableTypesProvider);
+    final columnCount = typesAsync.value
+        ?.firstWhereOrNull((type) => type.type == widget.args.type)
+        ?.columnCount;
     return AppScaffold(
       title: OutlinedTitleText(
         text: t.physiqueTable.tableTitle(
@@ -226,9 +231,9 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
-      body: _loadError
+      body: _loadError || typesAsync.hasError || (typesAsync.hasValue && columnCount == null)
           ? Center(child: Text(t.physiqueTable.loadError))
-          : rows == null
+          : rows == null || typesAsync.isLoading || columnCount == null
           ? const ProgressBar()
           : Column(
               children: [
@@ -237,7 +242,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                       ? Center(child: Text(t.physiqueTable.empty))
                       : TableEditor<PhysiqueTableRow>(
                           columns: buildPhysiqueTableColumns(
-                            columnCount: widget.args.columnCount,
+                            columnCount: columnCount,
                             onValueChanged: _onValueChanged,
                           ),
                           data: rows,
@@ -263,7 +268,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                       OutlinedButton.icon(
                         icon: const Icon(Icons.add),
                         label: Text(t.physiqueTable.addRow),
-                        onPressed: _addRow,
+                        onPressed: () => _addRow(columnCount),
                       ),
                       FilledButton.icon(
                         icon: const Icon(Icons.save_outlined),

@@ -89,12 +89,7 @@ Future<void> _startEditingExistingTable(
   );
   if (type == null || !context.mounted) return;
   PhysiqueTableEditRoute(
-    $extra: PhysiqueTableArgs(
-      type: type.type,
-      columnCount: type.columnCount,
-      level: level,
-      anntenaCategory: anntenaCategory,
-    ),
+    $extra: PhysiqueTableArgs(type: type.type, level: level, anntenaCategory: anntenaCategory),
   ).push(context);
 }
 
@@ -120,7 +115,6 @@ Future<void> _createNewTable(
   PhysiqueTableEditRoute(
     $extra: PhysiqueTableArgs(
       type: type.type,
-      columnCount: type.columnCount,
       level: level,
       anntenaCategory: antennaCategory.anntenaCategory,
     ),
@@ -211,7 +205,6 @@ class PhysiqueTableListPage extends ConsumerWidget {
                             PhysiqueTableViewRoute(
                               $extra: PhysiqueTableArgs(
                                 type: type.type,
-                                columnCount: type.columnCount,
                                 level: level,
                                 anntenaCategory: row.anntenaCategory,
                               ),

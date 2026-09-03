@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -48,6 +49,7 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final typesAsync = ref.watch(tableTypesProvider);
     return AppScaffold(
       title: OutlinedTitleText(
         text: t.physiqueTable.tableTitle(
@@ -58,10 +60,13 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
       body: FutureBuilder<List<PhysiqueTableRow>>(
         future: _rowsFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
+          if (snapshot.connectionState != ConnectionState.done || typesAsync.isLoading) {
             return const ProgressBar();
           }
-          if (snapshot.hasError) {
+          final columnCount = typesAsync.value
+              ?.firstWhereOrNull((type) => type.type == widget.args.type)
+              ?.columnCount;
+          if (snapshot.hasError || typesAsync.hasError || columnCount == null) {
             return Center(child: Text(t.physiqueTable.loadError));
           }
           final rows = snapshot.data!;
@@ -71,7 +76,7 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
                 child: rows.isEmpty
                     ? Center(child: Text(t.physiqueTable.empty))
                     : TableEditor<PhysiqueTableRow>(
-                        columns: buildPhysiqueTableColumns(columnCount: widget.args.columnCount),
+                        columns: buildPhysiqueTableColumns(columnCount: columnCount),
                         data: rows,
                         rowId: (row) => row.lineOffset.toString(),
                       ),
