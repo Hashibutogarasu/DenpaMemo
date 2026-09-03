@@ -15,8 +15,6 @@ class AppBackButton extends StatelessWidget {
 
   final VoidCallback? onPressed;
 
-  static const double height = 56;
-
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(

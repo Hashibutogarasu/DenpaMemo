@@ -23,13 +23,11 @@ class BirthGuidePage extends ConsumerStatefulWidget {
     required this.masterData,
     required this.target,
     this.buttonInset = 16,
-    this.buttonGap = 8,
   });
 
   final MasterData masterData;
   final DenpaMenRecord target;
   final double buttonInset;
-  final double buttonGap;
 
   @override
   ConsumerState<BirthGuidePage> createState() => _BirthGuidePageState();
@@ -203,47 +201,36 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
         title: OutlinedTitleText(text: t.page.birthGuide),
         buttonInset: widget.buttonInset,
         onBackPressed: _currentIndex == 0 ? null : _goToPreviousSlide,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home),
+            tooltip: t.page.home,
+            onPressed: () => const HomeRoute().go(context),
+          ),
+        ],
         floatingActionButton: FloatingActionButton.extended(
           heroTag: 'birthGuideAdvance',
           onPressed: () => _advance(slides.length),
           label: Text(buttonLabel),
         ),
-        body: Stack(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Positioned.fill(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    child: BirthGuideProgressBar(
-                      current: _currentIndex + 1,
-                      total: slides.length,
-                    ),
-                  ),
-                  Expanded(
-                    child: PageView(
-                      controller: _pageController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      onPageChanged: (index) =>
-                          setState(() => _currentIndex = index),
-                      children: slides,
-                    ),
-                  ),
-                ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: BirthGuideProgressBar(
+                current: _currentIndex + 1,
+                total: slides.length,
               ),
             ),
-            if (context.canPop())
-              Positioned(
-                left: widget.buttonInset,
-                bottom: widget.buttonInset + AppBackButton.height + widget.buttonGap,
-                child: FloatingActionButton.extended(
-                  heroTag: 'birthGuideHome',
-                  onPressed: () => const HomeRoute().go(context),
-                  icon: const Icon(Icons.home),
-                  label: Text(t.page.home),
-                ),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: (index) => setState(() => _currentIndex = index),
+                children: slides,
               ),
+            ),
           ],
         ),
       ),

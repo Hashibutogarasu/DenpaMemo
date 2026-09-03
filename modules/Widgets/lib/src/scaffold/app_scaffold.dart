@@ -25,19 +25,11 @@ class AlwaysPoppableShellScope extends InheritedWidget {
   bool updateShouldNotify(AlwaysPoppableShellScope oldWidget) => false;
 }
 
-/// Standard page shell: a [SlantedAppBar] header, then [belowHeader] (if
-/// given) and [body] stacked vertically in a [Column], so [belowHeader]
-/// takes its own row of space below the header instead of overlaying
-/// either. [body] itself holds the stack-aware [AppBackButton]
-/// (bottom-left, shown per [Navigator.canPop] or [AlwaysPoppableShellScope])
-/// and [floatingActionButton] (bottom-right) as siblings in one [Stack] —
-/// rather than routing one of them through [Scaffold.floatingActionButton]
-/// — so their bottom offset (both inset by [buttonInset] from the bottom
-/// edge) stays identical, even though the two buttons aren't the same
-/// widget and can differ in height.
-///
-/// Also binds Escape to the same pop, so keyboard users get the same
-/// stack-aware back behavior as the on-screen button.
+/// Standard page shell: a [SlantedAppBar] header, then [belowHeader] and
+/// [body] in a [Column]. [body] holds the stack-aware [AppBackButton]
+/// (bottom-left) and [floatingActionButton] (bottom-right) as siblings in
+/// one [Stack], both inset by [buttonInset]. Also binds Escape to the same
+/// pop as the on-screen back button.
 class AppScaffold extends ConsumerWidget {
   const AppScaffold({
     super.key,
