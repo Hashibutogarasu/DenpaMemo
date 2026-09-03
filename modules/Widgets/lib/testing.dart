@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'i18n/gen/strings.g.dart';
-import 'src/navigation/app_back_button.dart';
 import 'src/theme/app_dialog_theme.dart';
 import 'src/theme/denpa_men_container_theme.dart';
 import 'src/theme/denpa_men_label_theme.dart';
@@ -19,12 +18,6 @@ import 'src/theme/slanted_header_theme.dart';
 /// Kept in sync with `lib/main.dart`'s theme in the `denpa_memo` app.
 final ThemeData testAppTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      shape: const StadiumBorder(),
-      minimumSize: const Size(64, AppBackButton.height),
-    ),
-  ),
   listTileTheme: const ListTileThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),

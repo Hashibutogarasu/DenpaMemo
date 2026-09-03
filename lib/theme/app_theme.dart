@@ -2,14 +2,6 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
 
 abstract final class AppCommonTheme {
-  static final ElevatedButtonThemeData elevatedButtonTheme =
-      ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          shape: const StadiumBorder(),
-          minimumSize: const Size(64, AppBackButton.height),
-        ),
-      );
-
   static const ListTileThemeData listTileTheme = ListTileThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -27,7 +19,6 @@ abstract final class AppCommonTheme {
 abstract final class AppLightTheme {
   static final ThemeData theme = ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-    elevatedButtonTheme: AppCommonTheme.elevatedButtonTheme,
     listTileTheme: AppCommonTheme.listTileTheme,
     dialogTheme: AppCommonTheme.dialogTheme,
     extensions: const [
@@ -95,7 +86,6 @@ abstract final class AppDarkTheme {
       seedColor: Colors.deepPurple,
       brightness: Brightness.dark,
     ),
-    elevatedButtonTheme: AppCommonTheme.elevatedButtonTheme,
     listTileTheme: AppCommonTheme.listTileTheme,
     dialogTheme: AppCommonTheme.dialogTheme,
     extensions: const [
