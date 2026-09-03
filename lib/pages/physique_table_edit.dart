@@ -38,11 +38,11 @@ Future<bool> _confirm(
 }
 
 /// Editable version of [PhysiqueTableViewPage]. Cell edits and row
-/// additions are staged locally; the save button pushes every current
-/// row's values to `PUT /tables` in one call starting at
-/// `lineOffset: 0`, which is always within the server's row-count bound
-/// since this page's row list
-/// is exactly the current table.
+/// additions are staged locally and only reach the server when the save
+/// FAB is pressed: new rows are POSTed first (so the table's row count
+/// catches up with the local list), then every row's current values are
+/// pushed in one `PUT /tables` call starting at `lineOffset: 0`, which is
+/// then always within the server's row-count bound.
 class PhysiqueTableEditPage extends ConsumerStatefulWidget {
   const PhysiqueTableEditPage({required this.args, super.key});
 
@@ -54,6 +54,7 @@ class PhysiqueTableEditPage extends ConsumerStatefulWidget {
 
 class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   List<PhysiqueTableRow>? _rows;
+  int _persistedRowCount = 0;
   Set<String> _selectedRowIds = {};
   bool _loadError = false;
 
@@ -79,6 +80,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           for (final record in records)
             PhysiqueTableRow(lineOffset: record.lineOffset, values: record.values),
         ];
+        _persistedRowCount = _rows!.length;
         _selectedRowIds = {};
       });
     } catch (_) {
@@ -96,22 +98,11 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     });
   }
 
-  Future<void> _addRow(int columnCount) async {
-    final client = ref.read(physiquesApiClientProvider);
-    final created = await client.create([
-      PhysiqueTableRecord(
-        type: widget.args.type,
-        level: widget.args.level,
-        anntenaCategory: widget.args.anntenaCategory,
-        lineOffset: _rows!.length,
-        values: List.filled(columnCount, 0),
-      ),
-    ]);
+  void _addRow(int columnCount) {
     setState(() {
       _rows = [
         ..._rows!,
-        for (final record in created)
-          PhysiqueTableRow(lineOffset: record.lineOffset, values: record.values),
+        PhysiqueTableRow(lineOffset: _rows!.length, values: List.filled(columnCount, 0)),
       ];
     });
   }
@@ -119,6 +110,19 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   Future<void> _save() async {
     if (_rows!.isEmpty) return;
     final client = ref.read(physiquesApiClientProvider);
+    final newRows = _rows!.sublist(_persistedRowCount);
+    if (newRows.isNotEmpty) {
+      await client.create([
+        for (final row in newRows)
+          PhysiqueTableRecord(
+            type: widget.args.type,
+            level: widget.args.level,
+            anntenaCategory: widget.args.anntenaCategory,
+            lineOffset: row.lineOffset,
+            values: row.values,
+          ),
+      ]);
+    }
     await client.update(
       lineOffset: 0,
       type: widget.args.type,
@@ -127,6 +131,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       rowValues: [for (final row in _rows!) row.values],
     );
     if (!mounted) return;
+    setState(() => _persistedRowCount = _rows!.length);
     await Toaster.show(context, context.t.physiqueTable.saved);
   }
 
@@ -159,12 +164,32 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       message: t.physiqueTable.deleteRowConfirmMessage,
     );
     if (!confirmed || !mounted) return;
+    final selectedOffsets = [for (final id in _selectedRowIds) int.parse(id)];
+    final persistedOffsets = [
+      for (final offset in selectedOffsets)
+        if (offset < _persistedRowCount) offset,
+    ];
+    if (persistedOffsets.isEmpty) {
+      final selected = selectedOffsets.toSet();
+      final remaining = [
+        for (final row in _rows!)
+          if (!selected.contains(row.lineOffset)) row,
+      ];
+      setState(() {
+        _rows = [
+          for (var i = 0; i < remaining.length; i++)
+            PhysiqueTableRow(lineOffset: i, values: remaining[i].values),
+        ];
+        _selectedRowIds = {};
+      });
+      return;
+    }
     final client = ref.read(physiquesApiClientProvider);
     await client.deleteRows(
       type: widget.args.type,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
-      lineOffsets: [for (final id in _selectedRowIds) int.parse(id)],
+      lineOffsets: persistedOffsets,
     );
     await _load();
   }
@@ -184,6 +209,12 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
+      floatingActionButton: rows == null
+          ? null
+          : FloatingActionButton.extended(
+              label: Text(t.physiqueTable.save),
+              onPressed: _save,
+            ),
       body: _loadError || typesAsync.hasError || (typesAsync.hasValue && columnCount == null)
           ? Center(child: Text(t.physiqueTable.loadError))
           : rows == null || typesAsync.isLoading || columnCount == null
@@ -222,11 +253,6 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                         icon: const Icon(Icons.add),
                         label: Text(t.physiqueTable.addRow),
                         onPressed: () => _addRow(columnCount),
-                      ),
-                      FilledButton.icon(
-                        icon: const Icon(Icons.save_outlined),
-                        label: Text(t.physiqueTable.save),
-                        onPressed: _save,
                       ),
                       OutlinedButton.icon(
                         icon: Icon(
