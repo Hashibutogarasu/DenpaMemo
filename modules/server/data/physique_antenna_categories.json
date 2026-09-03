@@ -1,0 +1,22 @@
+[
+  { "category": "なし", "anntenaCategory": "アンテナ無し" },
+  { "category": "お得系", "anntenaCategory": "足元ガード" },
+  { "category": "回復系", "anntenaCategory": "単体回復" },
+  { "category": "回復系", "anntenaCategory": "全体回復" },
+  { "category": "治療系", "anntenaCategory": "単体復活" },
+  { "category": "治療系", "anntenaCategory": "全体復活" },
+  { "category": "治療系", "anntenaCategory": "解毒" },
+  { "category": "治療系", "anntenaCategory": "痺れとる" },
+  { "category": "治療系", "anntenaCategory": "目覚める" },
+  { "category": "治療系", "anntenaCategory": "属性治す" },
+  { "category": "治療系", "anntenaCategory": "全て治す" },
+  { "category": "増強系", "anntenaCategory": "無敵" },
+  { "category": "増強系", "anntenaCategory": "興奮" },
+  { "category": "増強系", "anntenaCategory": "蓄える" },
+  { "category": "増強系", "anntenaCategory": "単体増強系" },
+  { "category": "増強系", "anntenaCategory": "全体増強系" },
+  { "category": "補助系", "anntenaCategory": "弱体系" },
+  { "category": "攻撃系", "anntenaCategory": "単体攻撃" },
+  { "category": "攻撃系", "anntenaCategory": "全体攻撃" },
+  { "category": "攻撃系", "anntenaCategory": "ノックダウン" }
+]

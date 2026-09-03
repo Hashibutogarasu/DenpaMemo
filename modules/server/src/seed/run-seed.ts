@@ -3,6 +3,8 @@ import type { DataSource } from 'typeorm';
 import { ANTENNA_CATEGORY_SEED_ROWS, AntennaCategoryEntity } from '../entities/antenna-category.entity';
 import { ATTRIBUTE_CATEGORY_SEED_ROWS, AttributeCategoryEntity } from '../entities/attribute-category.entity';
 import { HeadShapeEntity } from '../entities/head-shape.entity';
+import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
+import { PhysiqueStatusCategoryEntity } from '../entities/physique-status-category.entity';
 import { TARGET_MODE_SEED_ROWS, TargetModeEntity } from '../entities/target-mode.entity';
 import { DuplicateIdGuard } from './duplicate-id-guard';
 import { loadAntennas } from './loaders/load-antennas';
@@ -11,6 +13,8 @@ import { loadBodyColorAbnormalityResistanceRules, loadBodyColorResistanceRules }
 import { loadCorrections } from './loaders/load-corrections';
 import { loadHeadShapes } from './loaders/load-head-shapes';
 import { loadMonsters } from './loaders/load-monsters';
+import { loadPhysiqueAntennaCategories } from './loaders/load-physique-antenna-categories';
+import { loadPhysiqueStatusCategories } from './loaders/load-physique-status-categories';
 import { loadSimpleList } from './loaders/load-simple-list';
 import { loadTranslations } from './loaders/load-translations';
 import { AbnormalityTypeEntity } from '../entities/abnormality-type.entity';
@@ -22,31 +26,56 @@ const DATA_DIR = path.resolve(import.meta.dirname, '..', '..', 'data');
 
 export async function runSeedIfNeeded(dataSource: DataSource, dataDir: string = DATA_DIR): Promise<void> {
   const headShapeCount = await dataSource.getRepository(HeadShapeEntity).count();
-  if (headShapeCount > 0) {
+  if (headShapeCount === 0) {
+    const guard = new DuplicateIdGuard();
+
+    await dataSource.getRepository(TargetModeEntity).save([...TARGET_MODE_SEED_ROWS]);
+    await dataSource.getRepository(AntennaCategoryEntity).save([...ANTENNA_CATEGORY_SEED_ROWS]);
+    await dataSource.getRepository(AttributeCategoryEntity).save([...ATTRIBUTE_CATEGORY_SEED_ROWS]);
+
+    await loadAttributes(dataSource, dataDir, guard);
+    await loadHeadShapes(dataSource, dataDir, guard);
+    await loadAntennas(dataSource, dataDir, guard);
+    await loadBodyColorResistanceRules(dataSource, dataDir, guard);
+    await loadBodyColorAbnormalityResistanceRules(dataSource, dataDir, guard);
+
+    await loadSimpleList(dataSource, dataDir, 'abnormality_types.json', 'abnormality_type', AbnormalityTypeEntity, guard);
+    await loadSimpleList(dataSource, dataDir, 'physiques.json', 'physique', PhysiqueEntity, guard);
+    await loadSimpleList(dataSource, dataDir, 'personalities.json', 'personality', PersonalityEntity, guard);
+    await loadSimpleList(dataSource, dataDir, 'patterns.json', 'pattern', PatternEntity, guard);
+    await loadCorrections(dataSource, dataDir, guard);
+    await loadMonsters(dataSource, dataDir, guard);
+
+    await loadTranslations(dataSource, dataDir);
+
+    console.log('Master data seeded.');
+  } else {
     console.log('Master data already seeded, skipping.');
-    return;
   }
 
-  const guard = new DuplicateIdGuard();
+  await seedPhysiqueAntennaCategoriesIfNeeded(dataSource, dataDir);
+  await seedPhysiqueStatusCategoriesIfNeeded(dataSource, dataDir);
+}
 
-  await dataSource.getRepository(TargetModeEntity).save([...TARGET_MODE_SEED_ROWS]);
-  await dataSource.getRepository(AntennaCategoryEntity).save([...ANTENNA_CATEGORY_SEED_ROWS]);
-  await dataSource.getRepository(AttributeCategoryEntity).save([...ATTRIBUTE_CATEGORY_SEED_ROWS]);
+/**
+ * Seeded independently of the `headShapeCount` gate above: this entity was
+ * added after that gate started guarding every other master-data table, so
+ * a database seeded before this feature existed would otherwise never get
+ * these rows. Guarded by its own count instead.
+ */
+async function seedPhysiqueAntennaCategoriesIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const physiqueAntennaCategoryCount = await dataSource.getRepository(PhysiqueAntennaCategoryEntity).count();
+  if (physiqueAntennaCategoryCount > 0) {
+    return;
+  }
+  await loadPhysiqueAntennaCategories(dataSource, dataDir, new DuplicateIdGuard());
+}
 
-  await loadAttributes(dataSource, dataDir, guard);
-  await loadHeadShapes(dataSource, dataDir, guard);
-  await loadAntennas(dataSource, dataDir, guard);
-  await loadBodyColorResistanceRules(dataSource, dataDir, guard);
-  await loadBodyColorAbnormalityResistanceRules(dataSource, dataDir, guard);
-
-  await loadSimpleList(dataSource, dataDir, 'abnormality_types.json', 'abnormality_type', AbnormalityTypeEntity, guard);
-  await loadSimpleList(dataSource, dataDir, 'physiques.json', 'physique', PhysiqueEntity, guard);
-  await loadSimpleList(dataSource, dataDir, 'personalities.json', 'personality', PersonalityEntity, guard);
-  await loadSimpleList(dataSource, dataDir, 'patterns.json', 'pattern', PatternEntity, guard);
-  await loadCorrections(dataSource, dataDir, guard);
-  await loadMonsters(dataSource, dataDir, guard);
-
-  await loadTranslations(dataSource, dataDir);
-
-  console.log('Master data seeded.');
+/** Same independent-gate reasoning as {@link seedPhysiqueAntennaCategoriesIfNeeded}. */
+async function seedPhysiqueStatusCategoriesIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const physiqueStatusCategoryCount = await dataSource.getRepository(PhysiqueStatusCategoryEntity).count();
+  if (physiqueStatusCategoryCount > 0) {
+    return;
+  }
+  await loadPhysiqueStatusCategories(dataSource, dataDir, new DuplicateIdGuard());
 }

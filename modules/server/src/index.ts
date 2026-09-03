@@ -6,6 +6,7 @@ import { env } from './config/env';
 import { AppDataSource } from './config/data-source';
 import { runSeedIfNeeded } from './seed/run-seed';
 import { buildSchema } from './graphql/schema';
+import { physiquesRoutes } from './routes/physiques.route';
 
 async function main() {
   await AppDataSource.initialize();
@@ -16,6 +17,7 @@ async function main() {
 
   const app = new Elysia({ adapter: node() })
     .get('/health', () => ({ status: 'ok' }))
+    .use(physiquesRoutes(AppDataSource))
     .mount('/graphql', async (request: Request) => {
       const yogaResponse = await yoga.fetch(request);
       const body = await yogaResponse.arrayBuffer();
