@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:denpa_memo/main.dart';
 import 'package:denpa_memo/pages/home.dart';
 import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
 import 'package:denpa_memo/providers/denpa_men_providers.dart';
@@ -75,7 +76,7 @@ void main() {
           ),
         ],
         child: AllTranslationProviders(
-          child: MaterialApp.router(routerConfig: router),
+          child: MaterialApp.router(theme: appLightTheme, routerConfig: router),
         ),
       ),
     );

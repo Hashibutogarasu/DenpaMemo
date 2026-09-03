@@ -100,15 +100,15 @@ class _ThemedMaterialApp extends ConsumerWidget {
     return MaterialApp.router(
       title: t.app.name,
       scrollBehavior: const _DragAnywhereScrollBehavior(),
-      theme: _lightTheme,
-      darkTheme: _darkTheme,
+      theme: appLightTheme,
+      darkTheme: appDarkTheme,
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
     );
   }
 }
 
-final ThemeData _lightTheme = ThemeData(
+final ThemeData appLightTheme = ThemeData(
   colorScheme: .fromSeed(seedColor: Colors.deepPurple),
   elevatedButtonTheme: _elevatedButtonTheme,
   extensions: const [
@@ -122,7 +122,7 @@ final ThemeData _lightTheme = ThemeData(
   ],
 );
 
-final ThemeData _darkTheme = ThemeData(
+final ThemeData appDarkTheme = ThemeData(
   colorScheme: .fromSeed(
     seedColor: Colors.deepPurple,
     brightness: Brightness.dark,

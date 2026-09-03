@@ -9,6 +9,7 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
+import 'package:denpa_memo/main.dart';
 import 'package:denpa_memo/pages/monster_selection.dart';
 import 'package:denpa_memo/providers/monster_providers.dart';
 import 'package:denpa_memo/providers/objectbox_providers.dart';
@@ -46,7 +47,7 @@ void main() {
             ),
           ],
           child: TranslationProvider(
-            child: MaterialApp(home: MonsterSelectionPage()),
+            child: MaterialApp(theme: appLightTheme, home: MonsterSelectionPage()),
           ),
         ),
       );
