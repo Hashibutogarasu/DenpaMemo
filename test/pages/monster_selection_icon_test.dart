@@ -46,7 +46,7 @@ void main() {
         ],
         child: TranslationProvider(
           child: MaterialApp(
-            theme: AppTheme.light,
+            theme: AppLightTheme.theme,
             home: MonsterSelectionPage(),
           ),
         ),

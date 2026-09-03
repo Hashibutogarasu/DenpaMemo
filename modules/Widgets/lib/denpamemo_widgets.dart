@@ -85,6 +85,7 @@ export 'src/search/search_form.dart';
 export 'src/search/search_overlay_bar.dart';
 export 'src/search/search_stat_grid.dart';
 export 'src/snackbar/copyable_snack_bar.dart';
+export 'src/theme/app_dialog_theme.dart';
 export 'src/theme/denpa_men_container_theme.dart';
 export 'src/theme/denpa_men_label_theme.dart';
 export 'src/theme/fab_button_theme.dart';

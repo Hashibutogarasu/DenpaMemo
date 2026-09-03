@@ -1,5 +1,7 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -80,7 +82,11 @@ const _antennaRoot = Anntena(
   hasLevel: false,
 );
 
-const _none = Anntena(id: 'none', category: AnntenaCategory.other, hasLevel: false);
+const _none = Anntena(
+  id: 'none',
+  category: AnntenaCategory.other,
+  hasLevel: false,
+);
 
 const _allAnntenas = [
   _healSolo1,
@@ -105,6 +111,7 @@ Future<void> _pumpDialog(
   await tester.pumpWidget(
     AllTranslationProviders(
       child: MaterialApp(
+        theme: testAppTheme,
         home: Scaffold(
           body: Builder(
             builder: (context) => ElevatedButton(
@@ -139,6 +146,7 @@ void main() {
       await tester.pumpWidget(
         AllTranslationProviders(
           child: MaterialApp(
+            theme: testAppTheme,
             home: Scaffold(
               body: Builder(
                 builder: (context) => ElevatedButton(
@@ -282,18 +290,17 @@ void main() {
     expect(_result?.level, 3);
   });
 
-  testWidgets(
-    'an antenna with hasLevel false shows no level slider at all',
-    (WidgetTester tester) async {
-      await _pumpDialog(tester, level: 0, selected: _antennaRoot);
+  testWidgets('an antenna with hasLevel false shows no level slider at all', (
+    WidgetTester tester,
+  ) async {
+    await _pumpDialog(tester, level: 0, selected: _antennaRoot);
 
-      await tester.tap(find.text('その他'));
-      await tester.pumpAndSettle();
+    await tester.tap(find.text('その他'));
+    await tester.pumpAndSettle();
 
-      expect(find.text('アンテナのねっこ'), findsOneWidget);
-      expect(find.byType(Slider), findsNothing);
-    },
-  );
+    expect(find.text('アンテナのねっこ'), findsOneWidget);
+    expect(find.byType(Slider), findsNothing);
+  });
 
   testWidgets(
     'an antenna whose evolvesToId points outside the given list is treated '
@@ -311,6 +318,7 @@ void main() {
       await tester.pumpWidget(
         AllTranslationProviders(
           child: MaterialApp(
+            theme: testAppTheme,
             home: Scaffold(
               body: Builder(
                 builder: (context) => ElevatedButton(

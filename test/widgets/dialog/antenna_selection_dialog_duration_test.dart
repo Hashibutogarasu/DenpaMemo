@@ -1,5 +1,7 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -65,6 +67,7 @@ Future<void> _pumpDialog(
   await tester.pumpWidget(
     AllTranslationProviders(
       child: MaterialApp(
+        theme: testAppTheme,
         home: Scaffold(
           body: Builder(
             builder: (context) => ElevatedButton(

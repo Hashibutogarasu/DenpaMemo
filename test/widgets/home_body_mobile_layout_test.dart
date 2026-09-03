@@ -78,7 +78,7 @@ void main() {
         ],
         child: AllTranslationProviders(
           child: MaterialApp.router(
-            theme: AppTheme.light,
+            theme: AppLightTheme.theme,
             routerConfig: router,
           ),
         ),

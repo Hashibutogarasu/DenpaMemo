@@ -62,7 +62,7 @@ void main() {
     await tester.pumpWidget(
       AllTranslationProviders(
         child: MaterialApp(
-          theme: AppTheme.light,
+          theme: AppLightTheme.theme,
           home: Scaffold(
             body: EditableQrCode(
               denpaMen: denpaMen,

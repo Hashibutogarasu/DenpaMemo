@@ -1,4 +1,6 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -15,6 +17,7 @@ Future<void> _pumpDialog(
   await tester.pumpWidget(
     AllTranslationProviders(
       child: MaterialApp(
+        theme: testAppTheme,
         home: Scaffold(
           body: Builder(
             builder: (context) => ElevatedButton(
@@ -48,19 +51,18 @@ Finder _leadingIconOf(Finder tile) =>
     find.descendant(of: tile, matching: find.byType(ColorDot));
 
 void main() {
-  testWidgets(
-    'selecting a color adds a shade list tile below the SP switch',
-    (WidgetTester tester) async {
-      await _pumpDialog(tester);
+  testWidgets('selecting a color adds a shade list tile below the SP switch', (
+    WidgetTester tester,
+  ) async {
+    await _pumpDialog(tester);
 
-      expect(find.byType(Slider), findsNothing);
+    expect(find.byType(Slider), findsNothing);
 
-      await tester.tap(_swatch('red'));
-      await tester.pumpAndSettle();
+    await tester.tap(_swatch('red'));
+    await tester.pumpAndSettle();
 
-      expect(find.byType(Slider), findsOneWidget);
-    },
-  );
+    expect(find.byType(Slider), findsOneWidget);
+  });
 
   testWidgets(
     'adjusting the shade slider changes the resolved shade and its label',
@@ -118,9 +120,15 @@ void main() {
       await tester.tap(_swatch('red'));
       await tester.pumpAndSettle();
 
-      expect(find.descendant(of: _tile(0), matching: find.byType(Text)), findsNothing);
+      expect(
+        find.descendant(of: _tile(0), matching: find.byType(Text)),
+        findsNothing,
+      );
       expect(_leadingIconOf(_tile(0)), findsOneWidget);
-      expect(find.descendant(of: _tile(0), matching: find.byType(Slider)), findsOneWidget);
+      expect(
+        find.descendant(of: _tile(0), matching: find.byType(Slider)),
+        findsOneWidget,
+      );
     },
   );
 

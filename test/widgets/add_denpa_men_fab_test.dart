@@ -26,7 +26,7 @@ void main() {
       await tester.pumpWidget(
         TranslationProvider(
           child: MaterialApp(
-            theme: AppTheme.light,
+            theme: AppLightTheme.theme,
             home: Scaffold(
               floatingActionButton: AddDenpaMenFab(masterData: _masterData),
             ),
@@ -48,7 +48,7 @@ void main() {
       await tester.pumpWidget(
         TranslationProvider(
           child: MaterialApp(
-            theme: AppTheme.light,
+            theme: AppLightTheme.theme,
             home: Scaffold(
               floatingActionButton: AddDenpaMenFab(masterData: _masterData),
             ),
@@ -72,7 +72,7 @@ void main() {
     await tester.pumpWidget(
       TranslationProvider(
         child: MaterialApp(
-          theme: AppTheme.light,
+          theme: AppLightTheme.theme,
           home: Scaffold(
             floatingActionButton: AddDenpaMenFab(
               masterData: _masterData,
@@ -101,7 +101,7 @@ void main() {
     await tester.pumpWidget(
       TranslationProvider(
         child: MaterialApp(
-          theme: AppTheme.light,
+          theme: AppLightTheme.theme,
           home: Scaffold(
             floatingActionButton: AddDenpaMenFab(
               masterData: _masterData,

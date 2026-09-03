@@ -49,7 +49,7 @@ class _HarnessState extends State<_Harness> {
     return ProviderScope(
       child: AllTranslationProviders(
         child: MaterialApp(
-          theme: AppTheme.light,
+          theme: AppLightTheme.theme,
           home: AppScaffold(
             title: const Text('home'),
             floatingActionButtonExpansion: _expansion,

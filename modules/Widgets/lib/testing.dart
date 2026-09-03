@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'i18n/gen/strings.g.dart';
 import 'src/navigation/app_back_button.dart';
+import 'src/theme/app_dialog_theme.dart';
 import 'src/theme/denpa_men_container_theme.dart';
 import 'src/theme/denpa_men_label_theme.dart';
 import 'src/theme/fab_button_theme.dart';
@@ -29,6 +30,11 @@ final ThemeData testAppTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
     contentPadding: EdgeInsets.symmetric(horizontal: 16),
+  ),
+  dialogTheme: const DialogThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(24)),
+    ),
   ),
   extensions: const [
     SlantedHeaderThemeData(
@@ -78,6 +84,12 @@ final ThemeData testAppTheme = ThemeData(
       expBarUnfilledColor: Color(0xFF056193),
       maxedValueColor: Color(0xFF7BEA95),
       inactiveBonusColor: Color(0xFFE53935),
+    ),
+    AppDialogThemeData(
+      transitionDuration: Duration(milliseconds: 320),
+      transitionCurve: Curves.easeOutCubic,
+      reverseTransitionCurve: Curves.easeInCubic,
+      barrierColor: Colors.black54,
     ),
   ],
 );

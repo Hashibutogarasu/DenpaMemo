@@ -49,7 +49,7 @@ void main() {
           container: container,
           child: TranslationProvider(
             child: MaterialApp.router(
-              theme: AppTheme.light,
+              theme: AppLightTheme.theme,
               routerConfig: router,
             ),
           ),

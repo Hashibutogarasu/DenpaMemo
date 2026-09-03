@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../theme/app_dialog_theme.dart';
 
 /// Shows a modal dialog that slides up from the bottom of the screen and
 /// slides back down on dismissal, sharing one curve for both directions.
@@ -8,18 +9,19 @@ Future<T?> showBottomSlideDialog<T>({
   required BuildContext context,
   required WidgetBuilder builder,
 }) {
+  final theme = Theme.of(context).extension<AppDialogThemeData>()!;
   return showGeneralDialog<T>(
     context: context,
     barrierDismissible: true,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: Colors.black54,
-    transitionDuration: const Duration(milliseconds: 320),
+    barrierColor: theme.barrierColor,
+    transitionDuration: theme.transitionDuration,
     pageBuilder: (context, animation, secondaryAnimation) => builder(context),
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       final curved = CurvedAnimation(
         parent: animation,
-        curve: Curves.easeOutCubic,
-        reverseCurve: Curves.easeInCubic,
+        curve: theme.transitionCurve,
+        reverseCurve: theme.reverseTransitionCurve,
       );
       return SlideTransition(
         position: Tween<Offset>(
@@ -52,6 +54,7 @@ class BottomSlideDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final dialogTheme = Theme.of(context).dialogTheme;
 
     return Center(
       child: ConstrainedBox(
@@ -60,9 +63,11 @@ class BottomSlideDialog extends StatelessWidget {
           maxHeight: MediaQuery.of(context).size.height * 0.7,
         ),
         child: Material(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(24),
-          elevation: 8,
+          color:
+              dialogTheme.backgroundColor ??
+              Theme.of(context).scaffoldBackgroundColor,
+          shape: dialogTheme.shape,
+          elevation: dialogTheme.elevation ?? 8,
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
