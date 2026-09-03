@@ -106,7 +106,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   @override
   void initState() {
     super.initState();
-    ref.invalidate(tableTypesProvider);
+    Future.microtask(() => ref.invalidate(tableTypesProvider));
     _load();
   }
 
