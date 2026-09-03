@@ -1,6 +1,6 @@
 import type { DataSource } from 'typeorm';
 import { TableDefinitionEntity } from '../../entities/table-definition.entity';
-import type { TableEntityMapping } from './table-types';
+import type { TableEntityMapping, TableValues } from '../../types/tables/table';
 
 export interface ResolvedTableType extends TableEntityMapping {
   columnCount: number;
@@ -11,7 +11,7 @@ export interface TableRow {
   level: string;
   anntenaCategory: string;
   lineOffset: number;
-  values: number[];
+  values: TableValues;
 }
 
 /**

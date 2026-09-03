@@ -1,12 +1,18 @@
 import type { EntityTarget, ObjectLiteral } from 'typeorm';
 
+/** A single cell in a table row's `values` array. Blank is `null`, never coerced to `0`. */
+export type TableCellValue = number | null;
+
+/** A table row's full `values` array, shared by every domain's table entities and routes. */
+export type TableValues = TableCellValue[];
+
 /** Row shape every registered table type's entity must satisfy. */
 export interface TableRowEntity extends ObjectLiteral {
   id: string;
   level: string;
   anntenaCategory: string;
   lineOffset: number;
-  values: number[];
+  values: TableValues;
 }
 
 /**

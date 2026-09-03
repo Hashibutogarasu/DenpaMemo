@@ -1,5 +1,4 @@
 import 'package:api_client/api_client.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/server/physique_table_args.dart';
@@ -25,7 +24,11 @@ class PhysiqueTableEditState {
 }
 
 /// Owns one physique table's editable rows and every operation that
-/// reaches the server for it (load/save/create/delete). Row edits and
+/// reaches the server for it (load/save/create/delete). Nothing is
+/// fetched until [ensureLoaded] is called — the caller (the list page,
+/// before navigating to a view/edit page for this table) awaits it and
+/// shows its own loading state, so the destination page always mounts
+/// with data already in hand instead of loading itself. Row edits and
 /// additions are staged in [state] until [save] is called, which creates
 /// any rows added since the last save, then pushes every row's current
 /// values in one `PUT /tables` call.
@@ -35,9 +38,11 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
   final PhysiqueTableArgs args;
 
   @override
-  PhysiqueTableEditState build() {
-    SchedulerBinding.instance.addPostFrameCallback((_) => _load());
-    return const PhysiqueTableEditState();
+  PhysiqueTableEditState build() => const PhysiqueTableEditState();
+
+  Future<void> ensureLoaded() {
+    if (state.rows != null || state.loadError) return Future.value();
+    return _load();
   }
 
   Future<void> _load() async {
@@ -52,7 +57,7 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
         for (final record in records)
           PhysiqueTableRow(
             lineOffset: record.lineOffset,
-            values: [for (final value in record.values) value.toString()],
+            values: [for (final value in record.values) value?.toString() ?? ''],
           ),
       ];
       state = PhysiqueTableEditState(rows: rows, persistedRowCount: rows.length);
@@ -85,10 +90,10 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
     );
   }
 
-  /// The only place row text is parsed to the integers the server
-  /// requires: an empty or unparseable cell becomes `0`.
-  List<int> _parsedValues(PhysiqueTableRow row) => [
-    for (final value in row.values) int.tryParse(value) ?? 0,
+  /// The only place row text is parsed to what the server stores: a
+  /// blank or unparseable cell stays `null`, never coerced to `0`.
+  List<int?> _parsedValues(PhysiqueTableRow row) => [
+    for (final value in row.values) int.tryParse(value),
   ];
 
   Future<void> save() async {

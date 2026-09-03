@@ -1,5 +1,6 @@
 import { createId } from '@paralleldrive/cuid2';
 import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from 'typeorm';
+import type { TableValues } from '../types/tables/table';
 
 /**
  * One row of the evasion-rate table: independent from `physique_table` —
@@ -29,7 +30,7 @@ export class PhysiqueEvasionRateTableEntity {
   lineOffset!: number;
 
   @Column({ type: 'jsonb' })
-  values!: number[];
+  values!: TableValues;
 
   @BeforeInsert()
   generateId() {

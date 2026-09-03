@@ -56,7 +56,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => ref.invalidate(tableTypesProvider));
+    ref.read(physiqueTableEditProvider(widget.args).notifier).ensureLoaded();
   }
 
   Future<void> _deleteTable() async {

@@ -3,7 +3,8 @@ import { z } from 'zod';
 /** `type` is validated against the DB + entity-mapping registry at request time, not here. */
 export const tableTypeSchema = z.string().min(1);
 
-export const tableValuesSchema = z.array(z.number()).min(1);
+/** A cell left blank is `null`, not coerced to `0` — a deliberate, storable value. */
+export const tableValuesSchema = z.array(z.number().nullable()).min(1);
 
 export const tableRecordInputSchema = z.object({
   type: tableTypeSchema,

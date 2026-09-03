@@ -1,6 +1,6 @@
 import { PhysiqueEvasionRateTableEntity } from '../../entities/physique-evasion-rate-table.entity';
 import { PhysiqueTableEntity } from '../../entities/physique-table.entity';
-import type { TableEntityMapping } from '../tables/table-types';
+import type { TableEntityMapping } from '../../types/tables/table';
 
 /**
  * The physique domain's table type registry: which entity/discriminator

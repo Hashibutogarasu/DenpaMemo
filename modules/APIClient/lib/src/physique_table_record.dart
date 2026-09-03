@@ -7,7 +7,9 @@ part 'physique_table_record.g.dart';
 /// `modules/server` `/tables` REST endpoints. `lineOffset` is the row's
 /// position within the table identified by `type`/`level`/
 /// `anntenaCategory`, and `values`' length must match that type's
-/// `columnCount` — see `TableDefinition`/`GET /tables/types`.
+/// `columnCount` — see `TableDefinition`/`GET /tables/types`. A cell can
+/// be `null` — the server stores it exactly as sent, never coercing a
+/// blank cell to `0`.
 @freezed
 abstract class PhysiqueTableRecord with _$PhysiqueTableRecord {
   const factory PhysiqueTableRecord({
@@ -15,7 +17,7 @@ abstract class PhysiqueTableRecord with _$PhysiqueTableRecord {
     required String level,
     required String anntenaCategory,
     required int lineOffset,
-    required List<int> values,
+    required List<int?> values,
   }) = _PhysiqueTableRecord;
 
   factory PhysiqueTableRecord.fromJson(Map<String, dynamic> json) =>

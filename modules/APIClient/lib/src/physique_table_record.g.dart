@@ -13,7 +13,7 @@ _PhysiqueTableRecord _$PhysiqueTableRecordFromJson(Map<String, dynamic> json) =>
       anntenaCategory: json['anntenaCategory'] as String,
       lineOffset: (json['lineOffset'] as num).toInt(),
       values: (json['values'] as List<dynamic>)
-          .map((e) => (e as num).toInt())
+          .map((e) => (e as num?)?.toInt())
           .toList(),
     );
 

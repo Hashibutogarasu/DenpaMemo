@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueTableRecord {
 
- String get type; String get level; String get anntenaCategory; int get lineOffset; List<int> get values;
+ String get type; String get level; String get anntenaCategory; int get lineOffset; List<int?> get values;
 /// Create a copy of PhysiqueTableRecord
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueTableRecordCopyWith<$Res>  {
   factory $PhysiqueTableRecordCopyWith(PhysiqueTableRecord value, $Res Function(PhysiqueTableRecord) _then) = _$PhysiqueTableRecordCopyWithImpl;
 @useResult
 $Res call({
- String type, String level, String anntenaCategory, int lineOffset, List<int> values
+ String type, String level, String anntenaCategory, int lineOffset, List<int?> values
 });
 
 
@@ -72,7 +72,7 @@ as String,level: null == level ? _self.level : level // ignore: cast_nullable_to
 as String,anntenaCategory: null == anntenaCategory ? _self.anntenaCategory : anntenaCategory // ignore: cast_nullable_to_non_nullable
 as String,lineOffset: null == lineOffset ? _self.lineOffset : lineOffset // ignore: cast_nullable_to_non_nullable
 as int,values: null == values ? _self.values : values // ignore: cast_nullable_to_non_nullable
-as List<int>,
+as List<int?>,
   ));
 }
 
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int> values)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int?> values)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueTableRecord() when $default != null:
 return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
@@ -178,7 +178,7 @@ return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int> values)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int?> values)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableRecord():
 return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
@@ -198,7 +198,7 @@ return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int> values)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String type,  String level,  String anntenaCategory,  int lineOffset,  List<int?> values)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableRecord() when $default != null:
 return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_that.values);case _:
@@ -213,15 +213,15 @@ return $default(_that.type,_that.level,_that.anntenaCategory,_that.lineOffset,_t
 @JsonSerializable()
 
 class _PhysiqueTableRecord implements PhysiqueTableRecord {
-  const _PhysiqueTableRecord({required this.type, required this.level, required this.anntenaCategory, required this.lineOffset, required final  List<int> values}): _values = values;
+  const _PhysiqueTableRecord({required this.type, required this.level, required this.anntenaCategory, required this.lineOffset, required final  List<int?> values}): _values = values;
   factory _PhysiqueTableRecord.fromJson(Map<String, dynamic> json) => _$PhysiqueTableRecordFromJson(json);
 
 @override final  String type;
 @override final  String level;
 @override final  String anntenaCategory;
 @override final  int lineOffset;
- final  List<int> _values;
-@override List<int> get values {
+ final  List<int?> _values;
+@override List<int?> get values {
   if (_values is EqualUnmodifiableListView) return _values;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_values);
@@ -261,7 +261,7 @@ abstract mixin class _$PhysiqueTableRecordCopyWith<$Res> implements $PhysiqueTab
   factory _$PhysiqueTableRecordCopyWith(_PhysiqueTableRecord value, $Res Function(_PhysiqueTableRecord) _then) = __$PhysiqueTableRecordCopyWithImpl;
 @override @useResult
 $Res call({
- String type, String level, String anntenaCategory, int lineOffset, List<int> values
+ String type, String level, String anntenaCategory, int lineOffset, List<int?> values
 });
 
 
@@ -285,7 +285,7 @@ as String,level: null == level ? _self.level : level // ignore: cast_nullable_to
 as String,anntenaCategory: null == anntenaCategory ? _self.anntenaCategory : anntenaCategory // ignore: cast_nullable_to_non_nullable
 as String,lineOffset: null == lineOffset ? _self.lineOffset : lineOffset // ignore: cast_nullable_to_non_nullable
 as int,values: null == values ? _self._values : values // ignore: cast_nullable_to_non_nullable
-as List<int>,
+as List<int?>,
   ));
 }
 

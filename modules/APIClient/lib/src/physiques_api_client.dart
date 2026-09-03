@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show compute;
 import 'package:http/http.dart' as http;
 
 import 'physique_table_record.dart';
@@ -34,7 +35,7 @@ class PhysiquesApiClient {
   /// server), so callers never hardcode which types exist.
   Future<List<TableDefinition>> fetchTypes() async {
     final response = await http.get(_baseUrl.replace(path: '/tables/types'));
-    final body = _decodeListOrThrow(response);
+    final body = await _decodeListOrThrow(response);
     return [
       for (final row in body.cast<Map<String, dynamic>>())
         TableDefinition.fromJson(row),
@@ -58,7 +59,7 @@ class PhysiquesApiClient {
         },
       ),
     );
-    final body = _decodeListOrThrow(response);
+    final body = await _decodeListOrThrow(response);
     return [
       for (final row in body.cast<Map<String, dynamic>>())
         PhysiqueTableRecord.fromJson(row),
@@ -73,7 +74,7 @@ class PhysiquesApiClient {
       headers: _jsonHeaders,
       body: jsonEncode([for (final record in records) record.toJson()]),
     );
-    final body = _decodeListOrThrow(response);
+    final body = await _decodeListOrThrow(response);
     return [
       for (final row in body.cast<Map<String, dynamic>>())
         PhysiqueTableRecord.fromJson(row),
@@ -85,7 +86,7 @@ class PhysiquesApiClient {
     required String type,
     required String level,
     required String anntenaCategory,
-    required List<List<int>> rowValues,
+    required List<List<int?>> rowValues,
   }) async {
     final response = await http.put(
       _baseUrl.replace(path: '/tables'),
@@ -100,7 +101,7 @@ class PhysiquesApiClient {
         ],
       }),
     );
-    final body = _decodeListOrThrow(response);
+    final body = await _decodeListOrThrow(response);
     return [
       for (final row in body.cast<Map<String, dynamic>>())
         PhysiqueTableRecord.fromJson(row),
@@ -153,9 +154,11 @@ class PhysiquesApiClient {
     'Content-Type': 'application/json',
   };
 
-  List<dynamic> _decodeListOrThrow(http.Response response) {
+  static List<dynamic> _decodeJsonList(String body) => jsonDecode(body) as List<dynamic>;
+
+  Future<List<dynamic>> _decodeListOrThrow(http.Response response) async {
     _requireSuccess(response);
-    return jsonDecode(response.body) as List<dynamic>;
+    return compute(_decodeJsonList, response.body);
   }
 
   void _requireSuccess(http.Response response) {
