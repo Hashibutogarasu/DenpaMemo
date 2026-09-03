@@ -1,5 +1,5 @@
 [
-  { "type": "hp", "columnCount": 11, "translationKey": "physiqueTable.status.hp" },
-  { "type": "speed", "columnCount": 5, "translationKey": "physiqueTable.status.speed" },
-  { "type": "evasionRate", "columnCount": 11, "translationKey": "physiqueTable.status.evasionRate" }
+  { "type": "hp", "columnCount": 11, "translationKey": "stat.hp" },
+  { "type": "speed", "columnCount": 5, "translationKey": "stat.speed" },
+  { "type": "evasionRate", "columnCount": 11, "translationKey": "stat.evasionRate" }
 ]

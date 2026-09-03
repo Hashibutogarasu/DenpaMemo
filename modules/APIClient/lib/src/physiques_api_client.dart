@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'physique_table_record.dart';
+import 'table_definition.dart';
 
-/// Thrown when `/physiques` responds with a non-2xx status, carrying the
-/// status code and validation issues (see `physiques.route.ts`'s
+/// Thrown when `/tables` responds with a non-2xx status, carrying the
+/// status code and validation issues (see `tables.route.ts`'s
 /// `zodErrorResponse`) so callers see the real reason rather than treating
 /// the request as having succeeded.
 class PhysiqueApiException implements Exception {
@@ -19,26 +20,38 @@ class PhysiqueApiException implements Exception {
       'PhysiqueApiException($statusCode)${message != null ? ': $message' : ''}';
 }
 
-/// REST client for `modules/server`'s `/physiques` endpoints. Every
-/// method maps directly onto one of the four CRUD endpoints described in
-/// `PhysiqueTableEntity`/`physiques.route.ts` — this client does not
-/// assemble rows into a table shape, that is left to the caller.
+/// REST client for `modules/server`'s generic `/tables` endpoints. Every
+/// method maps directly onto one of the CRUD endpoints described in
+/// `tables.route.ts` — this client does not assemble rows into a table
+/// shape, that is left to the caller. `type` selects which registered
+/// table (see `TableDefinition`/`GET /tables/types`) a call operates on.
 class PhysiquesApiClient {
   const PhysiquesApiClient(this._baseUrl);
 
   final Uri _baseUrl;
 
+  /// Every registered table type (see `TableDefinitionEntity` on the
+  /// server), so callers never hardcode which types exist.
+  Future<List<TableDefinition>> fetchTypes() async {
+    final response = await http.get(_baseUrl.replace(path: '/tables/types'));
+    final body = _decodeListOrThrow(response);
+    return [
+      for (final row in body.cast<Map<String, dynamic>>())
+        TableDefinition.fromJson(row),
+    ];
+  }
+
   Future<List<PhysiqueTableRecord>> fetch({
-    String? statusCategory,
+    required String type,
     String? level,
     String? anntenaCategory,
     String? category,
   }) async {
     final response = await http.get(
       _baseUrl.replace(
-        path: '/physiques',
+        path: '/tables',
         queryParameters: {
-          'statusCategory': ?statusCategory,
+          'type': type,
           'level': ?level,
           'anntenaCategory': ?anntenaCategory,
           'category': ?category,
@@ -56,7 +69,7 @@ class PhysiquesApiClient {
     List<PhysiqueTableRecord> records,
   ) async {
     final response = await http.post(
-      _baseUrl.replace(path: '/physiques'),
+      _baseUrl.replace(path: '/tables'),
       headers: _jsonHeaders,
       body: jsonEncode([for (final record in records) record.toJson()]),
     );
@@ -69,17 +82,17 @@ class PhysiquesApiClient {
 
   Future<List<PhysiqueTableRecord>> update({
     required int lineOffset,
-    required String statusCategory,
+    required String type,
     required String level,
     required String anntenaCategory,
     required List<List<int>> rowValues,
   }) async {
     final response = await http.put(
-      _baseUrl.replace(path: '/physiques'),
+      _baseUrl.replace(path: '/tables'),
       headers: _jsonHeaders,
       body: jsonEncode({
         'lineOffset': lineOffset,
-        'statusCategory': statusCategory,
+        'type': type,
         'level': level,
         'anntenaCategory': anntenaCategory,
         'records': [
@@ -95,15 +108,15 @@ class PhysiquesApiClient {
   }
 
   Future<void> delete({
-    String? statusCategory,
+    required String type,
     String? level,
     String? anntenaCategory,
   }) async {
     final response = await http.delete(
       _baseUrl.replace(
-        path: '/physiques',
+        path: '/tables',
         queryParameters: {
-          'statusCategory': ?statusCategory,
+          'type': type,
           'level': ?level,
           'anntenaCategory': ?anntenaCategory,
         },
@@ -112,21 +125,21 @@ class PhysiquesApiClient {
     _requireSuccess(response);
   }
 
-  /// Deletes only the rows at [lineOffsets] within one `statusCategory`/
-  /// `level`/`anntenaCategory` table (server re-sequences the remaining
-  /// rows' `lineOffset`s afterwards — see `deletePhysiqueTableRows` in
-  /// `physiques.route.ts`), rather than the whole table.
+  /// Deletes only the rows at [lineOffsets] within one `type`/`level`/
+  /// `anntenaCategory` table (server re-sequences the remaining rows'
+  /// `lineOffset`s afterwards — see `deleteTableRows` in
+  /// `tables.route.ts`), rather than the whole table.
   Future<void> deleteRows({
-    required String statusCategory,
+    required String type,
     required String level,
     required String anntenaCategory,
     required List<int> lineOffsets,
   }) async {
     final response = await http.delete(
       _baseUrl.replace(
-        path: '/physiques',
+        path: '/tables',
         queryParameters: {
-          'statusCategory': statusCategory,
+          'type': type,
           'level': level,
           'anntenaCategory': anntenaCategory,
           'lineOffsets': lineOffsets.join(','),

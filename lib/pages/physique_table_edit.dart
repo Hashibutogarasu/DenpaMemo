@@ -1,3 +1,4 @@
+import 'package:api_client/api_client.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +6,6 @@ import 'package:table_editor/table_editor.dart';
 import 'package:toaster/toaster.dart';
 
 import '../data/server/physique_table_args.dart';
-import '../data/server/physique_table_record.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/physiques_providers.dart';
 import '../widgets/physique_table/physique_table_row.dart';
@@ -84,7 +84,7 @@ Future<bool> _confirm(
 
 /// Editable version of [PhysiqueTableViewPage]. Cell edits and row
 /// additions are staged locally; the save button pushes every current
-/// row's values to `PUT /physiques` in one call starting at
+/// row's values to `PUT /tables` in one call starting at
 /// `lineOffset: 0`, which is always within the server's row-count bound
 /// since this page's row list
 /// is exactly the current table.
@@ -110,7 +110,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   Future<void> _load() async {
     final client = ref.read(physiquesApiClientProvider);
     final records = await client.fetch(
-      statusCategory: widget.args.statusCategory,
+      type: widget.args.type,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
     );
@@ -138,7 +138,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     final client = ref.read(physiquesApiClientProvider);
     final created = await client.create([
       PhysiqueTableRecord(
-        statusCategory: widget.args.statusCategory,
+        type: widget.args.type,
         level: widget.args.level,
         anntenaCategory: widget.args.anntenaCategory,
         lineOffset: _rows!.length,
@@ -159,7 +159,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     final client = ref.read(physiquesApiClientProvider);
     await client.update(
       lineOffset: 0,
-      statusCategory: widget.args.statusCategory,
+      type: widget.args.type,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
       rowValues: [for (final row in _rows!) row.values],
@@ -178,7 +178,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     if (!confirmed || !mounted) return;
     final client = ref.read(physiquesApiClientProvider);
     await client.delete(
-      statusCategory: widget.args.statusCategory,
+      type: widget.args.type,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
     );
@@ -199,7 +199,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     if (!confirmed || !mounted) return;
     final client = ref.read(physiquesApiClientProvider);
     await client.deleteRows(
-      statusCategory: widget.args.statusCategory,
+      type: widget.args.type,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
       lineOffsets: [for (final id in _selectedRowIds) int.parse(id)],

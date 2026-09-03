@@ -9,11 +9,11 @@ import '../providers/physiques_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/physique_table/physique_table_row.dart';
 
-/// Read-only display of one physique table (a `statusCategory`/`level`/
+/// Read-only display of one physique table (a `type`/`level`/
 /// `anntenaCategory` triple). Fetches once in [initState] and assembles
 /// the flat record list into [PhysiqueTableRow]s itself — the server
 /// never returns a table shape, only a flat, `lineOffset`-ordered list
-/// (see `GET /physiques`).
+/// (see `GET /tables`).
 class PhysiqueTableViewPage extends ConsumerStatefulWidget {
   const PhysiqueTableViewPage({required this.args, super.key});
 
@@ -35,7 +35,7 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
   Future<List<PhysiqueTableRow>> _fetchRows() async {
     final client = ref.read(physiquesApiClientProvider);
     final records = await client.fetch(
-      statusCategory: widget.args.statusCategory,
+      type: widget.args.type,
       level: widget.args.level,
       anntenaCategory: widget.args.anntenaCategory,
     );

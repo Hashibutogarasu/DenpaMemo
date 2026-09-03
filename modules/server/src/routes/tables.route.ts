@@ -118,6 +118,18 @@ export function tablesRoutes(dataSource: DataSource) {
 
   return new Elysia().group('/tables', (app) =>
     app
+      .get('/types', async () => {
+        const definitions = await dataSource
+          .getRepository(TableDefinitionEntity)
+          .find({ where: {}, order: { type: 'ASC' } });
+        return definitions
+          .filter((definition) => definition.type in TABLE_ENTITY_MAPPING)
+          .map((definition) => ({
+            type: definition.type,
+            columnCount: definition.columnCount,
+            translationKey: definition.translationKey,
+          }));
+      })
       .post('/', async ({ body, set }) => {
         const parsed = postTablesBodySchema.safeParse(body);
         if (!parsed.success) {
