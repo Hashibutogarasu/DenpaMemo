@@ -5,6 +5,7 @@ import { ATTRIBUTE_CATEGORY_SEED_ROWS, AttributeCategoryEntity } from '../entiti
 import { HeadShapeEntity } from '../entities/head-shape.entity';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
 import { PhysiqueStatusCategoryEntity } from '../entities/physique-status-category.entity';
+import { TableDefinitionEntity } from '../entities/table-definition.entity';
 import { TARGET_MODE_SEED_ROWS, TargetModeEntity } from '../entities/target-mode.entity';
 import { DuplicateIdGuard } from './duplicate-id-guard';
 import { loadAntennas } from './loaders/load-antennas';
@@ -16,6 +17,7 @@ import { loadMonsters } from './loaders/load-monsters';
 import { loadPhysiqueAntennaCategories } from './loaders/load-physique-antenna-categories';
 import { loadPhysiqueStatusCategories } from './loaders/load-physique-status-categories';
 import { loadSimpleList } from './loaders/load-simple-list';
+import { loadTableDefinitions } from './loaders/load-table-definitions';
 import { loadTranslations } from './loaders/load-translations';
 import { AbnormalityTypeEntity } from '../entities/abnormality-type.entity';
 import { PhysiqueEntity } from '../entities/physique.entity';
@@ -55,6 +57,7 @@ export async function runSeedIfNeeded(dataSource: DataSource, dataDir: string = 
 
   await seedPhysiqueAntennaCategoriesIfNeeded(dataSource, dataDir);
   await seedPhysiqueStatusCategoriesIfNeeded(dataSource, dataDir);
+  await seedTableDefinitionsIfNeeded(dataSource, dataDir);
 }
 
 /**
@@ -78,4 +81,13 @@ async function seedPhysiqueStatusCategoriesIfNeeded(dataSource: DataSource, data
     return;
   }
   await loadPhysiqueStatusCategories(dataSource, dataDir, new DuplicateIdGuard());
+}
+
+/** Same independent-gate reasoning as {@link seedPhysiqueAntennaCategoriesIfNeeded}. */
+async function seedTableDefinitionsIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const tableDefinitionCount = await dataSource.getRepository(TableDefinitionEntity).count();
+  if (tableDefinitionCount > 0) {
+    return;
+  }
+  await loadTableDefinitions(dataSource, dataDir, new DuplicateIdGuard());
 }

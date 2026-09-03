@@ -6,8 +6,7 @@ import { env } from './config/env';
 import { AppDataSource } from './config/data-source';
 import { runSeedIfNeeded } from './seed/run-seed';
 import { buildSchema } from './graphql/schema';
-import { physiquesRoutes } from './routes/physiques.route';
-import { evasionRateTableRoutes } from './routes/evasion-rate-table.route';
+import { tablesRoutes } from './routes/tables.route';
 
 async function main() {
   await AppDataSource.initialize();
@@ -18,8 +17,7 @@ async function main() {
 
   const app = new Elysia({ adapter: node() })
     .get('/health', () => ({ status: 'ok' }))
-    .use(physiquesRoutes(AppDataSource))
-    .use(evasionRateTableRoutes(AppDataSource))
+    .use(tablesRoutes(AppDataSource))
     .mount('/graphql', async (request: Request) => {
       const yogaResponse = await yoga.fetch(request);
       const body = await yogaResponse.arrayBuffer();

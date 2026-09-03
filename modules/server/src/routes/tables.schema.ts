@@ -1,44 +1,45 @@
 import { z } from 'zod';
 
-/** Values for one physique table row. */
-export const physiqueTableValuesSchema = z.array(z.number()).min(1);
+/** `type` is validated against the DB + entity-mapping registry at request time, not here. */
+export const tableTypeSchema = z.string().min(1);
 
-/** Body shape for a single record accepted by `POST /physiques`. */
-export const physiqueRecordInputSchema = z.object({
-  statusCategory: z.string().min(1),
+export const tableValuesSchema = z.array(z.number()).min(1);
+
+export const tableRecordInputSchema = z.object({
+  type: tableTypeSchema,
   level: z.string().min(1),
   anntenaCategory: z.string().min(1),
   lineOffset: z.number().int().nonnegative().optional(),
-  values: physiqueTableValuesSchema,
+  values: tableValuesSchema,
 });
 
-export const postPhysiquesBodySchema = z.union([
-  physiqueRecordInputSchema,
-  z.array(physiqueRecordInputSchema).min(1),
+export const postTablesBodySchema = z.union([
+  tableRecordInputSchema,
+  z.array(tableRecordInputSchema).min(1),
 ]);
 
-export const getPhysiquesQuerySchema = z.object({
-  statusCategory: z.string().min(1).optional(),
+export const getTablesQuerySchema = z.object({
+  type: tableTypeSchema,
   level: z.string().min(1).optional(),
   anntenaCategory: z.string().min(1).optional(),
   category: z.string().min(1).optional(),
 });
 
-/** Shape of a single row's update payload within `PUT /physiques`. */
-export const putPhysiquesRowSchema = z.object({
-  values: physiqueTableValuesSchema,
+/** Shape of a single row's update payload within `PUT /tables`. */
+export const putTablesRowSchema = z.object({
+  values: tableValuesSchema,
 });
 
-export const putPhysiquesBodySchema = z.object({
+export const putTablesBodySchema = z.object({
+  type: tableTypeSchema,
   lineOffset: z.number().int().nonnegative(),
-  statusCategory: z.string().min(1),
   level: z.string().min(1),
   anntenaCategory: z.string().min(1),
-  records: z.array(putPhysiquesRowSchema).min(1),
+  records: z.array(putTablesRowSchema).min(1),
 });
 
-export function putPhysiquesBodySchemaWithBounds(currentRowCount: number) {
-  return putPhysiquesBodySchema.refine(
+export function putTablesBodySchemaWithBounds(currentRowCount: number) {
+  return putTablesBodySchema.refine(
     (data) => data.lineOffset + data.records.length <= currentRowCount,
     {
       message: `lineOffset and record count exceed the table's current row count (${currentRowCount})`,
@@ -56,9 +57,9 @@ export const lineOffsetsQuerySchema = z
     message: 'lineOffsets must be a comma-separated list of non-negative integers',
   });
 
-export const deletePhysiquesQuerySchema = z
+export const deleteTablesQuerySchema = z
   .object({
-    statusCategory: z.string().min(1).optional(),
+    type: tableTypeSchema,
     level: z.string().min(1).optional(),
     anntenaCategory: z.string().min(1).optional(),
     lineOffsets: lineOffsetsQuerySchema.optional(),
@@ -68,10 +69,18 @@ export const deletePhysiquesQuerySchema = z
   })
   .refine(
     (query) =>
-      query.lineOffsets === undefined ||
-      (query.statusCategory !== undefined && query.level !== undefined && query.anntenaCategory !== undefined),
+      query.lineOffsets === undefined || (query.level !== undefined && query.anntenaCategory !== undefined),
     {
-      message: 'lineOffsets requires statusCategory, level, and anntenaCategory',
+      message: 'lineOffsets requires level and anntenaCategory',
       path: ['lineOffsets'],
     },
   );
+
+export const searchTablesQuerySchema = z.object({
+  type: tableTypeSchema.optional().default('evasionRate'),
+  against: tableTypeSchema.optional().default('hp'),
+  evasionRate: z.coerce.number().int(),
+  hp: z.coerce.number().int(),
+  anntenaCategory: z.string().min(1).optional(),
+  category: z.string().min(1).optional(),
+});
