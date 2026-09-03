@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -100,6 +101,7 @@ class SelectionFloatingMenu extends ConsumerWidget {
     final allSelected =
         records.isNotEmpty &&
         records.every((record) => selectedIds.contains(record.id));
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     return GenericSelectionFloatingMenu(
       visible: visible,
@@ -116,23 +118,23 @@ class SelectionFloatingMenu extends ConsumerWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.edit),
-          color: AppColors.accent,
-          disabledColor: AppColors.accent.withValues(alpha: 0.3),
+          color: theme.accentColor,
+          disabledColor: theme.accentColor.withValues(alpha: 0.3),
           tooltip: t.common.edit,
           onPressed: selectedIds.length == 1 ? () => _edit(context, ref) : null,
         ),
         IconButton(
-          icon: const Icon(Icons.copy, color: AppColors.accent),
+          icon: Icon(Icons.copy, color: theme.accentColor),
           tooltip: t.home.copySelected,
           onPressed: () => _copy(ref),
         ),
         IconButton(
-          icon: const Icon(Icons.content_cut, color: AppColors.accent),
+          icon: Icon(Icons.content_cut, color: theme.accentColor),
           tooltip: t.home.cutSelected,
           onPressed: () => _cut(ref),
         ),
         IconButton(
-          icon: const Icon(Icons.delete, color: AppColors.accent),
+          icon: Icon(Icons.delete, color: theme.accentColor),
           tooltip: t.common.delete,
           onPressed: () => _delete(context, ref),
         ),

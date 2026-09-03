@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_container_theme.dart';
 
 class BirthGuideProgressBar extends StatelessWidget {
   const BirthGuideProgressBar({
@@ -16,6 +16,7 @@ class BirthGuideProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
     final fraction = total <= 0 ? 0.0 : (current / total).clamp(0.0, 1.0);
     return ClipRRect(
       borderRadius: BorderRadius.circular(height / 2),
@@ -23,12 +24,12 @@ class BirthGuideProgressBar extends StatelessWidget {
         height: height,
         child: Stack(
           children: [
-            const ColoredBox(color: AppColors.nestedBorder),
+            ColoredBox(color: theme.nestedBorderColor),
             Align(
               alignment: Alignment.centerLeft,
               child: FractionallySizedBox(
                 widthFactor: fraction,
-                child: const ColoredBox(color: AppColors.accent),
+                child: ColoredBox(color: theme.accentColor),
               ),
             ),
           ],

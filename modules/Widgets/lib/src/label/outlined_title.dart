@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_label_theme.dart';
 
 /// Renders [text] twice — once stroked in [outlineColor] behind a solid
 /// [fillColor] pass — so the title reads as an outlined header title.
@@ -9,19 +9,20 @@ class OutlinedTitleText extends StatelessWidget {
     super.key,
     required this.text,
     this.fillColor = Colors.white,
-    this.outlineColor = AppColors.headerTitleOutline,
+    this.outlineColor,
     this.fontSize = 26,
     this.outlineWidth = 3,
   });
 
   final String text;
   final Color fillColor;
-  final Color outlineColor;
+  final Color? outlineColor;
   final double fontSize;
   final double outlineWidth;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenLabelThemeData>()!;
     final baseStyle = TextStyle(
       fontSize: fontSize,
       fontWeight: FontWeight.bold,
@@ -37,7 +38,7 @@ class OutlinedTitleText extends StatelessWidget {
             foreground: Paint()
               ..style = PaintingStyle.stroke
               ..strokeWidth = outlineWidth
-              ..color = outlineColor,
+              ..color = outlineColor ?? theme.headerTitleOutlineColor,
           ),
         ),
         Text(

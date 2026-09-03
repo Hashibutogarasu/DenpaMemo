@@ -51,6 +51,7 @@ class _HomeState extends ConsumerState<Home> {
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
     final isMobile = ref.watch(appShellStateProvider).isMobile;
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     listenForMasterDataErrors(ref, context);
 
@@ -76,9 +77,9 @@ class _HomeState extends ConsumerState<Home> {
                         ? null
                         : [
                             PopupMenuButton<void>(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.more_vert,
-                                color: AppColors.accent,
+                                color: theme.accentColor,
                               ),
                               itemBuilder: (context) => [
                                 PopupMenuItem(

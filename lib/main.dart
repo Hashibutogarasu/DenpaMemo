@@ -185,6 +185,15 @@ final _themeExtensions = <ThemeExtension<dynamic>>[
     accordionAnimationDuration: Duration(milliseconds: 200),
     resistanceGap: 5,
   ),
+  const denpamemo_widgets.DenpaMenLabelThemeData(
+    headerTitleOutlineColor: Color(0xFF238BCB),
+    pillBackgroundColor: Color(0xFF7FC9FF),
+    pillTextColor: Color(0xFF2B2031),
+    expBarFilledColor: Color(0xFFFFEB3B),
+    expBarUnfilledColor: Color(0xFF056193),
+    maxedValueColor: Color(0xFF7BEA95),
+    inactiveBonusColor: Color(0xFFE53935),
+  ),
 ];
 
 /// [MaterialScrollBehavior] additionally treats the mouse as a drag

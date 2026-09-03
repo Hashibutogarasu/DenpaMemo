@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'i18n/gen/strings.g.dart';
 import 'src/navigation/app_back_button.dart';
 import 'src/theme/denpa_men_container_theme.dart';
+import 'src/theme/denpa_men_label_theme.dart';
 import 'src/theme/fab_button_theme.dart';
 import 'src/theme/slanted_header_theme.dart';
 
@@ -62,6 +63,15 @@ final ThemeData testAppTheme = ThemeData(
       accordionCheckboxSlotSize: 40,
       accordionAnimationDuration: Duration(milliseconds: 200),
       resistanceGap: 5,
+    ),
+    DenpaMenLabelThemeData(
+      headerTitleOutlineColor: Color(0xFF238BCB),
+      pillBackgroundColor: Color(0xFF7FC9FF),
+      pillTextColor: Color(0xFF2B2031),
+      expBarFilledColor: Color(0xFFFFEB3B),
+      expBarUnfilledColor: Color(0xFF056193),
+      maxedValueColor: Color(0xFF7BEA95),
+      inactiveBonusColor: Color(0xFFE53935),
     ),
   ],
 );

@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_container_theme.dart';
 
 class StatusLabel extends StatelessWidget {
   const StatusLabel({super.key, required this.child, this.height = 30});
@@ -12,14 +12,15 @@ class StatusLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
     return ClipPath(
       clipper: _StatusLabelClipper(),
       child: Container(
         height: height,
-        color: AppColors.statusBackground,
+        color: theme.statusBackgroundColor,
         padding: const EdgeInsets.only(left: 14, right: 20),
         child: DefaultTextStyle.merge(
-          style: const TextStyle(color: AppColors.accent),
+          style: TextStyle(color: theme.accentColor),
           child: child,
         ),
       ),

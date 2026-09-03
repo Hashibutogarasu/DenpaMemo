@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
 import '../field/inline_number_field.dart';
+import '../theme/denpa_men_label_theme.dart';
 import 'gauge_value.dart';
 import 'status.dart';
 
 /// Editable "label current/max" display: both [GaugeValue.current] and
-/// [GaugeValue.max] are inline-editable numbers. The current value switches
-/// to [AppColors.maxedValue] once [GaugeValue.isMaxed].
+/// [GaugeValue.max] are inline-editable numbers.
 class InlineGaugeLabel extends StatelessWidget {
   const InlineGaugeLabel({
     super.key,
@@ -24,6 +23,7 @@ class InlineGaugeLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenLabelThemeData>()!;
     return StatusLabel(
       child: Flex(
         direction: Axis.horizontal,
@@ -37,7 +37,7 @@ class InlineGaugeLabel extends StatelessWidget {
             child: InlineNumberField(
               value: value.current,
               style: TextStyle(
-                color: value.isMaxed ? AppColors.maxedValue : null,
+                color: value.isMaxed ? theme.maxedValueColor : null,
               ),
               onChanged: onCurrentChanged,
             ),
