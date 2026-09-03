@@ -15,6 +15,7 @@ import { MonsterEntity } from '../entities/monster.entity';
 import { PatternEntity } from '../entities/pattern.entity';
 import { PersonalityEntity } from '../entities/personality.entity';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
+import { PhysiqueEvasionRateTableEntity } from '../entities/physique-evasion-rate-table.entity';
 import { PhysiqueStatusCategoryEntity } from '../entities/physique-status-category.entity';
 import { PhysiqueTableEntity } from '../entities/physique-table.entity';
 import { PhysiqueEntity } from '../entities/physique.entity';
@@ -42,6 +43,7 @@ export const AppDataSource = new DataSource({
     PersonalityEntity,
     PhysiqueAntennaCategoryEntity,
     PhysiqueEntity,
+    PhysiqueEvasionRateTableEntity,
     PhysiqueStatusCategoryEntity,
     PhysiqueTableEntity,
     TargetModeEntity,
