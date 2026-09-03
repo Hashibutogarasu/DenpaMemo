@@ -2,7 +2,15 @@ import { Elysia } from 'elysia';
 import type { DataSource } from 'typeorm';
 import type { z } from 'zod';
 import { findEvasionRateMatches } from '../domain/physique/evasion-rate-search';
-import { TABLE_ENTITY_MAPPING, type TableEntityMapping } from '../domain/physique/table-registry';
+import { TABLE_ENTITY_MAPPING } from '../domain/physique/table-registry';
+import {
+  deleteTableRows,
+  resolveTableType,
+  serializeRow,
+  whereFor,
+  type ResolvedTableType,
+  type TableRow,
+} from '../domain/tables/table-operations';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
 import { TableDefinitionEntity } from '../entities/table-definition.entity';
 import {
@@ -37,84 +45,21 @@ function columnCountMismatchResponse(type: string, expected: number, actual: num
   };
 }
 
-interface ResolvedTableType extends TableEntityMapping {
-  columnCount: number;
-}
-
-/**
- * Resolves a `type` into everything needed to operate on it: row width
- * from the DB-driven `TableDefinitionEntity` (seeded from
- * `data/table_definitions.json`), and the entity/discriminator from the
- * code-level `TABLE_ENTITY_MAPPING`. `undefined` if either half is
- * missing — i.e. an unregistered type.
- */
-async function resolveTableType(dataSource: DataSource, type: string): Promise<ResolvedTableType | undefined> {
-  const definition = await dataSource.getRepository(TableDefinitionEntity).findOne({ where: { type } });
-  const mapping = TABLE_ENTITY_MAPPING[type];
-  if (!definition || !mapping) {
-    return undefined;
-  }
-  return { columnCount: definition.columnCount, ...mapping };
-}
-
-function whereFor(resolved: TableEntityMapping, filters: { level?: string; anntenaCategory?: string }) {
-  const where: Record<string, unknown> = {};
-  if (resolved.discriminator) {
-    where[resolved.discriminator.column] = resolved.discriminator.value;
-  }
-  if (filters.level !== undefined) where.level = filters.level;
-  if (filters.anntenaCategory !== undefined) where.anntenaCategory = filters.anntenaCategory;
-  return where;
-}
-
-/**
- * Deletes the rows at `lineOffsets` within one type's `level`/
- * `anntenaCategory` group, then re-sequences the remaining rows'
- * `lineOffset`s back to a contiguous `0..n-1` range so `PUT /tables`
- * (which indexes into the table by array position) stays gap-free after
- * a delete. Generalized from the physique-table-only version this
- * replaces: parameterized by the resolved type instead of hardcoding
- * `PhysiqueTableEntity`/`statusCategory`.
- */
-async function deleteTableRows(
-  dataSource: DataSource,
-  resolved: ResolvedTableType,
-  level: string,
-  anntenaCategory: string,
-  lineOffsets: number[],
-): Promise<void> {
-  const offsetsToDelete = new Set(lineOffsets);
-  await dataSource.transaction(async (manager) => {
-    const txRepo = manager.getRepository(resolved.entity);
-    const rows = await txRepo.find({
-      where: whereFor(resolved, { level, anntenaCategory }),
-      order: { lineOffset: 'ASC' },
-    });
-
-    const toDelete = rows.filter((row) => offsetsToDelete.has(row.lineOffset));
-    if (toDelete.length > 0) {
-      await txRepo.remove(toDelete);
-    }
-
-    const remaining = rows.filter((row) => !offsetsToDelete.has(row.lineOffset));
-    for (let i = 0; i < remaining.length; i += 1) {
-      if (remaining[i].lineOffset !== i) {
-        remaining[i].lineOffset = i;
-        await txRepo.save(remaining[i]);
-      }
-    }
-  });
-}
-
 /**
  * Generic REST CRUD + cross-table search for every registered "table
- * type" (see `src/domain/physique/table-registry.ts` and
- * `TableDefinitionEntity`), replacing what used to be one route module
- * per physical table. Adding a new table type never needs a new route —
- * only a new registry entry and `table_definitions.json` row.
+ * type" in the physique domain's registry (`TABLE_ENTITY_MAPPING`) and
+ * `TableDefinitionEntity`, replacing what used to be one route module per
+ * physical table. The actual table mechanics (resolving a type, building
+ * queries, serializing rows, delete+resequence) live in
+ * `src/domain/tables/table-operations.ts`, domain-agnostic — a future
+ * non-physique table registry would reuse those, not this route file.
+ * Adding a new physique table type never needs a new route — only a new
+ * registry entry and `table_definitions.json` row.
  */
 export function tablesRoutes(dataSource: DataSource) {
   const categoryRepo = dataSource.getRepository(PhysiqueAntennaCategoryEntity);
+
+  const resolve = (type: string) => resolveTableType(dataSource, type, TABLE_ENTITY_MAPPING);
 
   return new Elysia().group('/tables', (app) =>
     app
@@ -141,7 +86,7 @@ export function tablesRoutes(dataSource: DataSource) {
         const resolvedByType = new Map<string, ResolvedTableType>();
         for (const record of records) {
           if (!resolvedByType.has(record.type)) {
-            const resolved = await resolveTableType(dataSource, record.type);
+            const resolved = await resolve(record.type);
             if (!resolved) {
               set.status = 400;
               return unknownTypeResponse(record.type);
@@ -174,7 +119,8 @@ export function tablesRoutes(dataSource: DataSource) {
             values: record.values,
             ...(resolved.discriminator ? { [resolved.discriminator.column]: resolved.discriminator.value } : {}),
           });
-          saved.push(await repo.save(entity));
+          const row = (await repo.save(entity)) as unknown as TableRow;
+          saved.push(serializeRow(record.type, row));
         }
 
         set.status = 201;
@@ -188,7 +134,7 @@ export function tablesRoutes(dataSource: DataSource) {
         }
         const { type, level, anntenaCategory, category } = parsed.data;
 
-        const resolved = await resolveTableType(dataSource, type);
+        const resolved = await resolve(type);
         if (!resolved) {
           set.status = 400;
           return unknownTypeResponse(type);
@@ -201,6 +147,7 @@ export function tablesRoutes(dataSource: DataSource) {
           anntenaCategoryFilter = rows.map((row) => row.anntenaCategory);
         }
 
+        let rows: TableRow[];
         if (anntenaCategoryFilter !== undefined) {
           if (anntenaCategoryFilter.length === 0) {
             return [];
@@ -220,13 +167,15 @@ export function tablesRoutes(dataSource: DataSource) {
           if (anntenaCategory !== undefined) {
             qb.andWhere('row.anntenaCategory = :anntenaCategory', { anntenaCategory });
           }
-          return qb.getMany();
+          rows = (await qb.getMany()) as unknown as TableRow[];
+        } else {
+          rows = (await repo.find({
+            where: whereFor(resolved, { level, anntenaCategory }),
+            order: { lineOffset: 'ASC' },
+          })) as unknown as TableRow[];
         }
 
-        return repo.find({
-          where: whereFor(resolved, { level, anntenaCategory }),
-          order: { lineOffset: 'ASC' },
-        });
+        return rows.map((row) => serializeRow(type, row));
       })
       .put('/', async ({ body, set }) => {
         const shapeParsed = putTablesBodySchema.safeParse(body);
@@ -236,7 +185,7 @@ export function tablesRoutes(dataSource: DataSource) {
         }
         const { type, lineOffset, level, anntenaCategory, records } = shapeParsed.data;
 
-        const resolved = await resolveTableType(dataSource, type);
+        const resolved = await resolve(type);
         if (!resolved) {
           set.status = 400;
           return unknownTypeResponse(type);
@@ -256,16 +205,17 @@ export function tablesRoutes(dataSource: DataSource) {
           return zodErrorResponse(boundedParsed.error);
         }
 
-        const targetRows = await repo.find({
+        const targetRows = (await repo.find({
           where: whereFor(resolved, { level, anntenaCategory }),
           order: { lineOffset: 'ASC' },
-        });
+        })) as unknown as TableRow[];
 
-        const updated: unknown[] = [];
+        const updated: ReturnType<typeof serializeRow>[] = [];
         for (let i = 0; i < records.length; i += 1) {
           const target = targetRows[lineOffset + i];
           target.values = records[i].values;
-          updated.push(await repo.save(target));
+          const saved = (await repo.save(target as never)) as unknown as TableRow;
+          updated.push(serializeRow(type, saved));
         }
 
         return updated;
@@ -278,7 +228,7 @@ export function tablesRoutes(dataSource: DataSource) {
         }
         const { type, level, anntenaCategory, lineOffsets } = parsed.data;
 
-        const resolved = await resolveTableType(dataSource, type);
+        const resolved = await resolve(type);
         if (!resolved) {
           set.status = 400;
           return unknownTypeResponse(type);
@@ -305,12 +255,12 @@ export function tablesRoutes(dataSource: DataSource) {
         }
         const { type, against, evasionRate, hp, anntenaCategory, category } = parsed.data;
 
-        const primary = await resolveTableType(dataSource, type);
+        const primary = await resolve(type);
         if (!primary) {
           set.status = 400;
           return unknownTypeResponse(type);
         }
-        const target = await resolveTableType(dataSource, against);
+        const target = await resolve(against);
         if (!target) {
           set.status = 400;
           return unknownTypeResponse(against);
@@ -325,8 +275,7 @@ export function tablesRoutes(dataSource: DataSource) {
           }
         }
 
-        const filters =
-          anntenaCategory !== undefined ? { anntenaCategory } : {};
+        const filters = anntenaCategory !== undefined ? { anntenaCategory } : {};
 
         const primaryRepo = dataSource.getRepository(primary.entity);
         const targetRepo = dataSource.getRepository(target.entity);
