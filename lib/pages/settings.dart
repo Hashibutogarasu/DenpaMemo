@@ -1,6 +1,7 @@
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension, Translations;
-import 'package:flutter/foundation.dart' show kProfileMode, kReleaseMode;
+import 'package:flutter/foundation.dart'
+    show kDebugMode, kProfileMode, kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -84,6 +85,24 @@ class Settings extends ConsumerWidget {
                 ),
               ],
             ),
+            if (kDebugMode)
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTileSection(title: Text(t.settings.section.developer)),
+                    ListItemContainer(
+                      children: [
+                        ListItemTile(
+                          icon: Icons.table_chart_outlined,
+                          label: t.settings.editPhysiqueTable,
+                          onTap: () => const PhysiqueTableListRoute().push(context),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ListTileSection(title: Text(t.settings.section.other)),
             ListItemContainer(
               children: [

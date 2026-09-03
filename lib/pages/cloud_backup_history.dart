@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_date_formatter/flutter_date_formatter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,8 +50,13 @@ class CloudBackupHistoryPage extends ConsumerWidget {
     final selectionMode = ref.watch(cloudFileSelectionModeProvider);
     final selectedIds = ref.watch(selectedCloudFileIdsProvider);
     final allSelected =
-        files.isNotEmpty && files.every((file) => selectedIds.contains(file.fileId));
-    final groups = groupBy(files, (CloudFile file) => file.uploadedAt.startOfDay);
+        files.isNotEmpty &&
+        files.every((file) => selectedIds.contains(file.fileId));
+    final groups = groupBy(
+      files,
+      (CloudFile file) => file.uploadedAt.startOfDay,
+    );
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackupHistory),
@@ -64,31 +70,46 @@ class CloudBackupHistoryPage extends ConsumerWidget {
                     children: [
                       for (final entry in groups.entries) ...[
                         ListTileSection(
-                          title: FormattedDateText(dateTime: entry.key, pattern: 'yyyy/MM/dd'),
+                          title: FormattedDateText(
+                            dateTime: entry.key,
+                            pattern: 'yyyy/MM/dd',
+                          ),
                         ),
                         ListItemContainer(
                           children: [
                             for (final file in entry.value)
                               DisableWhileRunning(
                                 provider: cloudBackupBusyProvider,
-                                onPressed: () => runCloudRestore(context, ref, target: file),
+                                onPressed: () =>
+                                    runCloudRestore(context, ref, target: file),
                                 builder: (context, onRestore) => ListItemTile(
                                   icon: Icons.description_outlined,
                                   label: file.filename,
-                                  trailing: FormattedDateText(dateTime: file.uploadedAt, pattern: 'HH:mm'),
+                                  trailing: FormattedDateText(
+                                    dateTime: file.uploadedAt,
+                                    pattern: 'HH:mm',
+                                  ),
                                   selectionMode: selectionMode,
                                   selected: selectedIds.contains(file.fileId),
-                                  onSelectedChanged: (_) => toggleCloudFileSelected(ref, file.fileId),
+                                  onSelectedChanged: (_) =>
+                                      toggleCloudFileSelected(ref, file.fileId),
                                   onLongPress: () {
-                                    ref.read(cloudFileSelectionModeProvider.notifier).state = true;
+                                    ref
+                                            .read(
+                                              cloudFileSelectionModeProvider
+                                                  .notifier,
+                                            )
+                                            .state =
+                                        true;
                                     toggleCloudFileSelected(ref, file.fileId);
                                   },
-                                  actionMenuItemsBuilder: (context) => cloudFileActionMenuItems(
-                                    context,
-                                    ref,
-                                    cloudFile: file,
-                                    onRestore: onRestore,
-                                  ),
+                                  actionMenuItemsBuilder: (context) =>
+                                      cloudFileActionMenuItems(
+                                        context,
+                                        ref,
+                                        cloudFile: file,
+                                        onRestore: onRestore,
+                                      ),
                                 ),
                               ),
                           ],
@@ -104,19 +125,22 @@ class CloudBackupHistoryPage extends ConsumerWidget {
                 visible: selectionMode,
                 allSelected: allSelected,
                 onToggleSelectAll: () =>
-                    ref.read(selectedCloudFileIdsProvider.notifier).state = allSelected
+                    ref
+                        .read(selectedCloudFileIdsProvider.notifier)
+                        .state = allSelected
                     ? {}
                     : {for (final file in files) file.fileId},
                 selectAllTooltip: t.home.selectAll,
                 deselectAllTooltip: t.home.deselectAll,
                 onCancel: () {
                   ref.read(selectedCloudFileIdsProvider.notifier).state = {};
-                  ref.read(cloudFileSelectionModeProvider.notifier).state = false;
+                  ref.read(cloudFileSelectionModeProvider.notifier).state =
+                      false;
                 },
                 cancelTooltip: t.common.cancel,
                 actions: [
                   IconButton(
-                    icon: const Icon(Icons.delete, color: AppColors.accent),
+                    icon: Icon(Icons.delete, color: theme.accentColor),
                     tooltip: t.common.delete,
                     onPressed: () => _deleteSelected(context, ref),
                   ),

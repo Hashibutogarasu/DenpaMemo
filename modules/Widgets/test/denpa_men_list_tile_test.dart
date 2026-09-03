@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import 'package:denpamemo_widgets/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -56,19 +57,17 @@ void main() {
     actionMenuItemsBuilder,
   }) async {
     await tester.pumpWidget(
-      TranslationProvider(
-        child: MaterialApp(
-          home: Scaffold(
-            body: DenpaMenListTile(
-              denpaMen: denpaMen,
-              selectionMode: selectionMode,
-              selected: selected,
-              onSelectedChanged: onSelectedChanged,
-              onTap: onTap,
-              enableLongPressPreview: enableLongPressPreview,
-              onLongPress: onLongPress,
-              actionMenuItemsBuilder: actionMenuItemsBuilder,
-            ),
+      TestApp(
+        home: Scaffold(
+          body: DenpaMenListTile(
+            denpaMen: denpaMen,
+            selectionMode: selectionMode,
+            selected: selected,
+            onSelectedChanged: onSelectedChanged,
+            onTap: onTap,
+            enableLongPressPreview: enableLongPressPreview,
+            onLongPress: onLongPress,
+            actionMenuItemsBuilder: actionMenuItemsBuilder,
           ),
         ),
       ),

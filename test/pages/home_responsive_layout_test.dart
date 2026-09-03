@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:denpa_memo/pages/home.dart';
 import 'package:denpa_memo/providers/denpa_men_providers.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:graphql_client/graphql_client.dart';
 import '../support/all_translation_providers.dart';
 
@@ -50,7 +52,10 @@ void main() {
           ),
         ],
         child: AllTranslationProviders(
-          child: MaterialApp.router(routerConfig: router),
+          child: MaterialApp.router(
+            theme: AppLightTheme.theme,
+            routerConfig: router,
+          ),
         ),
       ),
     );

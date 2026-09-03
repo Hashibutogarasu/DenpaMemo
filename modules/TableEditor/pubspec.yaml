@@ -1,0 +1,20 @@
+name: table_editor
+description: Editable numeric data table built on flutter_table_plus, with Tab-key navigation between cells.
+version: 0.1.0
+publish_to: 'none'
+resolution: workspace
+
+environment:
+  sdk: ^3.10.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_table_plus: ^2.16.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:

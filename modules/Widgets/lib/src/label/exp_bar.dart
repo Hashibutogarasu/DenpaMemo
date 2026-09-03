@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_label_theme.dart';
 
 /// Level-up progress bar with a square right edge and a slanted left edge
 /// whose bottom corner juts out further left than its top corner. Fills
-/// with [AppColors.expBarFilled] from the right as [value] increases,
-/// against an [AppColors.expBarUnfilled] backdrop.
+/// from the right as [value] increases.
 class ExpBar extends StatelessWidget {
   const ExpBar({super.key, required this.value, this.minHeight = 12});
 
@@ -14,6 +13,7 @@ class ExpBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenLabelThemeData>()!;
     return SizedBox(
       height: minHeight,
       child: Stack(
@@ -22,15 +22,15 @@ class ExpBar extends StatelessWidget {
             clipper: _LeftSlantedClipper(),
             child: Stack(
               children: [
-                const SizedBox.expand(
-                  child: ColoredBox(color: AppColors.expBarUnfilled),
+                SizedBox.expand(
+                  child: ColoredBox(color: theme.expBarUnfilledColor),
                 ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: FractionallySizedBox(
                     widthFactor: value.clamp(0, 1),
                     heightFactor: 1,
-                    child: const ColoredBox(color: AppColors.expBarFilled),
+                    child: ColoredBox(color: theme.expBarFilledColor),
                   ),
                 ),
               ],

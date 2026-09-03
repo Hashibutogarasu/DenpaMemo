@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/slanted_header_theme.dart';
 
 /// App-wide header whose bottom edge slants at [angleDegrees]: higher on
 /// the left, lower on the right. The top edge stays flush with the top of
@@ -14,28 +14,28 @@ import '../theme/app_colors.dart';
 /// deriving it from width would make the offset (and therefore the bar's
 /// required height) scale with window width, which blows up well past a
 /// usable header height on a wide desktop window.
+///
+/// Fill/border colors and content padding come from [SlantedHeaderThemeData].
+/// [angleDegrees] is required rather than theme-resolved because
+/// [preferredSize] is read by [Scaffold] before [build] runs, with no
+/// [BuildContext] available — [AppScaffold] resolves it and passes it down.
 class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SlantedAppBar({
     super.key,
     this.title,
     this.actions,
+    required this.angleDegrees,
     this.height = 56,
-    this.borderWidth = 6,
-    this.angleDegrees = 10,
+    this.borderWidth,
     this.topSafeAreaInset = 0,
   });
 
   final Widget? title;
   final List<Widget>? actions;
   final double height;
-  final double borderWidth;
+  final double? borderWidth;
   final double angleDegrees;
 
-  /// Extra height reserved above [height] for the device's top safe area
-  /// (status bar/notch), so [SafeArea] below has room to inset the content
-  /// without shrinking the space actually available to [title]/[actions].
-  /// Callers read this from `MediaQuery.paddingOf(context)` — [SlantedAppBar]
-  /// itself can't, since [Scaffold] reads [preferredSize] before [build] runs.
   final double topSafeAreaInset;
 
   double get _contentHeight => height + topSafeAreaInset;
@@ -47,21 +47,23 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<SlantedHeaderThemeData>()!;
+    final slant = _slant;
     return SizedBox(
-      height: preferredSize.height,
+      height: _contentHeight + slant,
       child: CustomPaint(
         painter: _SlantedHeaderPainter(
-          slant: _slant,
-          fillColor: AppColors.headerBackground,
-          borderColor: AppColors.headerBorder,
-          borderWidth: borderWidth,
+          slant: slant,
+          fillColor: theme.fillColor,
+          borderColor: theme.borderColor,
+          borderWidth: borderWidth ?? theme.borderWidth,
         ),
         child: title == null && actions == null
             ? null
             : SafeArea(
                 bottom: false,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 8, right: 8),
+                  padding: theme.contentPadding,
                   child: Row(
                     children: [
                       if (title != null) Expanded(child: title!),

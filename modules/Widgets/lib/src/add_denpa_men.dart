@@ -8,19 +8,13 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'denpa_men_status.dart';
 import 'editable_denpa_men_status.dart';
-import 'theme/app_colors.dart';
+import 'theme/denpa_men_container_theme.dart';
 
 /// Bundles the read-only preview ([DenpaMenStatus]) and the editable pane
-/// ([EditableDenpaMenStatus]) used to add or edit a [DenpaMen]. See
-/// [EditableDenpaMenStatus] for [icon]/[parentCandidates]/[onPickParents]/
-/// [onPickMonsterExp]; [iconFile] backs the read-only preview's icon.
-///
-/// On a wide viewport the two panes sit side by side; on a narrow one they
-/// become swipeable pages with a dot indicator, also reachable by mouse
-/// wheel, with the editable pane shown first. [denpaMen] is fully
-/// controlled by the caller: every edit is
-/// reported through [onChanged] with a new draft, which the caller should
-/// re-derive (e.g. via `createDenpaMen`) and feed back in.
+/// ([EditableDenpaMenStatus]) used to add or edit a [DenpaMen]. On a wide
+/// viewport the two panes sit side by side; on a narrow one they become
+/// swipeable pages. [denpaMen] is controlled by the caller: [onChanged]
+/// reports each edit as a new draft to re-derive and feed back in.
 class AddDenpaMen extends StatefulWidget {
   const AddDenpaMen({
     super.key,
@@ -97,6 +91,9 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
 
   @override
   Widget build(BuildContext context) {
+    final containerTheme = Theme.of(
+      context,
+    ).extension<DenpaMenContainerThemeData>()!;
     final preview = DenpaMenStatus.fromDenpaMen(
       widget.denpaMen,
       totalAttributeCount: widget.masterData.attributes.length,
@@ -164,8 +161,8 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
                 controller: _pageController,
                 count: 2,
                 effect: WormEffect(
-                  dotColor: AppColors.nestedBorder,
-                  activeDotColor: AppColors.accent,
+                  dotColor: containerTheme.nestedBorderColor,
+                  activeDotColor: containerTheme.accentColor,
                 ),
               ),
             ),

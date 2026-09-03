@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:denpa_memo/widgets/add_denpa_men_fab.dart';
 
 final _masterData = MasterData(
@@ -25,6 +26,7 @@ void main() {
       await tester.pumpWidget(
         TranslationProvider(
           child: MaterialApp(
+            theme: AppLightTheme.theme,
             home: Scaffold(
               floatingActionButton: AddDenpaMenFab(masterData: _masterData),
             ),
@@ -46,6 +48,7 @@ void main() {
       await tester.pumpWidget(
         TranslationProvider(
           child: MaterialApp(
+            theme: AppLightTheme.theme,
             home: Scaffold(
               floatingActionButton: AddDenpaMenFab(masterData: _masterData),
             ),
@@ -69,6 +72,7 @@ void main() {
     await tester.pumpWidget(
       TranslationProvider(
         child: MaterialApp(
+          theme: AppLightTheme.theme,
           home: Scaffold(
             floatingActionButton: AddDenpaMenFab(
               masterData: _masterData,
@@ -97,6 +101,7 @@ void main() {
     await tester.pumpWidget(
       TranslationProvider(
         child: MaterialApp(
+          theme: AppLightTheme.theme,
           home: Scaffold(
             floatingActionButton: AddDenpaMenFab(
               masterData: _masterData,

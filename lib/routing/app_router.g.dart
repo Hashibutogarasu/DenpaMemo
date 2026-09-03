@@ -22,6 +22,9 @@ List<RouteBase> get $appRoutes => [
   $languageSettingsRoute,
   $openSourceLicensesRoute,
   $dataManagementRoute,
+  $physiqueTableListRoute,
+  $physiqueTableViewRoute,
+  $physiqueTableEditRoute,
   $cloudBackupShellRouteData,
 ];
 
@@ -543,6 +546,97 @@ mixin $DataManagementRoute on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $physiqueTableListRoute => GoRouteData.$route(
+  path: '/settings/developer/physiques',
+  hasOverriddenOnExit: false,
+  factory: $PhysiqueTableListRoute._fromState,
+);
+
+mixin $PhysiqueTableListRoute on GoRouteData {
+  static PhysiqueTableListRoute _fromState(GoRouterState state) =>
+      const PhysiqueTableListRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/developer/physiques');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $physiqueTableViewRoute => GoRouteData.$route(
+  path: '/settings/developer/physiques/view',
+  hasOverriddenOnExit: false,
+  factory: $PhysiqueTableViewRoute._fromState,
+);
+
+mixin $PhysiqueTableViewRoute on GoRouteData {
+  static PhysiqueTableViewRoute _fromState(GoRouterState state) =>
+      PhysiqueTableViewRoute($extra: state.extra as PhysiqueTableArgs);
+
+  PhysiqueTableViewRoute get _self => this as PhysiqueTableViewRoute;
+
+  @override
+  String get location =>
+      GoRouteData.$location('/settings/developer/physiques/view');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $physiqueTableEditRoute => GoRouteData.$route(
+  path: '/settings/developer/physiques/edit',
+  hasOverriddenOnExit: false,
+  factory: $PhysiqueTableEditRoute._fromState,
+);
+
+mixin $PhysiqueTableEditRoute on GoRouteData {
+  static PhysiqueTableEditRoute _fromState(GoRouterState state) =>
+      PhysiqueTableEditRoute($extra: state.extra as PhysiqueTableArgs);
+
+  PhysiqueTableEditRoute get _self => this as PhysiqueTableEditRoute;
+
+  @override
+  String get location =>
+      GoRouteData.$location('/settings/developer/physiques/edit');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
 }
 
 RouteBase get $cloudBackupShellRouteData => ShellRouteData.$route(

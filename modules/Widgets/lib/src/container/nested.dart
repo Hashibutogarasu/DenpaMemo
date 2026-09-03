@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_container_theme.dart';
 
 class NestedContainer extends StatelessWidget {
   const NestedContainer({super.key, required this.child, this.padding});
@@ -10,12 +10,16 @@ class NestedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
     return Container(
       padding: padding ?? const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.nestedBackground,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.nestedBorder, width: 2),
+        color: theme.nestedBackgroundColor,
+        borderRadius: BorderRadius.circular(theme.nestedBorderRadius),
+        border: Border.all(
+          color: theme.nestedBorderColor,
+          width: theme.nestedBorderWidth,
+        ),
       ),
       child: child,
     );

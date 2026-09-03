@@ -18,6 +18,7 @@ import 'providers/app_settings_providers.dart';
 import 'providers/denpa_men_sync_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
+import 'theme/app_theme.dart';
 import 'theme/app_theme_mode_mapping.dart';
 import 'widgets/restart_widget.dart';
 
@@ -34,7 +35,9 @@ void main() async {
     overrides: [
       objectBoxProvider.overrideWithValue(objectBox),
       dataCacheProvider.overrideWithValue(cacheIndexRepository),
-      googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+      googleOAuthClientConfigProvider.overrideWithValue(
+        googleOAuthClientConfig,
+      ),
     ],
   );
   await container.read(firebaseSignInProvider.future);
@@ -43,7 +46,9 @@ void main() async {
       objectBox: objectBox,
       cacheIndexRepository: cacheIndexRepository,
       overrides: [
-        googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+        googleOAuthClientConfigProvider.overrideWithValue(
+          googleOAuthClientConfig,
+        ),
       ],
     ),
   );
@@ -53,8 +58,12 @@ void main() async {
 /// [RestFirebaseSignInBackend]'s Google sign-in loopback flow — bundled as
 /// an asset rather than checked into source (see `.gitignore`).
 Future<GoogleOAuthClientConfig> _loadGoogleOAuthClientConfig() async {
-  final raw = await rootBundle.loadString('assets/config/auth/google/google_client_secrets.json');
-  return GoogleOAuthClientConfig.fromInstalledAppJson(jsonDecode(raw) as Map<String, dynamic>);
+  final raw = await rootBundle.loadString(
+    'assets/config/auth/google/google_client_secrets.json',
+  );
+  return GoogleOAuthClientConfig.fromInstalledAppJson(
+    jsonDecode(raw) as Map<String, dynamic>,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -100,15 +109,8 @@ class _ThemedMaterialApp extends ConsumerWidget {
     return MaterialApp.router(
       title: t.app.name,
       scrollBehavior: const _DragAnywhereScrollBehavior(),
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      darkTheme: ThemeData(
-        colorScheme: .fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.dark,
-        ),
-      ),
+      theme: AppLightTheme.theme,
+      darkTheme: AppDarkTheme.theme,
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
     );

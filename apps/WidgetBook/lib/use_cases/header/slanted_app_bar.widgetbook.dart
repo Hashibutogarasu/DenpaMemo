@@ -5,13 +5,17 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'Default', type: SlantedAppBar, path: 'header')
 Widget slantedAppBarUseCase(BuildContext context) {
-  return SlantedAppBar(title: Text('Denpa Memo'));
+  return SlantedAppBar(
+    title: Text('Denpa Memo'),
+    angleDegrees: Theme.of(context).extension<SlantedHeaderThemeData>()!.angleDegrees,
+  );
 }
 
 @widgetbook.UseCase(name: 'With Actions', type: SlantedAppBar, path: 'header')
 Widget slantedAppBarWithActionsUseCase(BuildContext context) {
   return SlantedAppBar(
     title: Text('Denpa Memo'),
+    angleDegrees: Theme.of(context).extension<SlantedHeaderThemeData>()!.angleDegrees,
     actions: [
       IconButton(icon: const Icon(Icons.search), onPressed: () {}),
       IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),

@@ -1,4 +1,5 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 
 /// Rounded floating action bar shown above a list while it is in
@@ -33,6 +34,7 @@ class GenericSelectionFloatingMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
     return IgnorePointer(
       ignoring: !visible,
       child: AnimatedSlide(
@@ -55,14 +57,16 @@ class GenericSelectionFloatingMenu extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       allSelected ? Icons.deselect : Icons.select_all,
-                      color: AppColors.accent,
+                      color: theme.accentColor,
                     ),
-                    tooltip: allSelected ? deselectAllTooltip : selectAllTooltip,
+                    tooltip: allSelected
+                        ? deselectAllTooltip
+                        : selectAllTooltip,
                     onPressed: onToggleSelectAll,
                   ),
                   ...actions,
                   IconButton(
-                    icon: const Icon(Icons.close, color: AppColors.accent),
+                    icon: Icon(Icons.close, color: theme.accentColor),
                     tooltip: cancelTooltip,
                     onPressed: onCancel,
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_container_theme.dart';
 
 /// Overlay search bar that slides down from the top of the screen when
 /// [open] is true, and back up when it isn't. [queryName] mirrors the
@@ -65,6 +65,7 @@ class _SearchOverlayBarState extends State<SearchOverlayBar> {
   Widget build(BuildContext context) {
     final t = context.t;
     final open = widget.open;
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     return IgnorePointer(
       ignoring: !open,
@@ -91,7 +92,7 @@ class _SearchOverlayBarState extends State<SearchOverlayBar> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.search, color: AppColors.accent),
+                      Icon(Icons.search, color: theme.accentColor),
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
@@ -105,7 +106,7 @@ class _SearchOverlayBarState extends State<SearchOverlayBar> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.close, color: AppColors.accent),
+                        icon: Icon(Icons.close, color: theme.accentColor),
                         onPressed: widget.onClose,
                       ),
                     ],

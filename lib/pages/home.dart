@@ -1,4 +1,5 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,17 +27,31 @@ Future<void> _importFromFile(BuildContext context, WidgetRef ref) async {
   }
 }
 
-class Home extends ConsumerWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Home> createState() => _HomeState();
+}
+
+class _HomeState extends ConsumerState<Home> {
+  final _addFabExpansion = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    _addFabExpansion.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final masterDataAsync = ref.watch(masterDataProvider);
     final masterData = masterDataAsync.value;
     final searchOverlayOpen = ref.watch(searchOverlayOpenProvider);
     final t = context.t;
     final selectedCount = ref.watch(selectedDenpaMenIdsProvider).length;
     final isMobile = ref.watch(appShellStateProvider).isMobile;
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     listenForMasterDataErrors(ref, context);
 
@@ -62,9 +77,9 @@ class Home extends ConsumerWidget {
                         ? null
                         : [
                             PopupMenuButton<void>(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.more_vert,
-                                color: AppColors.accent,
+                                color: theme.accentColor,
                               ),
                               itemBuilder: (context) => [
                                 PopupMenuItem(
@@ -83,6 +98,7 @@ class Home extends ConsumerWidget {
                               ],
                             ),
                           ],
+                    floatingActionButtonExpansion: _addFabExpansion,
                     floatingActionButton: Padding(
                       padding: EdgeInsets.only(bottom: isMobile ? 72 : 0),
                       child: AddDenpaMenFab(
@@ -91,10 +107,14 @@ class Home extends ConsumerWidget {
                             ? () => _importFromFile(context, ref)
                             : null,
                         onExport: isMobile && selectedCount > 0
-                            ? () =>
-                                  exportSelectedDenpaMen(context, ref, masterData)
+                            ? () => exportSelectedDenpaMen(
+                                context,
+                                ref,
+                                masterData,
+                              )
                             : null,
                         mainButtonLayerLink: _addFabLayerLink,
+                        expansionController: _addFabExpansion,
                       ),
                     ),
                   )

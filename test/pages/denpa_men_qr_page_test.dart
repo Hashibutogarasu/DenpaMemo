@@ -8,6 +8,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/pages/denpa_men_qr.dart';
 import 'package:denpa_memo/providers/denpa_men_session_providers.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 
 final _masterData = MasterData(
   headShapes: const [],
@@ -47,7 +48,10 @@ void main() {
         UncontrolledProviderScope(
           container: container,
           child: TranslationProvider(
-            child: MaterialApp.router(routerConfig: router),
+            child: MaterialApp.router(
+              theme: AppLightTheme.theme,
+              routerConfig: router,
+            ),
           ),
         ),
       );

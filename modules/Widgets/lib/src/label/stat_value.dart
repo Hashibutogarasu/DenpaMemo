@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_label_theme.dart';
 
 /// Displays a single stat entry as a container with a rounded label whose
 /// right edge is cut at an angle (matching [StatusLabel]'s shape), with
@@ -24,13 +24,14 @@ class StatValueLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenLabelThemeData>()!;
     return Stack(
       children: [
         Positioned(
           left: height / 2,
           right: 0,
           bottom: 0,
-          child: Container(height: 2, color: AppColors.pillBackground),
+          child: Container(height: 2, color: theme.pillBackgroundColor),
         ),
         Row(
           children: [
@@ -39,11 +40,11 @@ class StatValueLabel extends StatelessWidget {
                 clipper: _SlantedLabelClipper(),
                 child: Container(
                   height: height,
-                  color: AppColors.pillBackground,
+                  color: theme.pillBackgroundColor,
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 12, right: 18),
                   child: DefaultTextStyle.merge(
-                    style: const TextStyle(color: AppColors.pillText),
+                    style: TextStyle(color: theme.pillTextColor),
                     child: Text(label, overflow: TextOverflow.ellipsis),
                   ),
                 ),

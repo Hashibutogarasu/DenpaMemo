@@ -1,13 +1,116 @@
 import 'dart:convert';
 
 import 'package:data_pack/data_pack.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'i18n/gen/strings.g.dart';
+import 'src/theme/app_dialog_theme.dart';
+import 'src/theme/denpa_men_container_theme.dart';
+import 'src/theme/denpa_men_label_theme.dart';
+import 'src/theme/fab_button_theme.dart';
+import 'src/theme/slanted_header_theme.dart';
+
+/// The theme every widget/Widgetbook test in this package should render
+/// under, so individual tests don't each assemble their own ad hoc
+/// `ThemeData`/`extensions` — they all share one theme, matching how the
+/// real app's own theme is one `ThemeData(...)` shared by the whole app.
+/// Kept in sync with `lib/main.dart`'s theme in the `denpa_memo` app.
+final ThemeData testAppTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+  listTileTheme: const ListTileThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    ),
+    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+  ),
+  dialogTheme: const DialogThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(24)),
+    ),
+  ),
+  extensions: const [
+    SlantedHeaderThemeData(
+      fillColor: Color(0xFF52BBE5),
+      borderColor: Color(0xFF0865C2),
+      borderWidth: 6,
+      angleDegrees: 10,
+      contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
+    ),
+    FabButtonThemeData(
+      barrierColor: Colors.black54,
+      scrimAnimationDuration: Duration(milliseconds: 200),
+      scrimAnimationCurve: Curves.easeOutCubic,
+      mainButtonAnimationDuration: Duration(milliseconds: 200),
+      miniOptionSlideCurve: Curves.easeOutCubic,
+      miniOptionSlideOffset: Offset(0, 0.3),
+      labelBubbleElevation: 4,
+      labelBubbleBorderRadius: 8,
+      labelBubblePadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      miniOptionGap: 12,
+      miniOptionRowBottomPadding: 12,
+    ),
+    DenpaMenContainerThemeData(
+      statusBackgroundColor: Color(0xFF90E2FF),
+      statusBorderRadius: 20,
+      nestedBackgroundColor: Color(0xFFC8E0E7),
+      nestedBorderColor: Color(0xFF90DAFE),
+      nestedBorderWidth: 2,
+      nestedBorderRadius: 20,
+      accentColor: Color(0xFF056193),
+      memoBackgroundColor: Colors.white,
+      memoBorderRadius: 4,
+      headerDividerHeight: 2,
+      pencilIconSize: 28,
+      previewIconSize: 56,
+      accordionIconSize: 32,
+      accordionTitleFontSize: 20,
+      accordionCheckboxSlotSize: 40,
+      accordionAnimationDuration: Duration(milliseconds: 200),
+      resistanceGap: 5,
+    ),
+    DenpaMenLabelThemeData(
+      headerTitleOutlineColor: Color(0xFF238BCB),
+      pillBackgroundColor: Color(0xFF7FC9FF),
+      pillTextColor: Color(0xFF2B2031),
+      expBarFilledColor: Color(0xFFFFEB3B),
+      expBarUnfilledColor: Color(0xFF056193),
+      maxedValueColor: Color(0xFF7BEA95),
+      inactiveBonusColor: Color(0xFFE53935),
+    ),
+    AppDialogThemeData(
+      transitionDuration: Duration(milliseconds: 320),
+      transitionCurve: Curves.easeOutCubic,
+      reverseTransitionCurve: Curves.easeInCubic,
+      barrierColor: Colors.black54,
+    ),
+  ],
+);
+
+/// Wraps [home] with this package's [TranslationProvider] and a
+/// [MaterialApp] using [testAppTheme], for widget tests to pump instead of
+/// building their own `MaterialApp`.
+class TestApp extends StatelessWidget {
+  const TestApp({super.key, required this.home});
+
+  final Widget home;
+
+  @override
+  Widget build(BuildContext context) {
+    return TranslationProvider(
+      child: MaterialApp(theme: testAppTheme, home: home),
+    );
+  }
+}
 
 /// Minimal hand-built [MasterData] and sample [DenpaMen] for use in
 /// Widgetbook use cases and tests, so they render without a live GraphQL
 /// server.
 abstract final class DenpaMenData {
-  static const anntena = Anntena(id: 'antenna', category: AnntenaCategory.other);
+  static const anntena = Anntena(
+    id: 'antenna',
+    category: AnntenaCategory.other,
+  );
   static const headShape = HeadShape(id: 'head');
   static const physique = Physique(id: 'physique');
   static const personality = Personality(id: 'personality');
@@ -70,7 +173,10 @@ abstract final class DenpaMenData {
 /// pubspec.yaml must declare `assets/routes/` for [initialize] to find
 /// them at runtime.
 abstract final class RouteDenpaMenData {
-  static const _assetPaths = ['assets/routes/mizuka.json', 'assets/routes/sanagi.json'];
+  static const _assetPaths = [
+    'assets/routes/mizuka.json',
+    'assets/routes/sanagi.json',
+  ];
 
   static late final Map<String, DenpaMen> byId;
   static late final List<DenpaMen> all;
@@ -132,9 +238,13 @@ abstract final class RouteDenpaMenData {
       abnormalityTypes: fixture.abnormalityTypes,
       bodyColorResistanceRules: [
         for (final colorId in colorIds)
-          BodyColorResistanceRule(colorId: colorId, attributeResistanceBonuses: const []),
+          BodyColorResistanceRule(
+            colorId: colorId,
+            attributeResistanceBonuses: const [],
+          ),
       ],
-      bodyColorAbnormalityResistanceRules: fixture.bodyColorAbnormalityResistanceRules,
+      bodyColorAbnormalityResistanceRules:
+          fixture.bodyColorAbnormalityResistanceRules,
       physiques: physiques.values.toList(),
       personalities: personalities.values.toList(),
       patterns: patterns.values.toList(),

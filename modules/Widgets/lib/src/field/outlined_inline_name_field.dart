@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
 import '../label/outlined_title.dart';
+import '../theme/denpa_men_container_theme.dart';
 import 'inline_text_field.dart';
 
 /// Inline-editable name field styled like [OutlinedTitleText]: white fill
@@ -25,6 +25,7 @@ class OutlinedInlineNameField extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseStyle =
         Theme.of(context).textTheme.titleLarge ?? const TextStyle();
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     return Stack(
       children: [
@@ -35,7 +36,7 @@ class OutlinedInlineNameField extends StatelessWidget {
               foreground: Paint()
                 ..style = PaintingStyle.stroke
                 ..strokeWidth = outlineWidth
-                ..color = AppColors.accent,
+                ..color = theme.accentColor,
             ),
           ),
         ),

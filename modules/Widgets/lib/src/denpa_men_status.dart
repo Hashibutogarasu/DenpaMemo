@@ -20,7 +20,7 @@ import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
 import 'label/status.dart';
 import 'responsive/responsive_provider.dart';
-import 'theme/app_colors.dart';
+import 'theme/denpa_men_container_theme.dart';
 
 class DenpaMenStatus extends ConsumerWidget {
   const DenpaMenStatus({
@@ -128,7 +128,8 @@ class DenpaMenStatus extends ConsumerWidget {
 
   Widget _buildContent(BuildContext context, bool isMobile) {
     final t = context.t;
-    const resistanceGap = 5.0;
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
+    final resistanceGap = theme.resistanceGap;
     final attributeResistanceRows =
         (totalAttributeCount / attributeResistanceColumns).ceil();
     final attributeResistanceHeight =
@@ -161,7 +162,7 @@ class DenpaMenStatus extends ConsumerWidget {
           );
     final nameText = OutlinedTitleText(
       text: name,
-      outlineColor: AppColors.accent,
+      outlineColor: theme.accentColor,
       fontSize: Theme.of(context).textTheme.titleLarge?.fontSize ?? 22,
     );
 
@@ -173,7 +174,7 @@ class DenpaMenStatus extends ConsumerWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ResolvedEntityIcon(file: iconFile, size: 56),
+                ResolvedEntityIcon(file: iconFile, size: theme.previewIconSize),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Container(
@@ -191,9 +192,9 @@ class DenpaMenStatus extends ConsumerWidget {
             nameText,
           ],
           Container(
-            height: 2,
+            height: theme.headerDividerHeight,
             margin: const EdgeInsets.only(top: 4, bottom: 4),
-            color: AppColors.accent,
+            color: theme.accentColor,
           ),
         ],
       ),
@@ -273,8 +274,8 @@ class DenpaMenStatus extends ConsumerWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              color: theme.memoBackgroundColor,
+              borderRadius: BorderRadius.circular(theme.memoBorderRadius),
             ),
             child: Text(memo!),
           ),
