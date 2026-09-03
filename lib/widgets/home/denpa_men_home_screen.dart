@@ -29,12 +29,16 @@ class DenpaMenHomeScreen extends ConsumerStatefulWidget {
     required this.title,
     required this.masterData,
     this.floatingActionButton,
+    this.floatingActionButtonExpansion,
     this.actions,
   });
 
   final Widget title;
   final MasterData masterData;
   final Widget? floatingActionButton;
+
+  /// Forwarded straight to [AppScaffold.floatingActionButtonExpansion].
+  final ValueNotifier<bool>? floatingActionButtonExpansion;
   final List<Widget>? actions;
 
   @override
@@ -96,6 +100,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
           : const {},
       actions: widget.actions,
       floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonExpansion: widget.floatingActionButtonExpansion,
       body: Stack(
         children: [
           Positioned.fill(

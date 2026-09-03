@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../theme/fab_button_theme.dart';
+
 /// One labeled small [FloatingActionButton] in a stack of options revealed
-/// above a main FAB, sliding/fading in or out as [open] toggles.
+/// above a main FAB, sliding/fading in or out as [open] toggles. Animation
+/// curve/offset and label-bubble styling come from [FabButtonThemeData];
+/// [animationDuration] defaults to the theme's value but can be overridden
+/// per instance.
 class MiniFabOption extends StatelessWidget {
   const MiniFabOption({
     super.key,
@@ -9,49 +14,52 @@ class MiniFabOption extends StatelessWidget {
     required this.icon,
     required this.onPressed,
     required this.open,
-    this.animationDuration = const Duration(milliseconds: 200),
+    this.animationDuration,
   });
 
   final String label;
   final IconData icon;
   final VoidCallback onPressed;
   final bool open;
-  final Duration animationDuration;
+  final Duration? animationDuration;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<FabButtonThemeData>()!;
+    final duration = animationDuration ?? theme.mainButtonAnimationDuration;
     return IgnorePointer(
       ignoring: !open,
       child: AnimatedSlide(
-        duration: animationDuration,
-        curve: Curves.easeOutCubic,
-        offset: open ? Offset.zero : const Offset(0, 0.3),
+        duration: duration,
+        curve: theme.miniOptionSlideCurve,
+        offset: open ? Offset.zero : theme.miniOptionSlideOffset,
         child: AnimatedOpacity(
-          duration: animationDuration,
-          curve: Curves.easeOutCubic,
+          duration: duration,
+          curve: theme.miniOptionSlideCurve,
           opacity: open ? 1 : 0,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: EdgeInsets.only(bottom: theme.miniOptionRowBottomPadding),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Material(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  elevation: 4,
-                  borderRadius: BorderRadius.circular(8),
+                  elevation: theme.labelBubbleElevation,
+                  borderRadius: BorderRadius.circular(
+                    theme.labelBubbleBorderRadius,
+                  ),
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(
+                      theme.labelBubbleBorderRadius,
+                    ),
                     onTap: onPressed,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
+                      padding: theme.labelBubblePadding,
                       child: Text(label),
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: theme.miniOptionGap),
                 FloatingActionButton.small(
                   heroTag: null,
                   onPressed: onPressed,

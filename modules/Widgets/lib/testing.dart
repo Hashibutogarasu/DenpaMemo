@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'i18n/gen/strings.g.dart';
 import 'src/navigation/app_back_button.dart';
+import 'src/theme/fab_button_theme.dart';
 import 'src/theme/slanted_header_theme.dart';
 
 /// The theme every widget/Widgetbook test in this package should render
@@ -28,6 +29,19 @@ final ThemeData testAppTheme = ThemeData(
       borderWidth: 6,
       angleDegrees: 10,
       contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
+    ),
+    FabButtonThemeData(
+      barrierColor: Colors.black54,
+      scrimAnimationDuration: Duration(milliseconds: 200),
+      scrimAnimationCurve: Curves.easeOutCubic,
+      mainButtonAnimationDuration: Duration(milliseconds: 200),
+      miniOptionSlideCurve: Curves.easeOutCubic,
+      miniOptionSlideOffset: Offset(0, 0.3),
+      labelBubbleElevation: 4,
+      labelBubbleBorderRadius: 8,
+      labelBubblePadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      miniOptionGap: 12,
+      miniOptionRowBottomPadding: 12,
     ),
   ],
 );
@@ -52,7 +66,10 @@ class TestApp extends StatelessWidget {
 /// Widgetbook use cases and tests, so they render without a live GraphQL
 /// server.
 abstract final class DenpaMenData {
-  static const anntena = Anntena(id: 'antenna', category: AnntenaCategory.other);
+  static const anntena = Anntena(
+    id: 'antenna',
+    category: AnntenaCategory.other,
+  );
   static const headShape = HeadShape(id: 'head');
   static const physique = Physique(id: 'physique');
   static const personality = Personality(id: 'personality');
@@ -115,7 +132,10 @@ abstract final class DenpaMenData {
 /// pubspec.yaml must declare `assets/routes/` for [initialize] to find
 /// them at runtime.
 abstract final class RouteDenpaMenData {
-  static const _assetPaths = ['assets/routes/mizuka.json', 'assets/routes/sanagi.json'];
+  static const _assetPaths = [
+    'assets/routes/mizuka.json',
+    'assets/routes/sanagi.json',
+  ];
 
   static late final Map<String, DenpaMen> byId;
   static late final List<DenpaMen> all;
@@ -177,9 +197,13 @@ abstract final class RouteDenpaMenData {
       abnormalityTypes: fixture.abnormalityTypes,
       bodyColorResistanceRules: [
         for (final colorId in colorIds)
-          BodyColorResistanceRule(colorId: colorId, attributeResistanceBonuses: const []),
+          BodyColorResistanceRule(
+            colorId: colorId,
+            attributeResistanceBonuses: const [],
+          ),
       ],
-      bodyColorAbnormalityResistanceRules: fixture.bodyColorAbnormalityResistanceRules,
+      bodyColorAbnormalityResistanceRules:
+          fixture.bodyColorAbnormalityResistanceRules,
       physiques: physiques.values.toList(),
       personalities: personalities.values.toList(),
       patterns: patterns.values.toList(),

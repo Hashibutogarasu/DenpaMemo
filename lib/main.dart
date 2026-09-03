@@ -34,7 +34,9 @@ void main() async {
     overrides: [
       objectBoxProvider.overrideWithValue(objectBox),
       dataCacheProvider.overrideWithValue(cacheIndexRepository),
-      googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+      googleOAuthClientConfigProvider.overrideWithValue(
+        googleOAuthClientConfig,
+      ),
     ],
   );
   await container.read(firebaseSignInProvider.future);
@@ -43,7 +45,9 @@ void main() async {
       objectBox: objectBox,
       cacheIndexRepository: cacheIndexRepository,
       overrides: [
-        googleOAuthClientConfigProvider.overrideWithValue(googleOAuthClientConfig),
+        googleOAuthClientConfigProvider.overrideWithValue(
+          googleOAuthClientConfig,
+        ),
       ],
     ),
   );
@@ -53,8 +57,12 @@ void main() async {
 /// [RestFirebaseSignInBackend]'s Google sign-in loopback flow — bundled as
 /// an asset rather than checked into source (see `.gitignore`).
 Future<GoogleOAuthClientConfig> _loadGoogleOAuthClientConfig() async {
-  final raw = await rootBundle.loadString('assets/config/auth/google/google_client_secrets.json');
-  return GoogleOAuthClientConfig.fromInstalledAppJson(jsonDecode(raw) as Map<String, dynamic>);
+  final raw = await rootBundle.loadString(
+    'assets/config/auth/google/google_client_secrets.json',
+  );
+  return GoogleOAuthClientConfig.fromInstalledAppJson(
+    jsonDecode(raw) as Map<String, dynamic>,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -111,15 +119,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
 final ThemeData appLightTheme = ThemeData(
   colorScheme: .fromSeed(seedColor: Colors.deepPurple),
   elevatedButtonTheme: _elevatedButtonTheme,
-  extensions: const [
-    denpamemo_widgets.SlantedHeaderThemeData(
-      fillColor: Color(0xFF52BBE5),
-      borderColor: Color(0xFF0865C2),
-      borderWidth: 6,
-      angleDegrees: 10,
-      contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
-    ),
-  ],
+  extensions: _themeExtensions,
 );
 
 final ThemeData appDarkTheme = ThemeData(
@@ -128,15 +128,7 @@ final ThemeData appDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   elevatedButtonTheme: _elevatedButtonTheme,
-  extensions: const [
-    denpamemo_widgets.SlantedHeaderThemeData(
-      fillColor: Color(0xFF52BBE5),
-      borderColor: Color(0xFF0865C2),
-      borderWidth: 6,
-      angleDegrees: 10,
-      contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
-    ),
-  ],
+  extensions: _themeExtensions,
 );
 
 /// Shared between light/dark: [AppBackButton] and every other
@@ -149,6 +141,32 @@ final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
     minimumSize: const Size(64, denpamemo_widgets.AppBackButton.height),
   ),
 );
+
+/// Shared between light/dark for now — these extensions' colors/animations
+/// don't currently vary by brightness (unlike [ColorScheme], which each
+/// [ThemeData] above derives separately via `.fromSeed`).
+final _themeExtensions = <ThemeExtension<dynamic>>[
+  const denpamemo_widgets.SlantedHeaderThemeData(
+    fillColor: Color(0xFF52BBE5),
+    borderColor: Color(0xFF0865C2),
+    borderWidth: 6,
+    angleDegrees: 10,
+    contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
+  ),
+  const denpamemo_widgets.FabButtonThemeData(
+    barrierColor: Colors.black54,
+    scrimAnimationDuration: Duration(milliseconds: 200),
+    scrimAnimationCurve: Curves.easeOutCubic,
+    mainButtonAnimationDuration: Duration(milliseconds: 200),
+    miniOptionSlideCurve: Curves.easeOutCubic,
+    miniOptionSlideOffset: Offset(0, 0.3),
+    labelBubbleElevation: 4,
+    labelBubbleBorderRadius: 8,
+    labelBubblePadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    miniOptionGap: 12,
+    miniOptionRowBottomPadding: 12,
+  ),
+];
 
 /// [MaterialScrollBehavior] additionally treats the mouse as a drag
 /// device. Without this, pointer-drag gestures — including the overscroll
