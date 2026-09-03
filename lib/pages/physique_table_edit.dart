@@ -259,12 +259,18 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                         onPressed: _save,
                       ),
                       OutlinedButton.icon(
-                        icon: const Icon(Icons.delete_outline, color: Colors.red),
+                        icon: Icon(
+                          Icons.delete_outline,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
                         label: Text(t.physiqueTable.deleteTable),
                         onPressed: _deleteTable,
                       ),
                       OutlinedButton.icon(
-                        icon: const Icon(Icons.delete_outline, color: Colors.red),
+                        icon: Icon(
+                          Icons.delete_outline,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
                         label: Text(t.physiqueTable.deleteRow),
                         onPressed: _selectedRowIds.isEmpty ? null : _deleteSelectedRows,
                       ),
