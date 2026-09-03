@@ -151,7 +151,6 @@ class PhysiqueTableListPage extends ConsumerWidget {
       floatingActionButton: switch ((metadataAsync, typesAsync)) {
         (AsyncData(value: final metadata), AsyncData(value: final types)) =>
           FloatingActionButton.extended(
-            icon: const Icon(Icons.add),
             label: Text(t.physiqueTable.createNewTable),
             onPressed: () =>
                 _createNewTable(context, metadata.physiqueAntennaCategories, types),
