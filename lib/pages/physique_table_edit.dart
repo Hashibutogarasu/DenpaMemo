@@ -123,7 +123,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
-      floatingActionButton: rows == null
+      floatingActionButton: rows == null || columnCount == null
           ? null
           : FloatingActionButton.extended(
               label: Text(t.physiqueTable.save),
@@ -131,75 +131,78 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
             ),
       body: editState.loadError || typesAsync.hasError || (typesAsync.hasValue && columnCount == null)
           ? Center(child: Text(t.physiqueTable.loadError))
-          : rows == null || typesAsync.isLoading || columnCount == null
-          ? const ProgressBar()
-          : Column(
-              children: [
-                Expanded(
-                  child: rows.isEmpty
-                      ? Center(child: Text(t.physiqueTable.empty))
-                      : TableEditor<PhysiqueTableRow>(
-                          columns: buildPhysiqueTableColumns(
-                            columnCount: columnCount,
-                            onValueChanged: (lineOffset, columnIndex, newValue) => ref
-                                .read(physiqueTableEditProvider(widget.args).notifier)
-                                .onValueChanged(lineOffset, columnIndex, newValue),
+          : LoadingOverlay(
+              loading: rows == null || typesAsync.isLoading || columnCount == null,
+              child: rows == null || columnCount == null
+                  ? const SizedBox.shrink()
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: rows.isEmpty
+                              ? Center(child: Text(t.physiqueTable.empty))
+                              : TableEditor<PhysiqueTableRow>(
+                                  columns: buildPhysiqueTableColumns(
+                                    columnCount: columnCount,
+                                    onValueChanged: (lineOffset, columnIndex, newValue) => ref
+                                        .read(physiqueTableEditProvider(widget.args).notifier)
+                                        .onValueChanged(lineOffset, columnIndex, newValue),
+                                  ),
+                                  data: rows,
+                                  rowId: (row) => row.lineOffset.toString(),
+                                  isSelectable: true,
+                                  selectionMode: SelectionMode.multiple,
+                                  selectedRows: _selectedRowIds,
+                                  onCheckboxChanged: (rowId, isSelected) => setState(() {
+                                    _selectedRowIds = Set.of(_selectedRowIds);
+                                    if (isSelected) {
+                                      _selectedRowIds.add(rowId);
+                                    } else {
+                                      _selectedRowIds.remove(rowId);
+                                    }
+                                  }),
+                                  trailingCellBuilder: (row) => IconButton(
+                                    icon: Icon(
+                                      Icons.delete_outline,
+                                      color: Theme.of(context).colorScheme.error,
+                                    ),
+                                    tooltip: t.physiqueTable.deleteRow,
+                                    onPressed: () => _deleteRow(row.lineOffset),
+                                  ),
+                                ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Wrap(
+                            spacing: 8,
+                            children: [
+                              OutlinedButton.icon(
+                                icon: const Icon(Icons.add),
+                                label: Text(t.physiqueTable.addRow),
+                                onPressed: () => ref
+                                    .read(physiqueTableEditProvider(widget.args).notifier)
+                                    .addRow(columnCount),
+                              ),
+                              OutlinedButton.icon(
+                                icon: Icon(
+                                  Icons.delete_outline,
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                                label: Text(t.physiqueTable.deleteTable),
+                                onPressed: _deleteTable,
+                              ),
+                              OutlinedButton.icon(
+                                icon: Icon(
+                                  Icons.delete_outline,
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                                label: Text(t.physiqueTable.deleteSelectedRows),
+                                onPressed: _selectedRowIds.isEmpty ? null : _deleteSelectedRows,
+                              ),
+                            ],
                           ),
-                          data: rows,
-                          rowId: (row) => row.lineOffset.toString(),
-                          isSelectable: true,
-                          selectionMode: SelectionMode.multiple,
-                          selectedRows: _selectedRowIds,
-                          onCheckboxChanged: (rowId, isSelected) => setState(() {
-                            _selectedRowIds = Set.of(_selectedRowIds);
-                            if (isSelected) {
-                              _selectedRowIds.add(rowId);
-                            } else {
-                              _selectedRowIds.remove(rowId);
-                            }
-                          }),
-                          trailingCellBuilder: (row) => IconButton(
-                            icon: Icon(
-                              Icons.delete_outline,
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                            tooltip: t.physiqueTable.deleteRow,
-                            onPressed: () => _deleteRow(row.lineOffset),
-                          ),
                         ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Wrap(
-                    spacing: 8,
-                    children: [
-                      OutlinedButton.icon(
-                        icon: const Icon(Icons.add),
-                        label: Text(t.physiqueTable.addRow),
-                        onPressed: () => ref
-                            .read(physiqueTableEditProvider(widget.args).notifier)
-                            .addRow(columnCount),
-                      ),
-                      OutlinedButton.icon(
-                        icon: Icon(
-                          Icons.delete_outline,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                        label: Text(t.physiqueTable.deleteTable),
-                        onPressed: _deleteTable,
-                      ),
-                      OutlinedButton.icon(
-                        icon: Icon(
-                          Icons.delete_outline,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                        label: Text(t.physiqueTable.deleteSelectedRows),
-                        onPressed: _selectedRowIds.isEmpty ? null : _deleteSelectedRows,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                      ],
+                    ),
             ),
     );
   }

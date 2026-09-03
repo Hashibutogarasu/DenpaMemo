@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_editor/table_editor.dart';
 
@@ -25,13 +28,16 @@ class PhysiqueTableViewPage extends ConsumerStatefulWidget {
 }
 
 class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
-  late Future<List<PhysiqueTableRow>> _rowsFuture;
+  Future<List<PhysiqueTableRow>> _rowsFuture = Completer<List<PhysiqueTableRow>>().future;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() => ref.invalidate(tableTypesProvider));
-    _rowsFuture = _fetchRows();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() => _rowsFuture = _fetchRows());
+    });
   }
 
   Future<List<PhysiqueTableRow>> _fetchRows() async {
@@ -64,36 +70,44 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
       body: FutureBuilder<List<PhysiqueTableRow>>(
         future: _rowsFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done || typesAsync.isLoading) {
-            return const ProgressBar();
-          }
+          final loading = snapshot.connectionState != ConnectionState.done || typesAsync.isLoading;
           final columnCount = typesAsync.value
               ?.firstWhereOrNull((type) => type.type == widget.args.type)
               ?.columnCount;
-          if (snapshot.hasError || typesAsync.hasError || columnCount == null) {
+          if (!loading && (snapshot.hasError || typesAsync.hasError || columnCount == null)) {
             return Center(child: Text(t.physiqueTable.loadError));
           }
-          final rows = snapshot.data!;
-          return Column(
-            children: [
-              Expanded(
-                child: rows.isEmpty
-                    ? Center(child: Text(t.physiqueTable.empty))
-                    : TableEditor<PhysiqueTableRow>(
-                        columns: buildPhysiqueTableColumns(columnCount: columnCount),
-                        data: rows,
-                        rowId: (row) => row.lineOffset.toString(),
-                      ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: FilledButton.icon(
-                  icon: const Icon(Icons.edit_outlined),
-                  label: Text(t.physiqueTable.edit),
-                  onPressed: () => PhysiqueTableEditRoute($extra: widget.args).push(context),
-                ),
-              ),
-            ],
+          return LoadingOverlay(
+            loading: loading,
+            child: loading || columnCount == null
+                ? const SizedBox.shrink()
+                : Builder(
+                    builder: (context) {
+                      final rows = snapshot.data!;
+                      return Column(
+                        children: [
+                          Expanded(
+                            child: rows.isEmpty
+                                ? Center(child: Text(t.physiqueTable.empty))
+                                : TableEditor<PhysiqueTableRow>(
+                                    columns: buildPhysiqueTableColumns(columnCount: columnCount),
+                                    data: rows,
+                                    rowId: (row) => row.lineOffset.toString(),
+                                  ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: FilledButton.icon(
+                              icon: const Icon(Icons.edit_outlined),
+                              label: Text(t.physiqueTable.edit),
+                              onPressed: () =>
+                                  PhysiqueTableEditRoute($extra: widget.args).push(context),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
           );
         },
       ),

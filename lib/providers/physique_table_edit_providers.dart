@@ -1,4 +1,5 @@
 import 'package:api_client/api_client.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/server/physique_table_args.dart';
@@ -35,7 +36,7 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
 
   @override
   PhysiqueTableEditState build() {
-    _load();
+    SchedulerBinding.instance.addPostFrameCallback((_) => _load());
     return const PhysiqueTableEditState();
   }
 
@@ -79,7 +80,7 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
     state = state.copyWith(
       rows: [
         ...rows,
-        PhysiqueTableRow(lineOffset: rows.length, values: List.filled(columnCount, '0')),
+        PhysiqueTableRow(lineOffset: rows.length, values: List.filled(columnCount, '')),
       ],
     );
   }
