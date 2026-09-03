@@ -20,4 +20,14 @@ class PhysiqueTableArgs {
   final String type;
   final String level;
   final String anntenaCategory;
+
+  @override
+  bool operator ==(Object other) =>
+      other is PhysiqueTableArgs &&
+      other.type == type &&
+      other.level == level &&
+      other.anntenaCategory == anntenaCategory;
+
+  @override
+  int get hashCode => Object.hash(type, level, anntenaCategory);
 }

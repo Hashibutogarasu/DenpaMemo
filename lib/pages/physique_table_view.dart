@@ -43,7 +43,10 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
     );
     return [
       for (final record in records)
-        PhysiqueTableRow(lineOffset: record.lineOffset, values: record.values),
+        PhysiqueTableRow(
+          lineOffset: record.lineOffset,
+          values: [for (final value in record.values) value.toString()],
+        ),
     ];
   }
 
