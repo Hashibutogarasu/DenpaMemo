@@ -1,5 +1,5 @@
 [
-  { "type": "hp", "columnCount": 11, "translationKey": "stat.hp" },
+  { "type": "hp", "columnCount": 10, "translationKey": "stat.hp" },
   { "type": "speed", "columnCount": 5, "translationKey": "stat.speed" },
   { "type": "evasionRate", "columnCount": 11, "translationKey": "stat.evasionRate" }
 ]
