@@ -11,10 +11,6 @@ class AppBackButton extends StatelessWidget {
 
   final VoidCallback? onPressed;
 
-  /// This button's rendered height under the app's [ElevatedButtonThemeData]
-  /// (its `style.minimumSize`). Exposed so callers that position another
-  /// widget relative to this button (e.g. `birth_guide.dart` stacking a
-  /// second button above it) don't have to duplicate that value.
   static const double height = 40;
 
   @override

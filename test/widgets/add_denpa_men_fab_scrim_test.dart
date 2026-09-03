@@ -23,10 +23,8 @@ final _masterData = MasterData(
 );
 
 /// Reproduces how `home.dart` wires [AddDenpaMenFab] and [AppScaffold]
-/// together via a shared expansion [ValueNotifier], so these tests exercise
-/// the actual backdrop composition rather than [AddDenpaMenFab] in
-/// isolation (which, per its own doc comment, has no backdrop of its own —
-/// [AppScaffold] renders it).
+/// together via a shared expansion [ValueNotifier], since the backdrop
+/// itself is rendered by [AppScaffold], not [AddDenpaMenFab].
 class _Harness extends StatefulWidget {
   const _Harness();
 

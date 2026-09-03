@@ -10,14 +10,12 @@ import 'icon/entity_icon.dart';
 import 'label/gauge_label.dart';
 import 'label/gauge_value.dart';
 import 'label/outlined_title.dart';
-import 'theme/app_colors.dart';
+import 'theme/denpa_men_container_theme.dart';
 
 /// Collapsed-by-default list entry for [denpaMen]. Header and (once
 /// expanded) [DenpaMenStatus] share a single [StatusContainer] rather than
 /// each having their own, so the tile reads as one continuous shape instead
-/// of two stacked rounded boxes. [iconFile] is an already-resolved icon (or
-/// null for a placeholder); [actionMenuItemsBuilder] supplies the trailing
-/// overflow menu's items, or omit it to hide the menu entirely.
+/// of two stacked rounded boxes.
 class DenpaMenAccordionTile extends StatefulWidget {
   const DenpaMenAccordionTile({
     super.key,
@@ -29,33 +27,16 @@ class DenpaMenAccordionTile extends StatefulWidget {
     required this.onSelectedChanged,
     this.iconFile,
     this.actionMenuItemsBuilder,
-    this.animationDuration = const Duration(milliseconds: 200),
+    this.animationDuration,
   });
 
   final DenpaMen denpaMen;
   final int totalAttributeCount;
+  final Duration? animationDuration;
 
-  /// Duration of the expand/collapse and rotation animations.
-  final Duration animationDuration;
-
-  /// Whether the home list is currently in multi-select mode. The checkbox
-  /// slot is always reserved in the header regardless of this flag — only
-  /// the [Checkbox] itself is swapped for an invisible placeholder — so
-  /// entering/leaving selection mode never reflows the row.
   final bool selectionMode;
-
-  /// Whether this tile is currently selected. Ignored when
-  /// [selectionMode] is false.
   final bool selected;
-
-  /// Whether this tile was cut and is pending a paste-driven removal;
-  /// rendered greyed-out until then.
   final bool isCut;
-
-  /// Invoked when the checkbox is toggled, the tile is tapped while
-  /// [selectionMode] is true, or the tile is long-pressed while
-  /// [selectionMode] is false (which enters selection mode by selecting
-  /// this tile).
   final ValueChanged<bool> onSelectedChanged;
 
   final File? iconFile;
@@ -87,6 +68,9 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
   Widget build(BuildContext context) {
     final t = context.t;
     final denpaMen = widget.denpaMen;
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
+    final animationDuration =
+        widget.animationDuration ?? theme.accordionAnimationDuration;
 
     return Opacity(
       opacity: widget.isCut ? 0.5 : 1,
@@ -98,8 +82,8 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
             Row(
               children: [
                 SizedBox(
-                  width: 40,
-                  height: 40,
+                  width: theme.accordionCheckboxSlotSize,
+                  height: theme.accordionCheckboxSlotSize,
                   child: widget.selectionMode
                       ? Checkbox(
                           value: widget.selected,
@@ -110,21 +94,26 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
                 ),
                 Expanded(
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(
+                      theme.statusBorderRadius,
+                    ),
                     onTap: _handleTap,
                     onLongPress: _handleLongPress,
                     child: AnimatedOpacity(
-                      duration: widget.animationDuration,
+                      duration: animationDuration,
                       opacity: _expanded ? 0 : 1,
                       child: Row(
                         children: [
-                          ResolvedEntityIcon(file: widget.iconFile, size: 32),
+                          ResolvedEntityIcon(
+                            file: widget.iconFile,
+                            size: theme.accordionIconSize,
+                          ),
                           const SizedBox(width: 8),
                           Flexible(
                             child: OutlinedTitleText(
                               text: denpaMen.name,
-                              outlineColor: AppColors.accent,
-                              fontSize: 20,
+                              outlineColor: theme.accentColor,
+                              fontSize: theme.accordionTitleFontSize,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -142,27 +131,24 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
                 ),
                 if (widget.actionMenuItemsBuilder != null)
                   PopupMenuButton<VoidCallback>(
-                    icon: const Icon(Icons.more_vert, color: AppColors.accent),
+                    icon: Icon(Icons.more_vert, color: theme.accentColor),
                     onSelected: (action) => action(),
                     itemBuilder: widget.actionMenuItemsBuilder!,
                   ),
                 InkWell(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(theme.statusBorderRadius),
                   onTap: _handleTap,
                   onLongPress: _handleLongPress,
                   child: AnimatedRotation(
                     turns: _expanded ? 0.5 : 0,
-                    duration: widget.animationDuration,
-                    child: const Icon(
-                      Icons.expand_more,
-                      color: AppColors.accent,
-                    ),
+                    duration: animationDuration,
+                    child: Icon(Icons.expand_more, color: theme.accentColor),
                   ),
                 ),
               ],
             ),
             AnimatedSize(
-              duration: widget.animationDuration,
+              duration: animationDuration,
               alignment: Alignment.topCenter,
               child: _expanded
                   ? DenpaMenStatus.fromDenpaMen(

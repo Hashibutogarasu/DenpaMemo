@@ -37,7 +37,6 @@ class DenpaMenHomeScreen extends ConsumerStatefulWidget {
   final MasterData masterData;
   final Widget? floatingActionButton;
 
-  /// Forwarded straight to [AppScaffold.floatingActionButtonExpansion].
   final ValueNotifier<bool>? floatingActionButtonExpansion;
   final List<Widget>? actions;
 

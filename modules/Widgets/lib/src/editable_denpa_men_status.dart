@@ -23,21 +23,11 @@ import 'label/gauge_value.dart';
 import 'label/inline_gauge_label.dart';
 import 'label/joined_labels_text.dart';
 import 'responsive/responsive_provider.dart';
-import 'theme/app_colors.dart';
+import 'theme/denpa_men_container_theme.dart';
 
-/// Right-hand desktop pane letting the user edit [denpaMen] in place. Name
-/// and numeric stats are edited inline; head shape, body color, and
-/// corrections open a [showHeadShapeSelectionDialog] /
-/// [showBodyColorSelectionDialog] / [showCorrectionSelectionDialog].
-///
-/// [icon] is a prebuilt widget for the tappable icon slot (an already
-/// wired-up icon editor is the caller's responsibility, since picking and
-/// storing a new icon needs app-specific storage). [parentCandidates] and
-/// [onPickParents] back the parent picker field; [onPickMonsterExp] opens
-/// the monster-exp picker.
-///
-/// Every edit produces a full draft [DenpaMen] via [onChanged] so the caller
-/// can re-derive resistances (e.g. through `createDenpaMen`) and update the
+/// Right-hand desktop pane letting the user edit [denpaMen] in place. Every
+/// edit produces a full draft [DenpaMen] via [onChanged] so the caller can
+/// re-derive resistances (e.g. through `createDenpaMen`) and update the
 /// read-only status area immediately.
 class EditableDenpaMenStatus extends ConsumerWidget {
   const EditableDenpaMenStatus({
@@ -76,6 +66,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
     final isMobile = ref.watch(appShellStateProvider).isMobile;
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     return StatusContainer(
       padding: const EdgeInsets.all(8),
@@ -86,7 +77,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
             alignment: Alignment.topRight,
             child: Icon(
               Icons.edit,
-              size: 28,
+              size: theme.pencilIconSize,
               color: DefaultTextStyle.of(context).style.color,
             ),
           ),
@@ -183,9 +174,9 @@ class EditableDenpaMenStatus extends ConsumerWidget {
                   ],
                 ),
                 Container(
-                  height: 2,
+                  height: theme.headerDividerHeight,
                   margin: const EdgeInsets.only(top: 4, bottom: 4),
-                  color: AppColors.accent,
+                  color: theme.accentColor,
                 ),
               ],
             ),
@@ -353,8 +344,8 @@ class EditableDenpaMenStatus extends ConsumerWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              color: theme.memoBackgroundColor,
+              borderRadius: BorderRadius.circular(theme.memoBorderRadius),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

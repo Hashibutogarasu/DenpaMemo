@@ -28,15 +28,9 @@ class FabButtonThemeData extends ThemeExtension<FabButtonThemeData>
     required this.miniOptionRowBottomPadding,
   });
 
-  /// Color of the full-screen scrim shown behind the expanded FAB while
-  /// tapping outside of it is what dismisses it.
   final Color barrierColor;
   final Duration scrimAnimationDuration;
   final Curve scrimAnimationCurve;
-
-  /// Default for [MiniFabOption]/the main FAB's own open/close animation;
-  /// overridable per instance the same way [MiniFabOption.animationDuration]
-  /// already is.
   final Duration mainButtonAnimationDuration;
   final Curve miniOptionSlideCurve;
   final Offset miniOptionSlideOffset;

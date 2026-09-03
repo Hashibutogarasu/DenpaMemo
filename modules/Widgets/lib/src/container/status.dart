@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import '../theme/denpa_men_container_theme.dart';
 
 class StatusContainer extends StatelessWidget {
   const StatusContainer({super.key, required this.child, this.padding});
@@ -10,11 +10,12 @@ class StatusContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
     return Container(
       padding: padding ?? const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.statusBackground,
-        borderRadius: BorderRadius.circular(20),
+        color: theme.statusBackgroundColor,
+        borderRadius: BorderRadius.circular(theme.statusBorderRadius),
       ),
       child: child,
     );

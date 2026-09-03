@@ -1,7 +1,10 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension, Translations, TranslationProvider;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension, Translations, TranslationProvider;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'package:denpa_memo/main.dart';
 
 import '../support/all_translation_providers.dart';
 
@@ -59,6 +62,7 @@ void main() {
     await tester.pumpWidget(
       AllTranslationProviders(
         child: MaterialApp(
+          theme: appLightTheme,
           home: Scaffold(
             body: EditableQrCode(
               denpaMen: denpaMen,

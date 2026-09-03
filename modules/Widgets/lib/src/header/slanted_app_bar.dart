@@ -15,15 +15,10 @@ import '../theme/slanted_header_theme.dart';
 /// required height) scale with window width, which blows up well past a
 /// usable header height on a wide desktop window.
 ///
-/// Fill/border colors, border thickness, and content padding come from
-/// [SlantedHeaderThemeData]; [borderWidth] lets a caller override the
-/// theme's value for one instance, mirroring how other widgets in this
-/// package let an explicit constructor argument win over the theme
-/// default. [angleDegrees] is required rather than theme-resolved because
-/// [preferredSize] (which depends on it) is read by [Scaffold] before
-/// [build] runs, with no [BuildContext] available to look the theme up —
-/// [AppScaffold], this widget's only caller, resolves
-/// [SlantedHeaderThemeData.angleDegrees] itself and passes it down.
+/// Fill/border colors and content padding come from [SlantedHeaderThemeData].
+/// [angleDegrees] is required rather than theme-resolved because
+/// [preferredSize] is read by [Scaffold] before [build] runs, with no
+/// [BuildContext] available — [AppScaffold] resolves it and passes it down.
 class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SlantedAppBar({
     super.key,
@@ -41,11 +36,6 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? borderWidth;
   final double angleDegrees;
 
-  /// Extra height reserved above [height] for the device's top safe area
-  /// (status bar/notch), so [SafeArea] below has room to inset the content
-  /// without shrinking the space actually available to [title]/[actions].
-  /// Callers read this from `MediaQuery.paddingOf(context)` — [SlantedAppBar]
-  /// itself can't, since [Scaffold] reads [preferredSize] before [build] runs.
   final double topSafeAreaInset;
 
   double get _contentHeight => height + topSafeAreaInset;

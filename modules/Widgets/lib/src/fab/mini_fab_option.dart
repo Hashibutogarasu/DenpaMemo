@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import '../theme/fab_button_theme.dart';
 
 /// One labeled small [FloatingActionButton] in a stack of options revealed
-/// above a main FAB, sliding/fading in or out as [open] toggles. Animation
-/// curve/offset and label-bubble styling come from [FabButtonThemeData];
-/// [animationDuration] defaults to the theme's value but can be overridden
-/// per instance.
+/// above a main FAB, sliding/fading in or out as [open] toggles. Styling
+/// comes from [FabButtonThemeData].
 class MiniFabOption extends StatelessWidget {
   const MiniFabOption({
     super.key,

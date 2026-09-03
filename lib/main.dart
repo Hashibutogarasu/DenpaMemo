@@ -166,6 +166,25 @@ final _themeExtensions = <ThemeExtension<dynamic>>[
     miniOptionGap: 12,
     miniOptionRowBottomPadding: 12,
   ),
+  const denpamemo_widgets.DenpaMenContainerThemeData(
+    statusBackgroundColor: Color(0xFF90E2FF),
+    statusBorderRadius: 20,
+    nestedBackgroundColor: Color(0xFFC8E0E7),
+    nestedBorderColor: Color(0xFF90DAFE),
+    nestedBorderWidth: 2,
+    nestedBorderRadius: 20,
+    accentColor: Color(0xFF056193),
+    memoBackgroundColor: Colors.white,
+    memoBorderRadius: 4,
+    headerDividerHeight: 2,
+    pencilIconSize: 28,
+    previewIconSize: 56,
+    accordionIconSize: 32,
+    accordionTitleFontSize: 20,
+    accordionCheckboxSlotSize: 40,
+    accordionAnimationDuration: Duration(milliseconds: 200),
+    resistanceGap: 5,
+  ),
 ];
 
 /// [MaterialScrollBehavior] additionally treats the mouse as a drag

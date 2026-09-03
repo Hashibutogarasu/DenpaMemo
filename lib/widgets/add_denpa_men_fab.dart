@@ -26,29 +26,10 @@ class AddDenpaMenFab extends StatefulWidget {
   });
 
   final MasterData masterData;
-
-  /// Lets a caller elsewhere in the tree find exactly where the always-on
-  /// "+" button renders (via [CompositedTransformFollower]), regardless of
-  /// how much space the mini options above it reserve while closed.
   final LayerLink? mainButtonLayerLink;
-
-  /// When set (mobile home screen, where the AppBar overflow menu is
-  /// hidden), a "import from file" option is shown in the expanded menu.
-  /// Left null on desktop, where import is reached from the overflow menu.
   final VoidCallback? onImport;
-
-  /// When set (mobile home screen with a non-empty selection), an "export
-  /// selected" option is shown in the expanded menu. Left null on desktop
-  /// or when nothing is selected.
   final VoidCallback? onExport;
-
-  /// Defaults to [FabButtonThemeData.mainButtonAnimationDuration].
   final Duration? animationDuration;
-
-  /// Lets a caller elsewhere in the tree (e.g. [AppScaffold], to show a
-  /// dimmed backdrop behind this FAB while it's expanded) observe and
-  /// control whether the menu is open. When left null, this widget owns
-  /// its open/closed state privately, same as before this existed.
   final ValueNotifier<bool>? expansionController;
 
   @override

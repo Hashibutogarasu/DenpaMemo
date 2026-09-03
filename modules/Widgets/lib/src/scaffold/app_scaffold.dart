@@ -56,11 +56,6 @@ class AppScaffold extends ConsumerWidget {
   final Widget body;
   final Widget? floatingActionButton;
 
-  /// When [floatingActionButton] is an expandable FAB (e.g.
-  /// `AddDenpaMenFab`) that exposes its own open/closed state through a
-  /// [ValueNotifier], pass it here to show a dimmed, tap-to-dismiss backdrop
-  /// over [body] while it's open — styled by [FabButtonThemeData]. Left
-  /// null for a plain, non-expanding [floatingActionButton].
   final ValueNotifier<bool>? floatingActionButtonExpansion;
   final List<Widget>? actions;
   final double buttonInset;
@@ -141,10 +136,9 @@ class AppScaffold extends ConsumerWidget {
   }
 }
 
-/// Dims [body] while [expansion] is `true`, and tapping anywhere on the dim
-/// sets it back to `false` — the backdrop [AppScaffold] shows behind an
-/// expandable FAB. Sits between [body] and the FAB/back-button [Positioned]
-/// entries in the same [Stack], so it never covers them.
+/// Dims [body] while [expansion] is `true`; tapping it sets it back to
+/// `false`. Sits between [body] and the FAB/back-button [Positioned]
+/// entries in the same [Stack].
 class _FabScrim extends StatelessWidget {
   const _FabScrim({required this.expansion});
 
