@@ -1,7 +1,6 @@
 import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:graphql_client/graphql_client.dart';
 
 import '../data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'objectbox_providers.dart';
@@ -39,15 +38,4 @@ final denpaMenSyncServiceProvider = Provider<DenpaMenSyncService>((ref) {
     repository: ObjectBoxDenpaMenRepository(ref.watch(objectBoxProvider)),
     cacheIndexRepository: ref.watch(dataCacheProvider),
   );
-});
-
-/// Runs [DenpaMenSyncService.sync] against freshly fetched
-/// [masterDataProvider] data. The single provider a widget should watch to
-/// keep every stored record's hash and resistance cache entry up to date.
-/// Never runs while offline, since [masterDataProvider] itself never
-/// resolves in that case.
-final denpaMenSyncProvider = FutureProvider<void>((ref) async {
-  final masterData = await ref.watch(masterDataProvider.future);
-  final service = ref.watch(denpaMenSyncServiceProvider);
-  await service.sync(masterData);
 });

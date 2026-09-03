@@ -14,13 +14,14 @@ import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/objectbox/objectbox.dart';
 import 'i18n/gen/strings.g.dart';
+import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
-import 'providers/denpa_men_sync_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
 import 'theme/app_theme_mode_mapping.dart';
 import 'widgets/restart_widget.dart';
+import 'widgets/splash/splash_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -104,7 +105,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(denpaMenSyncProvider);
+    ref.watch(appInitializationProvider);
     final themeMode = ref.watch(appSettingsProvider).themeMode;
     return MaterialApp.router(
       title: t.app.name,
@@ -113,6 +114,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
       darkTheme: AppDarkTheme.theme,
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
+      builder: (context, child) => SplashGate(child: child!),
     );
   }
 }

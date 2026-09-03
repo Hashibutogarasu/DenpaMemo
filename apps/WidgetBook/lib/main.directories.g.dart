@@ -143,6 +143,8 @@ import 'package:widgetbook_app/use_cases/lineage/tree_edge_renderer_fix.widgetbo
     as _widgetbook_app_use_cases_lineage_tree_edge_renderer_fix_widgetbook;
 import 'package:widgetbook_app/use_cases/lineage/tree_graph_cursor_icon.widgetbook.dart'
     as _widgetbook_app_use_cases_lineage_tree_graph_cursor_icon_widgetbook;
+import 'package:widgetbook_app/use_cases/logo_container.widgetbook.dart'
+    as _widgetbook_app_use_cases_logo_container_widgetbook;
 import 'package:widgetbook_app/use_cases/middle_click_detector.widgetbook.dart'
     as _widgetbook_app_use_cases_middle_click_detector_widgetbook;
 import 'package:widgetbook_app/use_cases/navigation/app_back_button.widgetbook.dart'
@@ -264,6 +266,16 @@ final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
     name: 'common',
     children: [
+      _widgetbook.WidgetbookComponent(
+        name: 'LogoContainer',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder: _widgetbook_app_use_cases_logo_container_widgetbook
+                .logoContainerUseCase,
+          ),
+        ],
+      ),
       _widgetbook.WidgetbookComponent(
         name: 'MiddleClickDetector',
         useCases: [
