@@ -11,52 +11,6 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/physiques_providers.dart';
 import '../widgets/physique_table/physique_table_row.dart';
 
-Future<List<int>?> _promptNewRowValues(BuildContext context, int columnCount) {
-  final controllers = List.generate(columnCount, (_) => TextEditingController(text: '0'));
-  return showDialog<List<int>>(
-    context: context,
-    builder: (context) {
-      final t = context.t;
-      return AlertDialog(
-        title: Text(t.physiqueTable.addRow),
-        actionsAlignment: MainAxisAlignment.center,
-        content: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (var i = 0; i < columnCount; i++)
-                Padding(
-                  padding: EdgeInsets.only(right: i == columnCount - 1 ? 0 : 8),
-                  child: SizedBox(
-                    width: 64,
-                    child: TextField(
-                      controller: controllers[i],
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: '${i + 1}'),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.common.cancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop([
-              for (final controller in controllers) int.tryParse(controller.text) ?? 0,
-            ]),
-            child: Text(t.common.confirm),
-          ),
-        ],
-      );
-    },
-  );
-}
-
 Future<bool> _confirm(
   BuildContext context, {
   required String title,
@@ -143,8 +97,6 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   }
 
   Future<void> _addRow(int columnCount) async {
-    final values = await _promptNewRowValues(context, columnCount);
-    if (values == null) return;
     final client = ref.read(physiquesApiClientProvider);
     final created = await client.create([
       PhysiqueTableRecord(
@@ -152,7 +104,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
         level: widget.args.level,
         anntenaCategory: widget.args.anntenaCategory,
         lineOffset: _rows!.length,
-        values: values,
+        values: List.filled(columnCount, 0),
       ),
     ]);
     setState(() {
