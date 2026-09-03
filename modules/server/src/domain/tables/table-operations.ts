@@ -49,16 +49,20 @@ export function whereFor(resolved: TableEntityMapping, filters: { level?: string
  * Normalizes a saved/fetched row into the wire shape callers actually see:
  * `type` instead of whatever (if any) discriminator column the backing
  * entity happens to store it under. Callers never send or see a
- * discriminator column name directly.
+ * discriminator column name directly. `values` is clamped to
+ * `columnCount` so older rows stored before a type's column count was
+ * narrowed never expose more values than the type currently declares —
+ * every caller sees the same, currently-valid row width without having
+ * to enforce it themselves.
  */
-export function serializeRow(type: string, row: TableRow) {
+export function serializeRow(type: string, columnCount: number, row: TableRow) {
   return {
     id: row.id,
     type,
     level: row.level,
     anntenaCategory: row.anntenaCategory,
     lineOffset: row.lineOffset,
-    values: row.values,
+    values: row.values.length > columnCount ? row.values.slice(0, columnCount) : row.values,
   };
 }
 

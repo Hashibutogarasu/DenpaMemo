@@ -120,7 +120,7 @@ export function tablesRoutes(dataSource: DataSource) {
             ...(resolved.discriminator ? { [resolved.discriminator.column]: resolved.discriminator.value } : {}),
           });
           const row = (await repo.save(entity)) as unknown as TableRow;
-          saved.push(serializeRow(record.type, row));
+          saved.push(serializeRow(record.type, resolved.columnCount, row));
         }
 
         set.status = 201;
@@ -175,7 +175,7 @@ export function tablesRoutes(dataSource: DataSource) {
           })) as unknown as TableRow[];
         }
 
-        return rows.map((row) => serializeRow(type, row));
+        return rows.map((row) => serializeRow(type, resolved.columnCount, row));
       })
       .put('/', async ({ body, set }) => {
         const shapeParsed = putTablesBodySchema.safeParse(body);
@@ -215,7 +215,7 @@ export function tablesRoutes(dataSource: DataSource) {
           const target = targetRows[lineOffset + i];
           target.values = records[i].values;
           const saved = (await repo.save(target as never)) as unknown as TableRow;
-          updated.push(serializeRow(type, saved));
+          updated.push(serializeRow(type, resolved.columnCount, saved));
         }
 
         return updated;
