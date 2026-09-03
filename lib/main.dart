@@ -18,6 +18,7 @@ import 'providers/app_settings_providers.dart';
 import 'providers/denpa_men_sync_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
+import 'theme/app_theme.dart';
 import 'theme/app_theme_mode_mapping.dart';
 import 'widgets/restart_widget.dart';
 
@@ -108,93 +109,13 @@ class _ThemedMaterialApp extends ConsumerWidget {
     return MaterialApp.router(
       title: t.app.name,
       scrollBehavior: const _DragAnywhereScrollBehavior(),
-      theme: appLightTheme,
-      darkTheme: appDarkTheme,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
     );
   }
 }
-
-final ThemeData appLightTheme = ThemeData(
-  colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-  elevatedButtonTheme: _elevatedButtonTheme,
-  extensions: _themeExtensions,
-);
-
-final ThemeData appDarkTheme = ThemeData(
-  colorScheme: .fromSeed(
-    seedColor: Colors.deepPurple,
-    brightness: Brightness.dark,
-  ),
-  elevatedButtonTheme: _elevatedButtonTheme,
-  extensions: _themeExtensions,
-);
-
-/// Shared between light/dark: [AppBackButton] and every other
-/// [ElevatedButton] in the app get this shape/size, with colors resolved
-/// from each [ThemeData]'s own [ColorScheme]. [AppBackButton.height] must
-/// match this style's `minimumSize` height.
-final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
-  style: ElevatedButton.styleFrom(
-    shape: const StadiumBorder(),
-    minimumSize: const Size(64, denpamemo_widgets.AppBackButton.height),
-  ),
-);
-
-/// Shared between light/dark for now — these extensions' colors/animations
-/// don't currently vary by brightness (unlike [ColorScheme], which each
-/// [ThemeData] above derives separately via `.fromSeed`).
-final _themeExtensions = <ThemeExtension<dynamic>>[
-  const denpamemo_widgets.SlantedHeaderThemeData(
-    fillColor: Color(0xFF52BBE5),
-    borderColor: Color(0xFF0865C2),
-    borderWidth: 6,
-    angleDegrees: 10,
-    contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
-  ),
-  const denpamemo_widgets.FabButtonThemeData(
-    barrierColor: Colors.black54,
-    scrimAnimationDuration: Duration(milliseconds: 200),
-    scrimAnimationCurve: Curves.easeOutCubic,
-    mainButtonAnimationDuration: Duration(milliseconds: 200),
-    miniOptionSlideCurve: Curves.easeOutCubic,
-    miniOptionSlideOffset: Offset(0, 0.3),
-    labelBubbleElevation: 4,
-    labelBubbleBorderRadius: 8,
-    labelBubblePadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-    miniOptionGap: 12,
-    miniOptionRowBottomPadding: 12,
-  ),
-  const denpamemo_widgets.DenpaMenContainerThemeData(
-    statusBackgroundColor: Color(0xFF90E2FF),
-    statusBorderRadius: 20,
-    nestedBackgroundColor: Color(0xFFC8E0E7),
-    nestedBorderColor: Color(0xFF90DAFE),
-    nestedBorderWidth: 2,
-    nestedBorderRadius: 20,
-    accentColor: Color(0xFF056193),
-    memoBackgroundColor: Colors.white,
-    memoBorderRadius: 4,
-    headerDividerHeight: 2,
-    pencilIconSize: 28,
-    previewIconSize: 56,
-    accordionIconSize: 32,
-    accordionTitleFontSize: 20,
-    accordionCheckboxSlotSize: 40,
-    accordionAnimationDuration: Duration(milliseconds: 200),
-    resistanceGap: 5,
-  ),
-  const denpamemo_widgets.DenpaMenLabelThemeData(
-    headerTitleOutlineColor: Color(0xFF238BCB),
-    pillBackgroundColor: Color(0xFF7FC9FF),
-    pillTextColor: Color(0xFF2B2031),
-    expBarFilledColor: Color(0xFFFFEB3B),
-    expBarUnfilledColor: Color(0xFF056193),
-    maxedValueColor: Color(0xFF7BEA95),
-    inactiveBonusColor: Color(0xFFE53935),
-  ),
-];
 
 /// [MaterialScrollBehavior] additionally treats the mouse as a drag
 /// device. Without this, pointer-drag gestures — including the overscroll

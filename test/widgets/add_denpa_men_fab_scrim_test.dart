@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/main.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:denpa_memo/widgets/add_denpa_men_fab.dart';
 import '../support/all_translation_providers.dart';
 
@@ -49,7 +49,7 @@ class _HarnessState extends State<_Harness> {
     return ProviderScope(
       child: AllTranslationProviders(
         child: MaterialApp(
-          theme: appLightTheme,
+          theme: AppTheme.light,
           home: AppScaffold(
             title: const Text('home'),
             floatingActionButtonExpansion: _expansion,

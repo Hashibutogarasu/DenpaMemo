@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
-import 'package:denpa_memo/main.dart';
 import 'package:denpa_memo/pages/denpa_men_qr.dart';
 import 'package:denpa_memo/providers/denpa_men_session_providers.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 
 final _masterData = MasterData(
   headShapes: const [],
@@ -48,7 +48,10 @@ void main() {
         UncontrolledProviderScope(
           container: container,
           child: TranslationProvider(
-            child: MaterialApp.router(theme: appLightTheme, routerConfig: router),
+            child: MaterialApp.router(
+              theme: AppTheme.light,
+              routerConfig: router,
+            ),
           ),
         ),
       );

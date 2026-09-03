@@ -24,6 +24,12 @@ final ThemeData testAppTheme = ThemeData(
       minimumSize: const Size(64, AppBackButton.height),
     ),
   ),
+  listTileTheme: const ListTileThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+    ),
+    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+  ),
   extensions: const [
     SlantedHeaderThemeData(
       fillColor: Color(0xFF52BBE5),

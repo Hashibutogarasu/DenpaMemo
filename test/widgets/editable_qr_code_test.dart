@@ -4,7 +4,7 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/main.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 
 import '../support/all_translation_providers.dart';
 
@@ -62,7 +62,7 @@ void main() {
     await tester.pumpWidget(
       AllTranslationProviders(
         child: MaterialApp(
-          theme: appLightTheme,
+          theme: AppTheme.light,
           home: Scaffold(
             body: EditableQrCode(
               denpaMen: denpaMen,
