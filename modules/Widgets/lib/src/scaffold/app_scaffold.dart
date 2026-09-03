@@ -27,9 +27,10 @@ class AlwaysPoppableShellScope extends InheritedWidget {
 
 /// Standard page shell: a [SlantedAppBar] header, then [belowHeader] and
 /// [body] in a [Column]. [body] holds the stack-aware [AppBackButton]
-/// (bottom-left) and [floatingActionButton] (bottom-right) as siblings in
-/// one [Stack], both inset by [buttonInset]. Also binds Escape to the same
-/// pop as the on-screen back button.
+/// (bottom-left, with any [backButtonExtras] stacked above it, gapped by
+/// [FabButtonThemeData.miniOptionRowBottomPadding] like `MiniFabOption`)
+/// and [floatingActionButton] (bottom-right), both inset by [buttonInset].
+/// Also binds Escape to the same pop as the on-screen back button.
 class AppScaffold extends ConsumerWidget {
   const AppScaffold({
     super.key,
@@ -40,6 +41,7 @@ class AppScaffold extends ConsumerWidget {
     this.actions,
     this.buttonInset = 16,
     this.onBackPressed,
+    this.backButtonExtras = const [],
     this.additionalShortcuts = const {},
     this.belowHeader,
   });
@@ -52,6 +54,7 @@ class AppScaffold extends ConsumerWidget {
   final List<Widget>? actions;
   final double buttonInset;
   final VoidCallback? onBackPressed;
+  final List<Widget> backButtonExtras;
   final Widget? belowHeader;
 
   final Map<ShortcutActivator, VoidCallback> additionalShortcuts;
@@ -109,7 +112,21 @@ class AppScaffold extends ConsumerWidget {
                       Positioned(
                         left: buttonInset,
                         bottom: buttonInset,
-                        child: AppBackButton(onPressed: onBackPressed),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (final extra in backButtonExtras) ...[
+                              extra,
+                              SizedBox(
+                                height: Theme.of(context)
+                                    .extension<FabButtonThemeData>()!
+                                    .miniOptionRowBottomPadding,
+                              ),
+                            ],
+                            AppBackButton(onPressed: onBackPressed),
+                          ],
+                        ),
                       ),
                     if (floatingActionButton != null)
                       Positioned(

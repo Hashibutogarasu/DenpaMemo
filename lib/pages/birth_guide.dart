@@ -201,11 +201,12 @@ class _BirthGuidePageState extends ConsumerState<BirthGuidePage> {
         title: OutlinedTitleText(text: t.page.birthGuide),
         buttonInset: widget.buttonInset,
         onBackPressed: _currentIndex == 0 ? null : _goToPreviousSlide,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home),
-            tooltip: t.page.home,
+        backButtonExtras: [
+          FloatingActionButton.extended(
+            heroTag: 'birthGuideHome',
             onPressed: () => const HomeRoute().go(context),
+            icon: const Icon(Icons.home),
+            label: Text(t.page.home),
           ),
         ],
         floatingActionButton: FloatingActionButton.extended(
