@@ -12,23 +12,37 @@ class DenpaMenSyncService {
   const DenpaMenSyncService({
     required this.repository,
     required this.cacheIndexRepository,
+    this.recordsPerSyncBatch = 20,
   });
 
   final DenpaMenRepository repository;
   final CacheIndexRepository cacheIndexRepository;
+  final int recordsPerSyncBatch;
 
   Future<void> sync(MasterData masterData) async {
-    migrateDenpaMenHashes(repository, masterData);
-    for (final record in repository.getAll(masterData)) {
-      final denpaMen = record.denpaMen;
-      await cacheIndexRepository.save(
-        denpaMen.id,
-        DenpaMenResistanceCacheInput.fromDenpaMen(denpaMen),
-        DenpaMenResistanceCacheOutput((
-          abnormalityResistances: denpaMen.abnormalityResistances,
-          attributeResistance: denpaMen.attributeResistance,
-        )),
+    var offset = 0;
+    while (true) {
+      final batch = repository.getRange(
+        masterData,
+        offset: offset,
+        limit: recordsPerSyncBatch,
       );
+      if (batch.isEmpty) return;
+      await migrateDenpaMenHashes(repository, batch);
+      for (final record in batch) {
+        final denpaMen = record.denpaMen;
+        await cacheIndexRepository.save(
+          denpaMen.id,
+          DenpaMenResistanceCacheInput.fromDenpaMen(denpaMen),
+          DenpaMenResistanceCacheOutput((
+            abnormalityResistances: denpaMen.abnormalityResistances,
+            attributeResistance: denpaMen.attributeResistance,
+          )),
+        );
+      }
+      await Future(() {});
+      if (batch.length < recordsPerSyncBatch) return;
+      offset += recordsPerSyncBatch;
     }
   }
 }

@@ -36,6 +36,25 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
   }
 
   @override
+  List<DenpaMenRecord> getRange(
+    MasterData masterData, {
+    required int offset,
+    required int limit,
+  }) {
+    final query = _orderedQuery().build()
+      ..offset = offset
+      ..limit = limit;
+    try {
+      return [
+        for (final entity in query.find())
+          DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData)),
+      ];
+    } finally {
+      query.close();
+    }
+  }
+
+  @override
   Stream<List<DenpaMenRecord>> watchAll(MasterData masterData) {
     return _orderedQuery()
         .watch(triggerImmediately: true)

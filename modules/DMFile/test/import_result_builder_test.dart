@@ -13,6 +13,17 @@ class _InMemoryDenpaMenRepository implements DenpaMenRepository {
   ];
 
   @override
+  List<DenpaMenRecord> getRange(
+    MasterData masterData, {
+    required int offset,
+    required int limit,
+  }) {
+    final all = getAll(masterData);
+    if (offset >= all.length) return const [];
+    return all.sublist(offset, (offset + limit).clamp(0, all.length));
+  }
+
+  @override
   Stream<List<DenpaMenRecord>> watchAll(MasterData masterData) =>
       Stream.value(getAll(masterData));
 
