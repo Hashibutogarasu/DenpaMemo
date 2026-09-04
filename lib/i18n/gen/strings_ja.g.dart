@@ -298,6 +298,9 @@ class Translations$profile$ja {
 	/// ja: 'プロファイル名'
 	String get nameDialogTitle => 'プロファイル名';
 
+	/// ja: 'プロファイルを選択'
+	String get selectionDialogTitle => 'プロファイルを選択';
+
 	/// ja: 'デフォルト'
 	String get defaultName => 'デフォルト';
 }
@@ -1186,6 +1189,7 @@ extension on Translations {
 			'profile.switchPageTitle' => 'プロファイル切り替え',
 			'profile.create' => '新規作成',
 			'profile.nameDialogTitle' => 'プロファイル名',
+			'profile.selectionDialogTitle' => 'プロファイルを選択',
 			'profile.defaultName' => 'デフォルト',
 			'step.failureTitle' => '処理に失敗しました',
 			'step.failureDescription' => ({required Object error}) => '処理中にエラーが発生しました: ${error}',
