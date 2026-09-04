@@ -6,7 +6,6 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
@@ -181,13 +180,6 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
             (p) => p.id == chosenKey,
           );
     if (physique == null) {
-      if (context.mounted) {
-        await ErrorDialog.show(
-          context,
-          title: t.common.errorTitle,
-          description: t.physiqueIdentification.notFound,
-        );
-      }
       return null;
     }
     return (physique: physique, columnIndex: columnIndex);
