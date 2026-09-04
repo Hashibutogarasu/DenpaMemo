@@ -134,6 +134,7 @@
     "sync": "サーバーに同期",
     "synced": "サーバーに同期しました",
     "syncError": "サーバーへの同期に失敗しました",
+    "syncErrorDescription": "サーバーへの同期に失敗しました: ${message}",
     "deleteTable": "この表を削除",
     "deleteTableConfirmTitle": "体格表を削除",
     "deleteTableConfirmMessage": "この体格表を削除します。この操作は取り消せません。よろしいですか?",

@@ -3,6 +3,7 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 import 'package:table_editor/table_editor.dart';
 import 'package:toaster/toaster.dart';
 
@@ -114,15 +115,21 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
   }
 
   Future<void> _sync() async {
+    final t = context.t;
     try {
       await ref
           .read(physiqueTableEditProvider(widget.args).notifier)
           .syncToServer();
       if (!mounted) return;
-      await Toaster.show(context, context.t.physiqueTable.synced);
-    } catch (_) {
+      await Toaster.show(context, t.physiqueTable.synced);
+    } catch (error, stackTrace) {
       if (!mounted) return;
-      await Toaster.show(context, context.t.physiqueTable.syncError);
+      await ErrorDialog.show(
+        context,
+        title: t.common.errorTitle,
+        description: t.physiqueTable.syncErrorDescription(message: '$error'),
+        stackTrace: stackTrace,
+      );
     }
   }
 
