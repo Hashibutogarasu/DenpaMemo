@@ -76,15 +76,16 @@ abstract class DMFile with _$DMFile {
   /// dialog (e.g. `FilePicker.saveFile(bytes: ...)`), since Android/iOS
   /// require the bytes up front rather than a writable path to copy into.
   ///
-  /// [loadIcon] is called once per exported individual to fetch its icon
-  /// file (if any) for inclusion in the archive. [onProgress] is invoked
-  /// with a 0-1 fraction as the export proceeds, and with `null` once it
-  /// finishes.
+  /// [loadIcons] is called once per exported individual to fetch every
+  /// image slot it has saved (if any) for inclusion in the archive; DMFile
+  /// never knows or cares what the slot keys mean (see [DmExportContext]).
+  /// [onProgress] is invoked with a 0-1 fraction as the export proceeds,
+  /// and with `null` once it finishes.
   static Future<(ExportResult, Uint8List)> writeExport({
     required List<DenpaMen> candidates,
     required MasterData masterData,
     required List<QrCode> qrCodes,
-    required Future<File?> Function(String denpaMenId) loadIcon,
+    required Future<Map<String, File>> Function(String denpaMenId) loadIcons,
     required String dataVersion,
     required void Function(double? progress) onProgress,
     String? copyToPath,
@@ -93,7 +94,7 @@ abstract class DMFile with _$DMFile {
       candidates: candidates,
       masterData: masterData,
       qrCodes: qrCodes,
-      loadIcon: loadIcon,
+      loadIcons: loadIcons,
       dataVersion: dataVersion,
       onProgress: onProgress,
       copyToPath: copyToPath,
@@ -116,18 +117,20 @@ abstract class DMFile with _$DMFile {
   /// user declined to resolve duplicate individuals partway through (see
   /// [resolveDuplicates]).
   ///
-  /// [loadIcon]/[saveIcon] read and write each individual's icon file.
-  /// [onProgress] is invoked with a 0-1 fraction as the import proceeds,
-  /// and with `null` once it finishes. Throws [DmHeaderReadError] if the
-  /// zip's header is missing or malformed, or [DmInvalidImportFileException]
-  /// if `entries.json` is missing or not a JSON array.
+  /// [loadIcons]/[saveIcons] read back and write each individual's image
+  /// slots (see [DmImportContext]). [onProgress] is invoked with a 0-1
+  /// fraction as the import proceeds, and with `null` once it finishes.
+  /// Throws [DmHeaderReadError] if the zip's header is missing or
+  /// malformed, or [DmInvalidImportFileException] if `entries.json` is
+  /// missing or not a JSON array.
   static Future<ImportResult?> readImport({
     required File inputFile,
     required MasterData masterData,
     required DenpaMenRepository denpaMenRepository,
     required QrCodeRepository qrCodeRepository,
-    required Future<File?> Function(String denpaMenId) loadIcon,
-    required Future<void> Function(String denpaMenId, File iconFile) saveIcon,
+    required Future<Map<String, File>> Function(String denpaMenId) loadIcons,
+    required Future<void> Function(String denpaMenId, Map<String, File> icons)
+    saveIcons,
     required Future<List<DenpaMen>?> Function(List<DenpaMen> candidates)
     resolveDuplicates,
     required void Function(double? progress) onProgress,
@@ -137,8 +140,8 @@ abstract class DMFile with _$DMFile {
       masterData: masterData,
       denpaMenRepository: denpaMenRepository,
       qrCodeRepository: qrCodeRepository,
-      loadIcon: loadIcon,
-      saveIcon: saveIcon,
+      loadIcons: loadIcons,
+      saveIcons: saveIcons,
       resolveDuplicates: resolveDuplicates,
       onProgress: onProgress,
     );

@@ -15,6 +15,7 @@ class ListItemTile extends StatelessWidget {
     super.key,
     required this.icon,
     required this.label,
+    this.subtitle,
     this.onTap,
     this.trailingText,
     this.trailing,
@@ -28,6 +29,7 @@ class ListItemTile extends StatelessWidget {
 
   final IconData icon;
   final String label;
+  final String? subtitle;
   final VoidCallback? onTap;
   final String? trailingText;
   final Widget? trailing;
@@ -35,21 +37,31 @@ class ListItemTile extends StatelessWidget {
   final bool selectionMode;
   final bool selected;
   final ValueChanged<bool>? onSelectedChanged;
-  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)? actionMenuItemsBuilder;
+  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
+  actionMenuItemsBuilder;
   final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     final enabled =
-        onTap != null || onLongPress != null || (selectionMode && onSelectedChanged != null);
+        onTap != null ||
+        onLongPress != null ||
+        (selectionMode && onSelectedChanged != null);
     final effectiveColor = enabled ? color : null;
     final showCheckbox = selectionMode && onSelectedChanged != null;
     final showActionMenu = !showCheckbox && actionMenuItemsBuilder != null;
     return ListTile(
       leading: Icon(icon, color: effectiveColor),
-      title: Text(label, style: effectiveColor != null ? TextStyle(color: effectiveColor) : null),
+      title: Text(
+        label,
+        style: effectiveColor != null ? TextStyle(color: effectiveColor) : null,
+      ),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
       trailing: showCheckbox
-          ? Checkbox(value: selected, onChanged: (value) => onSelectedChanged!(value ?? false))
+          ? Checkbox(
+              value: selected,
+              onChanged: (value) => onSelectedChanged!(value ?? false),
+            )
           : showActionMenu
           ? PopupMenuButton<VoidCallback>(
               icon: const Icon(Icons.more_vert),

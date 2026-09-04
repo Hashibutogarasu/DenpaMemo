@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'container/status.dart';
+import 'denpa_men_container.dart';
 import 'denpa_men_status.dart';
 import 'icon/entity_icon.dart';
 import 'label/gauge_label.dart';
@@ -26,6 +27,7 @@ class DenpaMenAccordionTile extends StatefulWidget {
     required this.isCut,
     required this.onSelectedChanged,
     this.iconFile,
+    this.zoomCandidates,
     this.actionMenuItemsBuilder,
     this.animationDuration,
   });
@@ -40,6 +42,7 @@ class DenpaMenAccordionTile extends StatefulWidget {
   final ValueChanged<bool> onSelectedChanged;
 
   final File? iconFile;
+  final List<DenpaMenZoomCandidate>? zoomCandidates;
   final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
   actionMenuItemsBuilder;
 
@@ -157,6 +160,7 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
                       showContainer: false,
                       showIcon: true,
                       iconFile: widget.iconFile,
+                      zoomCandidates: widget.zoomCandidates,
                     )
                   : const SizedBox(width: double.infinity),
             ),

@@ -214,6 +214,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'fear': 'きょうふ',
 		'jack': 'ジャック',
 	};
+	late final Translations$croppy$ja croppy = Translations$croppy$ja.internal(_root);
 }
 
 // Path: app
@@ -349,6 +350,9 @@ class Translations$page$ja {
 
 	/// ja: 'バックアップ履歴'
 	String get cloudBackupHistory => 'バックアップ履歴';
+
+	/// ja: '画像切り抜き'
+	String get clippingSettings => '画像切り抜き';
 }
 
 // Path: settings
@@ -370,6 +374,21 @@ class Translations$settings$ja {
 
 	/// ja: 'テーマ'
 	String get theme => 'テーマ';
+
+	/// ja: '画像切り抜き'
+	String get clipping => '画像切り抜き';
+
+	/// ja: '顔'
+	String get clippingFace => '顔';
+
+	/// ja: '全身'
+	String get clippingWholeBody => '全身';
+
+	/// ja: 'アイコン'
+	String get clippingIcon => 'アイコン';
+
+	/// ja: '左${left}% 上${top}% 右${right}% 下${bottom}%'
+	String clippingRangeText({required Object left, required Object top, required Object right, required Object bottom}) => '左${left}% 上${top}% 右${right}% 下${bottom}%';
 
 	/// ja: '言語'
 	String get language => '言語';
@@ -960,6 +979,57 @@ class Translations$editableStatus$ja {
 	String get monsterExpRecipientCount => '経験値を獲得した人数';
 }
 
+// Path: croppy
+class Translations$croppy$ja {
+	Translations$croppy$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'リセット'
+	String get materialResetLabel => 'リセット';
+
+	/// ja: 'リセット'
+	String get cupertinoResetLabel => 'リセット';
+
+	/// ja: '${direction}に反転'
+	String materialFlipLabel({required Object direction}) => '${direction}に反転';
+
+	/// ja: '縦'
+	String get directionVertical => '縦';
+
+	/// ja: '横'
+	String get directionHorizontal => '横';
+
+	/// ja: 'フリーフォーム'
+	String get materialFreeformAspectRatioLabel => 'フリーフォーム';
+
+	/// ja: '元のサイズ'
+	String get materialOriginalAspectRatioLabel => '元のサイズ';
+
+	/// ja: '正方形'
+	String get materialSquareAspectRatioLabel => '正方形';
+
+	/// ja: '保存'
+	String get saveLabel => '保存';
+
+	/// ja: '完了'
+	String get doneLabel => '完了';
+
+	/// ja: 'キャンセル'
+	String get cancelLabel => 'キャンセル';
+
+	/// ja: 'フリーフォーム'
+	String get cupertinoFreeformAspectRatioLabel => 'フリーフォーム';
+
+	/// ja: '元のサイズ'
+	String get cupertinoOriginalAspectRatioLabel => '元のサイズ';
+
+	/// ja: '正方形'
+	String get cupertinoSquareAspectRatioLabel => '正方形';
+}
+
 // Path: settings.section
 class Translations$settings$section$ja {
 	Translations$settings$section$ja.internal(this._root);
@@ -1094,6 +1164,7 @@ extension on Translations {
 			'page.openSourceLicenses' => 'オープンソースライセンス',
 			'page.cloudBackup' => 'クラウドバックアップ&復元',
 			'page.cloudBackupHistory' => 'バックアップ履歴',
+			'page.clippingSettings' => '画像切り抜き',
 			'settings.section.general' => '全般',
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',
@@ -1122,6 +1193,11 @@ extension on Translations {
 			'settings.accountSettings.signInFlowStepRefreshSession' => 'セッションをリフレッシュしています',
 			'settings.accountSettings.signInFlowStepExtractUid' => 'アカウント情報を保存しています',
 			'settings.theme' => 'テーマ',
+			'settings.clipping' => '画像切り抜き',
+			'settings.clippingFace' => '顔',
+			'settings.clippingWholeBody' => '全身',
+			'settings.clippingIcon' => 'アイコン',
+			'settings.clippingRangeText' => ({required Object left, required Object top, required Object right, required Object bottom}) => '左${left}% 上${top}% 右${right}% 下${bottom}%',
 			'settings.language' => '言語',
 			'settings.notifications' => '通知',
 			'settings.advanced' => '詳細設定',
@@ -1431,6 +1507,20 @@ extension on Translations {
 			'abnormality.charm' => 'みりょう',
 			'abnormality.fear' => 'きょうふ',
 			'abnormality.jack' => 'ジャック',
+			'croppy.materialResetLabel' => 'リセット',
+			'croppy.cupertinoResetLabel' => 'リセット',
+			'croppy.materialFlipLabel' => ({required Object direction}) => '${direction}に反転',
+			'croppy.directionVertical' => '縦',
+			'croppy.directionHorizontal' => '横',
+			'croppy.materialFreeformAspectRatioLabel' => 'フリーフォーム',
+			'croppy.materialOriginalAspectRatioLabel' => '元のサイズ',
+			'croppy.materialSquareAspectRatioLabel' => '正方形',
+			'croppy.saveLabel' => '保存',
+			'croppy.doneLabel' => '完了',
+			'croppy.cancelLabel' => 'キャンセル',
+			'croppy.cupertinoFreeformAspectRatioLabel' => 'フリーフォーム',
+			'croppy.cupertinoOriginalAspectRatioLabel' => '元のサイズ',
+			'croppy.cupertinoSquareAspectRatioLabel' => '正方形',
 			_ => null,
 		};
 	}

@@ -77,16 +77,27 @@ class DecodeEntriesStep extends DmImportStep {
   }
 }
 
-/// Resolves each entry's icon file (if any) from the extracted directory,
-/// matching `CopyIconsStep`'s written layout on the export side.
+/// Resolves each entry's image slots from the extracted directory,
+/// matching `CopyIconsStep`'s written layout on the export side. Slot
+/// keys are opaque strings read directly from the archive's directory
+/// names — this step never enumerates or interprets which ones exist,
+/// except for the single [legacyIconSlotKey] fallback for pre-multi-slot
+/// archives (a `.dm` file written before per-slot images existed, with a
+/// single icon directly under `icons/denpamens/<id>/` and no slot
+/// subdirectory). [legacyIconSlotKey]'s value is DMFile's own
+/// backward-compat convention — it happens to match the app layer's
+/// `DenpaMenImageSlotType.icon.name`, but DMFile defines it independently
+/// and never imports that enum.
 class ResolveIconsStep extends DmImportStep {
+  static const String legacyIconSlotKey = 'icon';
+
   @override
   Future<void> run(DmImportContext context) async {
     final entries = context.entries!;
-    final iconsByDenpaMenId = <String, File>{};
+    final iconsByDenpaMenId = <String, Map<String, File>>{};
     for (var i = 0; i < entries.length; i++) {
       final denpaMenId = entries[i].denpaMen.id;
-      final iconDirectory = Directory(
+      final individualDirectory = Directory(
         path.join(
           context.extractDirectory!.path,
           'icons',
@@ -94,19 +105,50 @@ class ResolveIconsStep extends DmImportStep {
           denpaMenId,
         ),
       );
-      final metadataFile = File(path.join(iconDirectory.path, 'metadata.json'));
-      if (await metadataFile.exists()) {
-        final metadata =
-            jsonDecode(await metadataFile.readAsString())
-                as Map<String, dynamic>;
-        final fileName = metadata['fileName'] as String?;
-        if (fileName != null) {
-          final iconFile = File(path.join(iconDirectory.path, fileName));
+      final icons = <String, File>{};
+      if (await individualDirectory.exists()) {
+        await for (final entity in individualDirectory.list()) {
+          if (entity is! Directory) {
+            continue;
+          }
+          final slotKey = path.basename(entity.path);
+          final metadataFile = File(path.join(entity.path, 'metadata.json'));
+          if (!await metadataFile.exists()) {
+            continue;
+          }
+          final metadata =
+              jsonDecode(await metadataFile.readAsString())
+                  as Map<String, dynamic>;
+          final fileName = metadata['fileName'] as String?;
+          if (fileName == null) {
+            continue;
+          }
+          final iconFile = File(path.join(entity.path, fileName));
           if (await iconFile.exists()) {
-            iconsByDenpaMenId[denpaMenId] = iconFile;
+            icons[slotKey] = iconFile;
           }
         }
       }
+      if (icons.isEmpty) {
+        final legacyMetadataFile = File(
+          path.join(individualDirectory.path, 'metadata.json'),
+        );
+        if (await legacyMetadataFile.exists()) {
+          final metadata =
+              jsonDecode(await legacyMetadataFile.readAsString())
+                  as Map<String, dynamic>;
+          final fileName = metadata['fileName'] as String?;
+          if (fileName != null) {
+            final legacyIconFile = File(
+              path.join(individualDirectory.path, fileName),
+            );
+            if (await legacyIconFile.exists()) {
+              icons[legacyIconSlotKey] = legacyIconFile;
+            }
+          }
+        }
+      }
+      iconsByDenpaMenId[denpaMenId] = icons;
       reportProgress(entryIndex: i, entryCount: entries.length);
     }
     context.iconsByDenpaMenId = iconsByDenpaMenId;
@@ -167,24 +209,24 @@ class MergeEntriesStep extends DmImportStep {
   }
 }
 
-/// Saves each merged entry's resolved icon file, if any.
+/// Saves each merged entry's resolved image slots, if any.
 class SaveIconsStep extends DmImportStep {
   @override
   Future<void> run(DmImportContext context) async {
     final entries = context.selectedEntries!;
     final iconsByDenpaMenId = context.iconsByDenpaMenId!;
     for (var i = 0; i < entries.length; i++) {
-      final iconFile = iconsByDenpaMenId[entries[i].denpaMen.id];
-      if (iconFile != null) {
-        await context.saveIcon(entries[i].denpaMen.id, iconFile);
+      final icons = iconsByDenpaMenId[entries[i].denpaMen.id];
+      if (icons != null && icons.isNotEmpty) {
+        await context.saveIcons(entries[i].denpaMen.id, icons);
       }
       reportProgress(entryIndex: i, entryCount: entries.length);
     }
   }
 }
 
-/// Warms the icon cache for every merged entry that has an icon, so it's
-/// ready to display as soon as the import completes.
+/// Warms the icon cache for every merged entry that has at least one
+/// image slot, so it's ready to display as soon as the import completes.
 class WarmIconCacheStep extends DmImportStep {
   @override
   Future<void> run(DmImportContext context) async {
@@ -196,8 +238,9 @@ class WarmIconCacheStep extends DmImportStep {
         denpaMenId,
         context.masterData,
       );
-      if (record != null && iconsByDenpaMenId.containsKey(denpaMenId)) {
-        await context.loadIcon(denpaMenId);
+      final icons = iconsByDenpaMenId[denpaMenId];
+      if (record != null && icons != null && icons.isNotEmpty) {
+        await context.loadIcons(denpaMenId);
       }
       reportProgress(entryIndex: i, entryCount: entries.length);
     }

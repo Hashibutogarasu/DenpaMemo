@@ -38,7 +38,8 @@
     "dataManagement": "データ管理",
     "openSourceLicenses": "オープンソースライセンス",
     "cloudBackup": "クラウドバックアップ&復元",
-    "cloudBackupHistory": "バックアップ履歴"
+    "cloudBackupHistory": "バックアップ履歴",
+    "clippingSettings": "画像切り抜き"
   },
   "settings": {
     "section": {
@@ -73,6 +74,11 @@
       "signInFlowStepExtractUid": "アカウント情報を保存しています"
     },
     "theme": "テーマ",
+    "clipping": "画像切り抜き",
+    "clippingFace": "顔",
+    "clippingWholeBody": "全身",
+    "clippingIcon": "アイコン",
+    "clippingRangeText": "左${left}% 上${top}% 右${right}% 下${bottom}%",
     "language": "言語",
     "notifications": "通知",
     "advanced": "詳細設定",
@@ -418,5 +424,21 @@
     "charm": "みりょう",
     "fear": "きょうふ",
     "jack": "ジャック"
+  },
+  "croppy": {
+    "materialResetLabel": "リセット",
+    "cupertinoResetLabel": "リセット",
+    "materialFlipLabel": "${direction}に反転",
+    "directionVertical": "縦",
+    "directionHorizontal": "横",
+    "materialFreeformAspectRatioLabel": "フリーフォーム",
+    "materialOriginalAspectRatioLabel": "元のサイズ",
+    "materialSquareAspectRatioLabel": "正方形",
+    "saveLabel": "保存",
+    "doneLabel": "完了",
+    "cancelLabel": "キャンセル",
+    "cupertinoFreeformAspectRatioLabel": "フリーフォーム",
+    "cupertinoOriginalAspectRatioLabel": "元のサイズ",
+    "cupertinoSquareAspectRatioLabel": "正方形"
   }
 }

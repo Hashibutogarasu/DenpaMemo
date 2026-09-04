@@ -37,7 +37,11 @@ class DmExportController {
     final progress = _ref.read(importExportProgressProvider.notifier);
     final notifications = _ref.read(appNotificationsProvider.notifier);
     progress.state = 0;
-    notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: 0);
+    notifications.setStatus(
+      _notificationKind,
+      status: AppNotificationStatus.running,
+      progress: 0,
+    );
 
     final selectedIds = _ref.read(selectedDenpaMenIdsProvider);
     final records = _ref.read(denpaMenRepositoryProvider).getAll(masterData);
@@ -58,7 +62,10 @@ class DmExportController {
       );
       if (directoryPath == null) {
         progress.state = null;
-        notifications.setStatus(_notificationKind, status: AppNotificationStatus.cancelled);
+        notifications.setStatus(
+          _notificationKind,
+          status: AppNotificationStatus.cancelled,
+        );
         return null;
       }
       copyToPath = path.join(directoryPath, fileName);
@@ -72,19 +79,28 @@ class DmExportController {
         candidates: candidates,
         masterData: masterData,
         qrCodes: [for (final record in qrCodes) record.qrCode],
-        loadIcon: storage.loadIcon,
+        loadIcons: (denpaMenId) =>
+            loadAllDenpaMenImageSlots(storage, denpaMenId),
         dataVersion: packageInfo.version,
         onProgress: (value) {
           progress.state = value;
           if (value != null) {
-            notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: value);
+            notifications.setStatus(
+              _notificationKind,
+              status: AppNotificationStatus.running,
+              progress: value,
+            );
           }
         },
         copyToPath: copyToPath,
       );
 
       if (copyToPath != null) {
-        notifications.setStatus(_notificationKind, status: AppNotificationStatus.completed, progress: 1);
+        notifications.setStatus(
+          _notificationKind,
+          status: AppNotificationStatus.completed,
+          progress: 1,
+        );
         return result;
       }
 
@@ -96,13 +112,24 @@ class DmExportController {
         bytes: zipBytes,
       );
       if (savePath == null) {
-        notifications.setStatus(_notificationKind, status: AppNotificationStatus.cancelled);
+        notifications.setStatus(
+          _notificationKind,
+          status: AppNotificationStatus.cancelled,
+        );
         return null;
       }
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.completed, progress: 1);
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.completed,
+        progress: 1,
+      );
       return result;
     } catch (error) {
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.failed, message: '$error');
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        message: '$error',
+      );
       rethrow;
     } finally {
       progress.state = null;

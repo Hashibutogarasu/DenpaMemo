@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:croppy/croppy.dart';
 import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:intl/date_symbol_data_local.dart';
@@ -14,6 +16,7 @@ import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/objectbox/objectbox.dart';
 import 'i18n/gen/strings.g.dart';
+import 'l10n/croppy_localizations_ja.dart';
 import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
 import 'providers/objectbox_providers.dart';
@@ -115,6 +118,14 @@ class _ThemedMaterialApp extends ConsumerWidget {
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
       builder: (context, child) => SplashGate(child: child!),
+      localizationsDelegates: const [
+        CroppyLocalizationsJa.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        CroppyLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('ja')],
     );
   }
 }

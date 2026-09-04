@@ -24,6 +24,7 @@ class DenpaMenBox extends StatelessWidget {
     required this.onSelectedChanged,
     required this.onTapRecord,
     this.iconsById = const {},
+    this.zoomCandidatesById = const {},
     this.columns,
     this.itemSize = 56,
     this.gap = 8,
@@ -37,6 +38,7 @@ class DenpaMenBox extends StatelessWidget {
   final void Function(int id, bool selected) onSelectedChanged;
   final ValueChanged<DenpaMen> onTapRecord;
   final Map<String, File?> iconsById;
+  final Map<String, List<DenpaMenZoomCandidate>> zoomCandidatesById;
 
   /// Fixed column count. When null, the column count is derived from the
   /// available width, [itemSize], and [gap] instead.
@@ -77,6 +79,7 @@ class DenpaMenBox extends StatelessWidget {
                 onTap: () => onTapRecord(record.denpaMen),
                 enableLongPressPreview: false,
                 iconFile: iconsById[record.denpaMen.id],
+                zoomCandidates: zoomCandidatesById[record.denpaMen.id],
                 size: itemSize,
               ),
             );

@@ -30,6 +30,7 @@ export 'src/dialog/correction_selection_dialog.dart';
 export 'src/dialog/denpa_men_preview_dialog.dart';
 export 'src/dialog/denpa_men_selection_dialog.dart';
 export 'src/dialog/head_shape_selection_dialog.dart';
+export 'src/dialog/media_zoom_dialog.dart';
 export 'src/dialog/qr_code_image_dialog.dart';
 export 'src/dialog/qr_code_selection_dialog.dart';
 export 'src/dialog/sign_in_flow_container.dart';

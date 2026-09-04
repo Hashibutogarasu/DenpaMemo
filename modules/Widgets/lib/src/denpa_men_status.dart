@@ -9,6 +9,7 @@ import '../i18n/gen/strings.g.dart';
 import 'container/indented_header.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
+import 'denpa_men_container.dart';
 import 'domain/antenna_display_name.dart';
 import 'icon/entity_icon.dart';
 import 'label/abnormality_resistance_entry.dart';
@@ -44,6 +45,7 @@ class DenpaMenStatus extends ConsumerWidget {
     this.showContainer = true,
     this.showIcon = false,
     this.iconFile,
+    this.zoomCandidates,
     this.attributeResistanceColumns = 4,
     this.entryHeight = 20,
   });
@@ -58,6 +60,7 @@ class DenpaMenStatus extends ConsumerWidget {
     bool includeStatBonus = true,
     bool showIcon = false,
     File? iconFile,
+    List<DenpaMenZoomCandidate>? zoomCandidates,
   }) {
     final corrected = denpaMen.applyCorrections(
       includeStatBonus: includeStatBonus,
@@ -91,6 +94,7 @@ class DenpaMenStatus extends ConsumerWidget {
       showContainer: showContainer,
       showIcon: showIcon,
       iconFile: iconFile,
+      zoomCandidates: zoomCandidates,
     );
   }
 
@@ -113,6 +117,7 @@ class DenpaMenStatus extends ConsumerWidget {
   final bool showContainer;
   final bool showIcon;
   final File? iconFile;
+  final List<DenpaMenZoomCandidate>? zoomCandidates;
   final int attributeResistanceColumns;
   final double entryHeight;
 
@@ -174,7 +179,20 @@ class DenpaMenStatus extends ConsumerWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ResolvedEntityIcon(file: iconFile, size: theme.previewIconSize),
+                if (zoomCandidates case final candidates?
+                    when candidates.isNotEmpty)
+                  GestureDetector(
+                    onTap: () => DenpaMenContainer.show(context, candidates),
+                    child: ResolvedEntityIcon(
+                      file: iconFile,
+                      size: theme.previewIconSize,
+                    ),
+                  )
+                else
+                  ResolvedEntityIcon(
+                    file: iconFile,
+                    size: theme.previewIconSize,
+                  ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Container(

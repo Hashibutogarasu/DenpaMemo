@@ -31,8 +31,9 @@ class CloudBackupNotFoundException implements Exception {
 
 /// The restore download's [AppNotification] within [notifications] (as
 /// read from [appNotificationsProvider]), if any.
-AppNotification? cloudBackupRestoreNotificationOf(List<AppNotification> notifications) =>
-    notifications.firstWhereOrNull((n) => n.kind == _notificationKind);
+AppNotification? cloudBackupRestoreNotificationOf(
+  List<AppNotification> notifications,
+) => notifications.firstWhereOrNull((n) => n.kind == _notificationKind);
 
 /// Downloads the most recently uploaded cloud file and merges it into
 /// local storage with [DMFile.readImport] (the same pipeline
@@ -63,7 +64,11 @@ class CloudBackupRestoreController {
     }
 
     final notifications = _ref.read(appNotificationsProvider.notifier);
-    notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: 0);
+    notifications.setStatus(
+      _notificationKind,
+      status: AppNotificationStatus.running,
+      progress: 0,
+    );
 
     File? tempFile;
     try {
@@ -87,15 +92,20 @@ class CloudBackupRestoreController {
       final masterData = _ref.read(masterDataProvider).value!;
       final storage = _ref.read(denpaMenIconStorageProvider);
 
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: 0.5);
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.running,
+        progress: 0.5,
+      );
       final result = await DMFile.readImport(
         inputFile: tempFile,
         masterData: masterData,
         denpaMenRepository: _ref.read(denpaMenRepositoryProvider),
         qrCodeRepository: _ref.read(qrCodeRepositoryProvider),
-        loadIcon: storage.loadIcon,
-        saveIcon: (denpaMenId, iconFile) async {
-          await storage.saveIcon(denpaMenId, iconFile);
+        loadIcons: (denpaMenId) =>
+            loadAllDenpaMenImageSlots(storage, denpaMenId),
+        saveIcons: (denpaMenId, icons) async {
+          await saveAllDenpaMenImageSlots(storage, denpaMenId, icons);
           _ref.invalidate(denpaMenIconProvider(denpaMenId));
         },
         resolveDuplicates: (candidates) async {
@@ -125,15 +135,24 @@ class CloudBackupRestoreController {
 
       notifications.setStatus(
         _notificationKind,
-        status: result == null ? AppNotificationStatus.cancelled : AppNotificationStatus.completed,
+        status: result == null
+            ? AppNotificationStatus.cancelled
+            : AppNotificationStatus.completed,
         progress: result == null ? null : 1,
       );
       return result;
     } on CancelledException {
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.cancelled);
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.cancelled,
+      );
       rethrow;
     } catch (error) {
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.failed, message: '$error');
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        message: '$error',
+      );
       rethrow;
     } finally {
       await tempFile?.delete();
@@ -181,12 +200,15 @@ class CloudBackupRestoreController {
   /// directory, since [DMFile.readImport] reads from a [File] rather than
   /// raw bytes.
   Future<File> _writeToTempFile(String filename, Uint8List bytes) async {
-    final tempDirectory = await _ref.read(accountScopedTempDirectoryProvider.future);
+    final tempDirectory = await _ref.read(
+      accountScopedTempDirectoryProvider.future,
+    );
     final file = File(path.join(tempDirectory.path, filename));
     return file.writeAsBytes(bytes);
   }
 }
 
-final cloudBackupRestoreControllerProvider = Provider<CloudBackupRestoreController>(
-  (ref) => CloudBackupRestoreController(ref),
-);
+final cloudBackupRestoreControllerProvider =
+    Provider<CloudBackupRestoreController>(
+      (ref) => CloudBackupRestoreController(ref),
+    );

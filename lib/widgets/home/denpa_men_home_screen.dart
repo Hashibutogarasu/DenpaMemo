@@ -1,12 +1,13 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
+    hide BuildContextTranslationsExtension, Translations;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../../providers/clipping_slot_providers.dart';
 import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';
 import '../../providers/home_view_providers.dart';
@@ -228,6 +229,25 @@ class _HomeBody extends ConsumerWidget {
             .watch(denpaMenIconProvider(record.denpaMen.id))
             .value,
     };
+    final zoomCandidatesById = {
+      for (final record in records)
+        record.denpaMen.id: [
+          for (final slotType in DenpaMenImageSlotType.values)
+            if (ref
+                    .watch(
+                      denpaMenImageProvider((record.denpaMen.id, slotType)),
+                    )
+                    .value
+                case final file?)
+              (
+                priority:
+                    ref.watch(clippingSlotProvider(slotType)).value?.priority ??
+                    DenpaMenImageSlotType.defaultPriority[slotType]!,
+                file: file,
+                label: _slotLabel(context.t, slotType),
+              ),
+        ],
+    };
 
     final contentPadding = EdgeInsets.fromLTRB(
       isMobile ? 0 : 16,
@@ -262,8 +282,10 @@ class _HomeBody extends ConsumerWidget {
                             denpaMen: denpaMen,
                             totalAttributeCount: totalAttributeCount,
                             iconFile: iconsById[denpaMen.id],
+                            zoomCandidates: zoomCandidatesById[denpaMen.id],
                           ),
                           iconsById: iconsById,
+                          zoomCandidatesById: zoomCandidatesById,
                           padding: contentPadding,
                         ),
                         HomeTileMode.tile => ListView.builder(
@@ -297,6 +319,8 @@ class _HomeBody extends ConsumerWidget {
                                           totalAttributeCount:
                                               totalAttributeCount,
                                           iconFile: iconsById[denpaMen.id],
+                                          zoomCandidates:
+                                              zoomCandidatesById[denpaMen.id],
                                         ),
                                         enableLongPressPreview: false,
                                         iconFile: iconsById[denpaMen.id],
@@ -322,6 +346,8 @@ class _HomeBody extends ConsumerWidget {
                                             selected,
                                           ),
                                       iconFile: iconsById[denpaMen.id],
+                                      zoomCandidates:
+                                          zoomCandidatesById[denpaMen.id],
                                       actionMenuItemsBuilder: (context) =>
                                           denpaMenActionMenuItems(
                                             context,
@@ -354,5 +380,16 @@ class _HomeBody extends ConsumerWidget {
         ),
       ],
     );
+  }
+}
+
+String _slotLabel(Translations t, DenpaMenImageSlotType slotType) {
+  switch (slotType) {
+    case DenpaMenImageSlotType.face:
+      return t.settings.clippingFace;
+    case DenpaMenImageSlotType.wholeBody:
+      return t.settings.clippingWholeBody;
+    case DenpaMenImageSlotType.icon:
+      return t.settings.clippingIcon;
   }
 }

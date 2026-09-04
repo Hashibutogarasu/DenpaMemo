@@ -46,6 +46,11 @@ class Settings extends ConsumerWidget {
                   label: t.settings.cloudBackup,
                   onTap: () => const CloudBackupRoute().push(context),
                 ),
+                ListItemTile(
+                  icon: Icons.crop_outlined,
+                  label: t.settings.clipping,
+                  onTap: () => const ClippingSettingsRoute().push(context),
+                ),
               ],
             ),
             ListTileSection(title: Text(t.settings.section.personal)),
@@ -96,7 +101,8 @@ class Settings extends ConsumerWidget {
                         ListItemTile(
                           icon: Icons.table_chart_outlined,
                           label: t.settings.editPhysiqueTable,
-                          onTap: () => const PhysiqueTableListRoute().push(context),
+                          onTap: () =>
+                              const PhysiqueTableListRoute().push(context),
                         ),
                       ],
                     ),
