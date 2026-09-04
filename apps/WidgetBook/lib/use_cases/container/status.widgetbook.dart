@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'Default', type: EditableDenpaMenStatus, path: 'container')
+@widgetbook.UseCase(
+  name: 'Default',
+  type: EditableDenpaMenStatus,
+  path: 'container',
+)
 Widget statusContainerUseCase(BuildContext context) {
   final denpaMen = context.knobs.object.dropdown<DenpaMen>(
     label: '個体',
@@ -29,6 +33,7 @@ Widget statusContainerUseCase(BuildContext context) {
       parentCandidates: const [],
       onPickParents: (_) async => null,
       onPickMonsterExp: (_) async => null,
+      onIdentifyPhysique: (_) async => null,
     ),
   );
 }

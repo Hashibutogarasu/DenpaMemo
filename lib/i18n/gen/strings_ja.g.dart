@@ -47,6 +47,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
 	late final Translations$physiqueTable$ja physiqueTable = Translations$physiqueTable$ja.internal(_root);
+	late final Translations$physiqueIdentification$ja physiqueIdentification = Translations$physiqueIdentification$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$search$ja search = Translations$search$ja.internal(_root);
 	Map<String, String> get monster => {
@@ -597,6 +598,27 @@ class Translations$physiqueTable$ja {
 
 	/// ja: '表の読み込みに失敗しました。'
 	String get loadError => '表の読み込みに失敗しました。';
+}
+
+// Path: physiqueIdentification
+class Translations$physiqueIdentification$ja {
+	Translations$physiqueIdentification$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '体格を特定しています'
+	String get identifying => '体格を特定しています';
+
+	/// ja: '体格を特定しました！'
+	String get identified => '体格を特定しました！';
+
+	/// ja: '体格を特定できませんでした'
+	String get notFound => '体格を特定できませんでした';
+
+	/// ja: '体格の特定に失敗しました'
+	String get error => '体格の特定に失敗しました';
 }
 
 // Path: home
@@ -1316,6 +1338,10 @@ extension on Translations {
 			'physiqueTable.deleteSelectedRowsConfirmMessage' => '選択した行を削除します。この操作は取り消せません。よろしいですか?',
 			'physiqueTable.empty' => 'この表にはまだデータがありません。',
 			'physiqueTable.loadError' => '表の読み込みに失敗しました。',
+			'physiqueIdentification.identifying' => '体格を特定しています',
+			'physiqueIdentification.identified' => '体格を特定しました！',
+			'physiqueIdentification.notFound' => '体格を特定できませんでした',
+			'physiqueIdentification.error' => '体格の特定に失敗しました',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

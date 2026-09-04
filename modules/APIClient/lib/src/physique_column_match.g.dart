@@ -12,6 +12,8 @@ _PhysiqueColumnMatch _$PhysiqueColumnMatchFromJson(Map<String, dynamic> json) =>
       anntenaCategory: json['anntenaCategory'] as String,
       lineOffset: (json['lineOffset'] as num).toInt(),
       columnIndex: (json['columnIndex'] as num).toInt(),
+      textKey: json['textKey'] as String?,
+      text: json['text'] as String?,
     );
 
 Map<String, dynamic> _$PhysiqueColumnMatchToJson(
@@ -21,4 +23,6 @@ Map<String, dynamic> _$PhysiqueColumnMatchToJson(
   'anntenaCategory': instance.anntenaCategory,
   'lineOffset': instance.lineOffset,
   'columnIndex': instance.columnIndex,
+  'textKey': instance.textKey,
+  'text': instance.text,
 };

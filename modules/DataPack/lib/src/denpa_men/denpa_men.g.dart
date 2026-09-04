@@ -24,6 +24,7 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
       .map((e) => AttributeResistance.fromJson(e as Map<String, dynamic>))
       .toList(),
   physique: Physique.fromJson(json['physique'] as Map<String, dynamic>),
+  physiqueColumnIndex: (json['physiqueColumnIndex'] as num?)?.toInt(),
   personality: Personality.fromJson(
     json['personality'] as Map<String, dynamic>,
   ),
@@ -71,6 +72,7 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'bodyColorShades': instance.bodyColorShades,
   'attributeResistance': instance.attributeResistance,
   'physique': instance.physique,
+  'physiqueColumnIndex': instance.physiqueColumnIndex,
   'personality': instance.personality,
   'pattern': instance.pattern,
   'headShape': instance.headShape,

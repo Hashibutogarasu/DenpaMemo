@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueColumnMatch {
 
- String get level; String get anntenaCategory; int get lineOffset; int get columnIndex;
+ String get level; String get anntenaCategory; int get lineOffset; int get columnIndex; String? get textKey; String? get text;
 /// Create a copy of PhysiqueColumnMatch
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PhysiqueColumnMatchCopyWith<PhysiqueColumnMatch> get copyWith => _$PhysiqueColu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueColumnMatch&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&(identical(other.columnIndex, columnIndex) || other.columnIndex == columnIndex));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueColumnMatch&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&(identical(other.columnIndex, columnIndex) || other.columnIndex == columnIndex)&&(identical(other.textKey, textKey) || other.textKey == textKey)&&(identical(other.text, text) || other.text == text));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,level,anntenaCategory,lineOffset,columnIndex);
+int get hashCode => Object.hash(runtimeType,level,anntenaCategory,lineOffset,columnIndex,textKey,text);
 
 @override
 String toString() {
-  return 'PhysiqueColumnMatch(level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, columnIndex: $columnIndex)';
+  return 'PhysiqueColumnMatch(level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, columnIndex: $columnIndex, textKey: $textKey, text: $text)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueColumnMatchCopyWith<$Res>  {
   factory $PhysiqueColumnMatchCopyWith(PhysiqueColumnMatch value, $Res Function(PhysiqueColumnMatch) _then) = _$PhysiqueColumnMatchCopyWithImpl;
 @useResult
 $Res call({
- String level, String anntenaCategory, int lineOffset, int columnIndex
+ String level, String anntenaCategory, int lineOffset, int columnIndex, String? textKey, String? text
 });
 
 
@@ -65,13 +65,15 @@ class _$PhysiqueColumnMatchCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueColumnMatch
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? columnIndex = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? columnIndex = null,Object? textKey = freezed,Object? text = freezed,}) {
   return _then(_self.copyWith(
 level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as String,anntenaCategory: null == anntenaCategory ? _self.anntenaCategory : anntenaCategory // ignore: cast_nullable_to_non_nullable
 as String,lineOffset: null == lineOffset ? _self.lineOffset : lineOffset // ignore: cast_nullable_to_non_nullable
 as int,columnIndex: null == columnIndex ? _self.columnIndex : columnIndex // ignore: cast_nullable_to_non_nullable
-as int,
+as int,textKey: freezed == textKey ? _self.textKey : textKey // ignore: cast_nullable_to_non_nullable
+as String?,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -156,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String level,  String anntenaCategory,  int lineOffset,  int columnIndex)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String level,  String anntenaCategory,  int lineOffset,  int columnIndex,  String? textKey,  String? text)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueColumnMatch() when $default != null:
-return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnIndex);case _:
+return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnIndex,_that.textKey,_that.text);case _:
   return orElse();
 
 }
@@ -177,10 +179,10 @@ return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnI
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String level,  String anntenaCategory,  int lineOffset,  int columnIndex)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String level,  String anntenaCategory,  int lineOffset,  int columnIndex,  String? textKey,  String? text)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueColumnMatch():
-return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnIndex);case _:
+return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnIndex,_that.textKey,_that.text);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +199,10 @@ return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnI
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String level,  String anntenaCategory,  int lineOffset,  int columnIndex)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String level,  String anntenaCategory,  int lineOffset,  int columnIndex,  String? textKey,  String? text)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueColumnMatch() when $default != null:
-return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnIndex);case _:
+return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnIndex,_that.textKey,_that.text);case _:
   return null;
 
 }
@@ -212,13 +214,15 @@ return $default(_that.level,_that.anntenaCategory,_that.lineOffset,_that.columnI
 @JsonSerializable()
 
 class _PhysiqueColumnMatch implements PhysiqueColumnMatch {
-  const _PhysiqueColumnMatch({required this.level, required this.anntenaCategory, required this.lineOffset, required this.columnIndex});
+  const _PhysiqueColumnMatch({required this.level, required this.anntenaCategory, required this.lineOffset, required this.columnIndex, this.textKey, this.text});
   factory _PhysiqueColumnMatch.fromJson(Map<String, dynamic> json) => _$PhysiqueColumnMatchFromJson(json);
 
 @override final  String level;
 @override final  String anntenaCategory;
 @override final  int lineOffset;
 @override final  int columnIndex;
+@override final  String? textKey;
+@override final  String? text;
 
 /// Create a copy of PhysiqueColumnMatch
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueColumnMatch&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&(identical(other.columnIndex, columnIndex) || other.columnIndex == columnIndex));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueColumnMatch&&(identical(other.level, level) || other.level == level)&&(identical(other.anntenaCategory, anntenaCategory) || other.anntenaCategory == anntenaCategory)&&(identical(other.lineOffset, lineOffset) || other.lineOffset == lineOffset)&&(identical(other.columnIndex, columnIndex) || other.columnIndex == columnIndex)&&(identical(other.textKey, textKey) || other.textKey == textKey)&&(identical(other.text, text) || other.text == text));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,level,anntenaCategory,lineOffset,columnIndex);
+int get hashCode => Object.hash(runtimeType,level,anntenaCategory,lineOffset,columnIndex,textKey,text);
 
 @override
 String toString() {
-  return 'PhysiqueColumnMatch(level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, columnIndex: $columnIndex)';
+  return 'PhysiqueColumnMatch(level: $level, anntenaCategory: $anntenaCategory, lineOffset: $lineOffset, columnIndex: $columnIndex, textKey: $textKey, text: $text)';
 }
 
 
@@ -253,7 +257,7 @@ abstract mixin class _$PhysiqueColumnMatchCopyWith<$Res> implements $PhysiqueCol
   factory _$PhysiqueColumnMatchCopyWith(_PhysiqueColumnMatch value, $Res Function(_PhysiqueColumnMatch) _then) = __$PhysiqueColumnMatchCopyWithImpl;
 @override @useResult
 $Res call({
- String level, String anntenaCategory, int lineOffset, int columnIndex
+ String level, String anntenaCategory, int lineOffset, int columnIndex, String? textKey, String? text
 });
 
 
@@ -270,13 +274,15 @@ class __$PhysiqueColumnMatchCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueColumnMatch
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? columnIndex = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? level = null,Object? anntenaCategory = null,Object? lineOffset = null,Object? columnIndex = null,Object? textKey = freezed,Object? text = freezed,}) {
   return _then(_PhysiqueColumnMatch(
 level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as String,anntenaCategory: null == anntenaCategory ? _self.anntenaCategory : anntenaCategory // ignore: cast_nullable_to_non_nullable
 as String,lineOffset: null == lineOffset ? _self.lineOffset : lineOffset // ignore: cast_nullable_to_non_nullable
 as int,columnIndex: null == columnIndex ? _self.columnIndex : columnIndex // ignore: cast_nullable_to_non_nullable
-as int,
+as int,textKey: freezed == textKey ? _self.textKey : textKey // ignore: cast_nullable_to_non_nullable
+as String?,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

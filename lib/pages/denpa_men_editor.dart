@@ -1,14 +1,18 @@
+import 'package:api_client/api_client.dart';
+import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
+import '../providers/physiques_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/icon/editable_denpa_men_icon_swiper.dart';
@@ -104,6 +108,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         isSpColor: draft.isSpColor,
         headShape: draft.headShape,
         physique: draft.physique,
+        physiqueColumnIndex: draft.physiqueColumnIndex,
         personality: draft.personality,
         pattern: draft.pattern,
         anntena: draft.anntena,
@@ -130,6 +135,49 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         monsterExp: draft.monsterExp,
       );
     });
+  }
+
+  Future<PhysiqueIdentification?> _identifyPhysique(
+    BuildContext context,
+  ) async {
+    final t = context.t;
+    final matches = await ProgressResultDialog.show<List<PhysiqueColumnMatch>>(
+      context,
+      loadingMessage: t.physiqueIdentification.identifying,
+      successMessage: t.physiqueIdentification.identified,
+      errorMessage: t.physiqueIdentification.error,
+      task: () => ref
+          .read(physiquesApiClientProvider)
+          .search(
+            hp: _denpaMen.hp,
+            evasionRate: _denpaMen.evasionRate,
+            antenna: _denpaMen.anntena.id,
+            level: '${_denpaMen.level}',
+          ),
+      resultLabel: (matches) =>
+          matches.firstOrNull?.text ??
+          matches.firstOrNull?.textKey ??
+          t.physiqueIdentification.notFound,
+    );
+    if (matches == null) {
+      return null;
+    }
+    final key = matches.firstOrNull?.textKey;
+    final columnIndex = matches.firstOrNull?.columnIndex;
+    final physique = key == null
+        ? null
+        : widget.masterData.physiques.firstWhereOrNull((p) => p.id == key);
+    if (physique == null) {
+      if (context.mounted) {
+        await ErrorDialog.show(
+          context,
+          title: t.common.errorTitle,
+          description: t.physiqueIdentification.notFound,
+        );
+      }
+      return null;
+    }
+    return (physique: physique, columnIndex: columnIndex);
   }
 
   void _save() {
@@ -255,6 +303,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         onPickMonsterExp: (context) => MonsterExpRoute(
           $extra: _denpaMen.monsterExp,
         ).push<MonsterExp>(context),
+        onIdentifyPhysique: _identifyPhysique,
       ),
     );
   }

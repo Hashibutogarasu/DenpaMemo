@@ -147,6 +147,12 @@
     "empty": "この表にはまだデータがありません。",
     "loadError": "表の読み込みに失敗しました。"
   },
+  "physiqueIdentification": {
+    "identifying": "体格を特定しています",
+    "identified": "体格を特定しました！",
+    "notFound": "体格を特定できませんでした",
+    "error": "体格の特定に失敗しました"
+  },
   "home": {
     "empty": "電波人間が登録されていません",
     "deleteConfirmTitle": "削除の確認",

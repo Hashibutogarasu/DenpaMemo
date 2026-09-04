@@ -29,7 +29,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(39, 3473083904217281237),
+    lastPropertyId: const obx_int.IdUid(40, 8221875653235792941),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -266,6 +266,12 @@ final _entities = <obx_int.ModelEntity>[
       obx_int.ModelProperty(
         id: const obx_int.IdUid(39, 3473083904217281237),
         name: 'monsterExpRecipientCount',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(40, 8221875653235792941),
+        name: 'physiqueColumnIndex',
         type: 6,
         flags: 0,
       ),
@@ -639,7 +645,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final monsterExpMonsterIdOffset = object.monsterExpMonsterId == null
             ? null
             : fbb.writeString(object.monsterExpMonsterId!);
-        fbb.startTable(40);
+        fbb.startTable(41);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -679,6 +685,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(36, object.monsterExpLevel);
         fbb.addInt64(37, object.monsterExpMaxLevelTeammateCount);
         fbb.addInt64(38, object.monsterExpRecipientCount);
+        fbb.addInt64(39, object.physiqueColumnIndex);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -726,6 +733,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final physiqueIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 14, '');
+        final physiqueColumnIndexParam = const fb.Int64Reader()
+            .vTableGetNullable(buffer, rootOffset, 82);
         final personalityIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 16, '');
@@ -870,6 +879,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           isSpColor: isSpColorParam,
           headShapeId: headShapeIdParam,
           physiqueId: physiqueIdParam,
+          physiqueColumnIndex: physiqueColumnIndexParam,
           personalityId: personalityIdParam,
           patternId: patternIdParam,
           anntenaId: anntenaIdParam,
@@ -1488,6 +1498,11 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.monsterExpRecipientCount].
   static final monsterExpRecipientCount =
       obx.QueryIntegerProperty<DenpaMenEntity>(_entities[0].properties[38]);
+
+  /// See [DenpaMenEntity.physiqueColumnIndex].
+  static final physiqueColumnIndex = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[39],
+  );
 }
 
 /// [QrCodeEntity] entity fields to define ObjectBox queries.

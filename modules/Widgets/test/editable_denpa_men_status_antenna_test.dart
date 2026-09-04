@@ -42,6 +42,7 @@ Widget _buildApp(
             parentCandidates: const [],
             onPickParents: (_) async => null,
             onPickMonsterExp: (_) async => null,
+            onIdentifyPhysique: (_) async => null,
           ),
         ),
       ),

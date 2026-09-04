@@ -33,6 +33,7 @@ Widget editableDenpaMenStatusUseCase(BuildContext context) {
       parentCandidates: const [],
       onPickParents: (_) async => null,
       onPickMonsterExp: (_) async => null,
+      onIdentifyPhysique: (_) async => null,
     ),
   );
 }

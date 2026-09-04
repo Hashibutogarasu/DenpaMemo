@@ -55,6 +55,7 @@
     "memo": "メモ",
     "monsterExp": "モンスターから獲得した経験値を記録",
     "parents": "親",
+    "physique": "体格",
     "qrCode": "QRコード",
     "spColor": "SPカラー"
   },
@@ -174,6 +175,13 @@
   },
   "correction": {
     "protagonist": "主人公補正"
+  },
+  "physique": {
+    "largest": "最大",
+    "large": "準大",
+    "medium": "中間",
+    "fast": "準速",
+    "fastest": "最速"
   },
   "headShape": {
     "circle": "まる",

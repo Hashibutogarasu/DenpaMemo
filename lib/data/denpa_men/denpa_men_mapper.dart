@@ -18,6 +18,7 @@ extension DenpaMenEntityMapper on DenpaMen {
       isSpColor: isSpColor,
       headShapeId: headShape.id,
       physiqueId: physique.id,
+      physiqueColumnIndex: physiqueColumnIndex,
       personalityId: personality.id,
       patternId: pattern.id,
       anntenaId: anntena.id,
@@ -75,6 +76,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
       physique: masterData.physiques.firstWhere(
         (physique) => physique.id == physiqueId,
       ),
+      physiqueColumnIndex: physiqueColumnIndex,
       personality: masterData.personalities.firstWhere(
         (personality) => personality.id == personalityId,
       ),
