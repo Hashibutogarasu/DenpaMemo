@@ -68,13 +68,12 @@ class ListItemTile extends StatelessWidget {
               onSelected: (action) => action(),
               itemBuilder: actionMenuItemsBuilder!,
             )
-          : trailing != null
-          ? trailing
-          : trailingText != null
-          ? Text(trailingText!)
-          : onTap != null
-          ? const Icon(Icons.chevron_right)
-          : null,
+          : trailing ??
+                (trailingText != null
+                    ? Text(trailingText!)
+                    : onTap != null
+                    ? const Icon(Icons.chevron_right)
+                    : null),
       enabled: enabled,
       onTap: showCheckbox ? () => onSelectedChanged!(!selected) : onTap,
       onLongPress: onLongPress,

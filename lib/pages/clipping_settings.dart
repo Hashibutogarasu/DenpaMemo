@@ -50,20 +50,26 @@ String _rangeText(Translations t, ClippingSlot slot) {
 /// Lets the user register a [ClippingSlot] (a reusable relative crop
 /// rectangle) for each [DenpaMenImageSlotType] by picking an example
 /// image and cropping it once, and reorder slots by dragging to change
-/// `ClippingSlot.priority` (which decides representative-thumbnail
-/// selection, see `denpaMenIconProvider`).
-class ClippingSettingsPage extends ConsumerWidget {
+/// their display/priority order (see `ClippingSlotStorage.saveOrder`).
+class ClippingSettingsPage extends ConsumerStatefulWidget {
   const ClippingSettingsPage({super.key});
 
+  @override
+  ConsumerState<ClippingSettingsPage> createState() =>
+      _ClippingSettingsPageState();
+}
+
+class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
+  List<DenpaMenImageSlotType>? _order;
+  bool _isReordering = false;
+
   Future<void> _configureSlot(
-    BuildContext context,
-    WidgetRef ref,
     DenpaMenImageSlotType slotType,
     ClippingSlot? existing,
   ) async {
     final result = await FilePicker.pickFiles(type: FileType.image);
     final pickedPath = result?.files.single.path;
-    if (pickedPath == null || !context.mounted) {
+    if (pickedPath == null || !mounted) {
       return;
     }
 
@@ -74,7 +80,7 @@ class ClippingSettingsPage extends ConsumerWidget {
           ? const [CropAspectRatio(width: 1, height: 1)]
           : null,
     );
-    if (cropResult == null || !context.mounted) {
+    if (cropResult == null || !mounted) {
       return;
     }
 
@@ -83,7 +89,7 @@ class ClippingSettingsPage extends ConsumerWidget {
     final size = data.imageSize;
 
     final defaultName = existing?.name ?? _defaultLabelFor(context.t, slotType);
-    final name = await _promptName(context, defaultName);
+    final name = await _promptName(defaultName);
     if (name == null) {
       return;
     }
@@ -104,7 +110,7 @@ class ClippingSettingsPage extends ConsumerWidget {
     ref.invalidate(clippingSlotTypesByPriorityProvider);
   }
 
-  Future<String?> _promptName(BuildContext context, String initial) async {
+  Future<String?> _promptName(String initial) async {
     final controller = TextEditingController(text: initial);
     final t = context.t;
     try {
@@ -129,46 +135,26 @@ class ClippingSettingsPage extends ConsumerWidget {
     }
   }
 
-  Future<void> _reorder(
-    WidgetRef ref,
-    List<DenpaMenImageSlotType> order,
-    int oldIndex,
-    int newIndex,
-  ) async {
+  void _reorder(int oldIndex, int newIndex) {
     final adjustedNewIndex = newIndex > oldIndex ? newIndex - 1 : newIndex;
-    final reordered = List<DenpaMenImageSlotType>.from(order);
+    final reordered = List<DenpaMenImageSlotType>.from(_order!);
     final moved = reordered.removeAt(oldIndex);
     reordered.insert(adjustedNewIndex, moved);
 
-    final storage = ref.read(clippingSlotStorageProvider);
-    for (var i = 0; i < reordered.length; i++) {
-      final slotType = reordered[i];
-      final existing = await storage.load(slotType);
-      if (existing != null) {
-        if (existing.priority != i) {
-          await storage.save(existing.copyWith(priority: i));
-        }
-      } else {
-        await storage.save(
-          createClippingSlot(
-            slotType: slotType,
-            name: _defaultLabelFor(t, slotType),
-            priority: i,
-            left: 0,
-            top: 0,
-            right: 1,
-            bottom: 1,
-          ),
-        );
+    setState(() {
+      _order = reordered;
+      _isReordering = true;
+    });
+    ref.read(clippingSlotStorageProvider).saveOrder(reordered).then((_) {
+      if (!mounted) {
+        return;
       }
-    }
-    for (final slotType in reordered) {
-      ref.invalidate(clippingSlotProvider(slotType));
-    }
-    ref.invalidate(clippingSlotTypesByPriorityProvider);
+      ref.invalidate(clippingSlotTypesByPriorityProvider);
+      setState(() => _isReordering = false);
+    });
   }
 
-  Future<void> _switchProfile(BuildContext context, WidgetRef ref) async {
+  Future<void> _switchProfile() async {
     await const ProfileSwitchRoute(
       namespace: ClippingSlotStorage.profileNamespace,
     ).push<bool>(context);
@@ -182,12 +168,17 @@ class ClippingSettingsPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final t = context.t;
-    final orderedTypes = ref.watch(clippingSlotTypesByPriorityProvider);
+    final orderedTypesAsync = ref.watch(clippingSlotTypesByPriorityProvider);
     final currentProfile = ref.watch(
       currentProfileProvider(ClippingSlotStorage.profileNamespace),
     );
+
+    if (orderedTypesAsync.value case final order? when !_isReordering) {
+      _order = order;
+    }
+    final order = _order;
 
     return AppScaffold(
       title: OutlinedTitleText(
@@ -199,39 +190,41 @@ class ClippingSettingsPage extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _switchProfile(context, ref),
+        onPressed: _switchProfile,
         label: Text(t.profile.switchProfile),
       ),
-      body: orderedTypes.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text(error.toString())),
-        data: (order) => Padding(
-          padding: const EdgeInsets.all(16),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: ColoredBox(
-              color: Colors.transparent,
-              child: ReorderableListView(
-                buildDefaultDragHandles: false,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                onReorder: (oldIndex, newIndex) =>
-                    _reorder(ref, order, oldIndex, newIndex),
-                children: [
-                  for (var i = 0; i < order.length; i++)
-                    _ClippingSlotTile(
-                      key: ValueKey(order[i].name),
-                      index: i,
-                      slotType: order[i],
-                      onTap: (existing) =>
-                          _configureSlot(context, ref, order[i], existing),
-                    ),
-                ],
+      body: order == null
+          ? orderedTypesAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) =>
+                  Center(child: Text(error.toString())),
+              data: (order) => const SizedBox.shrink(),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(16),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: ColoredBox(
+                  color: Colors.transparent,
+                  child: ReorderableListView(
+                    buildDefaultDragHandles: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    onReorder: _reorder,
+                    children: [
+                      for (var i = 0; i < order.length; i++)
+                        _ClippingSlotTile(
+                          key: ValueKey(order[i].name),
+                          index: i,
+                          slotType: order[i],
+                          onTap: (existing) =>
+                              _configureSlot(order[i], existing),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

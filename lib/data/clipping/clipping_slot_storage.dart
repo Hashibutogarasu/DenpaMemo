@@ -66,12 +66,63 @@ class ClippingSlotStorage {
     }
   }
 
-  /// Returns every [DenpaMenImageSlotType], ordered by ascending
-  /// `ClippingSlot.priority` (falling back to [DenpaMenImageSlotType.defaultPriority] for
-  /// types with no persisted [ClippingSlot] yet). Used to pick which
-  /// slot's image should stand in as an individual's representative
-  /// thumbnail without prompting the user for one.
+  Future<File> _orderFile() async {
+    final appDirectory = await _ref.read(
+      accountScopedAppDirectoryProvider.future,
+    );
+    final profileId = await _currentProfileId();
+    return File(
+      path.join(appDirectory.path, profileNamespace, profileId, 'order.json'),
+    );
+  }
+
+  /// Persists the slot display/priority order shown on the clipping
+  /// settings screen, independently of whether each slot type has a
+  /// registered [ClippingSlot] yet — reordering must never invent crop
+  /// data for a slot the user hasn't configured.
+  Future<void> saveOrder(List<DenpaMenImageSlotType> order) async {
+    final file = await _orderFile();
+    await file.parent.create(recursive: true);
+    await file.writeAsString(
+      jsonEncode([for (final slotType in order) slotType.name]),
+    );
+  }
+
+  Future<List<DenpaMenImageSlotType>?> _loadOrder() async {
+    final file = await _orderFile();
+    if (!await file.exists()) {
+      return null;
+    }
+    final names = (jsonDecode(await file.readAsString()) as List<dynamic>)
+        .cast<String>();
+    final byName = {
+      for (final slotType in DenpaMenImageSlotType.values)
+        slotType.name: slotType,
+    };
+    final order = <DenpaMenImageSlotType>[
+      for (final name in names) ?byName[name],
+    ];
+    for (final slotType in DenpaMenImageSlotType.values) {
+      if (!order.contains(slotType)) {
+        order.add(slotType);
+      }
+    }
+    return order;
+  }
+
+  /// Returns every [DenpaMenImageSlotType] in priority order: the saved
+  /// [saveOrder] result if there is one, otherwise ranked by ascending
+  /// `ClippingSlot.priority` (falling back to
+  /// [DenpaMenImageSlotType.defaultPriority] for types with no persisted
+  /// [ClippingSlot] yet). Used both to display the clipping settings
+  /// screen's slot list and to pick which slot's image should stand in
+  /// as an individual's representative thumbnail without prompting the
+  /// user for one.
   Future<List<DenpaMenImageSlotType>> loadSlotTypesByPriority() async {
+    final savedOrder = await _loadOrder();
+    if (savedOrder != null) {
+      return savedOrder;
+    }
     final slots = await Future.wait(DenpaMenImageSlotType.values.map(load));
     final priorities = <DenpaMenImageSlotType, int>{
       for (var i = 0; i < DenpaMenImageSlotType.values.length; i++)

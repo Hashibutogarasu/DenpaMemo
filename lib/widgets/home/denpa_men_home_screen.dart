@@ -229,6 +229,9 @@ class _HomeBody extends ConsumerWidget {
             .watch(denpaMenIconProvider(record.denpaMen.id))
             .value,
     };
+    final slotPriorityOrder = ref
+        .watch(clippingSlotTypesByPriorityProvider)
+        .value;
     final zoomCandidatesById = {
       for (final record in records)
         record.denpaMen.id: [
@@ -241,7 +244,7 @@ class _HomeBody extends ConsumerWidget {
                 case final file?)
               (
                 priority:
-                    ref.watch(clippingSlotProvider(slotType)).value?.priority ??
+                    slotPriorityOrder?.indexOf(slotType) ??
                     DenpaMenImageSlotType.defaultPriority[slotType]!,
                 file: file,
                 label: _slotLabel(context.t, slotType),
