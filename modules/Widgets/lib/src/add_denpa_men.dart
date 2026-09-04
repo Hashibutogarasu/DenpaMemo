@@ -8,6 +8,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'denpa_men_status.dart';
 import 'editable_denpa_men_status.dart';
+import 'icon/denpa_men_icon_builder.dart';
 import 'theme/denpa_men_container_theme.dart';
 
 /// Bundles the read-only preview ([DenpaMenStatus]) and the editable pane
@@ -99,7 +100,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       totalAttributeCount: widget.masterData.attributes.length,
       includeStatBonus: widget.denpaMen.considerCorrections,
       showIcon: true,
-      iconFile: widget.iconFile,
+      iconBuilder: staticDenpaMenIconBuilder(widget.iconFile),
     );
     final editable = EditableDenpaMenStatus(
       denpaMen: widget.denpaMen,

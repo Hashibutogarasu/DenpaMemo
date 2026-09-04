@@ -4,6 +4,7 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
 import '../denpa_men_status.dart';
+import '../icon/denpa_men_icon_builder.dart';
 
 class BirthGuideIndividualSlide extends StatelessWidget {
   const BirthGuideIndividualSlide({
@@ -32,7 +33,7 @@ class BirthGuideIndividualSlide extends StatelessWidget {
             denpaMen,
             totalAttributeCount: totalAttributeCount,
             showIcon: true,
-            iconFile: iconFile,
+            iconBuilder: staticDenpaMenIconBuilder(iconFile),
           ),
         ],
       ),

@@ -6,11 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
 import '../i18n/gen/strings.g.dart';
-import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../providers/search_providers.dart';
 import 'dialog/denpa_men_action_menu.dart';
+import 'icon/denpa_men_icon.dart';
 
 /// Shows every saved QR code as the root of a tree of caught/bred
 /// individuals, all in one shared canvas.
@@ -66,17 +66,11 @@ class DenpaMenLineageTree extends ConsumerWidget {
             return Center(child: Text(context.t.home.empty));
           }
 
-          final iconsById = {
-            for (final record in lineageRecords)
-              record.denpaMen.id: ref
-                  .watch(denpaMenIconProvider(record.denpaMen.id))
-                  .value,
-          };
-
           return DenpaMenLineageGraph(
             qrCodes: qrCodes,
             denpaMenRecords: lineageRecords,
-            iconsById: iconsById,
+            iconBuilder: (denpaMenId, size) =>
+                DenpaMenIcon(denpaMenId: denpaMenId, size: size),
             selectionMode: ref.watch(selectionModeProvider),
             selectedIds: ref.watch(selectedDenpaMenIdsProvider),
             onToggleSelection: (id) => toggleDenpaMenSelection(ref, id),
@@ -88,7 +82,8 @@ class DenpaMenLineageTree extends ConsumerWidget {
               context,
               denpaMen: denpaMen,
               totalAttributeCount: masterData.attributes.length,
-              iconFile: iconsById[denpaMen.id],
+              iconBuilder: (size) =>
+                  DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
             ),
             onHoveredRecordChanged: (id) =>
                 ref.read(hoveredTreeRecordIdProvider.notifier).state = id,

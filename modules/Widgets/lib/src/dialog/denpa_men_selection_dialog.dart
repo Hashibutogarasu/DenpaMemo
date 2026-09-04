@@ -4,6 +4,7 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
 import '../denpa_men_list_tile.dart';
+import '../icon/denpa_men_icon_builder.dart';
 import 'bottom_slide_dialog.dart';
 import 'denpa_men_preview_dialog.dart';
 
@@ -95,7 +96,9 @@ class _DenpaMenSelectionDialogState extends State<DenpaMenSelectionDialog> {
                 context,
                 denpaMen: denpaMen,
                 totalAttributeCount: widget._totalAttributeCount,
-                iconFile: widget._iconsById[denpaMen.id],
+                iconBuilder: staticDenpaMenIconBuilder(
+                  widget._iconsById[denpaMen.id],
+                ),
               ),
             ),
         ],

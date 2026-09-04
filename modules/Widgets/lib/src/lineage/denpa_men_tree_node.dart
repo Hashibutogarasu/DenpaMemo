@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +19,7 @@ class DenpaMenTreeNode extends StatelessWidget {
   const DenpaMenTreeNode({
     super.key,
     required this.data,
-    required this.iconFile,
+    required this.icon,
     required this.nodeSize,
     required this.hoveredKey,
     required this.dataByKey,
@@ -40,7 +38,7 @@ class DenpaMenTreeNode extends StatelessWidget {
   });
 
   final DenpaMenNodeData data;
-  final File? iconFile;
+  final Widget icon;
   final double nodeSize;
   final ValueListenable<Object?> hoveredKey;
   final Map<Object, DenpaMenNodeData> dataByKey;
@@ -73,7 +71,7 @@ class DenpaMenTreeNode extends StatelessWidget {
       child: GestureDetector(
         onTap: _handleTap,
         child: DenpaMenNode(
-          iconFile: iconFile,
+          icon: icon,
           name: data.record.denpaMen.name,
           hoverHighlightPainter: TreeNodeHighlightPainter<DenpaMenNodeData>(
             nodeKey: graphNodeKey,

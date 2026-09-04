@@ -16,6 +16,7 @@ import '../../providers/qr_code_providers.dart';
 import '../../providers/search_providers.dart';
 import '../denpa_men_lineage_tree.dart';
 import '../dialog/denpa_men_action_menu.dart';
+import '../icon/denpa_men_icon.dart';
 import '../selection_floating_menu.dart';
 
 /// Full home-style screen: view mode toggles and the individual
@@ -311,7 +312,7 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
               (
                 priority: DenpaMenImageSlotType.defaultPriority[slotType]!,
                 file: file,
-                label: _slotLabel(context.t, slotType),
+                label: defaultClippingSlotLabel(slotType),
               ),
         ],
     };
@@ -348,8 +349,8 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
                             context,
                             denpaMen: denpaMen,
                             totalAttributeCount: totalAttributeCount,
-                            iconFile: iconsById[denpaMen.id],
-                            zoomCandidates: zoomCandidatesById[denpaMen.id],
+                            iconBuilder: (size) =>
+                                DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
                           ),
                           iconsById: iconsById,
                           zoomCandidatesById: zoomCandidatesById,
@@ -386,9 +387,10 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
                                           denpaMen: denpaMen,
                                           totalAttributeCount:
                                               totalAttributeCount,
-                                          iconFile: iconsById[denpaMen.id],
-                                          zoomCandidates:
-                                              zoomCandidatesById[denpaMen.id],
+                                          iconBuilder: (size) => DenpaMenIcon(
+                                            denpaMenId: denpaMen.id,
+                                            size: size,
+                                          ),
                                         ),
                                         enableLongPressPreview: false,
                                         iconFile: iconsById[denpaMen.id],
@@ -409,9 +411,10 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
                                       isCut: cutIds.contains(record.id),
                                       onSelectedChanged: (selected) =>
                                           _setSelected(record.id, selected),
-                                      iconFile: iconsById[denpaMen.id],
-                                      zoomCandidates:
-                                          zoomCandidatesById[denpaMen.id],
+                                      iconBuilder: (size) => DenpaMenIcon(
+                                        denpaMenId: denpaMen.id,
+                                        size: size,
+                                      ),
                                       actionMenuItemsBuilder: (context) =>
                                           denpaMenActionMenuItems(
                                             context,
@@ -497,16 +500,5 @@ class _HomeListEndMessage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-String _slotLabel(Translations t, DenpaMenImageSlotType slotType) {
-  switch (slotType) {
-    case DenpaMenImageSlotType.face:
-      return t.settings.clippingFace;
-    case DenpaMenImageSlotType.wholeBody:
-      return t.settings.clippingWholeBody;
-    case DenpaMenImageSlotType.icon:
-      return t.settings.clippingIcon;
   }
 }

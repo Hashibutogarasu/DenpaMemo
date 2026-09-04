@@ -85,7 +85,6 @@ class _HarnessState extends State<_Harness> {
         body: DenpaMenLineageGraph(
           qrCodes: [QrCodeRecord(id: 1, qrCode: qrCode)],
           denpaMenRecords: records,
-          iconsById: const {},
           selectionMode: false,
           selectedIds: const {},
           onToggleSelection: (_) {},

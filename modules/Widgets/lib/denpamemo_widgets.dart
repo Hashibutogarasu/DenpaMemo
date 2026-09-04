@@ -50,6 +50,7 @@ export 'src/home/toggle_button_group.dart';
 export 'src/icon/abnormality.dart';
 export 'src/icon/arrow_icon.dart';
 export 'src/icon/attribute.dart';
+export 'src/icon/denpa_men_icon_builder.dart';
 export 'src/icon/entity_icon.dart';
 export 'src/indicator/marker.dart';
 export 'src/interaction/disable_while_running.dart';
