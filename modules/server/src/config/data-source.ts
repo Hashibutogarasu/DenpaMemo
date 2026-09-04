@@ -18,6 +18,7 @@ import { PatternEntity } from '../entities/pattern.entity';
 import { PersonalityEntity } from '../entities/personality.entity';
 import { PhysiqueAntennaCategoryAntennaEntity } from '../entities/physique-antenna-category-antenna.entity';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
+import { PhysiqueEvasionRateCategoryEntity } from '../entities/physique-evasion-rate-category.entity';
 import { PhysiqueEvasionRateTableEntity } from '../entities/physique-evasion-rate-table.entity';
 import { PhysiqueStatusCategoryEntity } from '../entities/physique-status-category.entity';
 import { PhysiqueTableEntity } from '../entities/physique-table.entity';
@@ -50,6 +51,7 @@ export const AppDataSource = new DataSource({
     PhysiqueAntennaCategoryAntennaEntity,
     PhysiqueAntennaCategoryEntity,
     PhysiqueEntity,
+    PhysiqueEvasionRateCategoryEntity,
     PhysiqueEvasionRateTableEntity,
     PhysiqueStatusCategoryEntity,
     PhysiqueTableEntity,
