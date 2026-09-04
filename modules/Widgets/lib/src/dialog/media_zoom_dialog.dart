@@ -12,9 +12,11 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 /// widget tests exercise multi-page swiping with plain placeholder
 /// widgets instead of real image bytes.
 ///
-/// With a single item, this renders identically to the pre-multi-page
-/// `QrCodeImageDialog` (a bare [Dialog] with 24px padding around the
-/// item) so existing single-QR callers see no visual change.
+/// This imposes no padding or fixed sizing of its own — those are QR's
+/// own concern (see [QrCodeImageDialog]'s `itemBuilder`), not something
+/// every kind of zoomed content (e.g. a full-resolution photo) should be
+/// squeezed into. Each page is left to size itself within the [Dialog]'s
+/// own constraints.
 class MediaZoomDialog extends StatefulWidget {
   const MediaZoomDialog({
     super.key,
@@ -79,23 +81,19 @@ class _MediaZoomDialogState extends State<MediaZoomDialog> {
   @override
   Widget build(BuildContext context) {
     if (widget.itemCount == 1) {
-      return Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: widget.itemBuilder(context, 0),
-        ),
-      );
+      return Dialog(child: widget.itemBuilder(context, 0));
     }
 
+    final screenSize = MediaQuery.sizeOf(context);
     return Dialog(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              width: 280,
-              height: 280,
+              width: screenSize.width * 0.8,
+              height: screenSize.height * 0.6,
               child: PageView.builder(
                 controller: _controller,
                 itemCount: widget.itemCount,
