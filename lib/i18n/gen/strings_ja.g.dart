@@ -687,6 +687,9 @@ class Translations$home$ja {
 
 	/// ja: '系譜ツリーをJSONとしてコピー'
 	String get copyLineageTreeJsonAction => '系譜ツリーをJSONとしてコピー';
+
+	/// ja: '一番下に到達しました'
+	String get reachedListEnd => '一番下に到達しました';
 }
 
 // Path: search
@@ -1328,6 +1331,7 @@ extension on Translations {
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
 			'home.copyLineageTreeJsonAction' => '系譜ツリーをJSONとしてコピー',
+			'home.reachedListEnd' => '一番下に到達しました',
 			'search.name' => '名前',
 			'search.tabList' => 'リスト',
 			'search.tabSearch' => '検索',

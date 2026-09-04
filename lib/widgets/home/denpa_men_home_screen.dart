@@ -190,18 +190,39 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
   }
 }
 
+/// Number of records [_HomeBody] renders per page by default, before the
+/// user scrolls to reveal more.
+const int homeListDefaultPageSize = 10;
+
 /// Scrollable accordion listing every individual matching the shared
 /// search context (see [filteredDenpaMenProvider]) as a collapsed preview;
 /// expanding an entry reveals its full [DenpaMenStatus] plus edit and
 /// delete actions (see [DenpaMenAccordionTile]). When multi-select mode is
 /// active, a [SelectionFloatingMenu] surfaces bulk actions for the current
 /// selection.
-class _HomeBody extends ConsumerWidget {
-  const _HomeBody({required this.masterData});
+///
+/// Only [pageSize] records are built at a time; scrolling near the bottom
+/// reveals [pageSize] more (see [_HomeBodyState._loadMore]), so a long
+/// list doesn't force every entry's clipped thumbnail (see
+/// `renderClippedImage`) to render up front.
+class _HomeBody extends ConsumerStatefulWidget {
+  const _HomeBody({
+    required this.masterData,
+    this.pageSize = homeListDefaultPageSize,
+  });
 
   final MasterData masterData;
+  final int pageSize;
 
-  void _setSelected(WidgetRef ref, int id, bool selected) {
+  @override
+  ConsumerState<_HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends ConsumerState<_HomeBody> {
+  late int _visibleCount = widget.pageSize;
+  bool _isLoadingMore = false;
+
+  void _setSelected(int id, bool selected) {
     final ids = Set<int>.from(ref.read(selectedDenpaMenIdsProvider));
     if (selected) {
       ids.add(id);
@@ -214,18 +235,54 @@ class _HomeBody extends ConsumerWidget {
     }
   }
 
+  void _resetPagination() {
+    setState(() {
+      _visibleCount = widget.pageSize;
+      _isLoadingMore = false;
+    });
+  }
+
+  Future<void> _loadMore(int totalCount) async {
+    if (_isLoadingMore || _visibleCount >= totalCount) return;
+    setState(() => _isLoadingMore = true);
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    if (!mounted) return;
+    setState(() {
+      final next = _visibleCount + widget.pageSize;
+      _visibleCount = next > totalCount ? totalCount : next;
+      _isLoadingMore = false;
+    });
+  }
+
+  bool _onScrollMetricsChanged(ScrollMetrics metrics, int totalCount) {
+    if (metrics.extentAfter < 300) {
+      _loadMore(totalCount);
+    }
+    return false;
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final masterData = widget.masterData;
     final recordsAsync = ref.watch(denpaMenListProvider(masterData));
     final records = ref.watch(filteredDenpaMenProvider(masterData));
+    ref.listen(searchQueryProvider, (previous, next) => _resetPagination());
+
     final selectionMode = ref.watch(selectionModeProvider);
     final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
     final cutIds = ref.watch(cutDenpaMenIdsProvider);
     final isMobile = ref.watch(appShellStateProvider).isMobile;
     final tileMode = ref.watch(homeTileModeProvider);
     final totalAttributeCount = masterData.attributes.length;
+
+    final visibleRecords = records.take(_visibleCount).toList();
+    final hasMore = _visibleCount < records.length;
+    final footer = _isLoadingMore
+        ? const _HomeListLoadMoreIndicator()
+        : (hasMore ? null : const _HomeListEndMessage());
+
     final iconsById = {
-      for (final record in records)
+      for (final record in visibleRecords)
         record.denpaMen.id: ref
             .watch(denpaMenIconProvider(record.denpaMen.id))
             .value,
@@ -234,7 +291,7 @@ class _HomeBody extends ConsumerWidget {
         .watch(clippingSlotTypesByPriorityProvider)
         .value;
     final zoomCandidatesById = {
-      for (final record in records)
+      for (final record in visibleRecords)
         record.denpaMen.id: [
           for (final slotType in DenpaMenImageSlotType.values)
             if (ref
@@ -277,14 +334,14 @@ class _HomeBody extends ConsumerWidget {
                       if (records.isEmpty) {
                         return Center(child: Text(context.t.home.empty));
                       }
-                      return switch (tileMode) {
+                      final content = switch (tileMode) {
                         HomeTileMode.grid => DenpaMenBox(
-                          records: records,
+                          records: visibleRecords,
                           selectionMode: selectionMode,
                           selectedIds: selectedIds,
                           cutIds: cutIds,
                           onSelectedChanged: (id, selected) =>
-                              _setSelected(ref, id, selected),
+                              _setSelected(id, selected),
                           onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
                             context,
                             denpaMen: denpaMen,
@@ -295,12 +352,17 @@ class _HomeBody extends ConsumerWidget {
                           iconsById: iconsById,
                           zoomCandidatesById: zoomCandidatesById,
                           padding: contentPadding,
+                          trailing: footer,
                         ),
                         HomeTileMode.tile => ListView.builder(
                           padding: contentPadding,
-                          itemCount: records.length,
+                          itemCount:
+                              visibleRecords.length + (footer != null ? 1 : 0),
                           itemBuilder: (context, index) {
-                            final record = records[index];
+                            if (index >= visibleRecords.length) {
+                              return footer!;
+                            }
+                            final record = visibleRecords[index];
                             final denpaMen = record.denpaMen;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8),
@@ -316,11 +378,7 @@ class _HomeBody extends ConsumerWidget {
                                           record.id,
                                         ),
                                         onSelectedChanged: (selected) =>
-                                            _setSelected(
-                                              ref,
-                                              record.id,
-                                              selected,
-                                            ),
+                                            _setSelected(record.id, selected),
                                         onTap: () => DenpaMenPreviewDialog.show(
                                           context,
                                           denpaMen: denpaMen,
@@ -348,11 +406,7 @@ class _HomeBody extends ConsumerWidget {
                                       selected: selectedIds.contains(record.id),
                                       isCut: cutIds.contains(record.id),
                                       onSelectedChanged: (selected) =>
-                                          _setSelected(
-                                            ref,
-                                            record.id,
-                                            selected,
-                                          ),
+                                          _setSelected(record.id, selected),
                                       iconFile: iconsById[denpaMen.id],
                                       zoomCandidates:
                                           zoomCandidatesById[denpaMen.id],
@@ -368,6 +422,21 @@ class _HomeBody extends ConsumerWidget {
                           },
                         ),
                       };
+                      return NotificationListener<ScrollMetricsNotification>(
+                        onNotification: (notification) =>
+                            _onScrollMetricsChanged(
+                              notification.metrics,
+                              records.length,
+                            ),
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (notification) =>
+                              _onScrollMetricsChanged(
+                                notification.metrics,
+                                records.length,
+                              ),
+                          child: content,
+                        ),
+                      );
                     },
                     loading: () => const SizedBox.shrink(),
                     error: (error, stackTrace) => Center(child: Text('$error')),
@@ -387,6 +456,44 @@ class _HomeBody extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Trailing list/grid item shown while [_HomeBodyState._loadMore] is
+/// fetching the next page.
+class _HomeListLoadMoreIndicator extends StatelessWidget {
+  const _HomeListLoadMoreIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 24),
+      child: Center(
+        child: SizedBox(
+          width: 24,
+          height: 24,
+          child: CircularProgressIndicator(strokeWidth: 2.5),
+        ),
+      ),
+    );
+  }
+}
+
+/// Trailing list/grid item shown once every record has been paged in.
+class _HomeListEndMessage extends StatelessWidget {
+  const _HomeListEndMessage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Center(
+        child: Text(
+          context.t.home.reachedListEnd,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ),
     );
   }
 }

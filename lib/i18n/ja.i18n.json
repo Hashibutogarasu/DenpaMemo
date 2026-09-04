@@ -174,7 +174,8 @@
     "catchOrderLabel": "${order}匹目: ${name}",
     "birthGuideAction": "出生ガイド",
     "showQrCodeAction": "QRコードを表示",
-    "copyLineageTreeJsonAction": "系譜ツリーをJSONとしてコピー"
+    "copyLineageTreeJsonAction": "系譜ツリーをJSONとしてコピー",
+    "reachedListEnd": "一番下に到達しました"
   },
   "search": {
     "name": "名前",

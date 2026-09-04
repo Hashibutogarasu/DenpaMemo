@@ -11,9 +11,12 @@ import '../denpa_men_container.dart';
 /// screen's list-tile display (see `HomeTileMode.grid` in
 /// `home_view_providers.dart`).
 ///
-/// Virtualized via [GridView.builder] since the record count can reach
-/// into the hundreds, unlike the small fixed-size grids elsewhere in the
-/// app (e.g. `EditableStatGrid`).
+/// Virtualized via [CustomScrollView] and [SliverGrid] since the record
+/// count can reach into the hundreds, unlike the small fixed-size grids
+/// elsewhere in the app (e.g. `EditableStatGrid`). [trailing] lets a
+/// caller append a footer (a load-more spinner or an end-of-list
+/// message) inside the same scrollable, e.g. to drive pagination from
+/// outside without this widget knowing about it.
 class DenpaMenBox extends StatelessWidget {
   const DenpaMenBox({
     super.key,
@@ -29,6 +32,7 @@ class DenpaMenBox extends StatelessWidget {
     this.itemSize = 56,
     this.gap = 8,
     this.padding = EdgeInsets.zero,
+    this.trailing,
   });
 
   final List<DenpaMenRecord> records;
@@ -47,6 +51,8 @@ class DenpaMenBox extends StatelessWidget {
   final double gap;
   final EdgeInsetsGeometry padding;
 
+  final Widget? trailing;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -58,32 +64,38 @@ class DenpaMenBox extends StatelessWidget {
               ((constraints.maxWidth + gap) / (itemSize + gap)).floor(),
             );
 
-        return GridView.builder(
-          padding: padding,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: resolvedColumns,
-            mainAxisSpacing: gap,
-            crossAxisSpacing: gap,
-          ),
-          itemCount: records.length,
-          itemBuilder: (context, index) {
-            final record = records[index];
-            return Opacity(
-              opacity: cutIds.contains(record.id) ? 0.5 : 1,
-              child: DenpaMenContainer(
-                denpaMen: record.denpaMen,
-                selectionMode: selectionMode,
-                selected: selectedIds.contains(record.id),
-                onSelectedChanged: (selected) =>
-                    onSelectedChanged(record.id, selected),
-                onTap: () => onTapRecord(record.denpaMen),
-                enableLongPressPreview: false,
-                iconFile: iconsById[record.denpaMen.id],
-                zoomCandidates: zoomCandidatesById[record.denpaMen.id],
-                size: itemSize,
+        return CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: padding,
+              sliver: SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: resolvedColumns,
+                  mainAxisSpacing: gap,
+                  crossAxisSpacing: gap,
+                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final record = records[index];
+                  return Opacity(
+                    opacity: cutIds.contains(record.id) ? 0.5 : 1,
+                    child: DenpaMenContainer(
+                      denpaMen: record.denpaMen,
+                      selectionMode: selectionMode,
+                      selected: selectedIds.contains(record.id),
+                      onSelectedChanged: (selected) =>
+                          onSelectedChanged(record.id, selected),
+                      onTap: () => onTapRecord(record.denpaMen),
+                      enableLongPressPreview: false,
+                      iconFile: iconsById[record.denpaMen.id],
+                      zoomCandidates: zoomCandidatesById[record.denpaMen.id],
+                      size: itemSize,
+                    ),
+                  );
+                }, childCount: records.length),
               ),
-            );
-          },
+            ),
+            if (trailing != null) SliverToBoxAdapter(child: trailing),
+          ],
         );
       },
     );
