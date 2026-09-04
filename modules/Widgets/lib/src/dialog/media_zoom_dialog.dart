@@ -23,21 +23,18 @@ class MediaZoomDialog extends StatefulWidget {
     required this.itemCount,
     required this.itemBuilder,
     this.initialIndex = 0,
-    this.labels,
   }) : assert(itemCount > 0, 'itemCount must be at least 1');
 
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
   final int initialIndex;
-  final List<String>? labels;
 
   /// Opens a [MediaZoomDialog] showing [images] (each rendered via
   /// `Image.file`), or does nothing if [images] is empty.
-  static Future<void> showImages(
+  static Future<void> show(
     BuildContext context, {
     required List<File> images,
     int initialIndex = 0,
-    List<String>? labels,
   }) {
     if (images.isEmpty) {
       return Future<void>.value();
@@ -49,7 +46,6 @@ class MediaZoomDialog extends StatefulWidget {
         itemBuilder: (context, index) =>
             Image.file(images[index], fit: BoxFit.contain),
         initialIndex: initialIndex,
-        labels: labels,
       ),
     );
   }
@@ -62,7 +58,6 @@ class _MediaZoomDialogState extends State<MediaZoomDialog> {
   late final PageController _controller = PageController(
     initialPage: widget.initialIndex,
   );
-  late int _currentIndex = widget.initialIndex;
 
   @override
   void dispose() {
@@ -70,48 +65,37 @@ class _MediaZoomDialogState extends State<MediaZoomDialog> {
     super.dispose();
   }
 
-  String? get _currentLabel {
-    final labels = widget.labels;
-    if (labels == null || labels.length != widget.itemCount) {
-      return null;
-    }
-    return labels[_currentIndex];
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.itemCount == 1) {
-      return Dialog(child: widget.itemBuilder(context, 0));
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: widget.itemBuilder(context, 0),
+      );
     }
 
     final screenSize = MediaQuery.sizeOf(context);
     return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: screenSize.width * 0.8,
-              height: screenSize.height * 0.6,
-              child: PageView.builder(
-                controller: _controller,
-                itemCount: widget.itemCount,
-                onPageChanged: (index) => setState(() => _currentIndex = index),
-                itemBuilder: (context, index) => InteractiveViewer(
-                  child: widget.itemBuilder(context, index),
-                ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: screenSize.width * 0.8,
+            height: screenSize.height * 0.6,
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: widget.itemCount,
+              itemBuilder: (context, index) => InteractiveViewer(
+                child: widget.itemBuilder(context, index),
               ),
             ),
-            const SizedBox(height: 12),
-            if (_currentLabel case final label?) Text(label),
-            const SizedBox(height: 8),
-            SmoothPageIndicator(
-              controller: _controller,
-              count: widget.itemCount,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          SmoothPageIndicator(controller: _controller, count: widget.itemCount),
+        ],
       ),
     );
   }

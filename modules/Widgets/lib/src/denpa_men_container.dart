@@ -59,10 +59,9 @@ class DenpaMenContainer extends StatelessWidget {
   ) {
     final sorted = List<DenpaMenZoomCandidate>.from(candidates)
       ..sort((a, b) => a.priority.compareTo(b.priority));
-    return MediaZoomDialog.showImages(
+    return MediaZoomDialog.show(
       context,
       images: [for (final candidate in sorted) candidate.file],
-      labels: [for (final candidate in sorted) candidate.label ?? ''],
     );
   }
 
