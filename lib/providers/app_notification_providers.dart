@@ -15,7 +15,8 @@ final appNotificationRepositoryProvider = Provider<AppNotificationRepository>(
 /// of whichever page started the operation.
 class AppNotificationsNotifier extends Notifier<List<AppNotification>> {
   @override
-  List<AppNotification> build() => ref.watch(appNotificationRepositoryProvider).getAll();
+  List<AppNotification> build() =>
+      ref.watch(appNotificationRepositoryProvider).getAll();
 
   void upsert(AppNotification notification) {
     ref.read(appNotificationRepositoryProvider).upsert(notification);
@@ -47,6 +48,7 @@ class AppNotificationsNotifier extends Notifier<List<AppNotification>> {
   }
 }
 
-final appNotificationsProvider = NotifierProvider<AppNotificationsNotifier, List<AppNotification>>(
-  AppNotificationsNotifier.new,
-);
+final appNotificationsProvider =
+    NotifierProvider<AppNotificationsNotifier, List<AppNotification>>(
+      AppNotificationsNotifier.new,
+    );

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_editor/table_editor.dart';
@@ -22,7 +23,8 @@ class PhysiqueTableViewPage extends ConsumerStatefulWidget {
   final PhysiqueTableArgs args;
 
   @override
-  ConsumerState<PhysiqueTableViewPage> createState() => _PhysiqueTableViewPageState();
+  ConsumerState<PhysiqueTableViewPage> createState() =>
+      _PhysiqueTableViewPageState();
 }
 
 class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
@@ -48,10 +50,14 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
           anntenaCategory: widget.args.anntenaCategory,
         ),
       ),
-      body: editState.loadError || typesAsync.hasError || (typesAsync.hasValue && columnCount == null)
+      body:
+          editState.loadError ||
+              typesAsync.hasError ||
+              (typesAsync.hasValue && columnCount == null)
           ? Center(child: Text(t.physiqueTable.loadError))
           : LoadingOverlay(
-              loading: rows == null || typesAsync.isLoading || columnCount == null,
+              loading:
+                  rows == null || typesAsync.isLoading || columnCount == null,
               child: rows == null || columnCount == null
                   ? const SizedBox.shrink()
                   : Column(
@@ -60,7 +66,9 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
                           child: rows.isEmpty
                               ? Center(child: Text(t.physiqueTable.empty))
                               : TableEditor<PhysiqueTableRow>(
-                                  columns: buildPhysiqueTableColumns(columnCount: columnCount),
+                                  columns: buildPhysiqueTableColumns(
+                                    columnCount: columnCount,
+                                  ),
                                   data: rows,
                                   rowId: (row) => row.lineOffset.toString(),
                                 ),
@@ -70,8 +78,9 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
                           child: FilledButton.icon(
                             icon: const Icon(Icons.edit_outlined),
                             label: Text(t.physiqueTable.edit),
-                            onPressed: () =>
-                                PhysiqueTableEditRoute($extra: widget.args).push(context),
+                            onPressed: () => PhysiqueTableEditRoute(
+                              $extra: widget.args,
+                            ).push(context),
                           ),
                         ),
                       ],

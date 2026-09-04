@@ -1,4 +1,5 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +55,8 @@ Future<void> _showGoogleSignInFlow(
   final t = context.t;
   final messengerKey = GlobalKey<ScaffoldMessengerState>();
   final stepContext = restBackend.createGoogleSignInStepContext(
-    onManualAuthUrl: (url) => _showManualGoogleAuthUrl(context, messengerKey, url),
+    onManualAuthUrl: (url) =>
+        _showManualGoogleAuthUrl(context, messengerKey, url),
   );
   return SignInFlowDialog.show<GoogleSignInStepContext>(
     context,
@@ -161,13 +163,16 @@ class AccountSettingsPage extends ConsumerWidget {
       body: SmoothScrollContainer(
         child: ListView(
           children: [
-            ListTileSection(title: Text(t.settings.accountSettings.sectionCloud)),
+            ListTileSection(
+              title: Text(t.settings.accountSettings.sectionCloud),
+            ),
             ListItemContainer(
               children: [
                 ListItemTile(
                   icon: Icons.cloud_outlined,
                   label: cloudAccount.isSignedIn
-                      ? (cloudAccount.email ?? t.settings.accountSettings.signIn)
+                      ? (cloudAccount.email ??
+                            t.settings.accountSettings.signIn)
                       : t.settings.accountSettings.signIn,
                   onTap: cloudAccount.isSignedIn
                       ? null
@@ -181,11 +186,15 @@ class AccountSettingsPage extends ConsumerWidget {
                 ListItemTile(
                   icon: Icons.logout,
                   label: t.settings.accountSettings.signOut,
-                  onTap: cloudAccount.isSignedIn ? () => _signOut(context, ref) : null,
+                  onTap: cloudAccount.isSignedIn
+                      ? () => _signOut(context, ref)
+                      : null,
                 ),
               ],
             ),
-            ListTileSection(title: Text(t.settings.accountSettings.sectionLocal)),
+            ListTileSection(
+              title: Text(t.settings.accountSettings.sectionLocal),
+            ),
             ListItemContainer(
               children: [
                 CopyableListTile(
@@ -199,7 +208,9 @@ class AccountSettingsPage extends ConsumerWidget {
                 ),
               ],
             ),
-            ListTileSection(title: Text(t.settings.accountSettings.sectionDangerZone)),
+            ListTileSection(
+              title: Text(t.settings.accountSettings.sectionDangerZone),
+            ),
             ListItemContainer(
               children: [
                 ListItemTile(

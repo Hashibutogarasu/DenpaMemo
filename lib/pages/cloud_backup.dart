@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
@@ -14,7 +15,11 @@ import '../widgets/scaffold/cloud_backup_shell.dart';
 /// One tappable endpoint of the backup/restore flow: an icon over a label,
 /// centered within the space it is given.
 class _CloudBackupEndpoint extends StatelessWidget {
-  const _CloudBackupEndpoint({required this.icon, required this.label, required this.onTap});
+  const _CloudBackupEndpoint({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String label;
@@ -51,8 +56,11 @@ class CloudBackupPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
     final masterData = ref.watch(masterDataProvider).value;
-    final restoreNotification = cloudBackupRestoreNotificationOf(ref.watch(appNotificationsProvider));
-    final isRestoring = restoreNotification?.status == AppNotificationStatus.running;
+    final restoreNotification = cloudBackupRestoreNotificationOf(
+      ref.watch(appNotificationsProvider),
+    );
+    final isRestoring =
+        restoreNotification?.status == AppNotificationStatus.running;
     final isBusy = ref.watch(cloudBackupBusyProvider);
 
     return AppScaffold(
@@ -77,7 +85,8 @@ class CloudBackupPage extends ConsumerWidget {
                       )
                     : DisableWhileRunning(
                         provider: cloudBackupBusyProvider,
-                        onPressed: () => runCloudBackup(context, ref, masterData),
+                        onPressed: () =>
+                            runCloudBackup(context, ref, masterData),
                         builder: (context, onPressed) => _CloudBackupEndpoint(
                           icon: Icons.cloud_outlined,
                           label: t.cloudBackup.latestBackupLabel,
@@ -101,7 +110,9 @@ class CloudBackupPage extends ConsumerWidget {
           Positioned.fill(
             child: Center(
               child: ArrowIcon(
-                direction: isRestoring ? ArrowDirection.toLocal : ArrowDirection.toCloud,
+                direction: isRestoring
+                    ? ArrowDirection.toLocal
+                    : ArrowDirection.toCloud,
                 isAnimating: isBusy,
               ),
             ),

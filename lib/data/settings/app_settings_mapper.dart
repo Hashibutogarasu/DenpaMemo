@@ -12,8 +12,6 @@ extension AppSettingsEntityMapper on AppSettings {
 /// Rebuilds domain [AppSettings] from a persisted [AppSettingsEntity].
 extension AppSettingsEntityToDomain on AppSettingsEntity {
   AppSettings toDomain() {
-    return AppSettings(
-      themeMode: AppThemeMode.values.byName(themeMode),
-    );
+    return AppSettings(themeMode: AppThemeMode.values.byName(themeMode));
   }
 }

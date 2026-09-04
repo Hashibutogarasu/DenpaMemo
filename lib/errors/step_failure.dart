@@ -8,7 +8,8 @@ import 'app_error.dart';
 /// title/description when it's itself an [AppError]; otherwise falls back
 /// to a generic message.
 class StepFailure<C> extends AppError {
-  StepFailure(this.failure) : super(onRetry: failure.retriable ? failure.retry : null);
+  StepFailure(this.failure)
+    : super(onRetry: failure.retriable ? failure.retry : null);
 
   final StepRunFailure<C> failure;
 

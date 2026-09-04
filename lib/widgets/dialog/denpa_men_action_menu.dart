@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -93,9 +94,7 @@ Future<void> _copyLineageTreeJson(
   final denpaMenRecords = ref
       .read(denpaMenRepositoryProvider)
       .getAll(masterData);
-  final byId = {
-    for (final r in denpaMenRecords) r.denpaMen.id: r.denpaMen,
-  };
+  final byId = {for (final r in denpaMenRecords) r.denpaMen.id: r.denpaMen};
   final json = _lineageTreeJson(record.denpaMen, byId);
   await Clipboard.setData(
     ClipboardData(text: const JsonEncoder.withIndent('  ').convert(json)),

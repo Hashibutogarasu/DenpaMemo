@@ -12,7 +12,11 @@ import '../../providers/cloud_backup_upload_providers.dart';
 import 'export_complete_dialog.dart';
 import 'import_complete_dialog.dart';
 
-void showCancellableSnackBar(BuildContext context, String message, VoidCallback onCancel) {
+void showCancellableSnackBar(
+  BuildContext context,
+  String message,
+  VoidCallback onCancel,
+) {
   final t = context.t;
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -27,10 +31,18 @@ void showCancellableSnackBar(BuildContext context, String message, VoidCallback 
 /// then shows [ExportCompleteDialog] on success or an error dialog/snackbar
 /// per exception type. The only sanctioned way to start a backup upload,
 /// so every entry point shows the same snackbar/progress/error handling.
-Future<void> runCloudBackup(BuildContext context, WidgetRef ref, MasterData masterData) async {
+Future<void> runCloudBackup(
+  BuildContext context,
+  WidgetRef ref,
+  MasterData masterData,
+) async {
   final t = context.t;
   final cancellation = Cancellation();
-  showCancellableSnackBar(context, t.cloudBackup.backupRunning, cancellation.request);
+  showCancellableSnackBar(
+    context,
+    t.cloudBackup.backupRunning,
+    cancellation.request,
+  );
   try {
     final result = await ref
         .read(cloudBackupUploadControllerProvider)
@@ -41,7 +53,9 @@ Future<void> runCloudBackup(BuildContext context, WidgetRef ref, MasterData mast
   } on CancelledException {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.cloudBackup.cancelled)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(t.cloudBackup.cancelled)));
   } on NotSignedInException {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
@@ -68,10 +82,18 @@ Future<void> runCloudBackup(BuildContext context, WidgetRef ref, MasterData mast
 /// per exception type. Shared by `CloudBackupPage`'s "restore latest"
 /// endpoint and the backup history page's per-item "restore" action, so
 /// both go through the exact same flow.
-Future<void> runCloudRestore(BuildContext context, WidgetRef ref, {CloudFile? target}) async {
+Future<void> runCloudRestore(
+  BuildContext context,
+  WidgetRef ref, {
+  CloudFile? target,
+}) async {
   final t = context.t;
   final cancellation = Cancellation();
-  showCancellableSnackBar(context, t.cloudBackup.restoreRunning, cancellation.request);
+  showCancellableSnackBar(
+    context,
+    t.cloudBackup.restoreRunning,
+    cancellation.request,
+  );
   try {
     final result = await ref
         .read(cloudBackupRestoreControllerProvider)
@@ -84,7 +106,9 @@ Future<void> runCloudRestore(BuildContext context, WidgetRef ref, {CloudFile? ta
   } on CancelledException {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.cloudBackup.cancelled)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(t.cloudBackup.cancelled)));
   } on NotSignedInException {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
@@ -112,7 +136,9 @@ Future<void> runCloudRestore(BuildContext context, WidgetRef ref, {CloudFile? ta
   } on DmInvalidImportFileException {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
   } catch (error, stackTrace) {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();

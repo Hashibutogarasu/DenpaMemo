@@ -4,7 +4,11 @@ import 'package:http/http.dart' as http;
 
 /// Result of requesting an upload link from `modules/auth`.
 class UploadLink {
-  const UploadLink({required this.uploadUrl, required this.fileId, required this.filename});
+  const UploadLink({
+    required this.uploadUrl,
+    required this.fileId,
+    required this.filename,
+  });
 
   final String uploadUrl;
   final String fileId;
@@ -13,7 +17,11 @@ class UploadLink {
 
 /// One entry of `GET /dmfiles`'s response.
 class CloudFileDto {
-  const CloudFileDto({required this.fileId, required this.filename, required this.uploaded});
+  const CloudFileDto({
+    required this.fileId,
+    required this.filename,
+    required this.uploaded,
+  });
 
   final String fileId;
   final String filename;
@@ -25,14 +33,19 @@ class CloudFileDto {
 /// so callers see the real reason rather than treating the request as
 /// having succeeded.
 class AuthApiException implements Exception {
-  const AuthApiException({required this.statusCode, required this.code, this.message});
+  const AuthApiException({
+    required this.statusCode,
+    required this.code,
+    this.message,
+  });
 
   final int statusCode;
   final String code;
   final String? message;
 
   @override
-  String toString() => 'AuthApiException($statusCode): $code${message != null ? ' ($message)' : ''}';
+  String toString() =>
+      'AuthApiException($statusCode): $code${message != null ? ' ($message)' : ''}';
 }
 
 /// Thin REST client for `modules/auth`'s endpoints. Every method requires
@@ -44,7 +57,10 @@ class AuthApiClient {
 
   Future<UploadLink> requestUploadLink(String idToken, String filename) async {
     final response = await http.get(
-      _baseUrl.replace(path: '/dmfile/link', queryParameters: {'filename': filename}),
+      _baseUrl.replace(
+        path: '/dmfile/link',
+        queryParameters: {'filename': filename},
+      ),
       headers: _authHeaders(idToken),
     );
     final body = _decodeOrThrow(response);
@@ -99,7 +115,9 @@ class AuthApiClient {
     _requireSuccess(response);
   }
 
-  Map<String, String> _authHeaders(String idToken) => {'Authorization': 'Bearer $idToken'};
+  Map<String, String> _authHeaders(String idToken) => {
+    'Authorization': 'Bearer $idToken',
+  };
 
   Map<String, dynamic> _decodeOrThrow(http.Response response) {
     _requireSuccess(response);

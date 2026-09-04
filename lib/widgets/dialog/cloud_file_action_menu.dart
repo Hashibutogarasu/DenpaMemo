@@ -7,7 +7,11 @@ import '../../i18n/gen/strings.g.dart';
 import '../../providers/cloud_files_providers.dart';
 import 'confirm_dialog.dart';
 
-Future<void> _deleteOne(BuildContext context, WidgetRef ref, CloudFile cloudFile) async {
+Future<void> _deleteOne(
+  BuildContext context,
+  WidgetRef ref,
+  CloudFile cloudFile,
+) async {
   final t = context.t;
   final confirmed = await ConfirmDialog.show(
     context,
@@ -16,7 +20,9 @@ Future<void> _deleteOne(BuildContext context, WidgetRef ref, CloudFile cloudFile
   );
   if (!confirmed || !context.mounted) return;
   try {
-    await ref.read(cloudFilesProvider.notifier).deleteCloudFile(cloudFile.fileId);
+    await ref
+        .read(cloudFilesProvider.notifier)
+        .deleteCloudFile(cloudFile.fileId);
   } catch (error, stackTrace) {
     if (!context.mounted) return;
     await ErrorDialog.show(

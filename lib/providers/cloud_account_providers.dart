@@ -26,15 +26,17 @@ class CloudAccountNotifier extends Notifier<CloudAccountState> {
     );
   }
 
-  FirebaseSignInNotifier get _backend => ref.read(firebaseSignInProvider.notifier);
+  FirebaseSignInNotifier get _backend =>
+      ref.read(firebaseSignInProvider.notifier);
 
   FirebaseSignInNotifier get firebaseSignIn => _backend;
 
   Future<void> signInWithEmail(String email, String password) =>
       _backend.signInWithEmail(email, password);
 
-  Future<void> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) =>
-      _backend.signInWithGoogle(onManualAuthUrl: onManualAuthUrl);
+  Future<void> signInWithGoogle({
+    void Function(Uri? authUrl)? onManualAuthUrl,
+  }) => _backend.signInWithGoogle(onManualAuthUrl: onManualAuthUrl);
 
   Future<void> signUpWithEmail(String email, String password) =>
       _backend.signUpWithEmail(email, password);
@@ -51,6 +53,7 @@ class CloudAccountNotifier extends Notifier<CloudAccountState> {
   }
 }
 
-final cloudAccountProvider = NotifierProvider<CloudAccountNotifier, CloudAccountState>(
-  CloudAccountNotifier.new,
-);
+final cloudAccountProvider =
+    NotifierProvider<CloudAccountNotifier, CloudAccountState>(
+      CloudAccountNotifier.new,
+    );

@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,12 +30,16 @@ class ExportCompleteDialog extends StatelessWidget {
   }) async {
     final iconsById = await resolveDenpaMenIcons(
       (id) => ref.read(denpaMenIconProvider(id).future),
-      [for (final denpaMen in [...result.exported, ...result.orphaned]) denpaMen.id],
+      [
+        for (final denpaMen in [...result.exported, ...result.orphaned])
+          denpaMen.id,
+      ],
     );
     if (!context.mounted) return;
     return showDialog<void>(
       context: context,
-      builder: (context) => ExportCompleteDialog(result: result, iconsById: iconsById),
+      builder: (context) =>
+          ExportCompleteDialog(result: result, iconsById: iconsById),
     );
   }
 

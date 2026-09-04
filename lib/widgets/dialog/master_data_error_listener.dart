@@ -50,7 +50,9 @@ void _showAppError<T>(
     return;
   }
   final appError = switch (error) {
-    OperationException() => switch (MasterDataLoadError.fromOperationException(error)) {
+    OperationException() => switch (MasterDataLoadError.fromOperationException(
+      error,
+    )) {
       MasterDataConnectionError() => MasterDataConnectionError(onRetry: retry),
       final other => other,
     },

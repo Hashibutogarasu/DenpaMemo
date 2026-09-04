@@ -18,8 +18,7 @@ final searchFormDraftProvider = StateProvider<DenpaMenSearchQuery>(
 );
 
 final _allDenpaMenProvider = Provider.family<List<DenpaMenRecord>, MasterData>(
-  (ref, masterData) =>
-      ref.watch(denpaMenListProvider(masterData)).value ?? [],
+  (ref, masterData) => ref.watch(denpaMenListProvider(masterData)).value ?? [],
 );
 
 final _nameFilteredDenpaMenProvider =
@@ -27,7 +26,10 @@ final _nameFilteredDenpaMenProvider =
       final name = ref.watch(searchQueryProvider.select((q) => q.name));
       final records = ref.watch(_allDenpaMenProvider(masterData));
       if (name.isEmpty) return records;
-      return [for (final r in records) if (r.denpaMen.name.contains(name)) r];
+      return [
+        for (final r in records)
+          if (r.denpaMen.name.contains(name)) r,
+      ];
     });
 
 final _headShapeFilteredDenpaMenProvider =
@@ -126,6 +128,5 @@ final _statFilteredDenpaMenProvider =
 /// only this provider, never the intermediate stages above.
 final filteredDenpaMenProvider =
     Provider.family<List<DenpaMenRecord>, MasterData>(
-      (ref, masterData) =>
-          ref.watch(_statFilteredDenpaMenProvider(masterData)),
+      (ref, masterData) => ref.watch(_statFilteredDenpaMenProvider(masterData)),
     );

@@ -11,8 +11,10 @@ import 'denpa_men_mapper.dart';
 /// and replay each record's resistance snapshot; omitting it preserves the
 /// original recompute-on-load behavior.
 class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
-  ObjectBoxDenpaMenRepository(this._objectBox, {CacheIndexRepository? cacheIndexRepository})
-    : _cacheIndexRepository = cacheIndexRepository;
+  ObjectBoxDenpaMenRepository(
+    this._objectBox, {
+    CacheIndexRepository? cacheIndexRepository,
+  }) : _cacheIndexRepository = cacheIndexRepository;
 
   final ObjectBox _objectBox;
   final CacheIndexRepository? _cacheIndexRepository;
@@ -28,7 +30,10 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
     try {
       return [
         for (final entity in query.find())
-          DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData)),
+          DenpaMenRecord(
+            id: entity.id,
+            denpaMen: _toDomain(entity, masterData),
+          ),
       ];
     } finally {
       query.close();
@@ -47,7 +52,10 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
     try {
       return [
         for (final entity in query.find())
-          DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData)),
+          DenpaMenRecord(
+            id: entity.id,
+            denpaMen: _toDomain(entity, masterData),
+          ),
       ];
     } finally {
       query.close();
@@ -106,7 +114,10 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
       final entity = query.findFirst();
       return entity == null
           ? null
-          : DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData));
+          : DenpaMenRecord(
+              id: entity.id,
+              denpaMen: _toDomain(entity, masterData),
+            );
     } finally {
       query.close();
     }
@@ -128,7 +139,10 @@ class ObjectBoxDenpaMenRepository implements DenpaMenRepository {
     try {
       return [
         for (final entity in query.find())
-          DenpaMenRecord(id: entity.id, denpaMen: _toDomain(entity, masterData)),
+          DenpaMenRecord(
+            id: entity.id,
+            denpaMen: _toDomain(entity, masterData),
+          ),
       ];
     } finally {
       query.close();

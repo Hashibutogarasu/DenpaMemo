@@ -12,7 +12,8 @@ class AuthApiConfig {
   const AuthApiConfig();
 
   static const _productionEndpoint = 'https://denpamemo-auth.karasu256.com';
-  static const _androidDebugEndpoint = 'https://denpamemo-auth-dev.karasu256.com';
+  static const _androidDebugEndpoint =
+      'https://denpamemo-auth-dev.karasu256.com';
 
   String get baseUrl {
     if (!kDebugMode) {

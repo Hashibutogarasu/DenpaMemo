@@ -1,6 +1,7 @@
 import 'package:api_client/api_client.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -65,7 +66,11 @@ Future<Map<String, bool>> _fetchTypeAvailability(
   final entries = await Future.wait([
     for (final type in types)
       client
-          .fetch(type: type.type, level: level, anntenaCategory: anntenaCategory)
+          .fetch(
+            type: type.type,
+            level: level,
+            anntenaCategory: anntenaCategory,
+          )
           .then((rows) => MapEntry(type.type, rows.isNotEmpty)),
   ]);
   return Map.fromEntries(entries);
@@ -85,13 +90,17 @@ class PhysiqueTableListPage extends ConsumerStatefulWidget {
   const PhysiqueTableListPage({super.key});
 
   @override
-  ConsumerState<PhysiqueTableListPage> createState() => _PhysiqueTableListPageState();
+  ConsumerState<PhysiqueTableListPage> createState() =>
+      _PhysiqueTableListPageState();
 }
 
 class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
   bool _navigating = false;
 
-  Future<void> _navigateAfterLoading(PhysiqueTableArgs args, GoRouteData Function() buildRoute) async {
+  Future<void> _navigateAfterLoading(
+    PhysiqueTableArgs args,
+    GoRouteData Function() buildRoute,
+  ) async {
     setState(() => _navigating = true);
     await ref.read(physiqueTableEditProvider(args).notifier).ensureLoaded();
     if (!mounted) return;
@@ -100,10 +109,18 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
     buildRoute().push(context);
   }
 
-  Future<void> _startEditingExistingTable(List<TableDefinition> types, String anntenaCategory) async {
+  Future<void> _startEditingExistingTable(
+    List<TableDefinition> types,
+    String anntenaCategory,
+  ) async {
     final level = await _pickLevel(context);
     if (level == null || !mounted) return;
-    final dataAvailability = await _fetchTypeAvailability(ref, types, level, anntenaCategory);
+    final dataAvailability = await _fetchTypeAvailability(
+      ref,
+      types,
+      level,
+      anntenaCategory,
+    );
     if (!mounted) return;
     final type = await showTableTypeSelectionDialog(
       context,
@@ -111,8 +128,15 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
       dataAvailability: dataAvailability,
     );
     if (type == null || !mounted) return;
-    final args = PhysiqueTableArgs(type: type.type, level: level, anntenaCategory: anntenaCategory);
-    await _navigateAfterLoading(args, () => PhysiqueTableEditRoute($extra: args));
+    final args = PhysiqueTableArgs(
+      type: type.type,
+      level: level,
+      anntenaCategory: anntenaCategory,
+    );
+    await _navigateAfterLoading(
+      args,
+      () => PhysiqueTableEditRoute($extra: args),
+    );
   }
 
   Future<void> _createNewTable(
@@ -133,13 +157,24 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
       level: level,
       anntenaCategory: antennaCategory.anntenaCategory,
     );
-    await _navigateAfterLoading(args, () => PhysiqueTableEditRoute($extra: args));
+    await _navigateAfterLoading(
+      args,
+      () => PhysiqueTableEditRoute($extra: args),
+    );
   }
 
-  Future<void> _viewExistingTable(List<TableDefinition> types, String anntenaCategory) async {
+  Future<void> _viewExistingTable(
+    List<TableDefinition> types,
+    String anntenaCategory,
+  ) async {
     final level = await _pickLevel(context);
     if (level == null || !mounted) return;
-    final dataAvailability = await _fetchTypeAvailability(ref, types, level, anntenaCategory);
+    final dataAvailability = await _fetchTypeAvailability(
+      ref,
+      types,
+      level,
+      anntenaCategory,
+    );
     if (!mounted) return;
     final type = await showTableTypeSelectionDialog(
       context,
@@ -147,8 +182,15 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
       dataAvailability: dataAvailability,
     );
     if (type == null || !mounted) return;
-    final args = PhysiqueTableArgs(type: type.type, level: level, anntenaCategory: anntenaCategory);
-    await _navigateAfterLoading(args, () => PhysiqueTableViewRoute($extra: args));
+    final args = PhysiqueTableArgs(
+      type: type.type,
+      level: level,
+      anntenaCategory: anntenaCategory,
+    );
+    await _navigateAfterLoading(
+      args,
+      () => PhysiqueTableViewRoute($extra: args),
+    );
   }
 
   @override
@@ -156,8 +198,11 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
     final t = context.t;
     final metadataAsync = ref.watch(physiqueTableMetadataProvider);
     final typesAsync = ref.watch(tableTypesProvider);
-    final categoriesWithDataAsync = ref.watch(physiqueTableAnntenaCategoriesWithDataProvider);
-    final categoriesWithData = categoriesWithDataAsync.value ?? const <String>{};
+    final categoriesWithDataAsync = ref.watch(
+      physiqueTableAnntenaCategoriesWithDataProvider,
+    );
+    final categoriesWithData =
+        categoriesWithDataAsync.value ?? const <String>{};
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.physiqueTable.title),
@@ -165,53 +210,63 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
         (AsyncData(value: final metadata), AsyncData(value: final types)) =>
           FloatingActionButton.extended(
             label: Text(t.physiqueTable.createNewTable),
-            onPressed: () => _createNewTable(metadata.physiqueAntennaCategories, types),
+            onPressed: () =>
+                _createNewTable(metadata.physiqueAntennaCategories, types),
           ),
         _ => null,
       },
       body: switch ((metadataAsync, typesAsync)) {
-        (AsyncData(value: final metadata), AsyncData(value: final types)) => LoadingOverlay(
-          loading: _navigating,
-          child: Builder(
-            builder: (context) {
-              final byCategory = <String, List<PhysiqueAntennaCategory>>{};
-              for (final row in metadata.physiqueAntennaCategories) {
-                byCategory.putIfAbsent(row.category, () => []).add(row);
-              }
+        (AsyncData(value: final metadata), AsyncData(value: final types)) =>
+          LoadingOverlay(
+            loading: _navigating,
+            child: Builder(
+              builder: (context) {
+                final byCategory = <String, List<PhysiqueAntennaCategory>>{};
+                for (final row in metadata.physiqueAntennaCategories) {
+                  byCategory.putIfAbsent(row.category, () => []).add(row);
+                }
 
-              return ListView(
-                children: [
-                  for (final entry in byCategory.entries) ...[
-                    ListTileSection(title: Text(entry.key)),
-                    ListItemContainer(
-                      children: [
-                        for (final row in entry.value)
-                          ListTile(
-                            leading: const Icon(Icons.table_rows_outlined),
-                            title: Text(row.anntenaCategory),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (categoriesWithData.contains(row.anntenaCategory))
-                                  IconButton(
-                                    icon: const Icon(Icons.edit_outlined),
-                                    tooltip: t.physiqueTable.edit,
-                                    onPressed: () =>
-                                        _startEditingExistingTable(types, row.anntenaCategory),
-                                  ),
-                                const Icon(Icons.chevron_right),
-                              ],
+                return ListView(
+                  children: [
+                    for (final entry in byCategory.entries) ...[
+                      ListTileSection(title: Text(entry.key)),
+                      ListItemContainer(
+                        children: [
+                          for (final row in entry.value)
+                            ListTile(
+                              leading: const Icon(Icons.table_rows_outlined),
+                              title: Text(row.anntenaCategory),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (categoriesWithData.contains(
+                                    row.anntenaCategory,
+                                  ))
+                                    IconButton(
+                                      icon: const Icon(Icons.edit_outlined),
+                                      tooltip: t.physiqueTable.edit,
+                                      onPressed: () =>
+                                          _startEditingExistingTable(
+                                            types,
+                                            row.anntenaCategory,
+                                          ),
+                                    ),
+                                  const Icon(Icons.chevron_right),
+                                ],
+                              ),
+                              onTap: () => _viewExistingTable(
+                                types,
+                                row.anntenaCategory,
+                              ),
                             ),
-                            onTap: () => _viewExistingTable(types, row.anntenaCategory),
-                          ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ],
-                ],
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
         (AsyncError(), _) || (_, AsyncError()) => const SizedBox.shrink(),
         _ => const ProgressBar(),
       },
