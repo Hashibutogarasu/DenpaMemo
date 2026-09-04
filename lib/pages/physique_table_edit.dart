@@ -113,6 +113,19 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     await Toaster.show(context, context.t.physiqueTable.saved);
   }
 
+  Future<void> _sync() async {
+    try {
+      await ref
+          .read(physiqueTableEditProvider(widget.args).notifier)
+          .syncToServer();
+      if (!mounted) return;
+      await Toaster.show(context, context.t.physiqueTable.synced);
+    } catch (_) {
+      if (!mounted) return;
+      await Toaster.show(context, context.t.physiqueTable.syncError);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = context.t;
@@ -131,9 +144,22 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       ),
       floatingActionButton: rows == null || columnCount == null
           ? null
-          : FloatingActionButton.extended(
-              label: Text(t.physiqueTable.save),
-              onPressed: _save,
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: 'physiqueTableSync',
+                  icon: const Icon(Icons.cloud_upload_outlined),
+                  label: Text(t.physiqueTable.sync),
+                  onPressed: _sync,
+                ),
+                const SizedBox(height: 12),
+                FloatingActionButton.extended(
+                  heroTag: 'physiqueTableSave',
+                  label: Text(t.physiqueTable.save),
+                  onPressed: _save,
+                ),
+              ],
             ),
       body:
           editState.loadError ||

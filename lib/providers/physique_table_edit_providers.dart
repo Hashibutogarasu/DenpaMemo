@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/server/physique_table_args.dart';
 import '../widgets/physique_table/physique_table_row.dart';
+import 'physique_table_cache_providers.dart';
 import 'physiques_providers.dart';
 
 class PhysiqueTableEditState {
@@ -27,15 +28,11 @@ class PhysiqueTableEditState {
   );
 }
 
-/// Owns one physique table's editable rows and every operation that
-/// reaches the server for it (load/save/create/delete). Nothing is
-/// fetched until [ensureLoaded] is called — the caller (the list page,
-/// before navigating to a view/edit page for this table) awaits it and
-/// shows its own loading state, so the destination page always mounts
-/// with data already in hand instead of loading itself. Row edits and
-/// additions are staged in [state] until [save] is called, which creates
-/// any rows added since the last save, then pushes every row's current
-/// values in one `PUT /tables` call.
+/// Owns one physique table's editable rows, backed by the local
+/// [PhysiqueTableCacheRepository] rather than the server directly. Row
+/// edits and additions are staged in [state] until [save] is called,
+/// which writes the whole row set to the local cache; [syncToServer]
+/// pushes the cache's unsynced rows to `modules/server` on demand.
 class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
   PhysiqueTableEditNotifier(this.args);
 
@@ -50,29 +47,12 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
   }
 
   Future<void> _load() async {
-    final client = ref.read(physiquesApiClientProvider);
-    try {
-      final records = await client.fetch(
-        type: args.type,
-        level: args.level,
-        anntenaCategory: args.anntenaCategory,
-      );
-      final rows = [
-        for (final record in records)
-          PhysiqueTableRow(
-            lineOffset: record.lineOffset,
-            values: [
-              for (final value in record.values) value?.toString() ?? '',
-            ],
-          ),
-      ];
-      state = PhysiqueTableEditState(
-        rows: rows,
-        persistedRowCount: rows.length,
-      );
-    } catch (_) {
-      state = state.copyWith(loadError: true);
-    }
+    final cacheRepository = ref.read(physiqueTableCacheRepositoryProvider);
+    final rows = cacheRepository.rowsFor(args);
+    state = PhysiqueTableEditState(
+      rows: rows,
+      persistedRowCount: cacheRepository.persistedRowCount(args),
+    );
   }
 
   Future<void> reload() => _load();
@@ -110,11 +90,27 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
     for (final value in row.values) int.tryParse(value),
   ];
 
+  /// Writes the current row set to the local cache only, without a
+  /// network call. [syncToServer] is what pushes it to the server.
   Future<void> save() async {
     final rows = state.rows;
     if (rows == null || rows.isEmpty) return;
+    ref.read(physiqueTableCacheRepositoryProvider).replaceLocalRows(args, rows);
+  }
+
+  /// Pushes the current row set to the server: creates every row past
+  /// [PhysiqueTableEditState.persistedRowCount] (rows not yet known to
+  /// exist on the server), then PUTs every row's values in one call —
+  /// the same combined logic [save] used to perform directly.
+  Future<void> syncToServer() async {
+    final rows = state.rows;
+    if (rows == null || rows.isEmpty) return;
+    final cacheRepository = ref.read(physiqueTableCacheRepositoryProvider);
+    cacheRepository.replaceLocalRows(args, rows);
+
     final client = ref.read(physiquesApiClientProvider);
-    final newRows = rows.sublist(state.persistedRowCount);
+    final persistedRowCount = cacheRepository.persistedRowCount(args);
+    final newRows = rows.sublist(persistedRowCount);
     if (newRows.isNotEmpty) {
       await client.create([
         for (final row in newRows)
@@ -134,9 +130,12 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
       anntenaCategory: args.anntenaCategory,
       rowValues: [for (final row in rows) _parsedValues(row)],
     );
+    cacheRepository.markSynced(args);
     state = state.copyWith(persistedRowCount: rows.length);
   }
 
+  /// Deletes the table on the server, then mirrors the deletion into the
+  /// local cache so it does not reappear on the next load.
   Future<void> deleteTable() async {
     final client = ref.read(physiquesApiClientProvider);
     await client.delete(
@@ -144,40 +143,33 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
       level: args.level,
       anntenaCategory: args.anntenaCategory,
     );
+    ref.read(physiqueTableCacheRepositoryProvider).deleteTable(args);
   }
 
-  /// Persisted rows among [selectedRowIds] are deleted on the server
-  /// (which re-sequences the rest); not-yet-saved rows are simply
-  /// dropped locally, since the server never received them.
+  /// Rows among [selectedRowIds] already known to exist on the server are
+  /// deleted there first; every selected row is then removed from the
+  /// local cache, which re-sequences the remaining ones the same way the
+  /// server does.
   Future<void> deleteRows(Set<String> selectedRowIds) async {
     final rows = state.rows;
     if (rows == null || selectedRowIds.isEmpty) return;
-    final selectedOffsets = [for (final id in selectedRowIds) int.parse(id)];
+    final selectedOffsets = {for (final id in selectedRowIds) int.parse(id)};
     final persistedOffsets = [
       for (final offset in selectedOffsets)
         if (offset < state.persistedRowCount) offset,
     ];
-    if (persistedOffsets.isEmpty) {
-      final selected = selectedOffsets.toSet();
-      final remaining = [
-        for (final row in rows)
-          if (!selected.contains(row.lineOffset)) row,
-      ];
-      state = state.copyWith(
-        rows: [
-          for (var i = 0; i < remaining.length; i++)
-            PhysiqueTableRow(lineOffset: i, values: remaining[i].values),
-        ],
+    if (persistedOffsets.isNotEmpty) {
+      final client = ref.read(physiquesApiClientProvider);
+      await client.deleteRows(
+        type: args.type,
+        level: args.level,
+        anntenaCategory: args.anntenaCategory,
+        lineOffsets: persistedOffsets,
       );
-      return;
     }
-    final client = ref.read(physiquesApiClientProvider);
-    await client.deleteRows(
-      type: args.type,
-      level: args.level,
-      anntenaCategory: args.anntenaCategory,
-      lineOffsets: persistedOffsets,
-    );
+    ref
+        .read(physiqueTableCacheRepositoryProvider)
+        .deleteRows(args, selectedOffsets);
     await _load();
   }
 }

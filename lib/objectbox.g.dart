@@ -18,6 +18,7 @@ import 'data/account/account_entity.dart';
 import 'data/cloud_file/cloud_file_entity.dart';
 import 'data/denpa_men/denpa_men_entity.dart';
 import 'data/notification/app_notification_entity.dart';
+import 'data/physique_table/physique_table_row_entity.dart';
 import 'data/qr_code/qr_code_entity.dart';
 import 'data/settings/app_settings_entity.dart';
 
@@ -450,6 +451,71 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(7, 3175529099250884384),
+    name: 'PhysiqueTableRowEntity',
+    lastPropertyId: const obx_int.IdUid(9, 1372325596293343591),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 8691315467565129427),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 6867021128559271848),
+        name: 'rowKey',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(5, 2035784995792252963),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 8305697254538636014),
+        name: 'type',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 429799478719450066),
+        name: 'level',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 8508096577513641182),
+        name: 'anntenaCategory',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 8011346193122469103),
+        name: 'lineOffset',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 4704232866523310471),
+        name: 'valuesJson',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 328920076999257210),
+        name: 'pendingSync',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 1372325596293343591),
+        name: 'existsOnServer',
+        type: 1,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -495,8 +561,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(6, 1041034640303658806),
-    lastIndexId: const obx_int.IdUid(4, 4652174802082127448),
+    lastEntityId: const obx_int.IdUid(7, 3175529099250884384),
+    lastIndexId: const obx_int.IdUid(5, 2035784995792252963),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [],
@@ -1062,6 +1128,90 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    PhysiqueTableRowEntity: obx_int.EntityDefinition<PhysiqueTableRowEntity>(
+      model: _entities[6],
+      toOneRelations: (PhysiqueTableRowEntity object) => [],
+      toManyRelations: (PhysiqueTableRowEntity object) => {},
+      getId: (PhysiqueTableRowEntity object) => object.id,
+      setId: (PhysiqueTableRowEntity object, int id) {
+        object.id = id;
+      },
+      objectToFB: (PhysiqueTableRowEntity object, fb.Builder fbb) {
+        final rowKeyOffset = fbb.writeString(object.rowKey);
+        final typeOffset = fbb.writeString(object.type);
+        final levelOffset = fbb.writeString(object.level);
+        final anntenaCategoryOffset = fbb.writeString(object.anntenaCategory);
+        final valuesJsonOffset = fbb.writeString(object.valuesJson);
+        fbb.startTable(10);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, rowKeyOffset);
+        fbb.addOffset(2, typeOffset);
+        fbb.addOffset(3, levelOffset);
+        fbb.addOffset(4, anntenaCategoryOffset);
+        fbb.addInt64(5, object.lineOffset);
+        fbb.addOffset(6, valuesJsonOffset);
+        fbb.addBool(7, object.pendingSync);
+        fbb.addBool(8, object.existsOnServer);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final rowKeyParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final typeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final levelParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 10, '');
+        final anntenaCategoryParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 12, '');
+        final lineOffsetParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          14,
+          0,
+        );
+        final valuesJsonParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 16, '');
+        final pendingSyncParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          18,
+          false,
+        );
+        final existsOnServerParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          20,
+          false,
+        );
+        final object = PhysiqueTableRowEntity(
+          id: idParam,
+          rowKey: rowKeyParam,
+          type: typeParam,
+          level: levelParam,
+          anntenaCategory: anntenaCategoryParam,
+          lineOffset: lineOffsetParam,
+          valuesJson: valuesJsonParam,
+          pendingSync: pendingSyncParam,
+          existsOnServer: existsOnServerParam,
+        );
+
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -1381,4 +1531,54 @@ class AppNotificationEntity_ {
   static final updatedAt = obx.QueryDateProperty<AppNotificationEntity>(
     _entities[5].properties[5],
   );
+}
+
+/// [PhysiqueTableRowEntity] entity fields to define ObjectBox queries.
+class PhysiqueTableRowEntity_ {
+  /// See [PhysiqueTableRowEntity.id].
+  static final id = obx.QueryIntegerProperty<PhysiqueTableRowEntity>(
+    _entities[6].properties[0],
+  );
+
+  /// See [PhysiqueTableRowEntity.rowKey].
+  static final rowKey = obx.QueryStringProperty<PhysiqueTableRowEntity>(
+    _entities[6].properties[1],
+  );
+
+  /// See [PhysiqueTableRowEntity.type].
+  static final type = obx.QueryStringProperty<PhysiqueTableRowEntity>(
+    _entities[6].properties[2],
+  );
+
+  /// See [PhysiqueTableRowEntity.level].
+  static final level = obx.QueryStringProperty<PhysiqueTableRowEntity>(
+    _entities[6].properties[3],
+  );
+
+  /// See [PhysiqueTableRowEntity.anntenaCategory].
+  static final anntenaCategory =
+      obx.QueryStringProperty<PhysiqueTableRowEntity>(
+        _entities[6].properties[4],
+      );
+
+  /// See [PhysiqueTableRowEntity.lineOffset].
+  static final lineOffset = obx.QueryIntegerProperty<PhysiqueTableRowEntity>(
+    _entities[6].properties[5],
+  );
+
+  /// See [PhysiqueTableRowEntity.valuesJson].
+  static final valuesJson = obx.QueryStringProperty<PhysiqueTableRowEntity>(
+    _entities[6].properties[6],
+  );
+
+  /// See [PhysiqueTableRowEntity.pendingSync].
+  static final pendingSync = obx.QueryBooleanProperty<PhysiqueTableRowEntity>(
+    _entities[6].properties[7],
+  );
+
+  /// See [PhysiqueTableRowEntity.existsOnServer].
+  static final existsOnServer =
+      obx.QueryBooleanProperty<PhysiqueTableRowEntity>(
+        _entities[6].properties[8],
+      );
 }

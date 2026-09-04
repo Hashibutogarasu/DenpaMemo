@@ -365,10 +365,66 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "7:3175529099250884384",
+      "lastPropertyId": "9:1372325596293343591",
+      "name": "PhysiqueTableRowEntity",
+      "properties": [
+        {
+          "id": "1:8691315467565129427",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6867021128559271848",
+          "name": "rowKey",
+          "indexId": "5:2035784995792252963",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:8305697254538636014",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:429799478719450066",
+          "name": "level",
+          "type": 9
+        },
+        {
+          "id": "5:8508096577513641182",
+          "name": "anntenaCategory",
+          "type": 9
+        },
+        {
+          "id": "6:8011346193122469103",
+          "name": "lineOffset",
+          "type": 6
+        },
+        {
+          "id": "7:4704232866523310471",
+          "name": "valuesJson",
+          "type": 9
+        },
+        {
+          "id": "8:328920076999257210",
+          "name": "pendingSync",
+          "type": 1
+        },
+        {
+          "id": "9:1372325596293343591",
+          "name": "existsOnServer",
+          "type": 1
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "6:1041034640303658806",
-  "lastIndexId": "4:4652174802082127448",
+  "lastEntityId": "7:3175529099250884384",
+  "lastIndexId": "5:2035784995792252963",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

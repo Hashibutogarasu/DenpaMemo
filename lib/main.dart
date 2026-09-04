@@ -20,6 +20,7 @@ import 'l10n/croppy_localizations_ja.dart';
 import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
 import 'providers/objectbox_providers.dart';
+import 'providers/physique_table_startup_sync_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
 import 'theme/app_theme_mode_mapping.dart';
@@ -109,6 +110,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(appInitializationProvider);
+    ref.watch(physiqueTableInitializationProvider);
     final themeMode = ref.watch(appSettingsProvider).themeMode;
     return MaterialApp.router(
       title: t.app.name,
