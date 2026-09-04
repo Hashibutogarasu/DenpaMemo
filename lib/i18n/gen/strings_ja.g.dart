@@ -619,6 +619,12 @@ class Translations$physiqueIdentification$ja {
 
 	/// ja: '体格の特定に失敗しました'
 	String get error => '体格の特定に失敗しました';
+
+	/// ja: '候補が複数あります'
+	String get multipleCandidates => '候補が複数あります';
+
+	/// ja: '体格を選択してください'
+	String get chooseCandidateTitle => '体格を選択してください';
 }
 
 // Path: home
@@ -1342,6 +1348,8 @@ extension on Translations {
 			'physiqueIdentification.identified' => '体格を特定しました！',
 			'physiqueIdentification.notFound' => '体格を特定できませんでした',
 			'physiqueIdentification.error' => '体格の特定に失敗しました',
+			'physiqueIdentification.multipleCandidates' => '候補が複数あります',
+			'physiqueIdentification.chooseCandidateTitle' => '体格を選択してください',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

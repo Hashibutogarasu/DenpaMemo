@@ -3,7 +3,7 @@ import type { DataSource } from 'typeorm';
 import type { z } from 'zod';
 import { createAntennaCategoryLinkDataSource } from '../domain/physique/antenna-category-link-data-source';
 import { findEvasionRateMatches } from '../domain/physique/evasion-rate-search';
-import { resolvePhysiqueCategoryKey } from '../domain/physique/physique-evasion-rate-category';
+import { resolvePhysiqueCategoryKeys } from '../domain/physique/physique-evasion-rate-category';
 import { TABLE_ENTITY_MAPPING } from '../domain/physique/table-registry';
 import {
   deleteTableRows,
@@ -308,11 +308,13 @@ export function tablesRoutes(dataSource: DataSource) {
         const matches = findEvasionRateMatches(primaryRows as TableRow[], targetRows as TableRow[], evasionRate, hp);
         return Promise.all(
           matches.map(async (match) => {
-            const textKey = await resolvePhysiqueCategoryKey(evasionRateCategoryRepo, evasionRate, match.columnIndex);
+            const keys = await resolvePhysiqueCategoryKeys(evasionRateCategoryRepo, evasionRate, match.columnIndex);
             return {
               ...match,
-              textKey: textKey ?? null,
-              text: textKey !== undefined ? (categoryTranslator.translatePhysique(textKey, locale) ?? null) : null,
+              candidates: keys.map((key) => ({
+                textKey: key,
+                text: categoryTranslator.translatePhysique(key, locale) ?? null,
+              })),
             };
           }),
         );

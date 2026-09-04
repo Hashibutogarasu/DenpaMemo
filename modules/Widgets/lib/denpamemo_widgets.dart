@@ -26,6 +26,7 @@ export 'src/dialog/backup_result_section.dart';
 export 'src/dialog/birth_guide_error_dialog.dart';
 export 'src/dialog/body_color_selection_dialog.dart';
 export 'src/dialog/bottom_slide_dialog.dart';
+export 'src/dialog/candidate_selection_dialog.dart';
 export 'src/dialog/correction_selection_dialog.dart';
 export 'src/dialog/denpa_men_preview_dialog.dart';
 export 'src/dialog/denpa_men_selection_dialog.dart';

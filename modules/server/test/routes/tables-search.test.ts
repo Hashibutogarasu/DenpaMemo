@@ -61,6 +61,8 @@ const categoryRows = [
   { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 0, textKey: 'largest' },
   { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 1, textKey: 'large' },
   { evasionRateStart: 5, evasionRateEnd: 5, startColumn: 3, columnOffset: 0, textKey: 'medium' },
+  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 4, columnOffset: 0, textKey: 'fast' },
+  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 3, columnOffset: 1, textKey: 'fastest' },
 ];
 
 function matchesWhere<T>(row: T, where: Partial<T>): boolean {
@@ -156,17 +158,53 @@ describe('GET /tables/search', () => {
     );
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual([
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 2, textKey: 'medium', text: '中間' },
+      {
+        level: '1',
+        anntenaCategory: 'アンテナ無し',
+        lineOffset: 0,
+        columnIndex: 2,
+        candidates: [{ textKey: 'medium', text: '中間' }],
+      },
     ]);
   });
 
-  test('multiple columns matching both hp and evasionRate all come back, each with its own textKey/text', async () => {
+  test('multiple columns matching both hp and evasionRate all come back, each with its own candidates', async () => {
     const response = await app.handle(
       new Request(searchUrl({ antenna: 'none', level: '1', hp: '40', evasionRate: '0' })),
     );
     expect(await response.json()).toEqual([
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 0, textKey: 'largest', text: '最大' },
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 1, textKey: 'large', text: '準大' },
+      {
+        level: '1',
+        anntenaCategory: 'アンテナ無し',
+        lineOffset: 0,
+        columnIndex: 0,
+        candidates: [{ textKey: 'largest', text: '最大' }],
+      },
+      {
+        level: '1',
+        anntenaCategory: 'アンテナ無し',
+        lineOffset: 0,
+        columnIndex: 1,
+        candidates: [{ textKey: 'large', text: '準大' }],
+      },
+    ]);
+  });
+
+  test('overlapping category patterns return every candidate for the user to choose between', async () => {
+    const response = await app.handle(
+      new Request(searchUrl({ antenna: 'none', level: '1', hp: '80', evasionRate: '10' })),
+    );
+    expect(await response.json()).toEqual([
+      {
+        level: '1',
+        anntenaCategory: 'アンテナ無し',
+        lineOffset: 0,
+        columnIndex: 3,
+        candidates: [
+          { textKey: 'fast', text: '準速' },
+          { textKey: 'fastest', text: '最速' },
+        ],
+      },
     ]);
   });
 
@@ -183,8 +221,20 @@ describe('GET /tables/search', () => {
     );
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual([
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 0, textKey: 'largest', text: '最大' },
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 1, textKey: 'large', text: '準大' },
+      {
+        level: '1',
+        anntenaCategory: 'アンテナ無し',
+        lineOffset: 0,
+        columnIndex: 0,
+        candidates: [{ textKey: 'largest', text: '最大' }],
+      },
+      {
+        level: '1',
+        anntenaCategory: 'アンテナ無し',
+        lineOffset: 0,
+        columnIndex: 1,
+        candidates: [{ textKey: 'large', text: '準大' }],
+      },
     ]);
   });
 

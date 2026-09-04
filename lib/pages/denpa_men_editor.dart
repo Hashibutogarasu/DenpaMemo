@@ -154,19 +154,32 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
             antenna: _denpaMen.anntena.id,
             level: '${_denpaMen.level}',
           ),
-      resultLabel: (matches) =>
-          matches.firstOrNull?.text ??
-          matches.firstOrNull?.textKey ??
-          t.physiqueIdentification.notFound,
+      resultLabel: (matches) => switch (matches.firstOrNull?.candidates) {
+        null || [] => t.physiqueIdentification.notFound,
+        [final only] => only.text ?? only.textKey,
+        _ => t.physiqueIdentification.multipleCandidates,
+      },
     );
-    if (matches == null) {
+    if (matches == null || !context.mounted) {
       return null;
     }
-    final key = matches.firstOrNull?.textKey;
     final columnIndex = matches.firstOrNull?.columnIndex;
-    final physique = key == null
+    final candidates = matches.firstOrNull?.candidates ?? const [];
+    final chosenKey = switch (candidates) {
+      [] => null,
+      [final only] => only.textKey,
+      _ => await CandidateSelectionDialog.show<PhysiqueCategoryCandidate>(
+        context,
+        title: t.physiqueIdentification.chooseCandidateTitle,
+        candidates: candidates,
+        label: (candidate) => candidate.text ?? candidate.textKey,
+      ).then((candidate) => candidate?.textKey),
+    };
+    final physique = chosenKey == null
         ? null
-        : widget.masterData.physiques.firstWhereOrNull((p) => p.id == key);
+        : widget.masterData.physiques.firstWhereOrNull(
+            (p) => p.id == chosenKey,
+          );
     if (physique == null) {
       if (context.mounted) {
         await ErrorDialog.show(

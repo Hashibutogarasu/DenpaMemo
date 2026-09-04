@@ -151,7 +151,9 @@
     "identifying": "体格を特定しています",
     "identified": "体格を特定しました！",
     "notFound": "体格を特定できませんでした",
-    "error": "体格の特定に失敗しました"
+    "error": "体格の特定に失敗しました",
+    "multipleCandidates": "候補が複数あります",
+    "chooseCandidateTitle": "体格を選択してください"
   },
   "home": {
     "empty": "電波人間が登録されていません",
