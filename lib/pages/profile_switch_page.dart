@@ -26,14 +26,10 @@ class ProfileSwitchPage extends ConsumerWidget {
 
   Future<void> _create(BuildContext context, WidgetRef ref) async {
     final name = await ProfileNameDialog.show(context);
-    if (name == null || name.isEmpty || !context.mounted) {
+    if (name == null || name.isEmpty) {
       return;
     }
-    final storage = ref.read(profileStorageProvider(namespace));
-    final profile = await storage.create(name);
-    await storage.saveCurrentId(profile.id);
-    ref.invalidate(profileListProvider(namespace));
-    ref.invalidate(currentProfileProvider(namespace));
+    await ref.read(profileControllerProvider(namespace)).create(name);
   }
 
   @override
@@ -82,9 +78,7 @@ class _ProfileTile extends ConsumerWidget {
   final bool isCurrent;
 
   Future<void> _select(BuildContext context, WidgetRef ref) async {
-    final storage = ref.read(profileStorageProvider(namespace));
-    await storage.saveCurrentId(profile.id);
-    ref.invalidate(currentProfileProvider(namespace));
+    await ref.read(profileControllerProvider(namespace)).select(profile);
     if (context.mounted) {
       Navigator.of(context).pop(true);
     }
@@ -92,20 +86,14 @@ class _ProfileTile extends ConsumerWidget {
 
   Future<void> _rename(BuildContext context, WidgetRef ref) async {
     final name = await ProfileNameDialog.show(context, initial: profile.name);
-    if (name == null || name.isEmpty || !context.mounted) {
+    if (name == null || name.isEmpty) {
       return;
     }
-    final storage = ref.read(profileStorageProvider(namespace));
-    await storage.update(profile.copyWith(name: name));
-    ref.invalidate(profileListProvider(namespace));
-    ref.invalidate(currentProfileProvider(namespace));
+    await ref.read(profileControllerProvider(namespace)).rename(profile, name);
   }
 
   Future<void> _delete(WidgetRef ref) async {
-    final storage = ref.read(profileStorageProvider(namespace));
-    await storage.delete(profile.id);
-    ref.invalidate(profileListProvider(namespace));
-    ref.invalidate(currentProfileProvider(namespace));
+    await ref.read(profileControllerProvider(namespace)).delete(profile);
   }
 
   @override

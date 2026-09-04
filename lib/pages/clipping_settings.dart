@@ -1,10 +1,6 @@
-import 'dart:io';
-
-import 'package:croppy/croppy.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension, Translations, t;
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,20 +8,8 @@ import '../data/clipping/clipping_slot_storage.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/clipping_slot_providers.dart';
 import '../providers/profile_providers.dart';
-import '../routing/app_router.dart';
 import '../widgets/dialog/confirm_dialog.dart';
 import '../widgets/list/list_item_tile.dart';
-
-String _defaultLabelFor(Translations t, DenpaMenImageSlotType slotType) {
-  switch (slotType) {
-    case DenpaMenImageSlotType.face:
-      return t.settings.clippingFace;
-    case DenpaMenImageSlotType.wholeBody:
-      return t.settings.clippingWholeBody;
-    case DenpaMenImageSlotType.icon:
-      return t.settings.clippingIcon;
-  }
-}
 
 IconData _iconFor(DenpaMenImageSlotType slotType) {
   switch (slotType) {
@@ -51,7 +35,10 @@ String _rangeText(Translations t, ClippingSlot slot) {
 /// Lets the user register a [ClippingSlot] (a reusable relative crop
 /// rectangle) for each [DenpaMenImageSlotType] by picking an example
 /// image and cropping it once, and reorder slots by dragging to change
-/// their display/priority order (see `ClippingSlotStorage.saveOrder`).
+/// their display/priority order. All persistence/file-picking/cropping
+/// work is delegated to `ClippingSettingsController`; this page only
+/// builds UI, tracks the reorder drag's optimistic local state, and
+/// reacts to the controller's results.
 class ClippingSettingsPage extends ConsumerStatefulWidget {
   const ClippingSettingsPage({super.key});
 
@@ -64,47 +51,6 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
   List<DenpaMenImageSlotType>? _order;
   bool _isReordering = false;
 
-  Future<void> _configureSlot(
-    DenpaMenImageSlotType slotType,
-    ClippingSlot? existing,
-  ) async {
-    final result = await FilePicker.pickFiles(type: FileType.image);
-    final pickedPath = result?.files.single.path;
-    if (pickedPath == null || !mounted) {
-      return;
-    }
-
-    final cropResult = await showMaterialImageCropper(
-      context,
-      imageProvider: FileImage(File(pickedPath)),
-      allowedAspectRatios: slotType == DenpaMenImageSlotType.icon
-          ? const [CropAspectRatio(width: 1, height: 1)]
-          : null,
-    );
-    if (cropResult == null || !mounted) {
-      return;
-    }
-
-    final data = cropResult.transformationsData;
-    final rect = data.cropRect;
-    final size = data.imageSize;
-
-    final slot = createClippingSlot(
-      slotType: slotType,
-      name: existing?.name ?? _defaultLabelFor(context.t, slotType),
-      priority:
-          existing?.priority ??
-          DenpaMenImageSlotType.defaultPriority[slotType]!,
-      left: rect.left / size.width,
-      top: rect.top / size.height,
-      right: rect.right / size.width,
-      bottom: rect.bottom / size.height,
-    );
-    await ref.read(clippingSlotStorageProvider).save(slot);
-    ref.invalidate(clippingSlotProvider(slotType));
-    ref.invalidate(clippingSlotTypesByPriorityProvider);
-  }
-
   void _reorder(int oldIndex, int newIndex) {
     final adjustedNewIndex = newIndex > oldIndex ? newIndex - 1 : newIndex;
     final reordered = List<DenpaMenImageSlotType>.from(_order!);
@@ -115,11 +61,10 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
       _order = reordered;
       _isReordering = true;
     });
-    ref.read(clippingSlotStorageProvider).saveOrder(reordered).then((_) {
+    ref.read(clippingSettingsControllerProvider).saveOrder(reordered).then((_) {
       if (!mounted) {
         return;
       }
-      ref.invalidate(clippingSlotTypesByPriorityProvider);
       setState(() => _isReordering = false);
     });
   }
@@ -134,25 +79,15 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
     if (!confirmed || !mounted) {
       return;
     }
-    await ref.read(clippingSlotStorageProvider).reset();
-    for (final slotType in DenpaMenImageSlotType.values) {
-      ref.invalidate(clippingSlotProvider(slotType));
+    await ref.read(clippingSettingsControllerProvider).reset();
+    if (!mounted) {
+      return;
     }
-    ref.invalidate(clippingSlotTypesByPriorityProvider);
     setState(() => _order = null);
   }
 
   Future<void> _switchProfile() async {
-    await const ProfileSwitchRoute(
-      namespace: ClippingSlotStorage.profileNamespace,
-    ).push<bool>(context);
-    ref.invalidate(
-      currentProfileProvider(ClippingSlotStorage.profileNamespace),
-    );
-    ref.invalidate(clippingSlotTypesByPriorityProvider);
-    for (final slotType in DenpaMenImageSlotType.values) {
-      ref.invalidate(clippingSlotProvider(slotType));
-    }
+    await ref.read(clippingSettingsControllerProvider).switchProfile(context);
   }
 
   @override
@@ -218,8 +153,6 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
                           key: ValueKey(order[i].name),
                           index: i,
                           slotType: order[i],
-                          onTap: (existing) =>
-                              _configureSlot(order[i], existing),
                         ),
                     ],
                   ),
@@ -235,12 +168,10 @@ class _ClippingSlotTile extends ConsumerWidget {
     required super.key,
     required this.index,
     required this.slotType,
-    required this.onTap,
   });
 
   final int index;
   final DenpaMenImageSlotType slotType;
-  final void Function(ClippingSlot? existing) onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -250,20 +181,20 @@ class _ClippingSlotTile extends ConsumerWidget {
 
     return ListItemTile(
       icon: _iconFor(slotType),
-      label: slot?.name ?? _defaultLabelFor(t, slotType),
+      label: slot?.name ?? defaultClippingSlotLabel(slotType),
       subtitle: slot != null ? _rangeText(t, slot) : t.common.unset,
-      onTap: () => onTap(slot),
+      onTap: () => ref
+          .read(clippingSettingsControllerProvider)
+          .configureSlot(context, slotType: slotType, existing: slot),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (slot != null)
             IconButton(
               icon: const Icon(Icons.close),
-              onPressed: () async {
-                await ref.read(clippingSlotStorageProvider).delete(slotType);
-                ref.invalidate(clippingSlotProvider(slotType));
-                ref.invalidate(clippingSlotTypesByPriorityProvider);
-              },
+              onPressed: () => ref
+                  .read(clippingSettingsControllerProvider)
+                  .deleteSlot(slotType),
             ),
           ReorderableDragStartListener(
             index: index,
