@@ -122,7 +122,7 @@
   },
   "physiqueTable": {
     "title": "体格表",
-    "tableTitle": "レベル${level} - ${anntenaCategory} の体格表",
+    "tableTitle": "レベル${level} - ${anntenaCategory} - ${statusName} の体格表",
     "enterLevel": "レベルを入力",
     "selectStatusCategory": "ステータスを選択",
     "selectAnntenaCategory": "アンテナを選択",

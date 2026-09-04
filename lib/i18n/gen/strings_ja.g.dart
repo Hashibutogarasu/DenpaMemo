@@ -526,8 +526,8 @@ class Translations$physiqueTable$ja {
 	/// ja: '体格表'
 	String get title => '体格表';
 
-	/// ja: 'レベル${level} - ${anntenaCategory} の体格表'
-	String tableTitle({required Object level, required Object anntenaCategory}) => 'レベル${level} - ${anntenaCategory} の体格表';
+	/// ja: 'レベル${level} - ${anntenaCategory} - ${statusName} の体格表'
+	String tableTitle({required Object level, required Object anntenaCategory, required Object statusName}) => 'レベル${level} - ${anntenaCategory} - ${statusName} の体格表';
 
 	/// ja: 'レベルを入力'
 	String get enterLevel => 'レベルを入力';
@@ -1289,7 +1289,7 @@ extension on Translations {
 			'settings.cloudBackup' => 'クラウドバックアップ&復元',
 			'settings.editPhysiqueTable' => '体格表を編集',
 			'physiqueTable.title' => '体格表',
-			'physiqueTable.tableTitle' => ({required Object level, required Object anntenaCategory}) => 'レベル${level} - ${anntenaCategory} の体格表',
+			'physiqueTable.tableTitle' => ({required Object level, required Object anntenaCategory, required Object statusName}) => 'レベル${level} - ${anntenaCategory} - ${statusName} の体格表',
 			'physiqueTable.enterLevel' => 'レベルを入力',
 			'physiqueTable.selectStatusCategory' => 'ステータスを選択',
 			'physiqueTable.selectAnntenaCategory' => 'アンテナを選択',
