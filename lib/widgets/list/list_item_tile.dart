@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// A single row for any list of items: a leading icon, a label, and a
-/// trailing slot that varies by what the caller passes in — a checkbox
-/// (selection mode), a `⋮` action menu, a chevron (navigable), [trailing],
-/// plain [trailingText], or nothing.
+/// A single row for any list of items: an optional leading [icon], a
+/// label, and a trailing slot that varies by what the caller passes in —
+/// a checkbox (selection mode), a `⋮` action menu, a chevron (navigable),
+/// [trailing], plain [trailingText], or nothing.
 ///
 /// Passing only [icon]/[label]/[onTap]/[trailingText]/[color] reproduces
 /// the settings-list tile this was generalized from exactly; the
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 class ListItemTile extends StatelessWidget {
   const ListItemTile({
     super.key,
-    required this.icon,
+    this.icon,
     required this.label,
     this.subtitle,
     this.onTap,
@@ -27,7 +27,7 @@ class ListItemTile extends StatelessWidget {
     this.onLongPress,
   });
 
-  final IconData icon;
+  final IconData? icon;
   final String label;
   final String? subtitle;
   final VoidCallback? onTap;
@@ -51,7 +51,7 @@ class ListItemTile extends StatelessWidget {
     final showCheckbox = selectionMode && onSelectedChanged != null;
     final showActionMenu = !showCheckbox && actionMenuItemsBuilder != null;
     return ListTile(
-      leading: Icon(icon, color: effectiveColor),
+      leading: icon != null ? Icon(icon, color: effectiveColor) : null,
       title: Text(
         label,
         style: effectiveColor != null ? TextStyle(color: effectiveColor) : null,
@@ -68,9 +68,13 @@ class ListItemTile extends StatelessWidget {
               onSelected: (action) => action(),
               itemBuilder: actionMenuItemsBuilder!,
             )
+          : trailing != null
+          ? trailing
+          : trailingText != null
+          ? Text(trailingText!)
           : onTap != null
           ? const Icon(Icons.chevron_right)
-          : (trailing ?? (trailingText != null ? Text(trailingText!) : null)),
+          : null,
       enabled: enabled,
       onTap: showCheckbox ? () => onSelectedChanged!(!selected) : onTap,
       onLongPress: onLongPress,

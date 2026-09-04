@@ -15,9 +15,10 @@ import '../widgets/profile/profile_name_dialog.dart';
 /// is (see `ProfileStorage`). Entirely domain-agnostic: this page has no
 /// notion of what a profile's settings actually are — it only lists
 /// [Profile.name]s and lets the caller create/select/rename/delete one.
-/// Pops with `true` once a profile has been created or selected, so the
-/// caller knows to re-read whatever settings depend on the current
-/// profile.
+/// Creating a profile only selects it as current and stays on this page
+/// (the user may want to create several before leaving); selecting an
+/// existing one from the list pops with `true`, so the caller knows to
+/// re-read whatever settings depend on the current profile.
 class ProfileSwitchPage extends ConsumerWidget {
   const ProfileSwitchPage({super.key, required this.namespace});
 
@@ -33,9 +34,6 @@ class ProfileSwitchPage extends ConsumerWidget {
     await storage.saveCurrentId(profile.id);
     ref.invalidate(profileListProvider(namespace));
     ref.invalidate(currentProfileProvider(namespace));
-    if (context.mounted) {
-      Navigator.of(context).pop(true);
-    }
   }
 
   @override
@@ -113,13 +111,11 @@ class _ProfileTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListItemTile(
-      icon: Icons.person_outline,
       label: profile.name,
       onTap: () => _select(context, ref),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (isCurrent) const Icon(Icons.check),
           IconButton(
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => _rename(context, ref),
@@ -127,6 +123,10 @@ class _ProfileTile extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () => _delete(ref),
+          ),
+          SizedBox(
+            width: 24,
+            child: isCurrent ? const Icon(Icons.check) : null,
           ),
         ],
       ),
