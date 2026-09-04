@@ -89,15 +89,9 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
     final rect = data.cropRect;
     final size = data.imageSize;
 
-    final defaultName = existing?.name ?? _defaultLabelFor(context.t, slotType);
-    final name = await _promptName(defaultName);
-    if (name == null) {
-      return;
-    }
-
     final slot = createClippingSlot(
       slotType: slotType,
-      name: name,
+      name: existing?.name ?? _defaultLabelFor(context.t, slotType),
       priority:
           existing?.priority ??
           DenpaMenImageSlotType.defaultPriority[slotType]!,
@@ -109,31 +103,6 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
     await ref.read(clippingSlotStorageProvider).save(slot);
     ref.invalidate(clippingSlotProvider(slotType));
     ref.invalidate(clippingSlotTypesByPriorityProvider);
-  }
-
-  Future<String?> _promptName(String initial) async {
-    final controller = TextEditingController(text: initial);
-    final t = context.t;
-    try {
-      return await showDialog<String>(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: TextField(controller: controller, autofocus: true),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(t.common.cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(controller.text),
-              child: Text(t.common.ok),
-            ),
-          ],
-        ),
-      );
-    } finally {
-      controller.dispose();
-    }
   }
 
   void _reorder(int oldIndex, int newIndex) {
