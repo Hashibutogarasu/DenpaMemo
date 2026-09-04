@@ -5,7 +5,6 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graphql_client/graphql_client.dart';
 
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
@@ -197,7 +196,7 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final metadataAsync = ref.watch(physiqueTableMetadataProvider);
+    final metadataAsync = ref.watch(physiqueTableMetadataWithCacheProvider);
     final typesAsync = ref.watch(tableTypesProvider);
     final categoriesWithData = ref.watch(
       physiqueTableAnntenaCategoriesWithDataProvider,

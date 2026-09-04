@@ -18,6 +18,7 @@ import 'data/account/account_entity.dart';
 import 'data/cloud_file/cloud_file_entity.dart';
 import 'data/denpa_men/denpa_men_entity.dart';
 import 'data/notification/app_notification_entity.dart';
+import 'data/physique_table/physique_table_metadata_cache_entity.dart';
 import 'data/physique_table/physique_table_row_entity.dart';
 import 'data/qr_code/qr_code_entity.dart';
 import 'data/settings/app_settings_entity.dart';
@@ -516,6 +517,34 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(8, 2940214554105854855),
+    name: 'PhysiqueTableMetadataCacheEntity',
+    lastPropertyId: const obx_int.IdUid(3, 7261772485843705855),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 8025863136086506019),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 1906278866198025881),
+        name: 'tableTypesJson',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 7261772485843705855),
+        name: 'metadataJson',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -561,7 +590,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(7, 3175529099250884384),
+    lastEntityId: const obx_int.IdUid(8, 2940214554105854855),
     lastIndexId: const obx_int.IdUid(5, 2035784995792252963),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
@@ -1212,6 +1241,54 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    PhysiqueTableMetadataCacheEntity:
+        obx_int.EntityDefinition<PhysiqueTableMetadataCacheEntity>(
+          model: _entities[7],
+          toOneRelations: (PhysiqueTableMetadataCacheEntity object) => [],
+          toManyRelations: (PhysiqueTableMetadataCacheEntity object) => {},
+          getId: (PhysiqueTableMetadataCacheEntity object) => object.id,
+          setId: (PhysiqueTableMetadataCacheEntity object, int id) {
+            object.id = id;
+          },
+          objectToFB:
+              (PhysiqueTableMetadataCacheEntity object, fb.Builder fbb) {
+                final tableTypesJsonOffset = object.tableTypesJson == null
+                    ? null
+                    : fbb.writeString(object.tableTypesJson!);
+                final metadataJsonOffset = object.metadataJson == null
+                    ? null
+                    : fbb.writeString(object.metadataJson!);
+                fbb.startTable(4);
+                fbb.addInt64(0, object.id);
+                fbb.addOffset(1, tableTypesJsonOffset);
+                fbb.addOffset(2, metadataJsonOffset);
+                fbb.finish(fbb.endTable());
+                return object.id;
+              },
+          objectFromFB: (obx.Store store, ByteData fbData) {
+            final buffer = fb.BufferContext(fbData);
+            final rootOffset = buffer.derefObject(0);
+            final idParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              4,
+              0,
+            );
+            final tableTypesJsonParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGetNullable(buffer, rootOffset, 6);
+            final metadataJsonParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGetNullable(buffer, rootOffset, 8);
+            final object = PhysiqueTableMetadataCacheEntity(
+              id: idParam,
+              tableTypesJson: tableTypesJsonParam,
+              metadataJson: metadataJsonParam,
+            );
+
+            return object;
+          },
+        ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -1580,5 +1657,25 @@ class PhysiqueTableRowEntity_ {
   static final existsOnServer =
       obx.QueryBooleanProperty<PhysiqueTableRowEntity>(
         _entities[6].properties[8],
+      );
+}
+
+/// [PhysiqueTableMetadataCacheEntity] entity fields to define ObjectBox queries.
+class PhysiqueTableMetadataCacheEntity_ {
+  /// See [PhysiqueTableMetadataCacheEntity.id].
+  static final id = obx.QueryIntegerProperty<PhysiqueTableMetadataCacheEntity>(
+    _entities[7].properties[0],
+  );
+
+  /// See [PhysiqueTableMetadataCacheEntity.tableTypesJson].
+  static final tableTypesJson =
+      obx.QueryStringProperty<PhysiqueTableMetadataCacheEntity>(
+        _entities[7].properties[1],
+      );
+
+  /// See [PhysiqueTableMetadataCacheEntity.metadataJson].
+  static final metadataJson =
+      obx.QueryStringProperty<PhysiqueTableMetadataCacheEntity>(
+        _entities[7].properties[2],
       );
 }

@@ -421,9 +421,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "8:2940214554105854855",
+      "lastPropertyId": "3:7261772485843705855",
+      "name": "PhysiqueTableMetadataCacheEntity",
+      "properties": [
+        {
+          "id": "1:8025863136086506019",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1906278866198025881",
+          "name": "tableTypesJson",
+          "type": 9
+        },
+        {
+          "id": "3:7261772485843705855",
+          "name": "metadataJson",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "7:3175529099250884384",
+  "lastEntityId": "8:2940214554105854855",
   "lastIndexId": "5:2035784995792252963",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

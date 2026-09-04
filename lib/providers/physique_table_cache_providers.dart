@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/physique_table/objectbox_physique_table_cache_repository.dart';
+import '../data/physique_table/objectbox_physique_table_metadata_cache_repository.dart';
 import 'objectbox_providers.dart';
 
 /// The local ObjectBox-backed cache of physique table rows, so offline
@@ -8,4 +9,12 @@ import 'objectbox_providers.dart';
 final physiqueTableCacheRepositoryProvider =
     Provider<PhysiqueTableCacheRepository>(
       (ref) => PhysiqueTableCacheRepository(ref.watch(objectBoxProvider)),
+    );
+
+/// The local cache of table type/metadata payloads (see
+/// [PhysiqueTableMetadataCacheRepository]).
+final physiqueTableMetadataCacheRepositoryProvider =
+    Provider<PhysiqueTableMetadataCacheRepository>(
+      (ref) =>
+          PhysiqueTableMetadataCacheRepository(ref.watch(objectBoxProvider)),
     );
