@@ -8,6 +8,7 @@ import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
 import '../pages/cloud_backup.dart';
 import '../pages/cloud_backup_history.dart';
+import '../pages/clipping_settings.dart';
 import '../pages/data_management.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
@@ -21,6 +22,7 @@ import '../pages/open_source_licenses.dart';
 import '../pages/physique_table_edit.dart';
 import '../pages/physique_table_list.dart';
 import '../pages/physique_table_view.dart';
+import '../pages/profile_switch_page.dart';
 import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
 import '../pages/search_results.dart';
@@ -49,11 +51,8 @@ class AppShellRouteData extends ShellRouteData {
   const AppShellRouteData();
 
   @override
-  Widget builder(
-    BuildContext context,
-    GoRouterState state,
-    Widget navigator,
-  ) => AppShell(child: navigator);
+  Widget builder(BuildContext context, GoRouterState state, Widget navigator) =>
+      AppShell(child: navigator);
 }
 
 class HomeRoute extends GoRouteData with $HomeRoute {
@@ -228,10 +227,8 @@ class BirthGuideRoute extends GoRouteData with $BirthGuideRoute {
   final BirthGuideArgs? $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => BirthGuidePage(
-    masterData: $extra!.masterData,
-    target: $extra!.target,
-  );
+  Widget build(BuildContext context, GoRouterState state) =>
+      BirthGuidePage(masterData: $extra!.masterData, target: $extra!.target);
 }
 
 /// Pushed from the settings list's "account" tile.
@@ -252,6 +249,30 @@ class ThemeSettingsRoute extends GoRouteData with $ThemeSettingsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const ThemeSettingsPage();
+}
+
+/// Pushed from the settings list's "clipping" tile.
+@TypedGoRoute<ClippingSettingsRoute>(path: '/settings/clipping')
+class ClippingSettingsRoute extends GoRouteData with $ClippingSettingsRoute {
+  const ClippingSettingsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ClippingSettingsPage();
+}
+
+/// Generic profile switcher (see `ProfileSwitchPage`), pushed from any
+/// feature's own settings screen with its own `namespace` — currently
+/// only the clipping settings screen's "switch profile" FAB.
+@TypedGoRoute<ProfileSwitchRoute>(path: '/profiles/:namespace')
+class ProfileSwitchRoute extends GoRouteData with $ProfileSwitchRoute {
+  const ProfileSwitchRoute({required this.namespace});
+
+  final String namespace;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      ProfileSwitchPage(namespace: namespace);
 }
 
 /// Pushed from the settings list's "language" tile.
@@ -293,31 +314,38 @@ class PhysiqueTableListRoute extends GoRouteData with $PhysiqueTableListRoute {
   const PhysiqueTableListRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const PhysiqueTableListPage();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PhysiqueTableListPage();
 }
 
 /// Pushed from [PhysiqueTableListPage] once a level/antenna category pair
 /// is chosen. `$extra` carries that pair, since it can't round-trip
 /// through a URL (see [DenpaMenSelectionRoute] for the same pattern).
-@TypedGoRoute<PhysiqueTableViewRoute>(path: '/settings/developer/physiques/view')
+@TypedGoRoute<PhysiqueTableViewRoute>(
+  path: '/settings/developer/physiques/view',
+)
 class PhysiqueTableViewRoute extends GoRouteData with $PhysiqueTableViewRoute {
   const PhysiqueTableViewRoute({required this.$extra});
 
   final PhysiqueTableArgs $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => PhysiqueTableViewPage(args: $extra);
+  Widget build(BuildContext context, GoRouterState state) =>
+      PhysiqueTableViewPage(args: $extra);
 }
 
 /// Pushed from [PhysiqueTableViewPage]'s edit button.
-@TypedGoRoute<PhysiqueTableEditRoute>(path: '/settings/developer/physiques/edit')
+@TypedGoRoute<PhysiqueTableEditRoute>(
+  path: '/settings/developer/physiques/edit',
+)
 class PhysiqueTableEditRoute extends GoRouteData with $PhysiqueTableEditRoute {
   const PhysiqueTableEditRoute({required this.$extra});
 
   final PhysiqueTableArgs $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => PhysiqueTableEditPage(args: $extra);
+  Widget build(BuildContext context, GoRouterState state) =>
+      PhysiqueTableEditPage(args: $extra);
 }
 
 /// Wraps the cloud backup page and its history page in [CloudBackupShell],
@@ -328,18 +356,17 @@ class PhysiqueTableEditRoute extends GoRouteData with $PhysiqueTableEditRoute {
 @TypedShellRoute<CloudBackupShellRouteData>(
   routes: [
     TypedGoRoute<CloudBackupRoute>(path: '/settings/cloud-backup'),
-    TypedGoRoute<CloudBackupHistoryRoute>(path: '/settings/cloud-backup/history'),
+    TypedGoRoute<CloudBackupHistoryRoute>(
+      path: '/settings/cloud-backup/history',
+    ),
   ],
 )
 class CloudBackupShellRouteData extends ShellRouteData {
   const CloudBackupShellRouteData();
 
   @override
-  Widget builder(
-    BuildContext context,
-    GoRouterState state,
-    Widget navigator,
-  ) => CloudBackupShell(child: navigator);
+  Widget builder(BuildContext context, GoRouterState state, Widget navigator) =>
+      CloudBackupShell(child: navigator);
 }
 
 /// Pushed from the settings list's "cloud backup" tile.
@@ -352,7 +379,8 @@ class CloudBackupRoute extends GoRouteData with $CloudBackupRoute {
 }
 
 /// Pushed from the cloud backup page's history FAB.
-class CloudBackupHistoryRoute extends GoRouteData with $CloudBackupHistoryRoute {
+class CloudBackupHistoryRoute extends GoRouteData
+    with $CloudBackupHistoryRoute {
   const CloudBackupHistoryRoute();
 
   @override

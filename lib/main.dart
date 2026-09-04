@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:croppy/croppy.dart';
 import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:intl/date_symbol_data_local.dart';
@@ -14,13 +16,15 @@ import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/objectbox/objectbox.dart';
 import 'i18n/gen/strings.g.dart';
+import 'l10n/croppy_localizations_ja.dart';
+import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
-import 'providers/denpa_men_sync_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
 import 'theme/app_theme_mode_mapping.dart';
 import 'widgets/restart_widget.dart';
+import 'widgets/splash/splash_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -104,7 +108,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(denpaMenSyncProvider);
+    ref.watch(appInitializationProvider);
     final themeMode = ref.watch(appSettingsProvider).themeMode;
     return MaterialApp.router(
       title: t.app.name,
@@ -113,6 +117,15 @@ class _ThemedMaterialApp extends ConsumerWidget {
       darkTheme: AppDarkTheme.theme,
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
+      builder: (context, child) => SplashGate(child: child!),
+      localizationsDelegates: const [
+        CroppyLocalizationsJa.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        CroppyLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('ja')],
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 /// In-memory snapshot of an in-progress QR-code add session: the QR code's
 /// raw value plus every [DenpaMen] confirmed into it so far via "next".
 /// Nothing here is persisted until "complete" is pressed.

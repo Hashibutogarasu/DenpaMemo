@@ -19,7 +19,8 @@ void toggleCloudFileSelected(WidgetRef ref, String fileId) {
 /// [cloudFilesProvider], sorted by [CloudFile.uploadedAt] descending, so
 /// the newest upload is first.
 final sortedCloudFilesProvider = Provider<List<CloudFile>>((ref) {
-  return [...ref.watch(cloudFilesProvider)]..sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
+  return [...ref.watch(cloudFilesProvider)]
+    ..sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
 });
 
 /// Fires [CloudFilesNotifier.refreshFromServer] once per watch — the

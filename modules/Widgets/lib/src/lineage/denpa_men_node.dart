@@ -1,22 +1,15 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tree_graph/tree_graph.dart';
 
-import '../icon/entity_icon.dart';
-
-/// [iconFile]'s image (or a placeholder if null), with [name] shown
-/// below. The icon is resolved by the caller ahead of time rather than
-/// watched here, so the graph lays out once instead of reflowing
-/// node-by-node as each icon finishes loading. [hoverHighlightPainter],
-/// when set, paints via [Listenable] rather than a rebuild — see
+/// [icon] with [name] shown below. [hoverHighlightPainter], when set,
+/// paints via [Listenable] rather than a rebuild — see
 /// [TreeNodeHighlightPainter]. [selectionMode]/[selectedIds]/[recordId],
 /// when all set, show a selection overlay on top.
 class DenpaMenNode extends StatelessWidget {
   const DenpaMenNode({
     super.key,
-    required this.iconFile,
+    required this.icon,
     required this.name,
     required this.size,
     this.hoverHighlightPainter,
@@ -26,7 +19,7 @@ class DenpaMenNode extends StatelessWidget {
     this.selectedOverlay,
   });
 
-  final File? iconFile;
+  final Widget icon;
   final String name;
   final double size;
   final CustomPainter? hoverHighlightPainter;
@@ -43,7 +36,7 @@ class DenpaMenNode extends StatelessWidget {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            ResolvedEntityIcon(file: iconFile, size: size),
+            icon,
             if (hoverHighlightPainter != null)
               Positioned.fill(
                 child: CustomPaint(painter: hoverHighlightPainter),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// A single row for any list of items: a leading icon, a label, and a
-/// trailing slot that varies by what the caller passes in — a checkbox
-/// (selection mode), a `⋮` action menu, a chevron (navigable), [trailing],
-/// plain [trailingText], or nothing.
+/// A single row for any list of items: an optional leading [icon], a
+/// label, and a trailing slot that varies by what the caller passes in —
+/// a checkbox (selection mode), a `⋮` action menu, a chevron (navigable),
+/// [trailing], plain [trailingText], or nothing.
 ///
 /// Passing only [icon]/[label]/[onTap]/[trailingText]/[color] reproduces
 /// the settings-list tile this was generalized from exactly; the
@@ -13,8 +13,9 @@ import 'package:flutter/material.dart';
 class ListItemTile extends StatelessWidget {
   const ListItemTile({
     super.key,
-    required this.icon,
+    this.icon,
     required this.label,
+    this.subtitle,
     this.onTap,
     this.trailingText,
     this.trailing,
@@ -26,8 +27,9 @@ class ListItemTile extends StatelessWidget {
     this.onLongPress,
   });
 
-  final IconData icon;
+  final IconData? icon;
   final String label;
+  final String? subtitle;
   final VoidCallback? onTap;
   final String? trailingText;
   final Widget? trailing;
@@ -35,30 +37,43 @@ class ListItemTile extends StatelessWidget {
   final bool selectionMode;
   final bool selected;
   final ValueChanged<bool>? onSelectedChanged;
-  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)? actionMenuItemsBuilder;
+  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
+  actionMenuItemsBuilder;
   final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     final enabled =
-        onTap != null || onLongPress != null || (selectionMode && onSelectedChanged != null);
+        onTap != null ||
+        onLongPress != null ||
+        (selectionMode && onSelectedChanged != null);
     final effectiveColor = enabled ? color : null;
     final showCheckbox = selectionMode && onSelectedChanged != null;
     final showActionMenu = !showCheckbox && actionMenuItemsBuilder != null;
     return ListTile(
-      leading: Icon(icon, color: effectiveColor),
-      title: Text(label, style: effectiveColor != null ? TextStyle(color: effectiveColor) : null),
+      leading: icon != null ? Icon(icon, color: effectiveColor) : null,
+      title: Text(
+        label,
+        style: effectiveColor != null ? TextStyle(color: effectiveColor) : null,
+      ),
+      subtitle: subtitle != null ? Text(subtitle!) : null,
       trailing: showCheckbox
-          ? Checkbox(value: selected, onChanged: (value) => onSelectedChanged!(value ?? false))
+          ? Checkbox(
+              value: selected,
+              onChanged: (value) => onSelectedChanged!(value ?? false),
+            )
           : showActionMenu
           ? PopupMenuButton<VoidCallback>(
               icon: const Icon(Icons.more_vert),
               onSelected: (action) => action(),
               itemBuilder: actionMenuItemsBuilder!,
             )
-          : onTap != null
-          ? const Icon(Icons.chevron_right)
-          : (trailing ?? (trailingText != null ? Text(trailingText!) : null)),
+          : trailing ??
+                (trailingText != null
+                    ? Text(trailingText!)
+                    : onTap != null
+                    ? const Icon(Icons.chevron_right)
+                    : null),
       enabled: enabled,
       onTap: showCheckbox ? () => onSelectedChanged!(!selected) : onTap,
       onLongPress: onLongPress,

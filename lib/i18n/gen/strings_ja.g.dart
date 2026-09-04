@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final Translations$app$ja app = Translations$app$ja.internal(_root);
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
+	late final Translations$profile$ja profile = Translations$profile$ja.internal(_root);
 	late final Translations$step$ja step = Translations$step$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
@@ -214,6 +215,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'fear': 'きょうふ',
 		'jack': 'ジャック',
 	};
+	late final Translations$croppy$ja croppy = Translations$croppy$ja.internal(_root);
 }
 
 // Path: app
@@ -266,11 +268,41 @@ class Translations$common$ja {
 	/// ja: '未設定'
 	String get unset => '未設定';
 
+	/// ja: 'リセット'
+	String get reset => 'リセット';
+
 	/// ja: '再試行'
 	String get retry => '再試行';
 
 	/// ja: 'エラー'
 	String get errorTitle => 'エラー';
+}
+
+// Path: profile
+class Translations$profile$ja {
+	Translations$profile$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'プロファイルを切り替え'
+	String get switchProfile => 'プロファイルを切り替え';
+
+	/// ja: 'プロファイル切り替え'
+	String get switchPageTitle => 'プロファイル切り替え';
+
+	/// ja: '新規作成'
+	String get create => '新規作成';
+
+	/// ja: 'プロファイル名'
+	String get nameDialogTitle => 'プロファイル名';
+
+	/// ja: 'プロファイルを選択'
+	String get selectionDialogTitle => 'プロファイルを選択';
+
+	/// ja: 'デフォルト'
+	String get defaultName => 'デフォルト';
 }
 
 // Path: step
@@ -349,6 +381,12 @@ class Translations$page$ja {
 
 	/// ja: 'バックアップ履歴'
 	String get cloudBackupHistory => 'バックアップ履歴';
+
+	/// ja: '画像切り抜き'
+	String get clippingSettings => '画像切り抜き';
+
+	/// ja: '画像切り抜き - ${profileName}'
+	String clippingSettingsTitle({required Object profileName}) => '画像切り抜き - ${profileName}';
 }
 
 // Path: settings
@@ -370,6 +408,27 @@ class Translations$settings$ja {
 
 	/// ja: 'テーマ'
 	String get theme => 'テーマ';
+
+	/// ja: '画像切り抜き'
+	String get clipping => '画像切り抜き';
+
+	/// ja: '顔'
+	String get clippingFace => '顔';
+
+	/// ja: '全身'
+	String get clippingWholeBody => '全身';
+
+	/// ja: 'アイコン'
+	String get clippingIcon => 'アイコン';
+
+	/// ja: '左${left}% 上${top}% 右${right}% 下${bottom}%'
+	String clippingRangeText({required Object left, required Object top, required Object right, required Object bottom}) => '左${left}% 上${top}% 右${right}% 下${bottom}%';
+
+	/// ja: 'リセットの確認'
+	String get clippingResetConfirmTitle => 'リセットの確認';
+
+	/// ja: '優先順位とすべてのクリッピング設定をリセットします。この操作は取り消せません。よろしいですか?'
+	String get clippingResetConfirmMessage => '優先順位とすべてのクリッピング設定をリセットします。この操作は取り消せません。よろしいですか?';
 
 	/// ja: '言語'
 	String get language => '言語';
@@ -628,6 +687,9 @@ class Translations$home$ja {
 
 	/// ja: '系譜ツリーをJSONとしてコピー'
 	String get copyLineageTreeJsonAction => '系譜ツリーをJSONとしてコピー';
+
+	/// ja: '一番下に到達しました'
+	String get reachedListEnd => '一番下に到達しました';
 }
 
 // Path: search
@@ -960,6 +1022,57 @@ class Translations$editableStatus$ja {
 	String get monsterExpRecipientCount => '経験値を獲得した人数';
 }
 
+// Path: croppy
+class Translations$croppy$ja {
+	Translations$croppy$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'リセット'
+	String get materialResetLabel => 'リセット';
+
+	/// ja: 'リセット'
+	String get cupertinoResetLabel => 'リセット';
+
+	/// ja: '${direction}に反転'
+	String materialFlipLabel({required Object direction}) => '${direction}に反転';
+
+	/// ja: '縦'
+	String get directionVertical => '縦';
+
+	/// ja: '横'
+	String get directionHorizontal => '横';
+
+	/// ja: 'フリーフォーム'
+	String get materialFreeformAspectRatioLabel => 'フリーフォーム';
+
+	/// ja: '元のサイズ'
+	String get materialOriginalAspectRatioLabel => '元のサイズ';
+
+	/// ja: '正方形'
+	String get materialSquareAspectRatioLabel => '正方形';
+
+	/// ja: '保存'
+	String get saveLabel => '保存';
+
+	/// ja: '完了'
+	String get doneLabel => '完了';
+
+	/// ja: 'キャンセル'
+	String get cancelLabel => 'キャンセル';
+
+	/// ja: 'フリーフォーム'
+	String get cupertinoFreeformAspectRatioLabel => 'フリーフォーム';
+
+	/// ja: '元のサイズ'
+	String get cupertinoOriginalAspectRatioLabel => '元のサイズ';
+
+	/// ja: '正方形'
+	String get cupertinoSquareAspectRatioLabel => '正方形';
+}
+
 // Path: settings.section
 class Translations$settings$section$ja {
 	Translations$settings$section$ja.internal(this._root);
@@ -1072,8 +1185,15 @@ extension on Translations {
 			'common.next' => '次へ',
 			'common.complete' => '完了',
 			'common.unset' => '未設定',
+			'common.reset' => 'リセット',
 			'common.retry' => '再試行',
 			'common.errorTitle' => 'エラー',
+			'profile.switchProfile' => 'プロファイルを切り替え',
+			'profile.switchPageTitle' => 'プロファイル切り替え',
+			'profile.create' => '新規作成',
+			'profile.nameDialogTitle' => 'プロファイル名',
+			'profile.selectionDialogTitle' => 'プロファイルを選択',
+			'profile.defaultName' => 'デフォルト',
 			'step.failureTitle' => '処理に失敗しました',
 			'step.failureDescription' => ({required Object error}) => '処理中にエラーが発生しました: ${error}',
 			'page.home' => 'ホーム',
@@ -1094,6 +1214,8 @@ extension on Translations {
 			'page.openSourceLicenses' => 'オープンソースライセンス',
 			'page.cloudBackup' => 'クラウドバックアップ&復元',
 			'page.cloudBackupHistory' => 'バックアップ履歴',
+			'page.clippingSettings' => '画像切り抜き',
+			'page.clippingSettingsTitle' => ({required Object profileName}) => '画像切り抜き - ${profileName}',
 			'settings.section.general' => '全般',
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',
@@ -1122,6 +1244,13 @@ extension on Translations {
 			'settings.accountSettings.signInFlowStepRefreshSession' => 'セッションをリフレッシュしています',
 			'settings.accountSettings.signInFlowStepExtractUid' => 'アカウント情報を保存しています',
 			'settings.theme' => 'テーマ',
+			'settings.clipping' => '画像切り抜き',
+			'settings.clippingFace' => '顔',
+			'settings.clippingWholeBody' => '全身',
+			'settings.clippingIcon' => 'アイコン',
+			'settings.clippingRangeText' => ({required Object left, required Object top, required Object right, required Object bottom}) => '左${left}% 上${top}% 右${right}% 下${bottom}%',
+			'settings.clippingResetConfirmTitle' => 'リセットの確認',
+			'settings.clippingResetConfirmMessage' => '優先順位とすべてのクリッピング設定をリセットします。この操作は取り消せません。よろしいですか?',
 			'settings.language' => '言語',
 			'settings.notifications' => '通知',
 			'settings.advanced' => '詳細設定',
@@ -1202,6 +1331,7 @@ extension on Translations {
 			'home.birthGuideAction' => '出生ガイド',
 			'home.showQrCodeAction' => 'QRコードを表示',
 			'home.copyLineageTreeJsonAction' => '系譜ツリーをJSONとしてコピー',
+			'home.reachedListEnd' => '一番下に到達しました',
 			'search.name' => '名前',
 			'search.tabList' => 'リスト',
 			'search.tabSearch' => '検索',
@@ -1431,6 +1561,20 @@ extension on Translations {
 			'abnormality.charm' => 'みりょう',
 			'abnormality.fear' => 'きょうふ',
 			'abnormality.jack' => 'ジャック',
+			'croppy.materialResetLabel' => 'リセット',
+			'croppy.cupertinoResetLabel' => 'リセット',
+			'croppy.materialFlipLabel' => ({required Object direction}) => '${direction}に反転',
+			'croppy.directionVertical' => '縦',
+			'croppy.directionHorizontal' => '横',
+			'croppy.materialFreeformAspectRatioLabel' => 'フリーフォーム',
+			'croppy.materialOriginalAspectRatioLabel' => '元のサイズ',
+			'croppy.materialSquareAspectRatioLabel' => '正方形',
+			'croppy.saveLabel' => '保存',
+			'croppy.doneLabel' => '完了',
+			'croppy.cancelLabel' => 'キャンセル',
+			'croppy.cupertinoFreeformAspectRatioLabel' => 'フリーフォーム',
+			'croppy.cupertinoOriginalAspectRatioLabel' => '元のサイズ',
+			'croppy.cupertinoSquareAspectRatioLabel' => '正方形',
 			_ => null,
 		};
 	}

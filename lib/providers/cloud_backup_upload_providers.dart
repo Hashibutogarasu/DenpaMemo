@@ -15,8 +15,9 @@ const _notificationKind = 'cloud_backup_upload';
 
 /// The upload's [AppNotification] within [notifications] (as read from
 /// [appNotificationsProvider]), if any.
-AppNotification? cloudBackupUploadNotificationOf(List<AppNotification> notifications) =>
-    notifications.firstWhereOrNull((n) => n.kind == _notificationKind);
+AppNotification? cloudBackupUploadNotificationOf(
+  List<AppNotification> notifications,
+) => notifications.firstWhereOrNull((n) => n.kind == _notificationKind);
 
 /// Packages every individual into a `.dm` archive with [DMFile.writeExport]
 /// (the same step pipeline `DmExportController` uses for a selection-only
@@ -30,9 +31,16 @@ class CloudBackupUploadController {
   /// Returns the [ExportResult] once the archive has been uploaded. Throws
   /// [CancelledException] if [cancellation] is requested before the
   /// upload starts.
-  Future<ExportResult> upload(MasterData masterData, {required Cancellation cancellation}) async {
+  Future<ExportResult> upload(
+    MasterData masterData, {
+    required Cancellation cancellation,
+  }) async {
     final notifications = _ref.read(appNotificationsProvider.notifier);
-    notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: 0);
+    notifications.setStatus(
+      _notificationKind,
+      status: AppNotificationStatus.running,
+      progress: 0,
+    );
 
     try {
       final records = _ref.read(denpaMenRepositoryProvider).getAll(masterData);
@@ -45,7 +53,8 @@ class CloudBackupUploadController {
         candidates: candidates,
         masterData: masterData,
         qrCodes: [for (final record in qrCodes) record.qrCode],
-        loadIcon: storage.loadIcon,
+        loadIcons: (denpaMenId) =>
+            loadAllDenpaMenImageSlots(storage, denpaMenId),
         dataVersion: packageInfo.version,
         onProgress: (value) {
           if (value == null) return;
@@ -64,20 +73,34 @@ class CloudBackupUploadController {
         exportedAt: DateTime.now(),
         individualCount: candidates.length,
       );
-      await _ref.read(cloudFilesProvider.notifier).uploadDmFile(filename, zipBytes);
+      await _ref
+          .read(cloudFilesProvider.notifier)
+          .uploadDmFile(filename, zipBytes);
 
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.completed, progress: 1);
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.completed,
+        progress: 1,
+      );
       return result;
     } on CancelledException {
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.cancelled);
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.cancelled,
+      );
       rethrow;
     } catch (error) {
-      notifications.setStatus(_notificationKind, status: AppNotificationStatus.failed, message: '$error');
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        message: '$error',
+      );
       rethrow;
     }
   }
 }
 
-final cloudBackupUploadControllerProvider = Provider<CloudBackupUploadController>(
-  (ref) => CloudBackupUploadController(ref),
-);
+final cloudBackupUploadControllerProvider =
+    Provider<CloudBackupUploadController>(
+      (ref) => CloudBackupUploadController(ref),
+    );

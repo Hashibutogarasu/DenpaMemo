@@ -28,7 +28,9 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   /// check on the not-yet-assigned backend.
   Future<String> _requireIdToken() async {
     await ref.read(firebaseSignInProvider.future);
-    final idToken = await ref.read(firebaseSignInProvider.notifier).getIdToken();
+    final idToken = await ref
+        .read(firebaseSignInProvider.notifier)
+        .getIdToken();
     if (idToken == null) {
       throw const NotSignedInException();
     }
@@ -41,7 +43,9 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   /// upload is never mistaken for a completed one.
   Future<CloudFile> uploadDmFile(String filename, Uint8List bytes) async {
     final idToken = await _requireIdToken();
-    final link = await ref.read(authApiClientProvider).requestUploadLink(idToken, filename);
+    final link = await ref
+        .read(authApiClientProvider)
+        .requestUploadLink(idToken, filename);
     final response = await http.put(Uri.parse(link.uploadUrl), body: bytes);
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw CloudUploadFailedException(response.statusCode);
@@ -88,7 +92,9 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   /// uploads.
   Future<void> refreshFromServer() async {
     final idToken = await _requireIdToken();
-    final serverFiles = await ref.read(authApiClientProvider).listDmFiles(idToken);
+    final serverFiles = await ref
+        .read(authApiClientProvider)
+        .listDmFiles(idToken);
     final serverFileIds = {for (final file in serverFiles) file.fileId};
     final repository = ref.read(cloudFileRepositoryProvider);
     for (final cloudFile in repository.getAll()) {
@@ -98,7 +104,11 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
     }
     for (final file in serverFiles) {
       repository.save(
-        CloudFile(fileId: file.fileId, filename: file.filename, uploadedAt: file.uploaded),
+        CloudFile(
+          fileId: file.fileId,
+          filename: file.filename,
+          uploadedAt: file.uploaded,
+        ),
       );
     }
     state = repository.getAll();
@@ -116,6 +126,7 @@ class CloudUploadFailedException implements Exception {
   String toString() => 'CloudUploadFailedException($statusCode)';
 }
 
-final cloudFilesProvider = NotifierProvider<CloudFilesNotifier, List<CloudFile>>(
-  CloudFilesNotifier.new,
-);
+final cloudFilesProvider =
+    NotifierProvider<CloudFilesNotifier, List<CloudFile>>(
+      CloudFilesNotifier.new,
+    );

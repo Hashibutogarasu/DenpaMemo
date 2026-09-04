@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
@@ -10,7 +9,7 @@ import 'container/indented_header.dart';
 import 'container/nested.dart';
 import 'container/status.dart';
 import 'domain/antenna_display_name.dart';
-import 'icon/entity_icon.dart';
+import 'icon/denpa_men_icon_builder.dart';
 import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute_resistance_entry.dart';
 import 'label/exp_progress.dart';
@@ -43,7 +42,7 @@ class DenpaMenStatus extends ConsumerWidget {
     this.memo,
     this.showContainer = true,
     this.showIcon = false,
-    this.iconFile,
+    this.iconBuilder,
     this.attributeResistanceColumns = 4,
     this.entryHeight = 20,
   });
@@ -57,7 +56,7 @@ class DenpaMenStatus extends ConsumerWidget {
     bool showContainer = true,
     bool includeStatBonus = true,
     bool showIcon = false,
-    File? iconFile,
+    DenpaMenIconBuilder? iconBuilder,
   }) {
     final corrected = denpaMen.applyCorrections(
       includeStatBonus: includeStatBonus,
@@ -90,7 +89,7 @@ class DenpaMenStatus extends ConsumerWidget {
       memo: corrected.memo,
       showContainer: showContainer,
       showIcon: showIcon,
-      iconFile: iconFile,
+      iconBuilder: iconBuilder,
     );
   }
 
@@ -112,7 +111,7 @@ class DenpaMenStatus extends ConsumerWidget {
   final String? memo;
   final bool showContainer;
   final bool showIcon;
-  final File? iconFile;
+  final DenpaMenIconBuilder? iconBuilder;
   final int attributeResistanceColumns;
   final double entryHeight;
 
@@ -174,7 +173,9 @@ class DenpaMenStatus extends ConsumerWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ResolvedEntityIcon(file: iconFile, size: theme.previewIconSize),
+                (iconBuilder ?? staticDenpaMenIconBuilder(null)).call(
+                  theme.previewIconSize,
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Container(

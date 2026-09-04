@@ -11,7 +11,8 @@ class PhysiqueTableRow {
   final int lineOffset;
   final List<String> values;
 
-  String valueAt(int columnIndex) => columnIndex < values.length ? values[columnIndex] : '';
+  String valueAt(int columnIndex) =>
+      columnIndex < values.length ? values[columnIndex] : '';
 
   PhysiqueTableRow copyWithValueAt(int columnIndex, String value) {
     final updated = List<String>.of(values);
@@ -31,7 +32,8 @@ class PhysiqueTableRow {
 /// `PhysiqueTableMetadata.physiqueTableColumnCount`).
 List<TableEditorColumn<PhysiqueTableRow>> buildPhysiqueTableColumns({
   required int columnCount,
-  void Function(int lineOffset, int columnIndex, String newValue)? onValueChanged,
+  void Function(int lineOffset, int columnIndex, String newValue)?
+  onValueChanged,
 }) {
   final columns = <TableEditorColumn<PhysiqueTableRow>>[];
   for (var i = 0; i < columnCount; i++) {
@@ -44,7 +46,8 @@ List<TableEditorColumn<PhysiqueTableRow>> buildPhysiqueTableColumns({
         editable: onValueChanged != null,
         onChanged: onValueChanged == null
             ? null
-            : (row, value) => onValueChanged(row.lineOffset, columnIndex, value),
+            : (row, value) =>
+                  onValueChanged(row.lineOffset, columnIndex, value),
       ),
     );
   }

@@ -24,7 +24,9 @@ class CloudBackupShell extends StatelessWidget {
 /// currently running, or null if neither is — the single source [CloudBackupProgressBar]
 /// and every "disable while busy" check reads, instead of each re-deriving
 /// it from [appNotificationsProvider].
-final cloudBackupRunningNotificationProvider = Provider<AppNotification?>((ref) {
+final cloudBackupRunningNotificationProvider = Provider<AppNotification?>((
+  ref,
+) {
   final notifications = ref.watch(appNotificationsProvider);
   final uploadNotification = cloudBackupUploadNotificationOf(notifications);
   final restoreNotification = cloudBackupRestoreNotificationOf(notifications);
@@ -50,7 +52,9 @@ class CloudBackupProgressBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final runningNotification = ref.watch(cloudBackupRunningNotificationProvider);
+    final runningNotification = ref.watch(
+      cloudBackupRunningNotificationProvider,
+    );
     if (runningNotification == null) return const SizedBox.shrink();
     return LinearProgressIndicator(value: runningNotification.progress);
   }

@@ -76,6 +76,12 @@ abstract final class AppLightTheme {
         reverseTransitionCurve: Curves.easeInCubic,
         barrierColor: Colors.black54,
       ),
+      SplashThemeData(
+        backgroundColor: Color(0xFFF3EDF7),
+        appNameFontSize: 34,
+        displayDuration: Duration(seconds: 1),
+        fadeOutDuration: Duration(milliseconds: 400),
+      ),
     ],
   );
 }
@@ -142,6 +148,12 @@ abstract final class AppDarkTheme {
         transitionCurve: Curves.easeOutCubic,
         reverseTransitionCurve: Curves.easeInCubic,
         barrierColor: Colors.black54,
+      ),
+      SplashThemeData(
+        backgroundColor: Color(0xFF1D1B20),
+        appNameFontSize: 34,
+        displayDuration: Duration(seconds: 1),
+        fadeOutDuration: Duration(milliseconds: 400),
       ),
     ],
   );

@@ -83,29 +83,35 @@ class WriteEntriesJsonStep extends DmExportStep {
   }
 }
 
-/// Copies each exported individual's icon file (if any) into the work
-/// directory, alongside a `metadata.json` recording its file name.
+/// Copies each exported individual's image slots (if any) into the work
+/// directory as `icons/denpamens/<id>/<slotKey>/`, alongside a
+/// `metadata.json` recording each slot's file name. Slot keys are opaque
+/// strings defined entirely by [DmExportContext.loadIcons]'s caller —
+/// this step never enumerates or interprets which ones exist.
 class CopyIconsStep extends DmExportStep {
   @override
   Future<void> run(DmExportContext context) async {
     final entries = context.entries!;
     for (var i = 0; i < entries.length; i++) {
       final denpaMenId = entries[i].denpaMen.id;
-      final iconFile = await context.loadIcon(denpaMenId);
-      if (iconFile != null) {
-        final iconDirectory = Directory(
+      final icons = await context.loadIcons(denpaMenId);
+      for (final entry in icons.entries) {
+        final slotKey = entry.key;
+        final iconFile = entry.value;
+        final slotDirectory = Directory(
           path.join(
             context.workDirectory!.path,
             'icons',
             'denpamens',
             denpaMenId,
+            slotKey,
           ),
         );
-        await iconDirectory.create(recursive: true);
+        await slotDirectory.create(recursive: true);
         final destName = 'icon${path.extension(iconFile.path)}';
-        await iconFile.copy(path.join(iconDirectory.path, destName));
+        await iconFile.copy(path.join(slotDirectory.path, destName));
         await File(
-          path.join(iconDirectory.path, 'metadata.json'),
+          path.join(slotDirectory.path, 'metadata.json'),
         ).writeAsString(jsonEncode({'fileName': destName}));
       }
       reportProgress(entryIndex: i, entryCount: entries.length);

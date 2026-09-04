@@ -13,7 +13,6 @@ Widget _harness({
       body: DenpaMenLineageGraph(
         qrCodes: qrCodes,
         denpaMenRecords: const [],
-        iconsById: const {},
         selectionMode: false,
         selectedIds: const {},
         onToggleSelection: (_) {},

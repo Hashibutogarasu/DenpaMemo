@@ -1,81 +1,86 @@
 import 'dart:io';
-import 'dart:ui' as ui;
 
-import 'package:croppy/croppy.dart';
+import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart' as path;
 
-import '../../providers/account_scoped_paths_providers.dart';
+import '../../data/clipping/clipping_slot_storage.dart';
+import '../../providers/clipping_slot_providers.dart';
 import '../../providers/denpa_men_icon_providers.dart';
-import 'denpa_men_icon.dart';
+import '../../providers/entity_image_providers.dart';
+import '../profile/profile_selection_dialog.dart';
 
-/// [DenpaMenIcon] that, when tapped, lets the user pick an image via
-/// `file_picker`, crop it via `croppy`, and save the result as the
-/// `DenpaMen`'s icon.
+/// A single [DenpaMenImageSlotType]'s icon (`face`/`wholeBody`/`icon`)
+/// that, when tapped, lets the user pick an image via `file_picker` and
+/// saves it — unmodified — as that slot's raw source image. What's
+/// shown here is [entityImageProvider]'s in-memory-cropped rendering of
+/// that raw image, using [denpaMenId]'s own assigned clipping profile
+/// (see [denpaMenClippingProfileIdProvider]) — null means unassigned,
+/// so the raw image renders as-is. Assigning/reassigning a profile only
+/// ever affects this one individual, never any other.
 class EditableDenpaMenIcon extends ConsumerWidget {
   const EditableDenpaMenIcon({
     super.key,
     required this.denpaMenId,
+    required this.slot,
     required this.size,
   });
 
   final String denpaMenId;
+  final DenpaMenImageSlotType slot;
   final double size;
-
-  Future<File> _writeUiImageToTempFile(ui.Image image, WidgetRef ref) async {
-    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-    final tempDirectory = await ref.read(
-      accountScopedTempDirectoryProvider.future,
-    );
-    final file = File(
-      path.join(
-        tempDirectory.path,
-        '${DateTime.now().microsecondsSinceEpoch}.png',
-      ),
-    );
-    await file.writeAsBytes(bytes!.buffer.asUint8List());
-    return file;
-  }
 
   Future<void> _pickAndSetIcon(BuildContext context, WidgetRef ref) async {
     final result = await FilePicker.pickFiles(type: FileType.image);
     final pickedPath = result?.files.single.path;
-    if (pickedPath == null) {
-      return;
-    }
-    if (!context.mounted) {
+    if (pickedPath == null || !context.mounted) {
       return;
     }
 
-    final cropResult = await showMaterialImageCropper(
+    final profile = await ProfileSelectionDialog.show(
       context,
-      imageProvider: FileImage(File(pickedPath)),
-      allowedAspectRatios: const [CropAspectRatio(width: 1, height: 1)],
+      namespace: ClippingSlotStorage.profileNamespace,
     );
-    if (cropResult == null) {
-      return;
+    if (profile != null) {
+      await ref
+          .read(denpaMenClippingProfileStorageProvider)
+          .save(denpaMenId, profile.id);
+      ref.invalidate(denpaMenClippingProfileIdProvider(denpaMenId));
     }
 
-    final croppedFile = await _writeUiImageToTempFile(cropResult.uiImage, ref);
-    try {
-      await ref
-          .read(denpaMenIconStorageProvider)
-          .saveIcon(denpaMenId, croppedFile);
-      ref.invalidate(denpaMenIconProvider(denpaMenId));
-    } finally {
-      if (await croppedFile.exists()) {
-        await croppedFile.delete();
-      }
-    }
+    await ref
+        .read(denpaMenIconStorageProvider)
+        .saveIcon(denpaMenId, File(pickedPath), slot: slot.name);
+    ref.invalidate(
+      entityImageProvider((
+        denpaMenIconCategory,
+        denpaMenId,
+        slot,
+        ref.read(denpaMenClippingProfileIdProvider(denpaMenId)).value,
+      )),
+    );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final profileId = ref
+        .watch(denpaMenClippingProfileIdProvider(denpaMenId))
+        .value;
+    final file = ref
+        .watch(
+          entityImageProvider((
+            denpaMenIconCategory,
+            denpaMenId,
+            slot,
+            profileId,
+          )),
+        )
+        .value;
     return GestureDetector(
       onTap: () => _pickAndSetIcon(context, ref),
-      child: DenpaMenIcon(denpaMenId: denpaMenId, size: size),
+      child: ResolvedEntityIcon(file: file, size: size),
     );
   }
 }

@@ -16,7 +16,8 @@ class ObjectBoxAppNotificationRepository implements AppNotificationRepository {
 
   @override
   List<AppNotification> getAll() {
-    final query = (_box.query()..order(AppNotificationEntity_.updatedAt)).build();
+    final query = (_box.query()..order(AppNotificationEntity_.updatedAt))
+        .build();
     try {
       return [for (final entity in query.find()) entity.toDomain()];
     } finally {
@@ -36,7 +37,9 @@ class ObjectBoxAppNotificationRepository implements AppNotificationRepository {
 
   @override
   void upsert(AppNotification notification) {
-    final query = _box.query(AppNotificationEntity_.kind.equals(notification.kind)).build();
+    final query = _box
+        .query(AppNotificationEntity_.kind.equals(notification.kind))
+        .build();
     final existingId = () {
       try {
         return query.findFirst()?.id ?? 0;

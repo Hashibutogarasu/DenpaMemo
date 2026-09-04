@@ -17,13 +17,14 @@ final tableTypesProvider = FutureProvider<List<TableDefinition>>((ref) async {
 /// Every `anntenaCategory` that has at least one row saved at any level,
 /// across every registered table type. Used by [PhysiqueTableListPage] to
 /// decide which antenna categories show an edit shortcut.
-final physiqueTableAnntenaCategoriesWithDataProvider = FutureProvider<Set<String>>((ref) async {
-  final client = ref.watch(physiquesApiClientProvider);
-  final types = await ref.watch(tableTypesProvider.future);
-  final result = <String>{};
-  for (final type in types) {
-    final records = await client.fetch(type: type.type);
-    result.addAll(records.map((record) => record.anntenaCategory));
-  }
-  return result;
-});
+final physiqueTableAnntenaCategoriesWithDataProvider =
+    FutureProvider<Set<String>>((ref) async {
+      final client = ref.watch(physiquesApiClientProvider);
+      final types = await ref.watch(tableTypesProvider.future);
+      final result = <String>{};
+      for (final type in types) {
+        final records = await client.fetch(type: type.type);
+        result.addAll(records.map((record) => record.anntenaCategory));
+      }
+      return result;
+    });

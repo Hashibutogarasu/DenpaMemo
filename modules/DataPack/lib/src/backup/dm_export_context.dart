@@ -9,13 +9,16 @@ import 'export_result.dart';
 
 /// Mutable working state shared across a `.dm` export's steps (see
 /// `DmExportStep`). Each step reads what earlier steps produced and fills
-/// in its own fields for later steps to use.
+/// in its own fields for later steps to use. [loadIcons] returns every
+/// image slot saved for a given individual, keyed by an opaque slot
+/// identifier the caller defines (DMFile never enumerates or interprets
+/// these keys itself — see `CopyIconsStep`); empty if it has none.
 class DmExportContext {
   DmExportContext({
     required this.candidates,
     required this.masterData,
     required this.qrCodes,
-    required this.loadIcon,
+    required this.loadIcons,
     required this.dataVersion,
     required this.onProgress,
     this.copyToPath,
@@ -24,7 +27,7 @@ class DmExportContext {
   final List<DenpaMen> candidates;
   final MasterData masterData;
   final List<QrCode> qrCodes;
-  final Future<File?> Function(String denpaMenId) loadIcon;
+  final Future<Map<String, File>> Function(String denpaMenId) loadIcons;
   final String dataVersion;
   final void Function(double? progress) onProgress;
 

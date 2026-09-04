@@ -32,10 +32,13 @@ final monsterIconProvider = FutureProvider.family<File?, String>((
   }
 
   final bytes = await rootBundle.load(assetPath);
-  final tempDirectory = await ref.read(accountScopedTempDirectoryProvider.future);
-  final tempFile = await File(
-    path.join(tempDirectory.path, '$monsterId.png'),
-  ).writeAsBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
+  final tempDirectory = await ref.read(
+    accountScopedTempDirectoryProvider.future,
+  );
+  final tempFile = await File(path.join(tempDirectory.path, '$monsterId.png'))
+      .writeAsBytes(
+        bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
+      );
   try {
     return await storage.saveIcon(monsterId, tempFile);
   } finally {

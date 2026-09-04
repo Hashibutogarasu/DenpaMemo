@@ -24,8 +24,12 @@ class LanguageSettingsPage extends ConsumerWidget {
         children: [
           for (final locale in locales)
             ListTile(
-              title: Text(t.languages[locale.languageCode] ?? locale.languageCode),
-              trailing: locale == currentLocale ? const Icon(Icons.check) : null,
+              title: Text(
+                t.languages[locale.languageCode] ?? locale.languageCode,
+              ),
+              trailing: locale == currentLocale
+                  ? const Icon(Icons.check)
+                  : null,
               onTap: () => LocaleSettings.setLocale(locale),
             ),
         ],

@@ -26,7 +26,7 @@ void main() {
     corrections: const [],
   );
 
-  test('migrateDenpaMenHashes fixes stale/missing hashes', () {
+  test('migrateDenpaMenHashes fixes stale/missing hashes', () async {
     final objectBox = ObjectBox.createInMemory();
     addTearDown(objectBox.store.close);
     final denpaMenRepository = ObjectBoxDenpaMenRepository(objectBox);
@@ -46,7 +46,10 @@ void main() {
     ).copyWith(hash: '');
     final id = denpaMenRepository.save(denpaMen);
 
-    migrateDenpaMenHashes(denpaMenRepository, masterData);
+    await migrateDenpaMenHashes(
+      denpaMenRepository,
+      denpaMenRepository.getAll(masterData),
+    );
 
     final migrated = denpaMenRepository
         .getAll(masterData)

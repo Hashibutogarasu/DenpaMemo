@@ -1,5 +1,6 @@
 import 'package:api_client/api_client.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
@@ -42,7 +43,8 @@ class TableTypeSelectionDialog extends StatefulWidget {
   final Map<String, bool>? dataAvailability;
 
   @override
-  State<TableTypeSelectionDialog> createState() => _TableTypeSelectionDialogState();
+  State<TableTypeSelectionDialog> createState() =>
+      _TableTypeSelectionDialogState();
 }
 
 class _TableTypeSelectionDialogState extends State<TableTypeSelectionDialog> {
@@ -66,7 +68,9 @@ class _TableTypeSelectionDialogState extends State<TableTypeSelectionDialog> {
               trailing: _selected?.type == row.type
                   ? const Icon(Icons.check)
                   : switch (widget.dataAvailability?[row.type]) {
-                      final hasData? => Icon(hasData ? Icons.circle_outlined : Icons.close),
+                      final hasData? => Icon(
+                        hasData ? Icons.circle_outlined : Icons.close,
+                      ),
                       null => null,
                     },
               onTap: () => setState(() => _selected = row),

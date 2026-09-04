@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:graphview/GraphView.dart';
 import 'package:tree_graph/tree_graph.dart';
 
 import '../dialog/qr_code_image_dialog.dart';
+import '../icon/denpa_men_icon_builder.dart';
 import 'denpa_men_node_data.dart';
 import 'denpa_men_tree_node.dart';
 import 'qr_code_node.dart';
@@ -62,7 +61,7 @@ class DenpaMenLineageGraph extends StatefulWidget {
     super.key,
     required this.qrCodes,
     required this.denpaMenRecords,
-    required this.iconsById,
+    this.iconBuilder,
     required this.selectionMode,
     required this.selectedIds,
     required this.onToggleSelection,
@@ -76,7 +75,7 @@ class DenpaMenLineageGraph extends StatefulWidget {
 
   final List<QrCodeRecord> qrCodes;
   final List<DenpaMenRecord> denpaMenRecords;
-  final Map<String, File?> iconsById;
+  final Widget Function(String denpaMenId, double size)? iconBuilder;
   final bool selectionMode;
   final Set<int> selectedIds;
   final ValueChanged<int> onToggleSelection;
@@ -187,7 +186,8 @@ class _DenpaMenLineageGraphState extends State<DenpaMenLineageGraph> {
       builder: (context) => DenpaMenTreeNode(
         key: ValueKey(nodeKey),
         data: data,
-        iconFile: widget.iconsById[data.record.denpaMen.id],
+        icon: widget.iconBuilder?.call(data.record.denpaMen.id, nodeSize) ??
+            staticDenpaMenIconBuilder(null)(nodeSize),
         nodeSize: nodeSize,
         hoveredKey: _controller.hoveredKey,
         dataByKey: _controller.graphData.nodeDataByKey,
@@ -220,7 +220,7 @@ class _DenpaMenLineageGraphState extends State<DenpaMenLineageGraph> {
       nodeBuilder: _buildNode,
       graphViewController: widget.graphViewController,
       cursorEnabled: widget.cursorEnabled,
-      visualRefreshToken: (MapEquality<String, File?>().hash(widget.iconsById), _qrDialogOpen),
+      visualRefreshToken: _qrDialogOpen,
       onHoveredChanged: widget.cursorEnabled ? _handleHoveredChanged : null,
       overlay: widget.cursorEnabled ? const TreeGraphCursorIcon() : null,
     );

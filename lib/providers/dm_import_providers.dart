@@ -55,7 +55,11 @@ class DmImportController {
     final progress = _ref.read(importExportProgressProvider.notifier);
     final notifications = _ref.read(appNotificationsProvider.notifier);
     progress.state = 0;
-    notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: 0);
+    notifications.setStatus(
+      _notificationKind,
+      status: AppNotificationStatus.running,
+      progress: 0,
+    );
 
     try {
       final storage = _ref.read(denpaMenIconStorageProvider);
@@ -64,9 +68,10 @@ class DmImportController {
         masterData: masterData,
         denpaMenRepository: _ref.read(denpaMenRepositoryProvider),
         qrCodeRepository: _ref.read(qrCodeRepositoryProvider),
-        loadIcon: storage.loadIcon,
-        saveIcon: (denpaMenId, iconFile) async {
-          await storage.saveIcon(denpaMenId, iconFile);
+        loadIcons: (denpaMenId) =>
+            loadAllDenpaMenImageSlots(storage, denpaMenId),
+        saveIcons: (denpaMenId, icons) async {
+          await saveAllDenpaMenImageSlots(storage, denpaMenId, icons);
           _ref.invalidate(denpaMenIconProvider(denpaMenId));
         },
         resolveDuplicates: (candidates) async {
@@ -87,13 +92,19 @@ class DmImportController {
         onProgress: (value) {
           progress.state = value;
           if (value != null) {
-            notifications.setStatus(_notificationKind, status: AppNotificationStatus.running, progress: value);
+            notifications.setStatus(
+              _notificationKind,
+              status: AppNotificationStatus.running,
+              progress: value,
+            );
           }
         },
       );
       notifications.setStatus(
         _notificationKind,
-        status: result == null ? AppNotificationStatus.cancelled : AppNotificationStatus.completed,
+        status: result == null
+            ? AppNotificationStatus.cancelled
+            : AppNotificationStatus.completed,
         progress: result == null ? null : 1,
       );
       return result;

@@ -6,7 +6,11 @@ import '../widgets/physique_table/physique_table_row.dart';
 import 'physiques_providers.dart';
 
 class PhysiqueTableEditState {
-  const PhysiqueTableEditState({this.rows, this.persistedRowCount = 0, this.loadError = false});
+  const PhysiqueTableEditState({
+    this.rows,
+    this.persistedRowCount = 0,
+    this.loadError = false,
+  });
 
   final List<PhysiqueTableRow>? rows;
   final int persistedRowCount;
@@ -57,10 +61,15 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
         for (final record in records)
           PhysiqueTableRow(
             lineOffset: record.lineOffset,
-            values: [for (final value in record.values) value?.toString() ?? ''],
+            values: [
+              for (final value in record.values) value?.toString() ?? '',
+            ],
           ),
       ];
-      state = PhysiqueTableEditState(rows: rows, persistedRowCount: rows.length);
+      state = PhysiqueTableEditState(
+        rows: rows,
+        persistedRowCount: rows.length,
+      );
     } catch (_) {
       state = state.copyWith(loadError: true);
     }
@@ -74,7 +83,9 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
     state = state.copyWith(
       rows: [
         for (final row in rows)
-          row.lineOffset == lineOffset ? row.copyWithValueAt(columnIndex, newValue) : row,
+          row.lineOffset == lineOffset
+              ? row.copyWithValueAt(columnIndex, newValue)
+              : row,
       ],
     );
   }
@@ -85,7 +96,10 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
     state = state.copyWith(
       rows: [
         ...rows,
-        PhysiqueTableRow(lineOffset: rows.length, values: List.filled(columnCount, '')),
+        PhysiqueTableRow(
+          lineOffset: rows.length,
+          values: List.filled(columnCount, ''),
+        ),
       ],
     );
   }
@@ -125,7 +139,11 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
 
   Future<void> deleteTable() async {
     final client = ref.read(physiquesApiClientProvider);
-    await client.delete(type: args.type, level: args.level, anntenaCategory: args.anntenaCategory);
+    await client.delete(
+      type: args.type,
+      level: args.level,
+      anntenaCategory: args.anntenaCategory,
+    );
   }
 
   /// Persisted rows among [selectedRowIds] are deleted on the server
@@ -165,6 +183,8 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
 }
 
 final physiqueTableEditProvider =
-    NotifierProvider.family<PhysiqueTableEditNotifier, PhysiqueTableEditState, PhysiqueTableArgs>(
-      PhysiqueTableEditNotifier.new,
-    );
+    NotifierProvider.family<
+      PhysiqueTableEditNotifier,
+      PhysiqueTableEditState,
+      PhysiqueTableArgs
+    >(PhysiqueTableEditNotifier.new);

@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
@@ -62,7 +63,10 @@ class _PhysiqueAntennaCategorySelectionDialogState
           for (final entry in byCategory.entries) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Text(entry.key, style: Theme.of(context).textTheme.labelSmall),
+              child: Text(
+                entry.key,
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
             ),
             for (final row in entry.value)
               ListTile(

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_editor/table_editor.dart';
@@ -47,7 +48,8 @@ class PhysiqueTableEditPage extends ConsumerStatefulWidget {
   final PhysiqueTableArgs args;
 
   @override
-  ConsumerState<PhysiqueTableEditPage> createState() => _PhysiqueTableEditPageState();
+  ConsumerState<PhysiqueTableEditPage> createState() =>
+      _PhysiqueTableEditPageState();
 }
 
 class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
@@ -67,7 +69,9 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       message: t.physiqueTable.deleteTableConfirmMessage,
     );
     if (!confirmed || !mounted) return;
-    await ref.read(physiqueTableEditProvider(widget.args).notifier).deleteTable();
+    await ref
+        .read(physiqueTableEditProvider(widget.args).notifier)
+        .deleteTable();
     if (!mounted) return;
     Navigator.of(context)
       ..pop()
@@ -82,9 +86,9 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       message: t.physiqueTable.deleteRowConfirmMessage,
     );
     if (!confirmed || !mounted) return;
-    await ref
-        .read(physiqueTableEditProvider(widget.args).notifier)
-        .deleteRows({lineOffset.toString()});
+    await ref.read(physiqueTableEditProvider(widget.args).notifier).deleteRows({
+      lineOffset.toString(),
+    });
   }
 
   Future<void> _deleteSelectedRows() async {
@@ -96,7 +100,9 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
       message: t.physiqueTable.deleteSelectedRowsConfirmMessage,
     );
     if (!confirmed || !mounted) return;
-    await ref.read(physiqueTableEditProvider(widget.args).notifier).deleteRows(_selectedRowIds);
+    await ref
+        .read(physiqueTableEditProvider(widget.args).notifier)
+        .deleteRows(_selectedRowIds);
     if (!mounted) return;
     setState(() => _selectedRowIds = {});
   }
@@ -129,10 +135,14 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
               label: Text(t.physiqueTable.save),
               onPressed: _save,
             ),
-      body: editState.loadError || typesAsync.hasError || (typesAsync.hasValue && columnCount == null)
+      body:
+          editState.loadError ||
+              typesAsync.hasError ||
+              (typesAsync.hasValue && columnCount == null)
           ? Center(child: Text(t.physiqueTable.loadError))
           : LoadingOverlay(
-              loading: rows == null || typesAsync.isLoading || columnCount == null,
+              loading:
+                  rows == null || typesAsync.isLoading || columnCount == null,
               child: rows == null || columnCount == null
                   ? const SizedBox.shrink()
                   : Column(
@@ -143,27 +153,42 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                               : TableEditor<PhysiqueTableRow>(
                                   columns: buildPhysiqueTableColumns(
                                     columnCount: columnCount,
-                                    onValueChanged: (lineOffset, columnIndex, newValue) => ref
-                                        .read(physiqueTableEditProvider(widget.args).notifier)
-                                        .onValueChanged(lineOffset, columnIndex, newValue),
+                                    onValueChanged:
+                                        (lineOffset, columnIndex, newValue) =>
+                                            ref
+                                                .read(
+                                                  physiqueTableEditProvider(
+                                                    widget.args,
+                                                  ).notifier,
+                                                )
+                                                .onValueChanged(
+                                                  lineOffset,
+                                                  columnIndex,
+                                                  newValue,
+                                                ),
                                   ),
                                   data: rows,
                                   rowId: (row) => row.lineOffset.toString(),
                                   isSelectable: true,
                                   selectionMode: SelectionMode.multiple,
                                   selectedRows: _selectedRowIds,
-                                  onCheckboxChanged: (rowId, isSelected) => setState(() {
-                                    _selectedRowIds = Set.of(_selectedRowIds);
-                                    if (isSelected) {
-                                      _selectedRowIds.add(rowId);
-                                    } else {
-                                      _selectedRowIds.remove(rowId);
-                                    }
-                                  }),
+                                  onCheckboxChanged: (rowId, isSelected) =>
+                                      setState(() {
+                                        _selectedRowIds = Set.of(
+                                          _selectedRowIds,
+                                        );
+                                        if (isSelected) {
+                                          _selectedRowIds.add(rowId);
+                                        } else {
+                                          _selectedRowIds.remove(rowId);
+                                        }
+                                      }),
                                   trailingCellBuilder: (row) => IconButton(
                                     icon: Icon(
                                       Icons.delete_outline,
-                                      color: Theme.of(context).colorScheme.error,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
                                     ),
                                     tooltip: t.physiqueTable.deleteRow,
                                     onPressed: () => _deleteRow(row.lineOffset),
@@ -179,7 +204,11 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                                 icon: const Icon(Icons.add),
                                 label: Text(t.physiqueTable.addRow),
                                 onPressed: () => ref
-                                    .read(physiqueTableEditProvider(widget.args).notifier)
+                                    .read(
+                                      physiqueTableEditProvider(
+                                        widget.args,
+                                      ).notifier,
+                                    )
                                     .addRow(columnCount),
                               ),
                               OutlinedButton.icon(
@@ -196,7 +225,9 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                                   color: Theme.of(context).colorScheme.error,
                                 ),
                                 label: Text(t.physiqueTable.deleteSelectedRows),
-                                onPressed: _selectedRowIds.isEmpty ? null : _deleteSelectedRows,
+                                onPressed: _selectedRowIds.isEmpty
+                                    ? null
+                                    : _deleteSelectedRows,
                               ),
                             ],
                           ),

@@ -4,5 +4,9 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'Default', type: DenpaMenNode, path: 'lineage')
 Widget denpaMenNodeUseCase(BuildContext context) {
-  return const DenpaMenNode(iconFile: null, name: 'こうた', size: 64);
+  return const DenpaMenNode(
+    icon: SizedBox(width: 64, height: 64),
+    name: 'こうた',
+    size: 64,
+  );
 }

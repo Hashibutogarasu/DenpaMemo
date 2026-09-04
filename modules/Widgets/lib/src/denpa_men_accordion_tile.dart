@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'container/status.dart';
 import 'denpa_men_status.dart';
-import 'icon/entity_icon.dart';
+import 'icon/denpa_men_icon_builder.dart';
 import 'label/gauge_label.dart';
 import 'label/gauge_value.dart';
 import 'label/outlined_title.dart';
@@ -25,7 +23,7 @@ class DenpaMenAccordionTile extends StatefulWidget {
     required this.selected,
     required this.isCut,
     required this.onSelectedChanged,
-    this.iconFile,
+    this.iconBuilder,
     this.actionMenuItemsBuilder,
     this.animationDuration,
   });
@@ -39,7 +37,7 @@ class DenpaMenAccordionTile extends StatefulWidget {
   final bool isCut;
   final ValueChanged<bool> onSelectedChanged;
 
-  final File? iconFile;
+  final DenpaMenIconBuilder? iconBuilder;
   final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
   actionMenuItemsBuilder;
 
@@ -104,10 +102,8 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
                       opacity: _expanded ? 0 : 1,
                       child: Row(
                         children: [
-                          ResolvedEntityIcon(
-                            file: widget.iconFile,
-                            size: theme.accordionIconSize,
-                          ),
+                          (widget.iconBuilder ?? staticDenpaMenIconBuilder(null))
+                              .call(theme.accordionIconSize),
                           const SizedBox(width: 8),
                           Flexible(
                             child: OutlinedTitleText(
@@ -156,7 +152,7 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
                       totalAttributeCount: widget.totalAttributeCount,
                       showContainer: false,
                       showIcon: true,
-                      iconFile: widget.iconFile,
+                      iconBuilder: widget.iconBuilder,
                     )
                   : const SizedBox(width: double.infinity),
             ),

@@ -1,5 +1,6 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -72,8 +73,7 @@ class _DenpaMenSelectionPageState extends ConsumerState<DenpaMenSelectionPage>
     if (!mounted) return;
     _selectionNotifier.state = [
       for (final record in records)
-        if (widget.args.initialSelectedIds.contains(record.denpaMen.id))
-          record,
+        if (widget.args.initialSelectedIds.contains(record.denpaMen.id)) record,
     ];
   }
 
@@ -168,8 +168,7 @@ class _DenpaMenSelectionPageState extends ConsumerState<DenpaMenSelectionPage>
                   data: (records) {
                     final candidates = [
                       for (final record in records)
-                        if (record.denpaMen.id != widget.args.excludeId)
-                          record,
+                        if (record.denpaMen.id != widget.args.excludeId) record,
                     ];
                     return TabBarView(
                       controller: _tabController,
@@ -181,9 +180,7 @@ class _DenpaMenSelectionPageState extends ConsumerState<DenpaMenSelectionPage>
                             return DenpaMenListTile(
                               denpaMen: record.denpaMen,
                               selectionMode: true,
-                              selected: selected.any(
-                                (r) => r.id == record.id,
-                              ),
+                              selected: selected.any((r) => r.id == record.id),
                               onSelectedChanged: (_) => _toggle(record),
                               enableLongPressPreview: false,
                             );
@@ -193,9 +190,9 @@ class _DenpaMenSelectionPageState extends ConsumerState<DenpaMenSelectionPage>
                           headShapes: masterData.headShapes,
                           anntenas: masterData.anntenas,
                           query: ref.watch(searchFormDraftProvider),
-                          onChanged: (value) => ref
-                              .read(searchFormDraftProvider.notifier)
-                              .state = value,
+                          onChanged: (value) =>
+                              ref.read(searchFormDraftProvider.notifier).state =
+                                  value,
                         ),
                       ],
                     );

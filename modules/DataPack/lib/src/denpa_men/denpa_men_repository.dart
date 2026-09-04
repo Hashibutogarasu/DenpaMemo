@@ -12,6 +12,16 @@ import 'denpa_men_record.dart';
 abstract class DenpaMenRepository {
   List<DenpaMenRecord> getAll(MasterData masterData);
 
+  /// Returns up to [limit] records starting at [offset], in the same order
+  /// as [getAll]. Lets callers that process the full set (e.g. a startup
+  /// sync) work through it in bounded chunks instead of mapping every
+  /// record in one unbroken synchronous pass.
+  List<DenpaMenRecord> getRange(
+    MasterData masterData, {
+    required int offset,
+    required int limit,
+  });
+
   /// Emits the current list immediately, then again on every change.
   Stream<List<DenpaMenRecord>> watchAll(MasterData masterData);
 

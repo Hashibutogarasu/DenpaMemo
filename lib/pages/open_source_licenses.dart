@@ -1,4 +1,5 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/foundation.dart' show LicenseEntry, LicenseRegistry;
 import 'package:flutter/material.dart';
 
