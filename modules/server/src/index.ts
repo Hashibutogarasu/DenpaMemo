@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Elysia } from 'elysia';
+import { Elysia, NotFoundError, ValidationError } from 'elysia';
 import { node } from '@elysiajs/node';
 import { createYoga } from 'graphql-yoga';
 import { env } from './config/env';
@@ -8,6 +8,7 @@ import { runSeedIfNeeded } from './seed/run-seed';
 import { buildSchema } from './graphql/schema';
 import { anntenaRoutes } from './routes/anntena.route';
 import { tablesRoutes } from './routes/tables.route';
+import { notFoundResponse } from './http/validation-response';
 
 async function main() {
   await AppDataSource.initialize();
@@ -17,8 +18,12 @@ async function main() {
   const yoga = createYoga({ schema: buildSchema(AppDataSource), graphqlEndpoint: '/' });
 
   const app = new Elysia({ adapter: node() })
-    .onError(({ code, error, set }) => {
-      if (code === 'VALIDATION' || code === 'NOT_FOUND') return;
+    .onError(({ error, set }) => {
+      if (error instanceof NotFoundError) {
+        set.status = error.status;
+        return notFoundResponse(error.message);
+      }
+      if (error instanceof ValidationError) return;
       console.error('Unhandled request error', error);
       set.status = 500;
       return { error: error instanceof Error ? error.message : 'internal_error' };

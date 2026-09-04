@@ -1,7 +1,8 @@
-import type { AnntenaEntity } from '../../entities/anntena.entity';
-import type { MinorCategoryEntity } from '../../entities/minor-category.entity';
-import type { PhysiqueAntennaCategoryAntennaEntity } from '../../entities/physique-antenna-category-antenna.entity';
-import type { TranslationEntity } from '../../entities/translation.entity';
+import type { DataSource } from 'typeorm';
+import { AnntenaEntity } from '../../entities/anntena.entity';
+import { MinorCategoryEntity } from '../../entities/minor-category.entity';
+import { PhysiqueAntennaCategoryAntennaEntity } from '../../entities/physique-antenna-category-antenna.entity';
+import { TranslationEntity } from '../../entities/translation.entity';
 
 export interface MinorCategoryRepository {
   findOneBy(where: Partial<Pick<MinorCategoryEntity, 'id'>>): Promise<MinorCategoryEntity | null>;
@@ -73,4 +74,14 @@ export class AntennaCategoryLinkDataSource {
   findLinkForAntenna(anntenaId: string): Promise<PhysiqueAntennaCategoryAntennaEntity | null> {
     return this.linkRepo.findOneBy({ anntenaId });
   }
+}
+
+/** Builds an [AntennaCategoryLinkDataSource] from a real `DataSource`, shared by every route that needs one. */
+export function createAntennaCategoryLinkDataSource(dataSource: DataSource): AntennaCategoryLinkDataSource {
+  return new AntennaCategoryLinkDataSource(
+    dataSource.getRepository(MinorCategoryEntity),
+    dataSource.getRepository(AnntenaEntity),
+    dataSource.getRepository(TranslationEntity),
+    dataSource.getRepository(PhysiqueAntennaCategoryAntennaEntity),
+  );
 }

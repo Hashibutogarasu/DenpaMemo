@@ -82,6 +82,8 @@ export const searchTablesQuerySchema = z.object({
   against: tableTypeSchema.optional().default('hp'),
   evasionRate: z.coerce.number().int(),
   hp: z.coerce.number().int(),
+  level: z.string().min(1).optional(),
   anntenaCategory: z.string().min(1).optional(),
   category: z.string().min(1).optional(),
+  antenna: z.string().min(1).optional(),
 });

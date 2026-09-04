@@ -1,29 +1,15 @@
-import { Elysia } from 'elysia';
+import { Elysia, NotFoundError } from 'elysia';
 import type { DataSource } from 'typeorm';
-import { AntennaCategoryLinkDataSource } from '../domain/physique/antenna-category-link-data-source';
+import {
+  createAntennaCategoryLinkDataSource,
+  type AntennaCategoryLinkDataSource,
+} from '../domain/physique/antenna-category-link-data-source';
 import { parseAcceptLanguage } from '../http/accept-language';
 import { categoryTranslator } from '../i18n/i18n';
-import { AnntenaEntity } from '../entities/anntena.entity';
-import { MinorCategoryEntity } from '../entities/minor-category.entity';
-import { PhysiqueAntennaCategoryAntennaEntity } from '../entities/physique-antenna-category-antenna.entity';
-import { TranslationEntity } from '../entities/translation.entity';
+import type { AnntenaEntity } from '../entities/anntena.entity';
+import type { MinorCategoryEntity } from '../entities/minor-category.entity';
 import type { ConvertFormat, ConvertSide } from './anntena.schema';
 import { convertQuerySchema } from './anntena.schema';
-
-function notFoundResponse(message: string) {
-  return { error: 'validation_error', issues: [{ message, path: ['input'] }] };
-}
-
-/** The result of a resolution step: either the resolved `value`, or a `message` explaining why it failed. */
-type Resolution<T> = { ok: true; value: T } | { ok: false; message: string };
-
-function ok<T>(value: T): Resolution<T> {
-  return { ok: true, value };
-}
-
-function notFound<T>(message: string): Resolution<T> {
-  return { ok: false, message };
-}
 
 interface FromResolution {
   minorCategory?: MinorCategoryEntity;
@@ -37,7 +23,7 @@ interface FromResolver {
     input: string,
     inputFormat: ConvertFormat,
     locale: string,
-  ): Promise<Resolution<FromResolution>>;
+  ): Promise<FromResolution>;
 }
 
 const fromResolvers: Record<ConvertSide, FromResolver> = {
@@ -46,26 +32,26 @@ const fromResolvers: Record<ConvertSide, FromResolver> = {
       const minorCategoryId =
         inputFormat === 'id' ? input : categoryTranslator.findMinorCategoryIdByTranslation(input, locale);
       if (!minorCategoryId) {
-        return notFound(`No minor category found for "${input}"`);
+        throw new NotFoundError(`No minor category found for "${input}"`);
       }
       const minorCategory = await linkDataSource.findMinorCategoryById(minorCategoryId);
       if (!minorCategory) {
-        return notFound(`No minor category found for "${input}"`);
+        throw new NotFoundError(`No minor category found for "${input}"`);
       }
-      return ok({ minorCategory });
+      return { minorCategory };
     },
   },
   specific: {
     async resolve(linkDataSource, input, inputFormat, locale) {
       const antennaId = inputFormat === 'id' ? input : await linkDataSource.findAntennaIdByTranslatedName(input, locale);
       if (!antennaId) {
-        return notFound(`No antenna found for "${input}"`);
+        throw new NotFoundError(`No antenna found for "${input}"`);
       }
       const anntena = await linkDataSource.findAntennaById(antennaId);
       if (!anntena) {
-        return notFound(`No antenna found for "${input}"`);
+        throw new NotFoundError(`No antenna found for "${input}"`);
       }
-      return ok({ anntena });
+      return { anntena };
     },
   },
 };
@@ -78,7 +64,7 @@ interface ToResolver {
     outputFormat: ConvertFormat,
     locale: string,
     input: string,
-  ): Promise<Resolution<unknown>>;
+  ): Promise<unknown>;
 }
 
 const toResolvers: Record<ConvertSide, ToResolver> = {
@@ -86,32 +72,32 @@ const toResolvers: Record<ConvertSide, ToResolver> = {
     async resolve(linkDataSource, { minorCategory }, outputFormat, locale) {
       const links = await linkDataSource.findLinksForMinorCategory(minorCategory!.id);
       if (outputFormat === 'id') {
-        return ok(links.map((link) => link.anntena.id));
+        return links.map((link) => link.anntena.id);
       }
       const names = await Promise.all(
         links.map((link) => linkDataSource.findAntennaTranslatedName(link.anntena.id, locale)),
       );
-      return ok(names.filter((name): name is string => name !== undefined));
+      return names.filter((name): name is string => name !== undefined);
     },
   },
   category: {
     async resolve(linkDataSource, { anntena }, outputFormat, locale, input) {
       const link = await linkDataSource.findLinkForAntenna(anntena!.id);
       if (!link) {
-        return notFound(`No category linked to "${input}"`);
+        throw new NotFoundError(`No category linked to "${input}"`);
       }
       if (outputFormat === 'id') {
-        return ok({
+        return {
           majorCategoryId: link.minorCategory.majorCategoryId,
           minorCategoryId: link.minorCategoryId,
-        });
+        };
       }
       const major = categoryTranslator.translateMajorCategory(link.minorCategory.majorCategoryId, locale);
       const minor = categoryTranslator.translateMinorCategory(link.minorCategoryId, locale);
       if (major === undefined || minor === undefined) {
-        return notFound(`No "${locale}" translation for category linked to "${input}"`);
+        throw new NotFoundError(`No "${locale}" translation for category linked to "${input}"`);
       }
-      return ok({ major, minor });
+      return { major, minor };
     },
   },
 };
@@ -128,31 +114,15 @@ const toResolvers: Record<ConvertSide, ToResolver> = {
  * `TranslationEntity` mechanism, unchanged.
  */
 export function anntenaRoutes(dataSource: DataSource) {
-  const linkDataSource = new AntennaCategoryLinkDataSource(
-    dataSource.getRepository(MinorCategoryEntity),
-    dataSource.getRepository(AnntenaEntity),
-    dataSource.getRepository(TranslationEntity),
-    dataSource.getRepository(PhysiqueAntennaCategoryAntennaEntity),
-  );
+  const linkDataSource = createAntennaCategoryLinkDataSource(dataSource);
 
   return new Elysia().group('/anntena', (app) =>
     app.get(
       '/convert',
-      async ({ query: { from, to, inputFormat, outputFormat, input }, set, headers }) => {
+      async ({ query: { from, to, inputFormat, outputFormat, input }, headers }) => {
         const locale = parseAcceptLanguage(headers['accept-language']);
-
         const resolved = await fromResolvers[from].resolve(linkDataSource, input, inputFormat, locale);
-        if (!resolved.ok) {
-          set.status = 400;
-          return notFoundResponse(resolved.message);
-        }
-
-        const result = await toResolvers[to].resolve(linkDataSource, resolved.value, outputFormat, locale, input);
-        if (!result.ok) {
-          set.status = 400;
-          return notFoundResponse(result.message);
-        }
-        return result.value;
+        return toResolvers[to].resolve(linkDataSource, resolved, outputFormat, locale, input);
       },
       { query: convertQuerySchema },
     ),

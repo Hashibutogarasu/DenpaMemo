@@ -1,6 +1,7 @@
-import { Elysia } from 'elysia';
+import { Elysia, NotFoundError } from 'elysia';
 import type { DataSource } from 'typeorm';
 import type { z } from 'zod';
+import { createAntennaCategoryLinkDataSource } from '../domain/physique/antenna-category-link-data-source';
 import { findEvasionRateMatches } from '../domain/physique/evasion-rate-search';
 import { TABLE_ENTITY_MAPPING } from '../domain/physique/table-registry';
 import {
@@ -13,6 +14,8 @@ import {
 } from '../domain/tables/table-operations';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
 import { TableDefinitionEntity } from '../entities/table-definition.entity';
+import { parseAcceptLanguage } from '../http/accept-language';
+import { categoryTranslator } from '../i18n/i18n';
 import {
   deleteTablesQuerySchema,
   getTablesQuerySchema,
@@ -24,13 +27,6 @@ import {
 
 function zodErrorResponse(error: z.ZodError) {
   return { error: 'validation_error', issues: error.issues };
-}
-
-function unknownTypeResponse(type: string) {
-  return {
-    error: 'validation_error',
-    issues: [{ message: `Unknown table type "${type}"`, path: ['type'] }],
-  };
 }
 
 function columnCountMismatchResponse(type: string, expected: number, actual: number) {
@@ -58,8 +54,27 @@ function columnCountMismatchResponse(type: string, expected: number, actual: num
  */
 export function tablesRoutes(dataSource: DataSource) {
   const categoryRepo = dataSource.getRepository(PhysiqueAntennaCategoryEntity);
+  const linkDataSource = createAntennaCategoryLinkDataSource(dataSource);
 
-  const resolve = (type: string) => resolveTableType(dataSource, type, TABLE_ENTITY_MAPPING);
+  /** Resolves `type`, throwing [NotFoundError] rather than returning `undefined` for an unregistered one. */
+  async function resolve(type: string): Promise<ResolvedTableType> {
+    const resolved = await resolveTableType(dataSource, type, TABLE_ENTITY_MAPPING);
+    if (!resolved) throw new NotFoundError(`Unknown table type "${type}"`);
+    return resolved;
+  }
+
+  /** Resolves an antenna id to its physique table `anntenaCategory` string, throwing [NotFoundError] if unknown. */
+  async function resolveAntennaCategory(antennaId: string, locale: string): Promise<string> {
+    const unknown = () => new NotFoundError(`Unknown antenna "${antennaId}"`);
+
+    const anntena = await linkDataSource.findAntennaById(antennaId);
+    if (!anntena) throw unknown();
+    const link = await linkDataSource.findLinkForAntenna(anntena.id);
+    if (!link) throw unknown();
+    const category = categoryTranslator.translateMinorCategory(link.minorCategoryId, locale);
+    if (category === undefined) throw unknown();
+    return category;
+  }
 
   return new Elysia().group('/tables', (app) =>
     app
@@ -86,12 +101,7 @@ export function tablesRoutes(dataSource: DataSource) {
         const resolvedByType = new Map<string, ResolvedTableType>();
         for (const record of records) {
           if (!resolvedByType.has(record.type)) {
-            const resolved = await resolve(record.type);
-            if (!resolved) {
-              set.status = 400;
-              return unknownTypeResponse(record.type);
-            }
-            resolvedByType.set(record.type, resolved);
+            resolvedByType.set(record.type, await resolve(record.type));
           }
           const resolved = resolvedByType.get(record.type)!;
           if (record.values.length !== resolved.columnCount) {
@@ -135,10 +145,6 @@ export function tablesRoutes(dataSource: DataSource) {
         const { type, level, anntenaCategory, category } = parsed.data;
 
         const resolved = await resolve(type);
-        if (!resolved) {
-          set.status = 400;
-          return unknownTypeResponse(type);
-        }
         const repo = dataSource.getRepository(resolved.entity);
 
         let anntenaCategoryFilter: string[] | undefined;
@@ -186,10 +192,6 @@ export function tablesRoutes(dataSource: DataSource) {
         const { type, lineOffset, level, anntenaCategory, records } = shapeParsed.data;
 
         const resolved = await resolve(type);
-        if (!resolved) {
-          set.status = 400;
-          return unknownTypeResponse(type);
-        }
         const repo = dataSource.getRepository(resolved.entity);
 
         const mismatched = records.find((record) => record.values.length !== resolved.columnCount);
@@ -229,10 +231,6 @@ export function tablesRoutes(dataSource: DataSource) {
         const { type, level, anntenaCategory, lineOffsets } = parsed.data;
 
         const resolved = await resolve(type);
-        if (!resolved) {
-          set.status = 400;
-          return unknownTypeResponse(type);
-        }
 
         if (lineOffsets !== undefined) {
           // level and anntenaCategory are both required alongside lineOffsets
@@ -247,23 +245,21 @@ export function tablesRoutes(dataSource: DataSource) {
         set.status = 204;
         return null;
       })
-      .get('/search', async ({ query, set }) => {
+      .get('/search', async ({ query, set, headers }) => {
         const parsed = searchTablesQuerySchema.safeParse(query);
         if (!parsed.success) {
           set.status = 400;
           return zodErrorResponse(parsed.error);
         }
-        const { type, against, evasionRate, hp, anntenaCategory, category } = parsed.data;
+        const { type, against, evasionRate, hp, level, anntenaCategory, category, antenna } = parsed.data;
 
         const primary = await resolve(type);
-        if (!primary) {
-          set.status = 400;
-          return unknownTypeResponse(type);
-        }
         const target = await resolve(against);
-        if (!target) {
-          set.status = 400;
-          return unknownTypeResponse(against);
+
+        let resolvedAnntenaCategory = anntenaCategory;
+        if (antenna !== undefined) {
+          const locale = parseAcceptLanguage(headers['accept-language']);
+          resolvedAnntenaCategory = await resolveAntennaCategory(antenna, locale);
         }
 
         let anntenaCategoryFilter: string[] | undefined;
@@ -275,29 +271,38 @@ export function tablesRoutes(dataSource: DataSource) {
           }
         }
 
-        const filters = anntenaCategory !== undefined ? { anntenaCategory } : {};
+        const filters = resolvedAnntenaCategory !== undefined ? { level, anntenaCategory: resolvedAnntenaCategory } : { level };
 
         const primaryRepo = dataSource.getRepository(primary.entity);
         const targetRepo = dataSource.getRepository(target.entity);
 
+        const buildFilteredQuery = (repo: typeof primaryRepo, resolved: ResolvedTableType) => {
+          const qb = repo
+            .createQueryBuilder('row')
+            .where('row.anntenaCategory IN (:...anntenaCategoryFilter)', { anntenaCategoryFilter });
+          if (resolved.discriminator) {
+            qb.andWhere(`row.${resolved.discriminator.column} = :discriminatorValue`, {
+              discriminatorValue: resolved.discriminator.value,
+            });
+          }
+          if (level !== undefined) {
+            qb.andWhere('row.level = :level', { level });
+          }
+          if (resolvedAnntenaCategory !== undefined) {
+            qb.andWhere('row.anntenaCategory = :anntenaCategory', { anntenaCategory: resolvedAnntenaCategory });
+          }
+          return qb.getMany();
+        };
+
         const [primaryRows, targetRows] =
           anntenaCategoryFilter !== undefined
-            ? await Promise.all([
-                primaryRepo
-                  .createQueryBuilder('row')
-                  .where('row.anntenaCategory IN (:...anntenaCategoryFilter)', { anntenaCategoryFilter })
-                  .getMany(),
-                targetRepo
-                  .createQueryBuilder('row')
-                  .where('row.anntenaCategory IN (:...anntenaCategoryFilter)', { anntenaCategoryFilter })
-                  .getMany(),
-              ])
+            ? await Promise.all([buildFilteredQuery(primaryRepo, primary), buildFilteredQuery(targetRepo, target)])
             : await Promise.all([
                 primaryRepo.find({ where: whereFor(primary, filters) }),
                 targetRepo.find({ where: whereFor(target, filters) }),
               ]);
 
-        return findEvasionRateMatches(primaryRows, targetRows, evasionRate, hp);
+        return findEvasionRateMatches(primaryRows as TableRow[], targetRows as TableRow[], evasionRate, hp);
       }),
   );
 }

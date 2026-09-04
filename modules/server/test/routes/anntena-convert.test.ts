@@ -167,7 +167,7 @@ describe('GET /anntena/convert', () => {
     expect(await response.json()).toEqual(['heal_solo_1']);
   });
 
-  test('unknown minor category id returns a 400 validation error', async () => {
+  test('unknown minor category id returns a 404 not found error', async () => {
     const response = await app.handle(
       new Request(
         convertUrl({
@@ -179,7 +179,7 @@ describe('GET /anntena/convert', () => {
         }),
       ),
     );
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
   });
 
   test('from and to must differ', async () => {
