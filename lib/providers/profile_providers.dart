@@ -30,6 +30,19 @@ final currentProfileProvider = FutureProvider.family<Profile, String>((
       .resolveCurrent(t.profile.defaultName);
 });
 
+/// The current [Profile] for [namespace] if the user has explicitly
+/// selected one, else null (see `ProfileStorage.peekCurrent`). Unlike
+/// [currentProfileProvider], never auto-creates a default profile as a
+/// side effect of being read — for callers (e.g. clipping rendering)
+/// that must treat "nothing selected yet" as "nothing to apply" rather
+/// than silently adopting an auto-created default.
+final currentProfileOrNullProvider = FutureProvider.family<Profile?, String>((
+  ref,
+  namespace,
+) {
+  return ref.watch(profileStorageProvider(namespace)).peekCurrent();
+});
+
 /// Drives [ProfileSwitchPage](../pages/profile_switch_page.dart)'s data
 /// operations for one [namespace] — creating, selecting, renaming, and
 /// deleting [Profile]s — so the page itself only builds UI and reacts to
@@ -46,6 +59,7 @@ class ProfileController {
     await storage.saveCurrentId(profile.id);
     _ref.invalidate(profileListProvider(namespace));
     _ref.invalidate(currentProfileProvider(namespace));
+    _ref.invalidate(currentProfileOrNullProvider(namespace));
     return profile;
   }
 
@@ -54,6 +68,7 @@ class ProfileController {
         .read(profileStorageProvider(namespace))
         .saveCurrentId(profile.id);
     _ref.invalidate(currentProfileProvider(namespace));
+    _ref.invalidate(currentProfileOrNullProvider(namespace));
   }
 
   Future<void> rename(Profile profile, String name) async {
@@ -62,12 +77,14 @@ class ProfileController {
         .update(profile.copyWith(name: name));
     _ref.invalidate(profileListProvider(namespace));
     _ref.invalidate(currentProfileProvider(namespace));
+    _ref.invalidate(currentProfileOrNullProvider(namespace));
   }
 
   Future<void> delete(Profile profile) async {
     await _ref.read(profileStorageProvider(namespace)).delete(profile.id);
     _ref.invalidate(profileListProvider(namespace));
     _ref.invalidate(currentProfileProvider(namespace));
+    _ref.invalidate(currentProfileOrNullProvider(namespace));
   }
 }
 

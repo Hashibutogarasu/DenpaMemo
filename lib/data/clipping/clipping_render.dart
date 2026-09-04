@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,6 +67,12 @@ class _ClippingRenderCacheOutput {
 /// changed, rather than on every read. This is what keeps a long list
 /// of already-cropped thumbnails from re-running `copyCrop` on every
 /// rebuild.
+///
+/// The rendered file's name includes a hash of [input], rather than
+/// staying fixed per [cacheKey]: `Image.file` resolves through
+/// Flutter's engine-level image cache, keyed only by file path, so
+/// overwriting one fixed path would leave already-displayed widgets
+/// showing the old crop until the app restarts.
 Future<File?> renderClippedImage(
   Ref ref, {
   required File? rawFile,
@@ -117,8 +125,22 @@ Future<File?> renderClippedImage(
   final tempDirectory = await ref.read(
     accountScopedTempDirectoryProvider.future,
   );
-  final renderedFile = File(path.join(tempDirectory.path, '$cacheKey.png'));
+  final fingerprint = sha1
+      .convert(utf8.encode(jsonEncode(input.toJson())))
+      .toString()
+      .substring(0, 16);
+  final renderedFile = File(
+    path.join(tempDirectory.path, '$cacheKey-$fingerprint.png'),
+  );
   await renderedFile.writeAsBytes(img.encodePng(cropped));
+
+  final stalePath = cached?.output.path;
+  if (stalePath != null && stalePath != renderedFile.path) {
+    final staleFile = File(stalePath);
+    if (await staleFile.exists()) {
+      await staleFile.delete();
+    }
+  }
 
   await cache.save(
     cacheKey,

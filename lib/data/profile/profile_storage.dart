@@ -100,6 +100,25 @@ class ProfileStorage {
     await file.writeAsString(jsonEncode({'profileId': profileId}));
   }
 
+  /// Returns the current profile if one has been explicitly selected (by
+  /// [saveCurrentId], directly or via [resolveCurrent]), else null.
+  /// Unlike [resolveCurrent], never creates or selects a profile as a
+  /// side effect — for callers that must tell "nothing selected yet"
+  /// apart from "selected, but not configured".
+  Future<Profile?> peekCurrent() async {
+    final currentId = await loadCurrentId();
+    if (currentId == null) {
+      return null;
+    }
+    final profiles = await loadAll();
+    for (final profile in profiles) {
+      if (profile.id == currentId) {
+        return profile;
+      }
+    }
+    return null;
+  }
+
   /// Returns the current profile, first falling back to any existing
   /// profile, then creating and selecting a new one named [defaultName]
   /// if there are none yet. Callers never need to check for an

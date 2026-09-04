@@ -15,35 +15,63 @@ final clippingSlotStorageProvider = Provider<ClippingSlotStorage>((ref) {
   return ClippingSlotStorage(ref);
 });
 
+/// [DenpaMenImageSlotType.values] ranked by
+/// [DenpaMenImageSlotType.defaultPriority], for when there's no current
+/// clipping profile to ask `ClippingSlotStorage.loadSlotTypesByPriority`
+/// for an order instead.
+List<DenpaMenImageSlotType> _defaultSlotTypeOrder() {
+  final types = List<DenpaMenImageSlotType>.from(DenpaMenImageSlotType.values);
+  types.sort(
+    (a, b) => DenpaMenImageSlotType.defaultPriority[a]!.compareTo(
+      DenpaMenImageSlotType.defaultPriority[b]!,
+    ),
+  );
+  return types;
+}
+
 /// Loads the persisted [ClippingSlot] for [slotType] under the current
-/// clipping profile, or null if the user hasn't registered one yet.
-/// Reactively resolves the current profile itself (via
-/// [currentProfileProvider]) on every build, so switching profiles —
-/// through any code path, not only `ClippingSettingsController`'s own
-/// navigation — always recomputes this instead of serving a value
-/// cached under the previous profile.
+/// clipping profile, or null if either no profile has been selected yet
+/// (see [currentProfileOrNullProvider] — rendering must skip cropping
+/// entirely rather than silently adopt an auto-created default profile)
+/// or the user hasn't registered a [ClippingSlot] for [slotType] under
+/// the profile that is selected. Reactively resolves the current profile
+/// itself on every build, so switching profiles — through any code
+/// path, not only `ClippingSettingsController`'s own navigation — always
+/// recomputes this instead of serving a value cached under the previous
+/// profile.
 final clippingSlotProvider =
     FutureProvider.family<ClippingSlot?, DenpaMenImageSlotType>((
       ref,
       slotType,
     ) async {
       final profile = await ref.watch(
-        currentProfileProvider(ClippingSlotStorage.profileNamespace).future,
+        currentProfileOrNullProvider(
+          ClippingSlotStorage.profileNamespace,
+        ).future,
       );
+      if (profile == null) {
+        return null;
+      }
       return ref.watch(clippingSlotStorageProvider).load(profile.id, slotType);
     });
 
 /// Ordered by ascending `ClippingSlot.priority` (see
-/// `ClippingSlotStorage.loadSlotTypesByPriority`). Watched by the
-/// clipping settings screen to render slot tiles in priority order, and
-/// by `denpaMenIconProvider` to pick a representative thumbnail. Resolves
-/// the current profile itself for the same reason [clippingSlotProvider]
-/// does.
+/// `ClippingSlotStorage.loadSlotTypesByPriority`), or
+/// [_defaultSlotTypeOrder] if no clipping profile has been selected yet.
+/// Watched by the clipping settings screen to render slot tiles in
+/// priority order, and by `denpaMenIconProvider` to pick a
+/// representative thumbnail. Resolves the current profile itself for the
+/// same reason [clippingSlotProvider] does.
 final clippingSlotTypesByPriorityProvider =
     FutureProvider<List<DenpaMenImageSlotType>>((ref) async {
       final profile = await ref.watch(
-        currentProfileProvider(ClippingSlotStorage.profileNamespace).future,
+        currentProfileOrNullProvider(
+          ClippingSlotStorage.profileNamespace,
+        ).future,
       );
+      if (profile == null) {
+        return _defaultSlotTypeOrder();
+      }
       return ref
           .watch(clippingSlotStorageProvider)
           .loadSlotTypesByPriority(profile.id);
@@ -152,9 +180,10 @@ class ClippingSettingsController {
 
   /// Pushes the generic profile switcher for
   /// [ClippingSlotStorage.profileNamespace]. Invalidating
-  /// [currentProfileProvider] alone is enough — [clippingSlotProvider]
-  /// and [clippingSlotTypesByPriorityProvider] both watch it, so they
-  /// recompute automatically; this is also true when the profile is
+  /// [currentProfileProvider] and [currentProfileOrNullProvider] alone is
+  /// enough — [clippingSlotProvider] and
+  /// [clippingSlotTypesByPriorityProvider] both watch one of them, so
+  /// they recompute automatically; this is also true when the profile is
   /// switched by any other code path (e.g. `ProfileController.select`
   /// itself), not only through this method.
   Future<void> switchProfile(BuildContext context) async {
@@ -163,6 +192,9 @@ class ClippingSettingsController {
     ).push<bool>(context);
     _ref.invalidate(
       currentProfileProvider(ClippingSlotStorage.profileNamespace),
+    );
+    _ref.invalidate(
+      currentProfileOrNullProvider(ClippingSlotStorage.profileNamespace),
     );
   }
 }
