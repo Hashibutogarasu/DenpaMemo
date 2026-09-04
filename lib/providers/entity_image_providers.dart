@@ -8,25 +8,31 @@ import '../data/icon/entity_icon_storage.dart';
 import 'clipping_slot_providers.dart';
 
 /// Reads the raw image saved for [category]/[entityId]/[slot] (see
-/// [EntityIconStorage]) and applies whichever [ClippingSlot] the current
-/// clipping profile has registered for [slot], in-memory — or null if
-/// that slot has no image saved yet. Watches both the raw image and
-/// [clippingSlotProvider], so switching clipping profiles or
-/// re-registering a slot's crop rectangle is reflected immediately for
-/// every already-picked image, without re-picking or re-saving anything.
-/// Entity-agnostic: the same provider backs every category
-/// [EntityIconStorage] knows about, not just one.
+/// [EntityIconStorage]) and applies whichever [ClippingSlot]
+/// [clippingProfileId] has registered for [slot], in-memory — or null if
+/// that slot has no image saved yet, and unmodified if
+/// [clippingProfileId] is null (no profile assigned). Watches both the
+/// raw image and [clippingSlotForProfileProvider], so re-registering a
+/// slot's crop rectangle is reflected immediately for every
+/// already-picked image, without re-picking or re-saving anything.
 final entityImageProvider =
     FutureProvider.family<
       File?,
-      (String category, String entityId, DenpaMenImageSlotType slot)
+      (
+        String category,
+        String entityId,
+        DenpaMenImageSlotType slot,
+        String? clippingProfileId,
+      )
     >((ref, args) async {
-      final (category, entityId, slot) = args;
+      final (category, entityId, slot, clippingProfileId) = args;
       final rawFile = await EntityIconStorage(
         category,
         ref,
       ).loadIcon(entityId, slot: slot.name);
-      final clippingSlot = await ref.watch(clippingSlotProvider(slot).future);
+      final clippingSlot = await ref.watch(
+        clippingSlotForProfileProvider((clippingProfileId, slot)).future,
+      );
       return renderClippedImage(
         ref,
         rawFile: rawFile,

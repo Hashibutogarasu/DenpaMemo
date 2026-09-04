@@ -22,6 +22,7 @@
     "switchPageTitle": "プロファイル切り替え",
     "create": "新規作成",
     "nameDialogTitle": "プロファイル名",
+    "selectionDialogTitle": "プロファイルを選択",
     "defaultName": "デフォルト"
   },
   "step": {

@@ -287,9 +287,6 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
             .watch(denpaMenIconProvider(record.denpaMen.id))
             .value,
     };
-    final slotPriorityOrder = ref
-        .watch(clippingSlotTypesByPriorityProvider)
-        .value;
     final zoomCandidatesById = {
       for (final record in visibleRecords)
         record.denpaMen.id: [
@@ -300,14 +297,19 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
                         denpaMenIconCategory,
                         record.denpaMen.id,
                         slotType,
+                        ref
+                            .watch(
+                              denpaMenClippingProfileIdProvider(
+                                record.denpaMen.id,
+                              ),
+                            )
+                            .value,
                       )),
                     )
                     .value
                 case final file?)
               (
-                priority:
-                    slotPriorityOrder?.indexOf(slotType) ??
-                    DenpaMenImageSlotType.defaultPriority[slotType]!,
+                priority: DenpaMenImageSlotType.defaultPriority[slotType]!,
                 file: file,
                 label: _slotLabel(context.t, slotType),
               ),

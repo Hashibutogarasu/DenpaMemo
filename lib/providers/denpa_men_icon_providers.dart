@@ -23,12 +23,20 @@ final denpaMenIconProvider = FutureProvider.family<File?, String>((
   ref,
   denpaMenId,
 ) async {
+  final profileId = await ref.watch(
+    denpaMenClippingProfileIdProvider(denpaMenId).future,
+  );
   final orderedTypes = await ref.watch(
-    clippingSlotTypesByPriorityProvider.future,
+    slotTypesByPriorityForProfileProvider(profileId).future,
   );
   for (final type in orderedTypes) {
     final file = await ref.watch(
-      entityImageProvider((denpaMenIconCategory, denpaMenId, type)).future,
+      entityImageProvider((
+        denpaMenIconCategory,
+        denpaMenId,
+        type,
+        profileId,
+      )).future,
     );
     if (file != null) {
       return file;

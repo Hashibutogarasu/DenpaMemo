@@ -94,14 +94,12 @@ Future<File?> renderClippedImage(
     clippingSlot: clippingSlot,
   );
 
-  final cached = await cache.read<
-    _ClippingRenderCacheInput,
-    _ClippingRenderCacheOutput
-  >(
-    cacheKey,
-    inputFromJson: _ClippingRenderCacheInput.fromJson,
-    outputFromJson: _ClippingRenderCacheOutput.fromJson,
-  );
+  final cached = await cache
+      .read<_ClippingRenderCacheInput, _ClippingRenderCacheOutput>(
+        cacheKey,
+        inputFromJson: _ClippingRenderCacheInput.fromJson,
+        outputFromJson: _ClippingRenderCacheOutput.fromJson,
+      );
   if (cached != null) {
     final unchanged = !await cache.canMerge(cacheKey, input, cached.output);
     final cachedFile = File(cached.output.path);
