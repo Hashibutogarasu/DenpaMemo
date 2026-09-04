@@ -9,8 +9,7 @@ part 'profile.g.dart';
 /// or this model knowing what the settings themselves are for.
 @freezed
 abstract class Profile with _$Profile {
-  const factory Profile({required String id, required String name}) =
-      _Profile;
+  const factory Profile({required String id, required String name}) = _Profile;
 
   factory Profile.fromJson(Map<String, dynamic> json) =>
       _$ProfileFromJson(json);

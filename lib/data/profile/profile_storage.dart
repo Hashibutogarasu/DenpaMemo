@@ -63,6 +63,28 @@ class ProfileStorage {
     return profile;
   }
 
+  /// Replaces the stored profile with the same [Profile.id] as
+  /// [updated]. Does nothing if no profile with that id is stored.
+  Future<void> update(Profile updated) async {
+    final profiles = await loadAll();
+    await _saveAll([
+      for (final profile in profiles)
+        if (profile.id == updated.id) updated else profile,
+    ]);
+  }
+
+  /// Removes the profile with [profileId], if any. If it was the current
+  /// profile, [loadCurrentId] keeps pointing at the now-deleted id until
+  /// the next [resolveCurrent] call, which falls back to another
+  /// existing profile (or creates a fresh default one) automatically.
+  Future<void> delete(String profileId) async {
+    final profiles = await loadAll();
+    await _saveAll([
+      for (final profile in profiles)
+        if (profile.id != profileId) profile,
+    ]);
+  }
+
   Future<String?> loadCurrentId() async {
     final file = await _currentFile();
     if (!await file.exists()) {

@@ -172,7 +172,9 @@ class ClippingSettingsPage extends ConsumerWidget {
     await const ProfileSwitchRoute(
       namespace: ClippingSlotStorage.profileNamespace,
     ).push<bool>(context);
-    ref.invalidate(currentProfileProvider(ClippingSlotStorage.profileNamespace));
+    ref.invalidate(
+      currentProfileProvider(ClippingSlotStorage.profileNamespace),
+    );
     ref.invalidate(clippingSlotTypesByPriorityProvider);
     for (final slotType in DenpaMenImageSlotType.values) {
       ref.invalidate(clippingSlotProvider(slotType));

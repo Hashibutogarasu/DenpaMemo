@@ -14,9 +14,10 @@ import '../widgets/profile/profile_name_dialog.dart';
 /// caller-defined string identifying which feature's profile pool this
 /// is (see `ProfileStorage`). Entirely domain-agnostic: this page has no
 /// notion of what a profile's settings actually are — it only lists
-/// [Profile.name]s and lets the caller create/select one. Pops with
-/// `true` once a profile has been created or selected, so the caller
-/// knows to re-read whatever settings depend on the current profile.
+/// [Profile.name]s and lets the caller create/select/rename/delete one.
+/// Pops with `true` once a profile has been created or selected, so the
+/// caller knows to re-read whatever settings depend on the current
+/// profile.
 class ProfileSwitchPage extends ConsumerWidget {
   const ProfileSwitchPage({super.key, required this.namespace});
 
@@ -27,23 +28,10 @@ class ProfileSwitchPage extends ConsumerWidget {
     if (name == null || name.isEmpty || !context.mounted) {
       return;
     }
-    final profile = await ref
-        .read(profileStorageProvider(namespace))
-        .create(name);
-    await ref.read(profileStorageProvider(namespace)).saveCurrentId(profile.id);
+    final storage = ref.read(profileStorageProvider(namespace));
+    final profile = await storage.create(name);
+    await storage.saveCurrentId(profile.id);
     ref.invalidate(profileListProvider(namespace));
-    ref.invalidate(currentProfileProvider(namespace));
-    if (context.mounted) {
-      Navigator.of(context).pop(true);
-    }
-  }
-
-  Future<void> _select(
-    BuildContext context,
-    WidgetRef ref,
-    Profile profile,
-  ) async {
-    await ref.read(profileStorageProvider(namespace)).saveCurrentId(profile.id);
     ref.invalidate(currentProfileProvider(namespace));
     if (context.mounted) {
       Navigator.of(context).pop(true);
@@ -70,18 +58,77 @@ class ProfileSwitchPage extends ConsumerWidget {
             ListItemContainer(
               children: [
                 for (final profile in profiles)
-                  ListItemTile(
-                    icon: Icons.person_outline,
-                    label: profile.name,
-                    trailing: currentAsync.value?.id == profile.id
-                        ? const Icon(Icons.check)
-                        : null,
-                    onTap: () => _select(context, ref, profile),
+                  _ProfileTile(
+                    namespace: namespace,
+                    profile: profile,
+                    isCurrent: currentAsync.value?.id == profile.id,
                   ),
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ProfileTile extends ConsumerWidget {
+  const _ProfileTile({
+    required this.namespace,
+    required this.profile,
+    required this.isCurrent,
+  });
+
+  final String namespace;
+  final Profile profile;
+  final bool isCurrent;
+
+  Future<void> _select(BuildContext context, WidgetRef ref) async {
+    final storage = ref.read(profileStorageProvider(namespace));
+    await storage.saveCurrentId(profile.id);
+    ref.invalidate(currentProfileProvider(namespace));
+    if (context.mounted) {
+      Navigator.of(context).pop(true);
+    }
+  }
+
+  Future<void> _rename(BuildContext context, WidgetRef ref) async {
+    final name = await ProfileNameDialog.show(context, initial: profile.name);
+    if (name == null || name.isEmpty || !context.mounted) {
+      return;
+    }
+    final storage = ref.read(profileStorageProvider(namespace));
+    await storage.update(profile.copyWith(name: name));
+    ref.invalidate(profileListProvider(namespace));
+    ref.invalidate(currentProfileProvider(namespace));
+  }
+
+  Future<void> _delete(WidgetRef ref) async {
+    final storage = ref.read(profileStorageProvider(namespace));
+    await storage.delete(profile.id);
+    ref.invalidate(profileListProvider(namespace));
+    ref.invalidate(currentProfileProvider(namespace));
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListItemTile(
+      icon: Icons.person_outline,
+      label: profile.name,
+      onTap: () => _select(context, ref),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isCurrent) const Icon(Icons.check),
+          IconButton(
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () => _rename(context, ref),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => _delete(ref),
+          ),
+        ],
       ),
     );
   }
