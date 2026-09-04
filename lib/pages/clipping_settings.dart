@@ -8,8 +8,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/clipping/clipping_slot_storage.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/clipping_slot_providers.dart';
+import '../providers/profile_providers.dart';
+import '../routing/app_router.dart';
 import '../widgets/list/list_item_tile.dart';
 
 String _defaultLabelFor(Translations t, DenpaMenImageSlotType slotType) {
@@ -165,13 +168,38 @@ class ClippingSettingsPage extends ConsumerWidget {
     ref.invalidate(clippingSlotTypesByPriorityProvider);
   }
 
+  Future<void> _switchProfile(BuildContext context, WidgetRef ref) async {
+    await const ProfileSwitchRoute(
+      namespace: ClippingSlotStorage.profileNamespace,
+    ).push<bool>(context);
+    ref.invalidate(currentProfileProvider(ClippingSlotStorage.profileNamespace));
+    ref.invalidate(clippingSlotTypesByPriorityProvider);
+    for (final slotType in DenpaMenImageSlotType.values) {
+      ref.invalidate(clippingSlotProvider(slotType));
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
     final orderedTypes = ref.watch(clippingSlotTypesByPriorityProvider);
+    final currentProfile = ref.watch(
+      currentProfileProvider(ClippingSlotStorage.profileNamespace),
+    );
 
     return AppScaffold(
-      title: OutlinedTitleText(text: t.page.clippingSettings),
+      title: OutlinedTitleText(
+        text: switch (currentProfile) {
+          AsyncData(:final value) => t.page.clippingSettingsTitle(
+            profileName: value.name,
+          ),
+          _ => t.page.clippingSettings,
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _switchProfile(context, ref),
+        label: Text(t.profile.switchProfile),
+      ),
       body: orderedTypes.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text(error.toString())),

@@ -22,6 +22,7 @@ import '../pages/open_source_licenses.dart';
 import '../pages/physique_table_edit.dart';
 import '../pages/physique_table_list.dart';
 import '../pages/physique_table_view.dart';
+import '../pages/profile_switch_page.dart';
 import '../pages/qr_code_selection.dart';
 import '../pages/search.dart';
 import '../pages/search_results.dart';
@@ -258,6 +259,20 @@ class ClippingSettingsRoute extends GoRouteData with $ClippingSettingsRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const ClippingSettingsPage();
+}
+
+/// Generic profile switcher (see `ProfileSwitchPage`), pushed from any
+/// feature's own settings screen with its own `namespace` — currently
+/// only the clipping settings screen's "switch profile" FAB.
+@TypedGoRoute<ProfileSwitchRoute>(path: '/profiles/:namespace')
+class ProfileSwitchRoute extends GoRouteData with $ProfileSwitchRoute {
+  const ProfileSwitchRoute({required this.namespace});
+
+  final String namespace;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      ProfileSwitchPage(namespace: namespace);
 }
 
 /// Pushed from the settings list's "language" tile.

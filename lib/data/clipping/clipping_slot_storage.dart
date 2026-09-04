@@ -6,22 +6,41 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 
 import '../../providers/account_scoped_paths_providers.dart';
+import '../../providers/profile_providers.dart';
 
 /// Reads and writes each [DenpaMenImageSlotType]'s [ClippingSlot], stored
 /// alongside the ObjectBox database directory (under the current
 /// account's [accountScopedAppDirectoryProvider]) as one JSON file per
-/// slot type under `clipping_slots/<slotType.name>.json`.
+/// slot type under `<profileNamespace>/<profileId>/<slotType.name>.json`.
+/// Scoped per [Profile](../profile/profile.dart) — via [profileNamespace]
+/// and `currentProfileProvider` — so switching profiles (see
+/// `ProfileSwitchPage`) switches out the whole set of registered crops.
 class ClippingSlotStorage {
   const ClippingSlotStorage(this._ref);
 
   final Ref _ref;
 
+  static const String profileNamespace = 'clipping-slots';
+
+  Future<String> _currentProfileId() async {
+    final profile = await _ref.read(
+      currentProfileProvider(profileNamespace).future,
+    );
+    return profile.id;
+  }
+
   Future<File> _slotFile(DenpaMenImageSlotType slotType) async {
     final appDirectory = await _ref.read(
       accountScopedAppDirectoryProvider.future,
     );
+    final profileId = await _currentProfileId();
     return File(
-      path.join(appDirectory.path, 'clipping_slots', '${slotType.name}.json'),
+      path.join(
+        appDirectory.path,
+        profileNamespace,
+        profileId,
+        '${slotType.name}.json',
+      ),
     );
   }
 

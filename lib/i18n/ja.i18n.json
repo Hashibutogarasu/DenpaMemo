@@ -16,6 +16,13 @@
     "retry": "再試行",
     "errorTitle": "エラー"
   },
+  "profile": {
+    "switchProfile": "プロファイルを切り替え",
+    "switchPageTitle": "プロファイル切り替え",
+    "create": "新規作成",
+    "nameDialogTitle": "プロファイル名",
+    "defaultName": "デフォルト"
+  },
   "step": {
     "failureTitle": "処理に失敗しました",
     "failureDescription": "処理中にエラーが発生しました: ${error}"
@@ -39,7 +46,8 @@
     "openSourceLicenses": "オープンソースライセンス",
     "cloudBackup": "クラウドバックアップ&復元",
     "cloudBackupHistory": "バックアップ履歴",
-    "clippingSettings": "画像切り抜き"
+    "clippingSettings": "画像切り抜き",
+    "clippingSettingsTitle": "画像切り抜き - ${profileName}"
   },
   "settings": {
     "section": {

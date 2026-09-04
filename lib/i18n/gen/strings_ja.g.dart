@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final Translations$app$ja app = Translations$app$ja.internal(_root);
 	late final Translations$common$ja common = Translations$common$ja.internal(_root);
+	late final Translations$profile$ja profile = Translations$profile$ja.internal(_root);
 	late final Translations$step$ja step = Translations$step$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
@@ -274,6 +275,30 @@ class Translations$common$ja {
 	String get errorTitle => 'エラー';
 }
 
+// Path: profile
+class Translations$profile$ja {
+	Translations$profile$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'プロファイルを切り替え'
+	String get switchProfile => 'プロファイルを切り替え';
+
+	/// ja: 'プロファイル切り替え'
+	String get switchPageTitle => 'プロファイル切り替え';
+
+	/// ja: '新規作成'
+	String get create => '新規作成';
+
+	/// ja: 'プロファイル名'
+	String get nameDialogTitle => 'プロファイル名';
+
+	/// ja: 'デフォルト'
+	String get defaultName => 'デフォルト';
+}
+
 // Path: step
 class Translations$step$ja {
 	Translations$step$ja.internal(this._root);
@@ -353,6 +378,9 @@ class Translations$page$ja {
 
 	/// ja: '画像切り抜き'
 	String get clippingSettings => '画像切り抜き';
+
+	/// ja: '画像切り抜き - ${profileName}'
+	String clippingSettingsTitle({required Object profileName}) => '画像切り抜き - ${profileName}';
 }
 
 // Path: settings
@@ -1144,6 +1172,11 @@ extension on Translations {
 			'common.unset' => '未設定',
 			'common.retry' => '再試行',
 			'common.errorTitle' => 'エラー',
+			'profile.switchProfile' => 'プロファイルを切り替え',
+			'profile.switchPageTitle' => 'プロファイル切り替え',
+			'profile.create' => '新規作成',
+			'profile.nameDialogTitle' => 'プロファイル名',
+			'profile.defaultName' => 'デフォルト',
 			'step.failureTitle' => '処理に失敗しました',
 			'step.failureDescription' => ({required Object error}) => '処理中にエラーが発生しました: ${error}',
 			'page.home' => 'ホーム',
@@ -1165,6 +1198,7 @@ extension on Translations {
 			'page.cloudBackup' => 'クラウドバックアップ&復元',
 			'page.cloudBackupHistory' => 'バックアップ履歴',
 			'page.clippingSettings' => '画像切り抜き',
+			'page.clippingSettingsTitle' => ({required Object profileName}) => '画像切り抜き - ${profileName}',
 			'settings.section.general' => '全般',
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',

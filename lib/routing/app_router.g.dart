@@ -20,6 +20,7 @@ List<RouteBase> get $appRoutes => [
   $accountSettingsRoute,
   $themeSettingsRoute,
   $clippingSettingsRoute,
+  $profileSwitchRoute,
   $languageSettingsRoute,
   $openSourceLicensesRoute,
   $dataManagementRoute,
@@ -480,6 +481,37 @@ mixin $ClippingSettingsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings/clipping');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $profileSwitchRoute => GoRouteData.$route(
+  path: '/profiles/:namespace',
+  hasOverriddenOnExit: false,
+  factory: $ProfileSwitchRoute._fromState,
+);
+
+mixin $ProfileSwitchRoute on GoRouteData {
+  static ProfileSwitchRoute _fromState(GoRouterState state) =>
+      ProfileSwitchRoute(namespace: state.pathParameters['namespace']!);
+
+  ProfileSwitchRoute get _self => this as ProfileSwitchRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/profiles/${Uri.encodeComponent(_self.namespace)}',
+  );
 
   @override
   void go(BuildContext context) => context.go(location);
