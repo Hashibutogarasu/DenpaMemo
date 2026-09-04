@@ -3,6 +3,7 @@ import type { DataSource } from 'typeorm';
 import type { z } from 'zod';
 import { createAntennaCategoryLinkDataSource } from '../domain/physique/antenna-category-link-data-source';
 import { findEvasionRateMatches } from '../domain/physique/evasion-rate-search';
+import { resolvePhysiqueCategoryKey } from '../domain/physique/physique-evasion-rate-category';
 import { TABLE_ENTITY_MAPPING } from '../domain/physique/table-registry';
 import {
   deleteTableRows,
@@ -13,6 +14,7 @@ import {
   type TableRow,
 } from '../domain/tables/table-operations';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
+import { PhysiqueEvasionRateCategoryEntity } from '../entities/physique-evasion-rate-category.entity';
 import { TableDefinitionEntity } from '../entities/table-definition.entity';
 import { parseAcceptLanguage } from '../http/accept-language';
 import { categoryTranslator } from '../i18n/i18n';
@@ -54,6 +56,7 @@ function columnCountMismatchResponse(type: string, expected: number, actual: num
  */
 export function tablesRoutes(dataSource: DataSource) {
   const categoryRepo = dataSource.getRepository(PhysiqueAntennaCategoryEntity);
+  const evasionRateCategoryRepo = dataSource.getRepository(PhysiqueEvasionRateCategoryEntity);
   const linkDataSource = createAntennaCategoryLinkDataSource(dataSource);
 
   /** Resolves `type`, throwing [NotFoundError] rather than returning `undefined` for an unregistered one. */
@@ -255,10 +258,10 @@ export function tablesRoutes(dataSource: DataSource) {
 
         const primary = await resolve(type);
         const target = await resolve(against);
+        const locale = parseAcceptLanguage(headers['accept-language']);
 
         let resolvedAnntenaCategory = anntenaCategory;
         if (antenna !== undefined) {
-          const locale = parseAcceptLanguage(headers['accept-language']);
           resolvedAnntenaCategory = await resolveAntennaCategory(antenna, locale);
         }
 
@@ -302,7 +305,17 @@ export function tablesRoutes(dataSource: DataSource) {
                 targetRepo.find({ where: whereFor(target, filters) }),
               ]);
 
-        return findEvasionRateMatches(primaryRows as TableRow[], targetRows as TableRow[], evasionRate, hp);
+        const matches = findEvasionRateMatches(primaryRows as TableRow[], targetRows as TableRow[], evasionRate, hp);
+        return Promise.all(
+          matches.map(async (match) => {
+            const textKey = await resolvePhysiqueCategoryKey(evasionRateCategoryRepo, evasionRate, match.columnIndex);
+            return {
+              ...match,
+              textKey: textKey ?? null,
+              text: textKey !== undefined ? (categoryTranslator.translatePhysique(textKey, locale) ?? null) : null,
+            };
+          }),
+        );
       }),
   );
 }

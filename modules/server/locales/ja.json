@@ -29,5 +29,12 @@
     "attack_solo": "単体攻撃",
     "attack_all": "全体攻撃",
     "knockdown": "ノックダウン"
+  },
+  "physique": {
+    "largest": "最大",
+    "large": "準大",
+    "medium": "中間",
+    "fast": "準速",
+    "fastest": "最速"
   }
 }

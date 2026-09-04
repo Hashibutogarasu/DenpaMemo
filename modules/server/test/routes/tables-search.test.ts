@@ -7,6 +7,7 @@ import { MinorCategoryEntity as MinorCategoryEntityClass } from '../../src/entit
 import { PhysiqueAntennaCategoryEntity } from '../../src/entities/physique-antenna-category.entity';
 import type { PhysiqueAntennaCategoryAntennaEntity } from '../../src/entities/physique-antenna-category-antenna.entity';
 import { PhysiqueAntennaCategoryAntennaEntity as PhysiqueAntennaCategoryAntennaEntityClass } from '../../src/entities/physique-antenna-category-antenna.entity';
+import { PhysiqueEvasionRateCategoryEntity } from '../../src/entities/physique-evasion-rate-category.entity';
 import { PhysiqueEvasionRateTableEntity } from '../../src/entities/physique-evasion-rate-table.entity';
 import { PhysiqueTableEntity } from '../../src/entities/physique-table.entity';
 import { TableDefinitionEntity } from '../../src/entities/table-definition.entity';
@@ -56,6 +57,12 @@ const evasionRows: EvasionRow[] = [
   { level: '2', anntenaCategory: 'アンテナ無し', lineOffset: 0, values: [0, 0, 5, 10] },
 ];
 
+const categoryRows = [
+  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 0, textKey: 'largest' },
+  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 1, textKey: 'large' },
+  { evasionRateStart: 5, evasionRateEnd: 5, startColumn: 3, columnOffset: 0, textKey: 'medium' },
+];
+
 function matchesWhere<T>(row: T, where: Partial<T>): boolean {
   return (Object.entries(where) as Array<[keyof T, unknown]>).every(([key, value]) => row[key] === value);
 }
@@ -93,6 +100,12 @@ function fakeDataSource(): DataSource {
       PhysiqueAntennaCategoryEntity,
       {
         find: async () => [],
+      },
+    ],
+    [
+      PhysiqueEvasionRateCategoryEntity,
+      {
+        find: async () => categoryRows,
       },
     ],
     [
@@ -143,16 +156,18 @@ describe('GET /tables/search', () => {
     );
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual([
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 2 },
+      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 2, textKey: 'medium', text: '中間' },
     ]);
   });
 
-  test('multiple columns matching both hp and evasionRate all come back', async () => {
+  test('multiple columns matching both hp and evasionRate all come back, each with its own textKey/text', async () => {
     const response = await app.handle(
       new Request(searchUrl({ antenna: 'none', level: '1', hp: '40', evasionRate: '0' })),
     );
-    const columns = ((await response.json()) as Array<{ columnIndex: number }>).map((match) => match.columnIndex);
-    expect(columns).toEqual([0, 1]);
+    expect(await response.json()).toEqual([
+      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 0, textKey: 'largest', text: '最大' },
+      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 1, textKey: 'large', text: '準大' },
+    ]);
   });
 
   test('an unknown antenna id returns a 404 not found error', async () => {
@@ -168,8 +183,8 @@ describe('GET /tables/search', () => {
     );
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual([
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 0 },
-      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 1 },
+      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 0, textKey: 'largest', text: '最大' },
+      { level: '1', anntenaCategory: 'アンテナ無し', lineOffset: 0, columnIndex: 1, textKey: 'large', text: '準大' },
     ]);
   });
 
