@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show compute;
 import 'package:http/http.dart' as http;
 
+import 'physique_column_match.dart';
+import 'physique_column_search_query.dart';
 import 'physique_table_record.dart';
 import 'table_definition.dart';
 
@@ -150,11 +152,51 @@ class PhysiquesApiClient {
     _requireSuccess(response);
   }
 
+  /// Finds every column where a `type` (default `evasionRate`) row and an
+  /// `against` (default `hp`) row at the same `level`/`anntenaCategory`/
+  /// `lineOffset` both equal [evasionRate]/[hp] at that column — see
+  /// `findEvasionRateMatches` on the server. [antenna] is an antenna id,
+  /// resolved server-side to its `anntenaCategory`.
+  Future<List<PhysiqueColumnMatch>> search({
+    String type = 'evasionRate',
+    String against = 'hp',
+    required int evasionRate,
+    required int hp,
+    String? level,
+    String? anntenaCategory,
+    String? antenna,
+  }) async {
+    final query = PhysiqueColumnSearchQuery(
+      type: type,
+      against: against,
+      evasionRate: evasionRate,
+      hp: hp,
+      level: level,
+      anntenaCategory: anntenaCategory,
+      antenna: antenna,
+    );
+    final response = await http.get(
+      _baseUrl.replace(
+        path: '/tables/search',
+        queryParameters: {
+          for (final entry in query.toJson().entries)
+            if (entry.value != null) entry.key: '${entry.value}',
+        },
+      ),
+    );
+    final body = await _decodeListOrThrow(response);
+    return [
+      for (final row in body.cast<Map<String, dynamic>>())
+        PhysiqueColumnMatch.fromJson(row),
+    ];
+  }
+
   static const Map<String, String> _jsonHeaders = {
     'Content-Type': 'application/json',
   };
 
-  static List<dynamic> _decodeJsonList(String body) => jsonDecode(body) as List<dynamic>;
+  static List<dynamic> _decodeJsonList(String body) =>
+      jsonDecode(body) as List<dynamic>;
 
   Future<List<dynamic>> _decodeListOrThrow(http.Response response) async {
     _requireSuccess(response);
@@ -172,6 +214,9 @@ class PhysiquesApiClient {
     } catch (_) {
       message = null;
     }
-    throw PhysiqueApiException(statusCode: response.statusCode, message: message);
+    throw PhysiqueApiException(
+      statusCode: response.statusCode,
+      message: message,
+    );
   }
 }
