@@ -23,19 +23,19 @@ export async function loadBodyColorResistanceRules(
   const filePath = path.join(dataDir, 'body_color_attribute_resistance.json');
   const json = JSON.parse(await readFile(filePath, 'utf-8')) as BodyColorAttributeResistanceJson;
 
-  const attributeByLegacyId = new Map(
-    (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.legacyId, attribute]),
+  const attributeById = new Map(
+    (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.id, attribute]),
   );
 
   await dataSource.transaction(async (manager) => {
     for (const [colorId, value] of Object.entries(json)) {
       guard.check('body_color_resistance_rule', colorId, 'body_color_attribute_resistance.json');
       const rule = new BodyColorResistanceRuleEntity();
-      rule.legacyId = colorId;
+      rule.id = colorId;
       await manager.save(rule);
 
       const bonuses = Object.entries(value.attributeResistanceBonuses).map(([attributeId, bonus]) => {
-        const attribute = attributeByLegacyId.get(attributeId);
+        const attribute = attributeById.get(attributeId);
         if (!attribute) {
           throw new Error(`Unknown attribute id "${attributeId}" in body_color_attribute_resistance.json`);
         }
@@ -62,7 +62,7 @@ export async function loadBodyColorAbnormalityResistanceRules(
   const entities = Object.entries(json).map(([colorId, value]) => {
     guard.check('body_color_abnormality_resistance_rule', colorId, 'body_color_abnormality_resistance.json');
     const entity = new BodyColorAbnormalityResistanceRuleEntity();
-    entity.legacyId = colorId;
+    entity.id = colorId;
     entity.abnormalityResistanceBonuses = value.abnormalityResistanceBonuses;
     return entity;
   });

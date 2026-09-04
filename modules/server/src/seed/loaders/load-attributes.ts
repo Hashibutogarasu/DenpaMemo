@@ -21,7 +21,7 @@ export async function loadAttributes(
   dataDir: string,
   guard: DuplicateIdGuard,
 ): Promise<void> {
-  const parsedByLegacyId = new Map<string, { json: AttributeJson; categoryId: number }>();
+  const parsedById = new Map<string, { json: AttributeJson; categoryId: number }>();
 
   for (const { dir, categoryId } of CATEGORY_DIRS) {
     const attributesDir = path.join(dataDir, 'attributes', dir);
@@ -31,25 +31,25 @@ export async function loadAttributes(
       const source = path.join('attributes', dir, file);
       const json = JSON.parse(await readFile(path.join(attributesDir, file), 'utf-8')) as AttributeJson;
       guard.check('attribute', json.id, source);
-      parsedByLegacyId.set(json.id, { json, categoryId });
+      parsedById.set(json.id, { json, categoryId });
     }
   }
 
   await dataSource.transaction(async (manager) => {
-    const entities = [...parsedByLegacyId.values()].map(({ json, categoryId }) => {
+    const entities = [...parsedById.values()].map(({ json, categoryId }) => {
       const entity = new AttributeEntity();
-      entity.legacyId = json.id;
+      entity.id = json.id;
       entity.index = json.index;
       entity.categoryId = categoryId;
       return entity;
     });
     await manager.save(entities);
 
-    const savedByLegacyId = new Map(entities.map((entity) => [entity.legacyId, entity]));
-    for (const { json } of parsedByLegacyId.values()) {
-      const entity = savedByLegacyId.get(json.id)!;
-      entity.resistantTo = json.resistantToIds.map((id) => savedByLegacyId.get(id)!);
-      entity.weakTo = json.weakToIds.map((id) => savedByLegacyId.get(id)!);
+    const savedById = new Map(entities.map((entity) => [entity.id, entity]));
+    for (const { json } of parsedById.values()) {
+      const entity = savedById.get(json.id)!;
+      entity.resistantTo = json.resistantToIds.map((id) => savedById.get(id)!);
+      entity.weakTo = json.weakToIds.map((id) => savedById.get(id)!);
       await manager.save(entity);
     }
   });

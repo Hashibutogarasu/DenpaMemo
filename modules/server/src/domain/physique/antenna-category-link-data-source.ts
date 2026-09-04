@@ -8,7 +8,7 @@ export interface MinorCategoryRepository {
 }
 
 export interface AnntenaRepository {
-  findOneBy(where: Partial<Pick<AnntenaEntity, 'legacyId'>>): Promise<AnntenaEntity | null>;
+  findOneBy(where: Partial<Pick<AnntenaEntity, 'id'>>): Promise<AnntenaEntity | null>;
 }
 
 export interface TranslationRepository {
@@ -46,21 +46,21 @@ export class AntennaCategoryLinkDataSource {
     return this.minorCategoryRepo.findOneBy({ id });
   }
 
-  findAntennaByLegacyId(legacyId: string): Promise<AnntenaEntity | null> {
-    return this.anntenaRepo.findOneBy({ legacyId });
+  findAntennaById(id: string): Promise<AnntenaEntity | null> {
+    return this.anntenaRepo.findOneBy({ id });
   }
 
-  /** Resolves a translated antenna display name back to its `legacyId`. */
-  async findAntennaLegacyIdByTranslatedName(value: string, locale: string): Promise<string | undefined> {
+  /** Resolves a translated antenna display name back to its `id`. */
+  async findAntennaIdByTranslatedName(value: string, locale: string): Promise<string | undefined> {
     const translation = await this.translationRepo.findOneBy({ entityType: 'antenna', locale, value });
     return translation?.entityLegacyId;
   }
 
-  /** Resolves an antenna's `legacyId` to its translated display name. */
-  async findAntennaTranslatedName(legacyId: string, locale: string): Promise<string | undefined> {
+  /** Resolves an antenna's `id` to its translated display name. */
+  async findAntennaTranslatedName(id: string, locale: string): Promise<string | undefined> {
     const translation = await this.translationRepo.findOneBy({
       entityType: 'antenna',
-      entityLegacyId: legacyId,
+      entityLegacyId: id,
       locale,
     });
     return translation?.value;

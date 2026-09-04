@@ -14,9 +14,9 @@ const noneMinorCategory = { id: 'none', majorCategoryId: 'none' } as MinorCatego
 const healSoloMinorCategory = { id: 'heal_solo', majorCategoryId: 'healing' } as MinorCategoryEntity;
 const attackAllMinorCategory = { id: 'attack_all', majorCategoryId: 'attack' } as MinorCategoryEntity;
 
-const noneAnntena = { id: 'ant-none', legacyId: 'none' } as AnntenaEntity;
-const healSoloAnntena = { id: 'ant-heal-solo-1', legacyId: 'heal_solo_1' } as AnntenaEntity;
-const fireballAllAnntena = { id: 'ant-fireball-all', legacyId: 'fireball_all' } as AnntenaEntity;
+const noneAnntena = { id: 'none' } as AnntenaEntity;
+const healSoloAnntena = { id: 'heal_solo_1' } as AnntenaEntity;
+const fireballAllAnntena = { id: 'fireball_all' } as AnntenaEntity;
 
 const translations = [
   { entityType: 'antenna', entityLegacyId: 'heal_solo_1', locale: 'ja', value: 'ちょっとかいふく' },
@@ -28,21 +28,21 @@ const links = [
   {
     id: 'link-1',
     minorCategoryId: 'heal_solo',
-    anntenaId: 'ant-heal-solo-1',
+    anntenaId: 'heal_solo_1',
     minorCategory: healSoloMinorCategory,
     anntena: healSoloAnntena,
   },
   {
     id: 'link-2',
     minorCategoryId: 'attack_all',
-    anntenaId: 'ant-fireball-all',
+    anntenaId: 'fireball_all',
     minorCategory: attackAllMinorCategory,
     anntena: fireballAllAnntena,
   },
   {
     id: 'link-3',
     minorCategoryId: 'none',
-    anntenaId: 'ant-none',
+    anntenaId: 'none',
     minorCategory: noneMinorCategory,
     anntena: noneAnntena,
   },
@@ -68,8 +68,7 @@ function fakeDataSource(): DataSource {
     [
       AnntenaEntityClass,
       {
-        findOneBy: async ({ legacyId }: Partial<AnntenaEntity>) =>
-          anntenas.find((anntena) => anntena.legacyId === legacyId) ?? null,
+        findOneBy: async ({ id }: Partial<AnntenaEntity>) => anntenas.find((anntena) => anntena.id === id) ?? null,
       },
     ],
     [
@@ -195,6 +194,6 @@ describe('GET /anntena/convert', () => {
         }),
       ),
     );
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(422);
   });
 });

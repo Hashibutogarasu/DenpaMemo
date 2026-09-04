@@ -1,17 +1,15 @@
 /// The `masterData` query document, requesting every field the domain's
-/// Freezed models need. `id` (a server-only cuid) is requested only where
-/// needed to resolve relations server-side; every model the client builds
-/// keys off `legacyId` instead, matching the semantic ids the JSON assets
-/// used before the server migration.
+/// Freezed models need. `id` is the semantic id from the JSON master-data
+/// assets, and every model the client builds keys off it directly.
 const masterDataQuery = r'''
 query MasterData {
   masterData {
     headShapes {
-      legacyId
+      id
       abnormalityResistanceBonuses
       attributeResistanceBonuses {
         attribute {
-          legacyId
+          id
           index
           category { name }
         }
@@ -25,13 +23,13 @@ query MasterData {
       evasionRateBonus
     }
     anntenas {
-      legacyId
+      id
       category { name }
       targetCount
       targetMode { code }
       dealsDamage
       attackAttributes {
-        legacyId
+        id
         index
         category { name }
       }
@@ -42,20 +40,20 @@ query MasterData {
       hasLevel
     }
     attributes {
-      legacyId
+      id
       index
       category { name }
-      resistantTo { legacyId index category { name } }
-      weakTo { legacyId index category { name } }
+      resistantTo { id index category { name } }
+      weakTo { id index category { name } }
     }
     abnormalityTypes {
-      legacyId
+      id
     }
     bodyColorResistanceRules {
-      legacyId
+      id
       attributeResistanceBonuses {
         attribute {
-          legacyId
+          id
           index
           category { name }
         }
@@ -63,20 +61,20 @@ query MasterData {
       }
     }
     bodyColorAbnormalityResistanceRules {
-      legacyId
+      id
       abnormalityResistanceBonuses
     }
     physiques {
-      legacyId
+      id
     }
     personalities {
-      legacyId
+      id
     }
     patterns {
-      legacyId
+      id
     }
     corrections {
-      legacyId
+      id
       hpBonus
       apBonus
       attackBonus

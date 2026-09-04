@@ -13,7 +13,6 @@ const typeDefs = `
 
   type Attribute {
     id: String!
-    legacyId: String!
     index: Int!
     category: AttributeCategoryType!
     resistantTo: [Attribute!]!
@@ -37,7 +36,6 @@ const typeDefs = `
 
   type Anntena {
     id: String!
-    legacyId: String!
     category: AntennaCategoryType!
     targetCount: Int
     targetMode: TargetModeType
@@ -52,7 +50,6 @@ const typeDefs = `
 
   type HeadShape {
     id: String!
-    legacyId: String!
     abnormalityResistanceBonuses: JSON!
     attributeResistanceBonuses: [AttributeBonus!]!
     hpBonus: Int!
@@ -65,34 +62,28 @@ const typeDefs = `
 
   type AbnormalityType {
     id: String!
-    legacyId: String!
   }
 
   type BodyColorResistanceRule {
     id: String!
-    legacyId: String!
     attributeResistanceBonuses: [AttributeBonus!]!
   }
 
   type BodyColorAbnormalityResistanceRule {
     id: String!
-    legacyId: String!
     abnormalityResistanceBonuses: JSON!
   }
 
   type Physique {
     id: String!
-    legacyId: String!
   }
 
   type Personality {
     id: String!
-    legacyId: String!
   }
 
   type Pattern {
     id: String!
-    legacyId: String!
   }
 
   type PhysiqueAntennaCategory {
@@ -113,7 +104,6 @@ const typeDefs = `
 
   type Correction {
     id: String!
-    legacyId: String!
     hpBonus: Int!
     apBonus: Int!
     attackBonus: Int!

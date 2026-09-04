@@ -8,8 +8,8 @@ interface IdOnlyJson {
   id: string;
 }
 
-/** Mirrors `loadSimpleList`, but keyed off `translateKey` rather than the
- * master-data-specific `legacyId` (`MonsterEntity` is not a `BaseEntity`). */
+/** Mirrors `loadSimpleList`, but keyed off `translateKey` rather than
+ * `id` (`MonsterEntity` is not a `BaseEntity`). */
 export async function loadMonsters(
   dataSource: DataSource,
   dataDir: string,

@@ -5,12 +5,9 @@ import 'master_data_graphql_queries.dart';
 
 /// [MasterDataRepository] implementation backed by the `modules/server`
 /// GraphQL API, replacing the JSON-asset-bundled
-/// `JsonMasterDataRepository`. Every server type carries both a
-/// server-only cuid `id` and a `legacyId` (the original semantic id the
-/// JSON assets used, e.g. `"beam_all"`, `"blue"`); this repository maps
-/// `legacyId` onto each Freezed model's `id` field, so domain code that
-/// already looks entities up by that id (e.g.
-/// `masterData.headShapes.firstWhere((h) => h.id == ...)`) is unaffected.
+/// `JsonMasterDataRepository`. Every server type's `id` is the original
+/// semantic id the JSON assets used (e.g. `"beam_all"`, `"blue"`), so this
+/// repository maps it directly onto each Freezed model's `id` field.
 ///
 /// Each model is built through its own `fromJson` (reusing
 /// `json_serializable`'s generated parsing) with the reshaped GraphQL map,
@@ -72,7 +69,7 @@ MasterData masterDataFromGraphqlJson(Map<String, dynamic> masterData) {
     attributes: attributes,
     abnormalityTypes: [
       for (final json in masterData['abnormalityTypes'] as List<dynamic>)
-        AbnormalityType.fromJson({'id': json['legacyId']}),
+        AbnormalityType.fromJson({'id': json['id']}),
     ],
     bodyColorResistanceRules: [
       for (final json
@@ -84,26 +81,26 @@ MasterData masterDataFromGraphqlJson(Map<String, dynamic> masterData) {
           in masterData['bodyColorAbnormalityResistanceRules']
               as List<dynamic>)
         BodyColorAbnormalityResistanceRule.fromJson({
-          'colorId': json['legacyId'],
+          'colorId': json['id'],
           'abnormalityResistanceBonuses': json['abnormalityResistanceBonuses'],
         }),
     ],
     physiques: [
       for (final json in masterData['physiques'] as List<dynamic>)
-        Physique.fromJson({'id': json['legacyId']}),
+        Physique.fromJson({'id': json['id']}),
     ],
     personalities: [
       for (final json in masterData['personalities'] as List<dynamic>)
-        Personality.fromJson({'id': json['legacyId']}),
+        Personality.fromJson({'id': json['id']}),
     ],
     patterns: [
       for (final json in masterData['patterns'] as List<dynamic>)
-        Pattern.fromJson({'id': json['legacyId']}),
+        Pattern.fromJson({'id': json['id']}),
     ],
     corrections: [
       for (final json in masterData['corrections'] as List<dynamic>)
         Correction.fromJson({
-          'id': json['legacyId'],
+          'id': json['id'],
           'hpBonus': json['hpBonus'],
           'apBonus': json['apBonus'],
           'attackBonus': json['attackBonus'],
@@ -118,7 +115,7 @@ MasterData masterDataFromGraphqlJson(Map<String, dynamic> masterData) {
 
 Attribute _attributeFromGraphql(Map<String, dynamic> json) {
   return Attribute.fromJson({
-    'id': json['legacyId'],
+    'id': json['id'],
     'index': json['index'],
     'isElemental': json['category']['name'] == 'elemental',
   }).copyWith(
@@ -135,7 +132,7 @@ Attribute _attributeFromGraphql(Map<String, dynamic> json) {
 
 Attribute _shallowAttributeFromGraphql(Map<String, dynamic> json) {
   return Attribute.fromJson({
-    'id': json['legacyId'],
+    'id': json['id'],
     'index': json['index'],
     'isElemental': json['category']['name'] == 'elemental',
   });
@@ -153,7 +150,7 @@ List<AttributeBonus> _attributeBonusesFromGraphql(List<dynamic> entries) => [
 
 HeadShape _headShapeFromGraphql(Map<String, dynamic> json) {
   return HeadShape.fromJson({
-    'id': json['legacyId'],
+    'id': json['id'],
     'abnormalityResistanceBonuses': json['abnormalityResistanceBonuses'],
     'hpBonus': json['hpBonus'],
     'apBonus': json['apBonus'],
@@ -171,7 +168,7 @@ HeadShape _headShapeFromGraphql(Map<String, dynamic> json) {
 Anntena _anntenaFromGraphql(Map<String, dynamic> json) {
   final targetMode = json['targetMode'] as Map<String, dynamic>?;
   return Anntena.fromJson({
-    'id': json['legacyId'],
+    'id': json['id'],
     'category': json['category']['name'],
     'targetCount': json['targetCount'],
     'targetsAll': targetMode != null && targetMode['code'] == 1,
@@ -193,7 +190,7 @@ BodyColorResistanceRule _bodyColorResistanceRuleFromGraphql(
   Map<String, dynamic> json,
 ) {
   return BodyColorResistanceRule.fromJson({
-    'colorId': json['legacyId'],
+    'colorId': json['id'],
   }).copyWith(
     attributeResistanceBonuses: _attributeBonusesFromGraphql(
       json['attributeResistanceBonuses'] as List<dynamic>,

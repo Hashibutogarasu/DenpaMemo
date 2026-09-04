@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 export const convertSideSchema = z.enum(['category', 'specific']);
 export const convertFormatSchema = z.enum(['id', 'translated']);
+export type ConvertSide = z.infer<typeof convertSideSchema>;
+export type ConvertFormat = z.infer<typeof convertFormatSchema>;
 
 export const convertQuerySchema = z
   .object({

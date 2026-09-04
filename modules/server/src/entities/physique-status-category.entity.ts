@@ -7,9 +7,9 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
  * same number of growth stages. Seeded once at boot like
  * `PhysiqueAntennaCategoryEntity`, and exposed read-only via
  * `MasterData.physiqueStatusCategories` so the Flutter app never
- * hardcodes a table's column count. Does not extend `BaseEntity`:
- * `legacyId` is specifically the master-data seed loaders' concept, and
- * `name` is this entity's own unique key.
+ * hardcodes a table's column count. Does not extend `BaseEntity`: this
+ * entity has no JSON-authored `id` of its own, and `name` is its own
+ * unique key.
  */
 @Entity('physique_status_category')
 export class PhysiqueStatusCategoryEntity {

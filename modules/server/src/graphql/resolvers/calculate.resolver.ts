@@ -23,7 +23,7 @@ async function buildResistanceMasterData(dataSource: DataSource): Promise<Resist
     (await dataSource.getRepository(AttributeCategoryEntity).find()).map((category) => [category.code, category.name]),
   );
   const attributes = (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => ({
-    id: attribute.legacyId,
+    id: attribute.id,
     index: attribute.index,
     category: (attributeCategoryByCode.get(attribute.categoryId) ?? 'special') as 'elemental' | 'special',
   }));
@@ -36,9 +36,9 @@ async function buildResistanceMasterData(dataSource: DataSource): Promise<Resist
         where: { ownerType: 'body_color_resistance_rule', ownerId: rule.id },
       });
       return {
-        colorId: rule.legacyId,
+        colorId: rule.id,
         attributeResistanceBonuses: bonuses.map((bonus) => ({
-          attributeId: bonus.attribute.legacyId,
+          attributeId: bonus.attribute.id,
           bonus: bonus.bonus,
         })),
       };
@@ -48,7 +48,7 @@ async function buildResistanceMasterData(dataSource: DataSource): Promise<Resist
   const bodyColorAbnormalityResistanceRules = (
     await dataSource.getRepository(BodyColorAbnormalityResistanceRuleEntity).find()
   ).map((rule) => ({
-    colorId: rule.legacyId,
+    colorId: rule.id,
     abnormalityResistanceBonuses: rule.abnormalityResistanceBonuses,
   }));
 

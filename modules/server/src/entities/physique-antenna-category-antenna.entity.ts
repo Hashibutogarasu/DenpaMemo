@@ -9,8 +9,7 @@ import { MinorCategoryEntity } from './minor-category.entity';
  * itself — it lives here, as its own seeded record, so the server stays
  * the single authority over which antennas belong to which category.
  * Does not extend `BaseEntity`: like `PhysiqueAntennaCategoryEntity`,
- * `legacyId` is specifically the master-data seed loaders' concept and
- * this entity has no JSON-authored legacy id of its own.
+ * this entity has no JSON-authored `id` of its own.
  */
 @Entity('physique_antenna_category_antenna')
 @Index(['minorCategoryId', 'anntenaId'], { unique: true })

@@ -27,8 +27,8 @@ export async function loadHeadShapes(
   const headShapesDir = path.join(dataDir, 'head_shapes');
   const files = await listJsonFilesRecursively(headShapesDir);
 
-  const attributeByLegacyId = new Map(
-    (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.legacyId, attribute]),
+  const attributeById = new Map(
+    (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.id, attribute]),
   );
 
   await dataSource.transaction(async (manager) => {
@@ -37,7 +37,7 @@ export async function loadHeadShapes(
       guard.check('head_shape', json.id, path.relative(dataDir, file));
 
       const entity = new HeadShapeEntity();
-      entity.legacyId = json.id;
+      entity.id = json.id;
       entity.abnormalityResistanceBonuses = json.abnormalityResistanceBonuses ?? {};
       entity.hpBonus = json.hpBonus ?? 0;
       entity.apBonus = json.apBonus ?? 0;
@@ -48,7 +48,7 @@ export async function loadHeadShapes(
       await manager.save(entity);
 
       const bonuses = Object.entries(json.attributeResistanceBonuses ?? {}).map(([attributeId, bonus]) => {
-        const attribute = attributeByLegacyId.get(attributeId);
+        const attribute = attributeById.get(attributeId);
         if (!attribute) {
           throw new Error(`Unknown attribute id "${attributeId}" in ${file}`);
         }

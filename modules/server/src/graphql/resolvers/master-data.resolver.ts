@@ -61,8 +61,7 @@ export async function resolveMasterData(dataSource: DataSource) {
     dataSource.getRepository(TranslationEntity).find({ where: { entityType: 'antenna', locale } }),
   ]);
 
-  const anntenaLegacyIdById = new Map(anntenas.map((anntena) => [anntena.id, anntena.legacyId]));
-  const antennaNameByLegacyId = new Map(antennaTranslations.map((translation) => [translation.entityLegacyId, translation.value]));
+  const antennaNameById = new Map(antennaTranslations.map((translation) => [translation.entityLegacyId, translation.value]));
 
   return {
     headShapes: await Promise.all(
@@ -71,10 +70,7 @@ export async function resolveMasterData(dataSource: DataSource) {
         attributeResistanceBonuses: await attributeResistanceBonusesFor(dataSource, 'head_shape', headShape.id),
       })),
     ),
-    anntenas: anntenas.map((anntena) => ({
-      ...anntena,
-      evolvesToId: anntena.evolvesToId ? (anntenaLegacyIdById.get(anntena.evolvesToId) ?? null) : null,
-    })),
+    anntenas,
     attributes,
     abnormalityTypes,
     bodyColorResistanceRules: await Promise.all(
@@ -99,7 +95,7 @@ export async function resolveMasterData(dataSource: DataSource) {
         categoryTranslator.translateMajorCategory(link.minorCategory.majorCategoryId, locale) ??
         link.minorCategory.majorCategoryId,
       minor: categoryTranslator.translateMinorCategory(link.minorCategoryId, locale) ?? link.minorCategoryId,
-      antennaName: antennaNameByLegacyId.get(link.anntena.legacyId) ?? link.anntena.legacyId,
+      antennaName: antennaNameById.get(link.anntena.id) ?? link.anntena.id,
     })),
   };
 }

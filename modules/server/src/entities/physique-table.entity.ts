@@ -9,10 +9,10 @@ import type { TableValues } from '../types/tables/table';
  * created entirely through the `/physiques` REST endpoints (see
  * `src/routes/physiques.route.ts`) — unlike the rest of
  * `modules/server`'s master data, there is no default JSON seed for this
- * entity. Does not extend `BaseEntity`: `legacyId` is specifically the
- * master-data seed loaders' concept. `values`' length is validated against
- * its status category's `columnCount` at the route layer, not enforced
- * here — different status categories have different row widths.
+ * entity. Does not extend `BaseEntity`: it has no JSON-authored `id` of
+ * its own. `values`' length is validated against its status category's
+ * `columnCount` at the route layer, not enforced here — different status
+ * categories have different row widths.
  */
 @Entity('physique_table')
 @Index(['statusCategory', 'level', 'anntenaCategory', 'lineOffset'], { unique: true })

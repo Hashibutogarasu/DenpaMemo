@@ -10,13 +10,13 @@ import type { DuplicateIdGuard } from '../duplicate-id-guard';
 
 interface PhysiqueAntennaCategoryAntennaJson {
   minorCategoryId: string;
-  /** A translated antenna display name, resolved via `TranslationEntity` to find the antenna's `legacyId`. */
+  /** A translated antenna display name, resolved via `TranslationEntity` to find the antenna's `id`. */
   antennaName: string;
 }
 
 /**
  * Seeds the small, hand-authored set of antenna-category links. Each row
- * names its antenna by translated display name — never by `legacyId` —
+ * names its antenna by translated display name — never by id —
  * so the loader searches the existing translation data and only creates
  * a link when both the minor category and the antenna are found; rows
  * that don't resolve are skipped with a warning rather than failing the
@@ -56,9 +56,9 @@ export async function loadPhysiqueAntennaCategoryAntennas(
       continue;
     }
 
-    const anntena = await anntenaRepo.findOneBy({ legacyId: translation.entityLegacyId });
+    const anntena = await anntenaRepo.findOneBy({ id: translation.entityLegacyId });
     if (!anntena) {
-      console.warn(`Skipping ${fileName} row: no antenna found for legacyId "${translation.entityLegacyId}"`);
+      console.warn(`Skipping ${fileName} row: no antenna found for id "${translation.entityLegacyId}"`);
       continue;
     }
 
