@@ -2,6 +2,9 @@ name = "denpa-memo-auth"
 main = "src/index.ts"
 compatibility_date = "2026-09-01"
 
+[dev]
+port = 8787
+
 [[r2_buckets]]
 binding = "STORAGE"
 bucket_name = "denpa-memo-storage"

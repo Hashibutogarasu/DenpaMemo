@@ -1,0 +1,12 @@
+tunnel: 4ea479c7-287c-47aa-a60e-34fd67e9bb36
+credentials-file: ~/.cloudflared/4ea479c7-287c-47aa-a60e-34fd67e9bb36.json
+protocol: http2
+
+ingress:
+  - hostname: denpamemo-auth-dev.karasu256.com
+    service: http://localhost:8787
+  - hostname: denpamemo-dev.karasu256.com
+    service: http://localhost:4100
+  - hostname: denpamemo-storage-dev.karasu256.com
+    service: http://localhost:9000
+  - service: http_status:404

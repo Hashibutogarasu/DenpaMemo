@@ -9,9 +9,13 @@ import 'dart:io' show Platform;
 class PhysiqueServerConfig {
   const PhysiqueServerConfig();
 
+  static const _androidDebugEndpoint = 'https://denpamemo-dev.karasu256.com';
+
   String get baseUrl {
-    final host = Platform.isAndroid ? '10.0.2.2' : 'localhost';
-    return 'http://$host:4100';
+    if (Platform.isAndroid) {
+      return _androidDebugEndpoint;
+    }
+    return 'http://localhost:4100';
   }
 }
 
