@@ -1,13 +1,9 @@
 import { Elysia } from 'elysia';
 import type { DataSource } from 'typeorm';
 import type { z } from 'zod';
+import { AntennaCategoryLinkDataSource } from '../domain/physique/antenna-category-link-data-source';
 import { parseAcceptLanguage } from '../http/accept-language';
-import {
-  findMajorCategoryIdByTranslation,
-  findMinorCategoryIdByTranslation,
-  translateMajorCategory,
-  translateMinorCategory,
-} from '../i18n/i18n';
+import { categoryTranslator } from '../i18n/i18n';
 import { AnntenaEntity } from '../entities/anntena.entity';
 import { MinorCategoryEntity } from '../entities/minor-category.entity';
 import { PhysiqueAntennaCategoryAntennaEntity } from '../entities/physique-antenna-category-antenna.entity';
@@ -29,19 +25,17 @@ function notFoundResponse(message: string) {
  * `from`/`to`, so a caller never has to guess whether a value is an
  * English-word id or a translated display string. Major/minor category
  * translation goes through the server's `i18n` package
- * (`src/i18n/i18n.ts`); antenna translation goes through the existing
- * `TranslationEntity`-backed mechanism, unchanged.
+ * (`src/i18n/i18n.ts`); antenna translation goes through
+ * `AntennaCategoryLinkDataSource`, backed by the existing
+ * `TranslationEntity` mechanism, unchanged.
  */
 export function anntenaRoutes(dataSource: DataSource) {
-  const minorCategoryRepo = dataSource.getRepository(MinorCategoryEntity);
-  const anntenaRepo = dataSource.getRepository(AnntenaEntity);
-  const translationRepo = dataSource.getRepository(TranslationEntity);
-  const linkRepo = dataSource.getRepository(PhysiqueAntennaCategoryAntennaEntity);
-
-  async function resolveAntennaTranslation(legacyId: string, locale: string) {
-    const translation = await translationRepo.findOneBy({ entityType: 'antenna', entityLegacyId: legacyId, locale });
-    return translation?.value;
-  }
+  const linkDataSource = new AntennaCategoryLinkDataSource(
+    dataSource.getRepository(MinorCategoryEntity),
+    dataSource.getRepository(AnntenaEntity),
+    dataSource.getRepository(TranslationEntity),
+    dataSource.getRepository(PhysiqueAntennaCategoryAntennaEntity),
+  );
 
   return new Elysia().group('/anntena', (app) =>
     app.get('/convert', async ({ query, set, headers }) => {
@@ -58,12 +52,12 @@ export function anntenaRoutes(dataSource: DataSource) {
 
       if (from === 'category') {
         const minorCategoryId =
-          inputFormat === 'id' ? input : findMinorCategoryIdByTranslation(input, locale);
+          inputFormat === 'id' ? input : categoryTranslator.findMinorCategoryIdByTranslation(input, locale);
         if (!minorCategoryId) {
           set.status = 400;
           return notFoundResponse(`No minor category found for "${input}"`);
         }
-        minorCategory = await minorCategoryRepo.findOneBy({ id: minorCategoryId });
+        minorCategory = await linkDataSource.findMinorCategoryById(minorCategoryId);
         if (!minorCategory) {
           set.status = 400;
           return notFoundResponse(`No minor category found for "${input}"`);
@@ -72,12 +66,12 @@ export function anntenaRoutes(dataSource: DataSource) {
         const legacyId =
           inputFormat === 'id'
             ? input
-            : (await translationRepo.findOneBy({ entityType: 'antenna', locale, value: input }))?.entityLegacyId;
+            : await linkDataSource.findAntennaLegacyIdByTranslatedName(input, locale);
         if (!legacyId) {
           set.status = 400;
           return notFoundResponse(`No antenna found for "${input}"`);
         }
-        anntena = await anntenaRepo.findOneBy({ legacyId });
+        anntena = await linkDataSource.findAntennaByLegacyId(legacyId);
         if (!anntena) {
           set.status = 400;
           return notFoundResponse(`No antenna found for "${input}"`);
@@ -85,17 +79,17 @@ export function anntenaRoutes(dataSource: DataSource) {
       }
 
       if (to === 'specific') {
-        const links = await linkRepo.find({ where: { minorCategoryId: minorCategory!.id } });
+        const links = await linkDataSource.findLinksForMinorCategory(minorCategory!.id);
         if (outputFormat === 'id') {
           return links.map((link) => link.anntena.legacyId);
         }
         const names = await Promise.all(
-          links.map((link) => resolveAntennaTranslation(link.anntena.legacyId, locale)),
+          links.map((link) => linkDataSource.findAntennaTranslatedName(link.anntena.legacyId, locale)),
         );
         return names.filter((name): name is string => name !== undefined);
       }
 
-      const link = await linkRepo.findOneBy({ anntenaId: anntena!.id });
+      const link = await linkDataSource.findLinkForAntenna(anntena!.id);
       if (!link) {
         set.status = 400;
         return notFoundResponse(`No category linked to "${input}"`);
@@ -106,8 +100,8 @@ export function anntenaRoutes(dataSource: DataSource) {
           minorCategoryId: link.minorCategoryId,
         };
       }
-      const major = translateMajorCategory(link.minorCategory.majorCategoryId, locale);
-      const minor = translateMinorCategory(link.minorCategoryId, locale);
+      const major = categoryTranslator.translateMajorCategory(link.minorCategory.majorCategoryId, locale);
+      const minor = categoryTranslator.translateMinorCategory(link.minorCategoryId, locale);
       if (major === undefined || minor === undefined) {
         set.status = 400;
         return notFoundResponse(`No "${locale}" translation for category linked to "${input}"`);

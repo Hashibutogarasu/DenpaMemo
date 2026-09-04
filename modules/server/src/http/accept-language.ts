@@ -1,3 +1,5 @@
+import { supportedLocales } from '../i18n/locale';
+
 /**
  * Picks the best-matching locale out of `supported` from an
  * `Accept-Language` header value (e.g. `"ja,en-US;q=0.8,en;q=0.6"`),
@@ -5,7 +7,7 @@
  * or names nothing supported. Only the primary language subtag (before
  * any `-`) is compared, so `ja-JP` matches a supported `ja`.
  */
-export function parseAcceptLanguage(header: string | undefined, supported: string[] = ['ja']): string {
+export function parseAcceptLanguage(header: string | undefined, supported: string[] = supportedLocales): string {
   const fallback = supported[0];
   if (!header) {
     return fallback;

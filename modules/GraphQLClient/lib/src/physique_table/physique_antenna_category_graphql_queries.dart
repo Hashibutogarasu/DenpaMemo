@@ -14,6 +14,11 @@ query PhysiqueAntennaCategories {
       name
       columnCount
     }
+    physiqueAntennaCategoryAntennaLinks {
+      major
+      minor
+      antennaName
+    }
   }
 }
 ''';

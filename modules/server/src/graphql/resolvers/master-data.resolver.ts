@@ -14,6 +14,8 @@ import { PhysiqueAntennaCategoryEntity } from '../../entities/physique-antenna-c
 import { PhysiqueStatusCategoryEntity } from '../../entities/physique-status-category.entity';
 import { PhysiqueEntity } from '../../entities/physique.entity';
 import { TranslationEntity } from '../../entities/translation.entity';
+import { categoryTranslator } from '../../i18n/i18n';
+import { defaultLocale } from '../../i18n/locale';
 
 async function attributeResistanceBonusesFor(dataSource: DataSource, ownerType: AttributeBonusOwnerType, ownerId: string) {
   const bonuses = await dataSource.getRepository(AttributeBonusEntity).find({ where: { ownerType, ownerId } });
@@ -21,6 +23,7 @@ async function attributeResistanceBonusesFor(dataSource: DataSource, ownerType: 
 }
 
 export async function resolveMasterData(dataSource: DataSource) {
+  const locale = defaultLocale;
   const headShapeRepo = dataSource.getRepository(HeadShapeEntity);
   const anntenaRepo = dataSource.getRepository(AnntenaEntity);
   const attributeRepo = dataSource.getRepository(AttributeEntity);
@@ -55,7 +58,7 @@ export async function resolveMasterData(dataSource: DataSource) {
     dataSource.getRepository(PhysiqueAntennaCategoryEntity).find(),
     dataSource.getRepository(PhysiqueStatusCategoryEntity).find(),
     dataSource.getRepository(PhysiqueAntennaCategoryAntennaEntity).find(),
-    dataSource.getRepository(TranslationEntity).find({ where: { entityType: 'antenna', locale: 'ja' } }),
+    dataSource.getRepository(TranslationEntity).find({ where: { entityType: 'antenna', locale } }),
   ]);
 
   const anntenaLegacyIdById = new Map(anntenas.map((anntena) => [anntena.id, anntena.legacyId]));
@@ -92,8 +95,10 @@ export async function resolveMasterData(dataSource: DataSource) {
     physiqueAntennaCategories,
     physiqueStatusCategories,
     physiqueAntennaCategoryAntennaLinks: physiqueAntennaCategoryAntennaLinks.map((link) => ({
-      majorCategoryId: link.minorCategory.majorCategoryId,
-      minorCategoryId: link.minorCategoryId,
+      major:
+        categoryTranslator.translateMajorCategory(link.minorCategory.majorCategoryId, locale) ??
+        link.minorCategory.majorCategoryId,
+      minor: categoryTranslator.translateMinorCategory(link.minorCategoryId, locale) ?? link.minorCategoryId,
       antennaName: antennaNameByLegacyId.get(link.anntena.legacyId) ?? link.anntena.legacyId,
     })),
   };

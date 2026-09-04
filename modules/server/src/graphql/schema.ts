@@ -106,8 +106,8 @@ const typeDefs = `
   }
 
   type PhysiqueAntennaCategoryAntennaLink {
-    majorCategoryId: String!
-    minorCategoryId: String!
+    major: String!
+    minor: String!
     antennaName: String!
   }
 

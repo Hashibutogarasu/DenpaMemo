@@ -5,6 +5,7 @@ import { AnntenaEntity } from '../../entities/anntena.entity';
 import { MinorCategoryEntity } from '../../entities/minor-category.entity';
 import { PhysiqueAntennaCategoryAntennaEntity } from '../../entities/physique-antenna-category-antenna.entity';
 import { TranslationEntity } from '../../entities/translation.entity';
+import { defaultLocale } from '../../i18n/locale';
 import type { DuplicateIdGuard } from '../duplicate-id-guard';
 
 interface PhysiqueAntennaCategoryAntennaJson {
@@ -27,7 +28,7 @@ export async function loadPhysiqueAntennaCategoryAntennas(
   guard: DuplicateIdGuard,
 ): Promise<void> {
   const fileName = 'physique_antenna_category_antennas.json';
-  const locale = 'ja';
+  const locale = defaultLocale;
 
   const rows = JSON.parse(
     await readFile(path.join(dataDir, fileName), 'utf-8'),
