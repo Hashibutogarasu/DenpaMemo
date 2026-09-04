@@ -10,6 +10,7 @@ import '../../i18n/gen/strings.g.dart';
 import '../../providers/clipping_slot_providers.dart';
 import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';
+import '../../providers/entity_image_providers.dart';
 import '../../providers/home_view_providers.dart';
 import '../../providers/qr_code_providers.dart';
 import '../../providers/search_providers.dart';
@@ -238,7 +239,11 @@ class _HomeBody extends ConsumerWidget {
           for (final slotType in DenpaMenImageSlotType.values)
             if (ref
                     .watch(
-                      denpaMenImageProvider((record.denpaMen.id, slotType)),
+                      entityImageProvider((
+                        denpaMenIconCategory,
+                        record.denpaMen.id,
+                        slotType,
+                      )),
                     )
                     .value
                 case final file?)

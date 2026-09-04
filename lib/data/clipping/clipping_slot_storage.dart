@@ -6,15 +6,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 
 import '../../providers/account_scoped_paths_providers.dart';
-import '../../providers/profile_providers.dart';
 
 /// Reads and writes each [DenpaMenImageSlotType]'s [ClippingSlot], stored
 /// alongside the ObjectBox database directory (under the current
 /// account's [accountScopedAppDirectoryProvider]) as one JSON file per
 /// slot type under `<profileNamespace>/<profileId>/<slotType.name>.json`.
-/// Scoped per [Profile](../profile/profile.dart) — via [profileNamespace]
-/// and `currentProfileProvider` — so switching profiles (see
-/// `ProfileSwitchPage`) switches out the whole set of registered crops.
+/// [profileId] is passed in explicitly by every method rather than
+/// resolved internally: reactively watching which profile is current is
+/// the caller's job (see `clippingSlotProvider` in
+/// `clipping_slot_providers.dart`), so this class stays a plain,
+/// synchronous-per-call file-I/O helper with nothing of its own to go
+/// stale.
 class ClippingSlotStorage {
   const ClippingSlotStorage(this._ref);
 
@@ -22,18 +24,13 @@ class ClippingSlotStorage {
 
   static const String profileNamespace = 'clipping-slots';
 
-  Future<String> _currentProfileId() async {
-    final profile = await _ref.read(
-      currentProfileProvider(profileNamespace).future,
-    );
-    return profile.id;
-  }
-
-  Future<File> _slotFile(DenpaMenImageSlotType slotType) async {
+  Future<File> _slotFile(
+    String profileId,
+    DenpaMenImageSlotType slotType,
+  ) async {
     final appDirectory = await _ref.read(
       accountScopedAppDirectoryProvider.future,
     );
-    final profileId = await _currentProfileId();
     return File(
       path.join(
         appDirectory.path,
@@ -44,8 +41,11 @@ class ClippingSlotStorage {
     );
   }
 
-  Future<ClippingSlot?> load(DenpaMenImageSlotType slotType) async {
-    final file = await _slotFile(slotType);
+  Future<ClippingSlot?> load(
+    String profileId,
+    DenpaMenImageSlotType slotType,
+  ) async {
+    final file = await _slotFile(profileId, slotType);
     if (!await file.exists()) {
       return null;
     }
@@ -53,35 +53,38 @@ class ClippingSlotStorage {
     return ClippingSlot.fromJson(json);
   }
 
-  Future<void> save(ClippingSlot slot) async {
-    final file = await _slotFile(slot.slotType);
+  Future<void> save(String profileId, ClippingSlot slot) async {
+    final file = await _slotFile(profileId, slot.slotType);
     await file.parent.create(recursive: true);
     await file.writeAsString(jsonEncode(slot.toJson()));
   }
 
-  Future<void> delete(DenpaMenImageSlotType slotType) async {
-    final file = await _slotFile(slotType);
+  Future<void> delete(String profileId, DenpaMenImageSlotType slotType) async {
+    final file = await _slotFile(profileId, slotType);
     if (await file.exists()) {
       await file.delete();
     }
   }
 
   /// Removes every [ClippingSlot] and the saved display/priority order
-  /// for the current profile, so every slot type goes back to being
+  /// for [profileId], so every slot type goes back to being
   /// unconfigured (see [DenpaMenImageSlotType.defaultPriority]).
-  Future<void> reset() async {
-    await Future.wait(DenpaMenImageSlotType.values.map(delete));
-    final orderFile = await _orderFile();
+  Future<void> reset(String profileId) async {
+    await Future.wait(
+      DenpaMenImageSlotType.values.map(
+        (slotType) => delete(profileId, slotType),
+      ),
+    );
+    final orderFile = await _orderFile(profileId);
     if (await orderFile.exists()) {
       await orderFile.delete();
     }
   }
 
-  Future<File> _orderFile() async {
+  Future<File> _orderFile(String profileId) async {
     final appDirectory = await _ref.read(
       accountScopedAppDirectoryProvider.future,
     );
-    final profileId = await _currentProfileId();
     return File(
       path.join(appDirectory.path, profileNamespace, profileId, 'order.json'),
     );
@@ -91,16 +94,19 @@ class ClippingSlotStorage {
   /// settings screen, independently of whether each slot type has a
   /// registered [ClippingSlot] yet — reordering must never invent crop
   /// data for a slot the user hasn't configured.
-  Future<void> saveOrder(List<DenpaMenImageSlotType> order) async {
-    final file = await _orderFile();
+  Future<void> saveOrder(
+    String profileId,
+    List<DenpaMenImageSlotType> order,
+  ) async {
+    final file = await _orderFile(profileId);
     await file.parent.create(recursive: true);
     await file.writeAsString(
       jsonEncode([for (final slotType in order) slotType.name]),
     );
   }
 
-  Future<List<DenpaMenImageSlotType>?> _loadOrder() async {
-    final file = await _orderFile();
+  Future<List<DenpaMenImageSlotType>?> _loadOrder(String profileId) async {
+    final file = await _orderFile(profileId);
     if (!await file.exists()) {
       return null;
     }
@@ -129,12 +135,16 @@ class ClippingSlotStorage {
   /// screen's slot list and to pick which slot's image should stand in
   /// as an individual's representative thumbnail without prompting the
   /// user for one.
-  Future<List<DenpaMenImageSlotType>> loadSlotTypesByPriority() async {
-    final savedOrder = await _loadOrder();
+  Future<List<DenpaMenImageSlotType>> loadSlotTypesByPriority(
+    String profileId,
+  ) async {
+    final savedOrder = await _loadOrder(profileId);
     if (savedOrder != null) {
       return savedOrder;
     }
-    final slots = await Future.wait(DenpaMenImageSlotType.values.map(load));
+    final slots = await Future.wait(
+      DenpaMenImageSlotType.values.map((slotType) => load(profileId, slotType)),
+    );
     final priorities = <DenpaMenImageSlotType, int>{
       for (var i = 0; i < DenpaMenImageSlotType.values.length; i++)
         DenpaMenImageSlotType.values[i]:

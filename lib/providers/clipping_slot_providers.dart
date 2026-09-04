@@ -15,23 +15,38 @@ final clippingSlotStorageProvider = Provider<ClippingSlotStorage>((ref) {
   return ClippingSlotStorage(ref);
 });
 
-/// Loads the persisted [ClippingSlot] for [slotType], or null if the user
-/// hasn't registered one yet.
+/// Loads the persisted [ClippingSlot] for [slotType] under the current
+/// clipping profile, or null if the user hasn't registered one yet.
+/// Reactively resolves the current profile itself (via
+/// [currentProfileProvider]) on every build, so switching profiles —
+/// through any code path, not only `ClippingSettingsController`'s own
+/// navigation — always recomputes this instead of serving a value
+/// cached under the previous profile.
 final clippingSlotProvider =
     FutureProvider.family<ClippingSlot?, DenpaMenImageSlotType>((
       ref,
       slotType,
-    ) {
-      return ref.watch(clippingSlotStorageProvider).load(slotType);
+    ) async {
+      final profile = await ref.watch(
+        currentProfileProvider(ClippingSlotStorage.profileNamespace).future,
+      );
+      return ref.watch(clippingSlotStorageProvider).load(profile.id, slotType);
     });
 
 /// Ordered by ascending `ClippingSlot.priority` (see
 /// `ClippingSlotStorage.loadSlotTypesByPriority`). Watched by the
 /// clipping settings screen to render slot tiles in priority order, and
-/// by `denpaMenIconProvider` to pick a representative thumbnail.
+/// by `denpaMenIconProvider` to pick a representative thumbnail. Resolves
+/// the current profile itself for the same reason [clippingSlotProvider]
+/// does.
 final clippingSlotTypesByPriorityProvider =
-    FutureProvider<List<DenpaMenImageSlotType>>((ref) {
-      return ref.watch(clippingSlotStorageProvider).loadSlotTypesByPriority();
+    FutureProvider<List<DenpaMenImageSlotType>>((ref) async {
+      final profile = await ref.watch(
+        currentProfileProvider(ClippingSlotStorage.profileNamespace).future,
+      );
+      return ref
+          .watch(clippingSlotStorageProvider)
+          .loadSlotTypesByPriority(profile.id);
     });
 
 /// The default display label for [slotType] until the user registers a
@@ -48,19 +63,28 @@ String defaultClippingSlotLabel(DenpaMenImageSlotType slotType) {
   }
 }
 
-/// Drives the clipping settings screen's data operations — picking and
-/// cropping an example image, persisting/deleting/reordering
-/// [ClippingSlot]s, resetting them, and switching the current clipping
-/// profile — so the page itself only builds UI and reacts to results.
+/// Drives the clipping settings screen's data operations — picking an
+/// example image and registering the crop rectangle drawn on it,
+/// deleting/reordering [ClippingSlot]s, resetting them, and switching
+/// the current clipping profile — so the page itself only builds UI and
+/// reacts to results.
 class ClippingSettingsController {
   const ClippingSettingsController(this._ref);
 
   final Ref _ref;
 
-  /// Picks an example image, crops it (applying [slotType]'s aspect
-  /// ratio lock for `icon`), and saves the result as [slotType]'s
-  /// [ClippingSlot], inheriting [existing]'s name/priority if it was
-  /// already registered. Does nothing if the user cancels either step.
+  Future<String> _currentProfileId() async {
+    final profile = await _ref.read(
+      currentProfileProvider(ClippingSlotStorage.profileNamespace).future,
+    );
+    return profile.id;
+  }
+
+  /// Picks an example image and, once the user draws a crop rectangle on
+  /// it, registers that rectangle (as a relative fraction of the example
+  /// image's size) as [slotType]'s [ClippingSlot], inheriting
+  /// [existing]'s name/priority if it was already registered. Does
+  /// nothing if the user cancels either step.
   Future<void> configureSlot(
     BuildContext context, {
     required DenpaMenImageSlotType slotType,
@@ -98,24 +122,28 @@ class ClippingSettingsController {
       right: rect.right / size.width,
       bottom: rect.bottom / size.height,
     );
-    await _ref.read(clippingSlotStorageProvider).save(slot);
+    final profileId = await _currentProfileId();
+    await _ref.read(clippingSlotStorageProvider).save(profileId, slot);
     _ref.invalidate(clippingSlotProvider(slotType));
     _ref.invalidate(clippingSlotTypesByPriorityProvider);
   }
 
   Future<void> deleteSlot(DenpaMenImageSlotType slotType) async {
-    await _ref.read(clippingSlotStorageProvider).delete(slotType);
+    final profileId = await _currentProfileId();
+    await _ref.read(clippingSlotStorageProvider).delete(profileId, slotType);
     _ref.invalidate(clippingSlotProvider(slotType));
     _ref.invalidate(clippingSlotTypesByPriorityProvider);
   }
 
   Future<void> saveOrder(List<DenpaMenImageSlotType> order) async {
-    await _ref.read(clippingSlotStorageProvider).saveOrder(order);
+    final profileId = await _currentProfileId();
+    await _ref.read(clippingSlotStorageProvider).saveOrder(profileId, order);
     _ref.invalidate(clippingSlotTypesByPriorityProvider);
   }
 
   Future<void> reset() async {
-    await _ref.read(clippingSlotStorageProvider).reset();
+    final profileId = await _currentProfileId();
+    await _ref.read(clippingSlotStorageProvider).reset(profileId);
     for (final slotType in DenpaMenImageSlotType.values) {
       _ref.invalidate(clippingSlotProvider(slotType));
     }
@@ -123,8 +151,12 @@ class ClippingSettingsController {
   }
 
   /// Pushes the generic profile switcher for
-  /// [ClippingSlotStorage.profileNamespace], then refreshes every
-  /// provider whose value depends on the current clipping profile.
+  /// [ClippingSlotStorage.profileNamespace]. Invalidating
+  /// [currentProfileProvider] alone is enough — [clippingSlotProvider]
+  /// and [clippingSlotTypesByPriorityProvider] both watch it, so they
+  /// recompute automatically; this is also true when the profile is
+  /// switched by any other code path (e.g. `ProfileController.select`
+  /// itself), not only through this method.
   Future<void> switchProfile(BuildContext context) async {
     await const ProfileSwitchRoute(
       namespace: ClippingSlotStorage.profileNamespace,
@@ -132,10 +164,6 @@ class ClippingSettingsController {
     _ref.invalidate(
       currentProfileProvider(ClippingSlotStorage.profileNamespace),
     );
-    _ref.invalidate(clippingSlotTypesByPriorityProvider);
-    for (final slotType in DenpaMenImageSlotType.values) {
-      _ref.invalidate(clippingSlotProvider(slotType));
-    }
   }
 }
 
