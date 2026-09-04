@@ -72,18 +72,34 @@ class PhysiqueTableCacheRepository {
     (query) => query.count(),
   );
 
-  /// Replaces every cached row of one `type` with [records] in a single
-  /// query and bulk write, leaving [PhysiqueTableRowEntity.pendingSync]
-  /// rows untouched so an unsynced local edit survives a background
-  /// refresh.
+  /// Replaces every cached row of one `type` with [records]. A row with
+  /// an unsynced local edit keeps its values and
+  /// [PhysiqueTableRowEntity.pendingSync] untouched, but its
+  /// [PhysiqueTableRowEntity.existsOnServer] is still reconciled from
+  /// [records], so a row this app already created is never re-`create`d.
   void upsertFromServer(String type, List<PhysiqueTableRecord> records) {
     final existingByKey = _existingByKey(
-      PhysiqueTableRowEntity_.type.equals(type) &
-          PhysiqueTableRowEntity_.pendingSync.equals(false),
+      PhysiqueTableRowEntity_.type.equals(type),
     );
 
-    final toSave = <PhysiqueTableRowEntity>[
-      for (final record in records)
+    final toSave = <PhysiqueTableRowEntity>[];
+    for (final record in records) {
+      final rowKey = PhysiqueTableRowEntity.buildRowKey(
+        type: record.type,
+        level: record.level,
+        anntenaCategory: record.anntenaCategory,
+        lineOffset: record.lineOffset,
+      );
+      final pending = existingByKey[rowKey];
+      if (pending != null && pending.pendingSync) {
+        existingByKey.remove(rowKey);
+        if (!pending.existsOnServer) {
+          pending.existsOnServer = true;
+          toSave.add(pending);
+        }
+        continue;
+      }
+      toSave.add(
         _buildEntity(
           existingByKey: existingByKey,
           type: record.type,
@@ -93,13 +109,15 @@ class PhysiqueTableCacheRepository {
           valuesJson: jsonEncode(record.values),
           existsOnServer: true,
         ),
-    ];
+      );
+    }
     _box.putMany(toSave);
   }
 
-  /// Overwrites this table's cached rows with [rows] from the edit screen
-  /// and marks them [PhysiqueTableRowEntity.pendingSync], so they are
-  /// pushed to the server on the next [markSynced] cycle.
+  /// Overwrites this table's cached rows with [rows] from the edit
+  /// screen and marks them [PhysiqueTableRowEntity.pendingSync]. A row
+  /// with a cached counterpart keeps that counterpart's
+  /// [PhysiqueTableRowEntity.existsOnServer] value instead of losing it.
   void replaceLocalRows(PhysiqueTableArgs args, List<PhysiqueTableRow> rows) {
     final existingByKey = _existingByKey(_argsCondition(args));
 
@@ -115,6 +133,15 @@ class PhysiqueTableCacheRepository {
             for (final value in row.values) int.tryParse(value),
           ]),
           pendingSync: true,
+          existsOnServer:
+              existingByKey[PhysiqueTableRowEntity.buildRowKey(
+                    type: args.type,
+                    level: args.level,
+                    anntenaCategory: args.anntenaCategory,
+                    lineOffset: row.lineOffset,
+                  )]
+                  ?.existsOnServer ??
+              false,
         ),
     ];
     _box.putMany(toSave);
@@ -129,6 +156,25 @@ class PhysiqueTableCacheRepository {
     final rows = _runQuery(_argsCondition(args), (query) => query.find());
     for (final row in rows) {
       row.pendingSync = false;
+      row.existsOnServer = true;
+    }
+    _box.putMany(rows);
+  }
+
+  /// Sets [PhysiqueTableRowEntity.existsOnServer] on the rows at
+  /// [lineOffsets] without touching [PhysiqueTableRowEntity.pendingSync].
+  void markRowsExistOnServer(
+    PhysiqueTableArgs args,
+    Iterable<int> lineOffsets,
+  ) {
+    final offsets = lineOffsets.toSet();
+    if (offsets.isEmpty) return;
+    final rows = _runQuery(
+      _argsCondition(args) &
+          PhysiqueTableRowEntity_.lineOffset.oneOf(offsets.toList()),
+      (query) => query.find(),
+    );
+    for (final row in rows) {
       row.existsOnServer = true;
     }
     _box.putMany(rows);

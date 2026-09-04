@@ -17,6 +17,12 @@ async function main() {
   const yoga = createYoga({ schema: buildSchema(AppDataSource), graphqlEndpoint: '/' });
 
   const app = new Elysia({ adapter: node() })
+    .onError(({ code, error, set }) => {
+      if (code === 'VALIDATION' || code === 'NOT_FOUND') return;
+      console.error('Unhandled request error', error);
+      set.status = 500;
+      return { error: error instanceof Error ? error.message : 'internal_error' };
+    })
     .get('/health', () => ({ status: 'ok' }))
     .use(tablesRoutes(AppDataSource))
     .use(anntenaRoutes(AppDataSource))
