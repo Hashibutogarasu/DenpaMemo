@@ -13,6 +13,7 @@
     "next": "次へ",
     "complete": "完了",
     "unset": "未設定",
+    "reset": "リセット",
     "retry": "再試行",
     "errorTitle": "エラー"
   },
@@ -87,6 +88,8 @@
     "clippingWholeBody": "全身",
     "clippingIcon": "アイコン",
     "clippingRangeText": "左${left}% 上${top}% 右${right}% 下${bottom}%",
+    "clippingResetConfirmTitle": "リセットの確認",
+    "clippingResetConfirmMessage": "優先順位とすべてのクリッピング設定をリセットします。この操作は取り消せません。よろしいですか?",
     "language": "言語",
     "notifications": "通知",
     "advanced": "詳細設定",

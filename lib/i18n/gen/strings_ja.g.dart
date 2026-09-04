@@ -268,6 +268,9 @@ class Translations$common$ja {
 	/// ja: '未設定'
 	String get unset => '未設定';
 
+	/// ja: 'リセット'
+	String get reset => 'リセット';
+
 	/// ja: '再試行'
 	String get retry => '再試行';
 
@@ -417,6 +420,12 @@ class Translations$settings$ja {
 
 	/// ja: '左${left}% 上${top}% 右${right}% 下${bottom}%'
 	String clippingRangeText({required Object left, required Object top, required Object right, required Object bottom}) => '左${left}% 上${top}% 右${right}% 下${bottom}%';
+
+	/// ja: 'リセットの確認'
+	String get clippingResetConfirmTitle => 'リセットの確認';
+
+	/// ja: '優先順位とすべてのクリッピング設定をリセットします。この操作は取り消せません。よろしいですか?'
+	String get clippingResetConfirmMessage => '優先順位とすべてのクリッピング設定をリセットします。この操作は取り消せません。よろしいですか?';
 
 	/// ja: '言語'
 	String get language => '言語';
@@ -1170,6 +1179,7 @@ extension on Translations {
 			'common.next' => '次へ',
 			'common.complete' => '完了',
 			'common.unset' => '未設定',
+			'common.reset' => 'リセット',
 			'common.retry' => '再試行',
 			'common.errorTitle' => 'エラー',
 			'profile.switchProfile' => 'プロファイルを切り替え',
@@ -1232,6 +1242,8 @@ extension on Translations {
 			'settings.clippingWholeBody' => '全身',
 			'settings.clippingIcon' => 'アイコン',
 			'settings.clippingRangeText' => ({required Object left, required Object top, required Object right, required Object bottom}) => '左${left}% 上${top}% 右${right}% 下${bottom}%',
+			'settings.clippingResetConfirmTitle' => 'リセットの確認',
+			'settings.clippingResetConfirmMessage' => '優先順位とすべてのクリッピング設定をリセットします。この操作は取り消せません。よろしいですか?',
 			'settings.language' => '言語',
 			'settings.notifications' => '通知',
 			'settings.advanced' => '詳細設定',

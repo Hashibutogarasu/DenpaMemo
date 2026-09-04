@@ -66,6 +66,17 @@ class ClippingSlotStorage {
     }
   }
 
+  /// Removes every [ClippingSlot] and the saved display/priority order
+  /// for the current profile, so every slot type goes back to being
+  /// unconfigured (see [DenpaMenImageSlotType.defaultPriority]).
+  Future<void> reset() async {
+    await Future.wait(DenpaMenImageSlotType.values.map(delete));
+    final orderFile = await _orderFile();
+    if (await orderFile.exists()) {
+      await orderFile.delete();
+    }
+  }
+
   Future<File> _orderFile() async {
     final appDirectory = await _ref.read(
       accountScopedAppDirectoryProvider.future,

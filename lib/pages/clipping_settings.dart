@@ -13,6 +13,7 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/clipping_slot_providers.dart';
 import '../providers/profile_providers.dart';
 import '../routing/app_router.dart';
+import '../widgets/dialog/confirm_dialog.dart';
 import '../widgets/list/list_item_tile.dart';
 
 String _defaultLabelFor(Translations t, DenpaMenImageSlotType slotType) {
@@ -154,6 +155,24 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
     });
   }
 
+  Future<void> _reset() async {
+    final t = context.t;
+    final confirmed = await ConfirmDialog.show(
+      context,
+      title: t.settings.clippingResetConfirmTitle,
+      message: t.settings.clippingResetConfirmMessage,
+    );
+    if (!confirmed || !mounted) {
+      return;
+    }
+    await ref.read(clippingSlotStorageProvider).reset();
+    for (final slotType in DenpaMenImageSlotType.values) {
+      ref.invalidate(clippingSlotProvider(slotType));
+    }
+    ref.invalidate(clippingSlotTypesByPriorityProvider);
+    setState(() => _order = null);
+  }
+
   Future<void> _switchProfile() async {
     await const ProfileSwitchRoute(
       namespace: ClippingSlotStorage.profileNamespace,
@@ -189,9 +208,22 @@ class _ClippingSettingsPageState extends ConsumerState<ClippingSettingsPage> {
           _ => t.page.clippingSettings,
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _switchProfile,
-        label: Text(t.profile.switchProfile),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton.extended(
+            heroTag: 'clippingSettingsReset',
+            onPressed: _reset,
+            label: Text(t.common.reset),
+          ),
+          const SizedBox(height: 8),
+          FloatingActionButton.extended(
+            heroTag: 'clippingSettingsSwitchProfile',
+            onPressed: _switchProfile,
+            label: Text(t.profile.switchProfile),
+          ),
+        ],
       ),
       body: order == null
           ? orderedTypesAsync.when(
