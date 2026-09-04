@@ -9,9 +9,11 @@ import { CorrectionEntity } from '../../entities/correction.entity';
 import { HeadShapeEntity } from '../../entities/head-shape.entity';
 import { PatternEntity } from '../../entities/pattern.entity';
 import { PersonalityEntity } from '../../entities/personality.entity';
+import { PhysiqueAntennaCategoryAntennaEntity } from '../../entities/physique-antenna-category-antenna.entity';
 import { PhysiqueAntennaCategoryEntity } from '../../entities/physique-antenna-category.entity';
 import { PhysiqueStatusCategoryEntity } from '../../entities/physique-status-category.entity';
 import { PhysiqueEntity } from '../../entities/physique.entity';
+import { TranslationEntity } from '../../entities/translation.entity';
 
 async function attributeResistanceBonusesFor(dataSource: DataSource, ownerType: AttributeBonusOwnerType, ownerId: string) {
   const bonuses = await dataSource.getRepository(AttributeBonusEntity).find({ where: { ownerType, ownerId } });
@@ -37,6 +39,8 @@ export async function resolveMasterData(dataSource: DataSource) {
     corrections,
     physiqueAntennaCategories,
     physiqueStatusCategories,
+    physiqueAntennaCategoryAntennaLinks,
+    antennaTranslations,
   ] = await Promise.all([
     headShapeRepo.find(),
     anntenaRepo.find(),
@@ -50,9 +54,12 @@ export async function resolveMasterData(dataSource: DataSource) {
     dataSource.getRepository(CorrectionEntity).find(),
     dataSource.getRepository(PhysiqueAntennaCategoryEntity).find(),
     dataSource.getRepository(PhysiqueStatusCategoryEntity).find(),
+    dataSource.getRepository(PhysiqueAntennaCategoryAntennaEntity).find(),
+    dataSource.getRepository(TranslationEntity).find({ where: { entityType: 'antenna', locale: 'ja' } }),
   ]);
 
   const anntenaLegacyIdById = new Map(anntenas.map((anntena) => [anntena.id, anntena.legacyId]));
+  const antennaNameByLegacyId = new Map(antennaTranslations.map((translation) => [translation.entityLegacyId, translation.value]));
 
   return {
     headShapes: await Promise.all(
@@ -84,5 +91,10 @@ export async function resolveMasterData(dataSource: DataSource) {
     corrections,
     physiqueAntennaCategories,
     physiqueStatusCategories,
+    physiqueAntennaCategoryAntennaLinks: physiqueAntennaCategoryAntennaLinks.map((link) => ({
+      majorCategoryId: link.minorCategory.majorCategoryId,
+      minorCategoryId: link.minorCategoryId,
+      antennaName: antennaNameByLegacyId.get(link.anntena.legacyId) ?? link.anntena.legacyId,
+    })),
   };
 }

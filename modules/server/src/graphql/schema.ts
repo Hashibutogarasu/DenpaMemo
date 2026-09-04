@@ -105,6 +105,12 @@ const typeDefs = `
     columnCount: Int!
   }
 
+  type PhysiqueAntennaCategoryAntennaLink {
+    majorCategoryId: String!
+    minorCategoryId: String!
+    antennaName: String!
+  }
+
   type Correction {
     id: String!
     legacyId: String!
@@ -130,6 +136,7 @@ const typeDefs = `
     corrections: [Correction!]!
     physiqueAntennaCategories: [PhysiqueAntennaCategory!]!
     physiqueStatusCategories: [PhysiqueStatusCategory!]!
+    physiqueAntennaCategoryAntennaLinks: [PhysiqueAntennaCategoryAntennaLink!]!
   }
 
   type Translation {

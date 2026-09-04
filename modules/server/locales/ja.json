@@ -1,0 +1,33 @@
+{
+  "major_category": {
+    "none": "なし",
+    "profit": "お得系",
+    "healing": "回復系",
+    "treatment": "治療系",
+    "buff": "増強系",
+    "support": "補助系",
+    "attack": "攻撃系"
+  },
+  "minor_category": {
+    "none": "アンテナ無し",
+    "leg_guard": "足元ガード",
+    "heal_solo": "単体回復",
+    "heal_all": "全体回復",
+    "revive_solo": "単体復活",
+    "revive_all": "全体復活",
+    "cure_poison": "解毒",
+    "cure_paralysis": "痺れとる",
+    "cure_sleep": "目覚める",
+    "cure_attribute": "属性治す",
+    "cure_all": "全て治す",
+    "invincible": "無敵",
+    "excite": "興奮",
+    "charge": "蓄える",
+    "buff_solo": "単体増強系",
+    "buff_all": "全体増強系",
+    "weaken": "弱体系",
+    "attack_solo": "単体攻撃",
+    "attack_all": "全体攻撃",
+    "knockdown": "ノックダウン"
+  }
+}

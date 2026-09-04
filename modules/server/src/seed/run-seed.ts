@@ -23,6 +23,12 @@ import { AbnormalityTypeEntity } from '../entities/abnormality-type.entity';
 import { PhysiqueEntity } from '../entities/physique.entity';
 import { PersonalityEntity } from '../entities/personality.entity';
 import { PatternEntity } from '../entities/pattern.entity';
+import { MajorCategoryEntity } from '../entities/major-category.entity';
+import { MinorCategoryEntity } from '../entities/minor-category.entity';
+import { PhysiqueAntennaCategoryAntennaEntity } from '../entities/physique-antenna-category-antenna.entity';
+import { loadMajorCategories } from './loaders/load-major-categories';
+import { loadMinorCategories } from './loaders/load-minor-categories';
+import { loadPhysiqueAntennaCategoryAntennas } from './loaders/load-physique-antenna-category-antennas';
 import { seedPhysiqueTableDefaultsIfNeeded } from './seed-physique-table-defaults';
 
 const DATA_DIR = path.resolve(import.meta.dirname, '..', '..', 'data');
@@ -60,6 +66,9 @@ export async function runSeedIfNeeded(dataSource: DataSource, dataDir: string = 
   await seedPhysiqueStatusCategoriesIfNeeded(dataSource, dataDir);
   await seedTableDefinitionsIfNeeded(dataSource, dataDir);
   await seedPhysiqueTableDefaultsIfNeeded(dataSource);
+  await seedMajorCategoriesIfNeeded(dataSource, dataDir);
+  await seedMinorCategoriesIfNeeded(dataSource, dataDir);
+  await seedPhysiqueAntennaCategoryAntennasIfNeeded(dataSource, dataDir);
 }
 
 /**
@@ -92,4 +101,31 @@ async function seedTableDefinitionsIfNeeded(dataSource: DataSource, dataDir: str
     return;
   }
   await loadTableDefinitions(dataSource, dataDir, new DuplicateIdGuard());
+}
+
+/** Same independent-gate reasoning as {@link seedPhysiqueAntennaCategoriesIfNeeded}. */
+async function seedMajorCategoriesIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const majorCategoryCount = await dataSource.getRepository(MajorCategoryEntity).count();
+  if (majorCategoryCount > 0) {
+    return;
+  }
+  await loadMajorCategories(dataSource, dataDir, new DuplicateIdGuard());
+}
+
+/** Must run after {@link seedMajorCategoriesIfNeeded} and {@link seedPhysiqueAntennaCategoriesIfNeeded}. */
+async function seedMinorCategoriesIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const minorCategoryCount = await dataSource.getRepository(MinorCategoryEntity).count();
+  if (minorCategoryCount > 0) {
+    return;
+  }
+  await loadMinorCategories(dataSource, dataDir, new DuplicateIdGuard());
+}
+
+/** Must run after {@link seedMinorCategoriesIfNeeded} and the main translations load. */
+async function seedPhysiqueAntennaCategoryAntennasIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const linkCount = await dataSource.getRepository(PhysiqueAntennaCategoryAntennaEntity).count();
+  if (linkCount > 0) {
+    return;
+  }
+  await loadPhysiqueAntennaCategoryAntennas(dataSource, dataDir, new DuplicateIdGuard());
 }

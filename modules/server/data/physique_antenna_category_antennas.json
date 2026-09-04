@@ -1,0 +1,5 @@
+[
+  { "minorCategoryId": "heal_solo", "antennaName": "ちょっとかいふく" },
+  { "minorCategoryId": "attack_all", "antennaName": "やまかじ" },
+  { "minorCategoryId": "none", "antennaName": "アンテナなし" }
+]

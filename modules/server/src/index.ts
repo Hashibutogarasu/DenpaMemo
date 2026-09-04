@@ -6,6 +6,7 @@ import { env } from './config/env';
 import { AppDataSource } from './config/data-source';
 import { runSeedIfNeeded } from './seed/run-seed';
 import { buildSchema } from './graphql/schema';
+import { anntenaRoutes } from './routes/anntena.route';
 import { tablesRoutes } from './routes/tables.route';
 
 async function main() {
@@ -18,6 +19,7 @@ async function main() {
   const app = new Elysia({ adapter: node() })
     .get('/health', () => ({ status: 'ok' }))
     .use(tablesRoutes(AppDataSource))
+    .use(anntenaRoutes(AppDataSource))
     .mount('/graphql', async (request: Request) => {
       const yogaResponse = await yoga.fetch(request);
       const body = await yogaResponse.arrayBuffer();
