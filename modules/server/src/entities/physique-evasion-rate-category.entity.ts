@@ -7,7 +7,9 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
  * `src/domain/physique/physique-evasion-rate-category.ts`). Seeded from
  * `data/physique_evasion_rate_categories.xlsx`, a spreadsheet meant to be
  * hand-edited as the real column semantics get refined, rather than a
- * hardcoded lookup table in TypeScript.
+ * hardcoded lookup table in TypeScript. `sign` records which side of an
+ * overlapping plus/minus pair this pattern belongs to, when the source
+ * spreadsheet's cell named one (`null` otherwise).
  */
 @Entity('physique_evasion_rate_category')
 export class PhysiqueEvasionRateCategoryEntity {
@@ -21,13 +23,13 @@ export class PhysiqueEvasionRateCategoryEntity {
   evasionRateEnd!: number;
 
   @Column({ type: 'int' })
-  startColumn!: number;
-
-  @Column({ type: 'int' })
-  columnOffset!: number;
+  columnIndex!: number;
 
   @Column({ type: 'varchar' })
   textKey!: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  sign!: 'plus' | 'minus' | null;
 
   @Column({ type: 'varchar', nullable: true })
   note!: string | null;

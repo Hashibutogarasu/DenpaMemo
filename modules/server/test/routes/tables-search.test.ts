@@ -58,11 +58,11 @@ const evasionRows: EvasionRow[] = [
 ];
 
 const categoryRows = [
-  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 0, textKey: 'largest', note: null },
-  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 1, textKey: 'large', note: null },
-  { evasionRateStart: 5, evasionRateEnd: 5, startColumn: 3, columnOffset: 0, textKey: 'medium', note: null },
-  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 4, columnOffset: 0, textKey: 'fast', note: '準速+のうち1列目' },
-  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 3, columnOffset: 1, textKey: 'fastest', note: null },
+  { evasionRateStart: 0, evasionRateEnd: 0, columnIndex: 0, textKey: 'largest', sign: null },
+  { evasionRateStart: 0, evasionRateEnd: 0, columnIndex: 1, textKey: 'large', sign: null },
+  { evasionRateStart: 5, evasionRateEnd: 5, columnIndex: 2, textKey: 'medium', sign: null },
+  { evasionRateStart: 10, evasionRateEnd: 10, columnIndex: 3, textKey: 'fast', sign: 'plus' },
+  { evasionRateStart: 10, evasionRateEnd: 10, columnIndex: 3, textKey: 'fastest', sign: null },
 ];
 
 function matchesWhere<T>(row: T, where: Partial<T>): boolean {
