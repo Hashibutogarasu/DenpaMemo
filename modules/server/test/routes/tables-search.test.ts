@@ -157,55 +157,73 @@ describe('GET /tables/search', () => {
       new Request(searchUrl({ antenna: 'none', level: '1', hp: '60', evasionRate: '5' })),
     );
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual([
-      {
-        level: '1',
-        anntenaCategory: 'アンテナ無し',
-        lineOffset: 0,
-        columnIndex: 2,
-        candidates: [{ textKey: 'medium', text: '中間' }],
-      },
-    ]);
+    expect(await response.json()).toEqual({
+      matches: [
+        {
+          level: '1',
+          anntenaCategory: 'アンテナ無し',
+          lineOffset: 0,
+          columnIndex: 2,
+          candidates: [{ textKey: 'medium', text: '中間' }],
+        },
+      ],
+      info: null,
+    });
   });
 
   test('multiple columns matching both hp and evasionRate all come back, each with its own candidates', async () => {
     const response = await app.handle(
       new Request(searchUrl({ antenna: 'none', level: '1', hp: '40', evasionRate: '0' })),
     );
-    expect(await response.json()).toEqual([
-      {
-        level: '1',
-        anntenaCategory: 'アンテナ無し',
-        lineOffset: 0,
-        columnIndex: 0,
-        candidates: [{ textKey: 'largest', text: '最大' }],
-      },
-      {
-        level: '1',
-        anntenaCategory: 'アンテナ無し',
-        lineOffset: 0,
-        columnIndex: 1,
-        candidates: [{ textKey: 'large', text: '準大' }],
-      },
-    ]);
+    expect(await response.json()).toEqual({
+      matches: [
+        {
+          level: '1',
+          anntenaCategory: 'アンテナ無し',
+          lineOffset: 0,
+          columnIndex: 0,
+          candidates: [{ textKey: 'largest', text: '最大' }],
+        },
+        {
+          level: '1',
+          anntenaCategory: 'アンテナ無し',
+          lineOffset: 0,
+          columnIndex: 1,
+          candidates: [{ textKey: 'large', text: '準大' }],
+        },
+      ],
+      info: null,
+    });
   });
 
   test('overlapping category patterns return every candidate for the user to choose between', async () => {
     const response = await app.handle(
       new Request(searchUrl({ antenna: 'none', level: '1', hp: '80', evasionRate: '10' })),
     );
-    expect(await response.json()).toEqual([
-      {
-        level: '1',
-        anntenaCategory: 'アンテナ無し',
-        lineOffset: 0,
-        columnIndex: 3,
-        candidates: [
-          { textKey: 'fast', text: '準速' },
-          { textKey: 'fastest', text: '最速' },
-        ],
-      },
-    ]);
+    expect(await response.json()).toEqual({
+      matches: [
+        {
+          level: '1',
+          anntenaCategory: 'アンテナ無し',
+          lineOffset: 0,
+          columnIndex: 3,
+          candidates: [
+            { textKey: 'fast', text: '準速' },
+            { textKey: 'fastest', text: '最速' },
+          ],
+        },
+      ],
+      info: null,
+    });
+  });
+
+  test('an unmatched search returns an empty matches list plus a debug info dump', async () => {
+    const response = await app.handle(
+      new Request(searchUrl({ antenna: 'none', level: '1', hp: '999', evasionRate: '999' })),
+    );
+    const body = (await response.json()) as { matches: unknown[]; info: unknown };
+    expect(body.matches).toEqual([]);
+    expect(body.info).not.toBeNull();
   });
 
   test('an unknown antenna id returns a 404 not found error', async () => {
@@ -220,29 +238,32 @@ describe('GET /tables/search', () => {
       new Request(searchUrl({ anntenaCategory: 'アンテナ無し', level: '1', hp: '40', evasionRate: '0' })),
     );
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual([
-      {
-        level: '1',
-        anntenaCategory: 'アンテナ無し',
-        lineOffset: 0,
-        columnIndex: 0,
-        candidates: [{ textKey: 'largest', text: '最大' }],
-      },
-      {
-        level: '1',
-        anntenaCategory: 'アンテナ無し',
-        lineOffset: 0,
-        columnIndex: 1,
-        candidates: [{ textKey: 'large', text: '準大' }],
-      },
-    ]);
+    expect(await response.json()).toEqual({
+      matches: [
+        {
+          level: '1',
+          anntenaCategory: 'アンテナ無し',
+          lineOffset: 0,
+          columnIndex: 0,
+          candidates: [{ textKey: 'largest', text: '最大' }],
+        },
+        {
+          level: '1',
+          anntenaCategory: 'アンテナ無し',
+          lineOffset: 0,
+          columnIndex: 1,
+          candidates: [{ textKey: 'large', text: '準大' }],
+        },
+      ],
+      info: null,
+    });
   });
 
   test('level filters out rows from other levels', async () => {
     const response = await app.handle(
       new Request(searchUrl({ antenna: 'none', level: '2', hp: '40', evasionRate: '0' })),
     );
-    const rows = (await response.json()) as Array<{ level: string }>;
-    expect(rows.every((row) => row.level === '2')).toBe(true);
+    const body = (await response.json()) as { matches: Array<{ level: string }> };
+    expect(body.matches.every((row) => row.level === '2')).toBe(true);
   });
 });

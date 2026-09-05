@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +15,7 @@ import '../providers/denpa_men_session_providers.dart';
 import '../providers/physiques_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
+import '../widgets/dialog/physique_search_debug_dialog.dart';
 import '../widgets/icon/editable_denpa_men_icon_swiper.dart';
 import 'denpa_men_selection.dart';
 
@@ -140,7 +142,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     BuildContext context,
   ) async {
     final t = context.t;
-    final matches = await ProgressResultDialog.show<List<PhysiqueColumnMatch>>(
+    final result = await ProgressResultDialog.show<PhysiqueSearchResult>(
       context,
       loadingMessage: t.physiqueIdentification.identifying,
       successMessage: t.physiqueIdentification.identified,
@@ -153,15 +155,20 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
             antenna: _denpaMen.anntena.id,
             level: '${_denpaMen.level}',
           ),
-      resultLabel: (matches) => switch (matches.firstOrNull?.candidates) {
+      resultLabel: (result) => switch (result.matches.firstOrNull?.candidates) {
         null || [] => t.physiqueIdentification.notFound,
         [final only] => only.text ?? only.textKey,
         _ => t.physiqueIdentification.multipleCandidates,
       },
     );
-    if (matches == null || !context.mounted) {
+    if (result == null || !context.mounted) {
       return null;
     }
+    if (kDebugMode && result.info != null) {
+      await PhysiqueSearchDebugDialog.show(context, info: result.info!);
+      if (!context.mounted) return null;
+    }
+    final matches = result.matches;
     final columnIndex = matches.firstOrNull?.columnIndex;
     final candidates = matches.firstOrNull?.candidates ?? const [];
     final chosenKey = switch (candidates) {

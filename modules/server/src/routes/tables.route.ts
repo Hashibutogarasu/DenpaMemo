@@ -319,17 +319,18 @@ export function tablesRoutes(dataSource: DataSource) {
           }),
         );
 
-        if (results.length === 0 || results.every((result) => result.candidates.length === 0)) {
-          console.warn('GET /tables/search resolved no physique category:', {
-            query: { type, against, evasionRate, hp, level, antenna, anntenaCategory: resolvedAnntenaCategory },
-            primaryRows,
-            targetRows,
-            matches,
-            categoryRows: await evasionRateCategoryRepo.find(),
-          });
-        }
+        const info =
+          results.length === 0 || results.every((result) => result.candidates.length === 0)
+            ? {
+                query: { type, against, evasionRate, hp, level, antenna, anntenaCategory: resolvedAnntenaCategory },
+                primaryRows,
+                targetRows,
+                matches,
+                categoryRows: await evasionRateCategoryRepo.find(),
+              }
+            : null;
 
-        return results;
+        return { matches: results, info };
       }),
   );
 }

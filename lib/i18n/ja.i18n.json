@@ -153,7 +153,18 @@
     "notFound": "体格を特定できませんでした",
     "error": "体格の特定に失敗しました",
     "multipleCandidates": "候補が複数あります",
-    "chooseCandidateTitle": "体格を選択してください"
+    "chooseCandidateTitle": "体格を選択してください",
+    "debugTitle": "体格特定デバッグ情報",
+    "debugQueryLabel": "検索条件",
+    "debugQueryValue": "種別: ${type} / 対象: ${against} / 回避率: ${evasionRate} / HP: ${hp} / レベル: ${level} / アンテナ: ${antenna} / アンテナカテゴリ: ${anntenaCategory}",
+    "debugMatchesLabel": "回避率・HPが一致した列",
+    "debugMatchesEmpty": "一致する列はありませんでした",
+    "debugMatchValue": "レベル${level} / ${anntenaCategory} / 行${lineOffset} / 列${columnIndex}",
+    "debugCategoryRowsLabel": "登録されている体格カテゴリパターン",
+    "debugCategoryRowsEmpty": "体格カテゴリパターンが1件も登録されていません",
+    "debugCategoryRowValue": "回避率${evasionRateStart}〜${evasionRateEnd} / 開始列${startColumn} / オフセット${columnOffset} → ${textKey}",
+    "debugCopyDetails": "詳細をコピー",
+    "debugCopied": "詳細をコピーしました"
   },
   "home": {
     "empty": "電波人間が登録されていません",

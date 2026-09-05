@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show compute;
 import 'package:http/http.dart' as http;
 
-import 'physique_column_match.dart';
 import 'physique_column_search_query.dart';
+import 'physique_search_result.dart';
 import 'physique_table_record.dart';
 import 'table_definition.dart';
 
@@ -157,7 +157,7 @@ class PhysiquesApiClient {
   /// `lineOffset` both equal [evasionRate]/[hp] at that column — see
   /// `findEvasionRateMatches` on the server. [antenna] is an antenna id,
   /// resolved server-side to its `anntenaCategory`.
-  Future<List<PhysiqueColumnMatch>> search({
+  Future<PhysiqueSearchResult> search({
     String type = 'evasionRate',
     String against = 'hp',
     required int evasionRate,
@@ -184,11 +184,8 @@ class PhysiquesApiClient {
         },
       ),
     );
-    final body = await _decodeListOrThrow(response);
-    return [
-      for (final row in body.cast<Map<String, dynamic>>())
-        PhysiqueColumnMatch.fromJson(row),
-    ];
+    final body = await _decodeMapOrThrow(response);
+    return PhysiqueSearchResult.fromJson(body);
   }
 
   static const Map<String, String> _jsonHeaders = {
@@ -198,9 +195,17 @@ class PhysiquesApiClient {
   static List<dynamic> _decodeJsonList(String body) =>
       jsonDecode(body) as List<dynamic>;
 
+  static Map<String, dynamic> _decodeJsonMap(String body) =>
+      jsonDecode(body) as Map<String, dynamic>;
+
   Future<List<dynamic>> _decodeListOrThrow(http.Response response) async {
     _requireSuccess(response);
     return compute(_decodeJsonList, response.body);
+  }
+
+  Future<Map<String, dynamic>> _decodeMapOrThrow(http.Response response) async {
+    _requireSuccess(response);
+    return compute(_decodeJsonMap, response.body);
   }
 
   void _requireSuccess(http.Response response) {
