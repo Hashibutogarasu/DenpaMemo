@@ -154,6 +154,8 @@
     "error": "体格の特定に失敗しました",
     "multipleCandidates": "候補が複数あります",
     "chooseCandidateTitle": "体格を選択してください",
+    "candidateEvasionRateExact": "回避率 ${value}",
+    "candidateEvasionRateRange": "回避率 ${start}〜${end}",
     "debugTitle": "体格特定デバッグ情報",
     "debugQueryLabel": "検索条件",
     "debugQueryValue": "種別: ${type} / 対象: ${against} / 回避率: ${evasionRate} / HP: ${hp} / レベル: ${level} / アンテナ: ${antenna} / アンテナカテゴリ: ${anntenaCategory}",

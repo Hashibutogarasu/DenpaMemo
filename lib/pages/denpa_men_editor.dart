@@ -179,6 +179,19 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         title: t.physiqueIdentification.chooseCandidateTitle,
         candidates: candidates,
         label: (candidate) => candidate.text ?? candidate.textKey,
+        leading: (candidate) => switch (candidate.sign) {
+          'plus' => const Icon(Icons.add),
+          'minus' => const Icon(Icons.remove),
+          _ => null,
+        },
+        subtitle: (candidate) => candidate.evasionRateStart == candidate.evasionRateEnd
+            ? t.physiqueIdentification.candidateEvasionRateExact(
+                value: candidate.evasionRateStart,
+              )
+            : t.physiqueIdentification.candidateEvasionRateRange(
+                start: candidate.evasionRateStart,
+                end: candidate.evasionRateEnd,
+              ),
       ).then((candidate) => candidate?.textKey),
     };
     final physique = chosenKey == null

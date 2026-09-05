@@ -308,12 +308,15 @@ export function tablesRoutes(dataSource: DataSource) {
         const matches = findEvasionRateMatches(primaryRows as TableRow[], targetRows as TableRow[], evasionRate, hp);
         const results = await Promise.all(
           matches.map(async (match) => {
-            const keys = await resolvePhysiqueCategoryKeys(evasionRateCategoryRepo, evasionRate, match.columnIndex);
+            const candidates = await resolvePhysiqueCategoryKeys(evasionRateCategoryRepo, evasionRate, match.columnIndex);
             return {
               ...match,
-              candidates: keys.map((key) => ({
-                textKey: key,
-                text: categoryTranslator.translatePhysique(key, locale) ?? null,
+              candidates: candidates.map((candidate) => ({
+                textKey: candidate.textKey,
+                text: categoryTranslator.translatePhysique(candidate.textKey, locale) ?? null,
+                sign: candidate.sign,
+                evasionRateStart: candidate.evasionRateStart,
+                evasionRateEnd: candidate.evasionRateEnd,
               })),
             };
           }),

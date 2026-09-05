@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueCategoryCandidate {
 
- String get textKey; String? get text;
+ String get textKey; String? get text; String? get sign; int get evasionRateStart; int get evasionRateEnd;
 /// Create a copy of PhysiqueCategoryCandidate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PhysiqueCategoryCandidateCopyWith<PhysiqueCategoryCandidate> get copyWith => _$
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueCategoryCandidate&&(identical(other.textKey, textKey) || other.textKey == textKey)&&(identical(other.text, text) || other.text == text));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueCategoryCandidate&&(identical(other.textKey, textKey) || other.textKey == textKey)&&(identical(other.text, text) || other.text == text)&&(identical(other.sign, sign) || other.sign == sign)&&(identical(other.evasionRateStart, evasionRateStart) || other.evasionRateStart == evasionRateStart)&&(identical(other.evasionRateEnd, evasionRateEnd) || other.evasionRateEnd == evasionRateEnd));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,textKey,text);
+int get hashCode => Object.hash(runtimeType,textKey,text,sign,evasionRateStart,evasionRateEnd);
 
 @override
 String toString() {
-  return 'PhysiqueCategoryCandidate(textKey: $textKey, text: $text)';
+  return 'PhysiqueCategoryCandidate(textKey: $textKey, text: $text, sign: $sign, evasionRateStart: $evasionRateStart, evasionRateEnd: $evasionRateEnd)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueCategoryCandidateCopyWith<$Res>  {
   factory $PhysiqueCategoryCandidateCopyWith(PhysiqueCategoryCandidate value, $Res Function(PhysiqueCategoryCandidate) _then) = _$PhysiqueCategoryCandidateCopyWithImpl;
 @useResult
 $Res call({
- String textKey, String? text
+ String textKey, String? text, String? sign, int evasionRateStart, int evasionRateEnd
 });
 
 
@@ -65,11 +65,14 @@ class _$PhysiqueCategoryCandidateCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueCategoryCandidate
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? textKey = null,Object? text = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? textKey = null,Object? text = freezed,Object? sign = freezed,Object? evasionRateStart = null,Object? evasionRateEnd = null,}) {
   return _then(_self.copyWith(
 textKey: null == textKey ? _self.textKey : textKey // ignore: cast_nullable_to_non_nullable
 as String,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,sign: freezed == sign ? _self.sign : sign // ignore: cast_nullable_to_non_nullable
+as String?,evasionRateStart: null == evasionRateStart ? _self.evasionRateStart : evasionRateStart // ignore: cast_nullable_to_non_nullable
+as int,evasionRateEnd: null == evasionRateEnd ? _self.evasionRateEnd : evasionRateEnd // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -154,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String textKey,  String? text)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String textKey,  String? text,  String? sign,  int evasionRateStart,  int evasionRateEnd)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueCategoryCandidate() when $default != null:
-return $default(_that.textKey,_that.text);case _:
+return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that.evasionRateEnd);case _:
   return orElse();
 
 }
@@ -175,10 +178,10 @@ return $default(_that.textKey,_that.text);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String textKey,  String? text)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String textKey,  String? text,  String? sign,  int evasionRateStart,  int evasionRateEnd)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueCategoryCandidate():
-return $default(_that.textKey,_that.text);case _:
+return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that.evasionRateEnd);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +198,10 @@ return $default(_that.textKey,_that.text);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String textKey,  String? text)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String textKey,  String? text,  String? sign,  int evasionRateStart,  int evasionRateEnd)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueCategoryCandidate() when $default != null:
-return $default(_that.textKey,_that.text);case _:
+return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that.evasionRateEnd);case _:
   return null;
 
 }
@@ -210,11 +213,14 @@ return $default(_that.textKey,_that.text);case _:
 @JsonSerializable()
 
 class _PhysiqueCategoryCandidate implements PhysiqueCategoryCandidate {
-  const _PhysiqueCategoryCandidate({required this.textKey, this.text});
+  const _PhysiqueCategoryCandidate({required this.textKey, this.text, this.sign, required this.evasionRateStart, required this.evasionRateEnd});
   factory _PhysiqueCategoryCandidate.fromJson(Map<String, dynamic> json) => _$PhysiqueCategoryCandidateFromJson(json);
 
 @override final  String textKey;
 @override final  String? text;
+@override final  String? sign;
+@override final  int evasionRateStart;
+@override final  int evasionRateEnd;
 
 /// Create a copy of PhysiqueCategoryCandidate
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueCategoryCandidate&&(identical(other.textKey, textKey) || other.textKey == textKey)&&(identical(other.text, text) || other.text == text));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueCategoryCandidate&&(identical(other.textKey, textKey) || other.textKey == textKey)&&(identical(other.text, text) || other.text == text)&&(identical(other.sign, sign) || other.sign == sign)&&(identical(other.evasionRateStart, evasionRateStart) || other.evasionRateStart == evasionRateStart)&&(identical(other.evasionRateEnd, evasionRateEnd) || other.evasionRateEnd == evasionRateEnd));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,textKey,text);
+int get hashCode => Object.hash(runtimeType,textKey,text,sign,evasionRateStart,evasionRateEnd);
 
 @override
 String toString() {
-  return 'PhysiqueCategoryCandidate(textKey: $textKey, text: $text)';
+  return 'PhysiqueCategoryCandidate(textKey: $textKey, text: $text, sign: $sign, evasionRateStart: $evasionRateStart, evasionRateEnd: $evasionRateEnd)';
 }
 
 
@@ -249,7 +255,7 @@ abstract mixin class _$PhysiqueCategoryCandidateCopyWith<$Res> implements $Physi
   factory _$PhysiqueCategoryCandidateCopyWith(_PhysiqueCategoryCandidate value, $Res Function(_PhysiqueCategoryCandidate) _then) = __$PhysiqueCategoryCandidateCopyWithImpl;
 @override @useResult
 $Res call({
- String textKey, String? text
+ String textKey, String? text, String? sign, int evasionRateStart, int evasionRateEnd
 });
 
 
@@ -266,11 +272,14 @@ class __$PhysiqueCategoryCandidateCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueCategoryCandidate
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? textKey = null,Object? text = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? textKey = null,Object? text = freezed,Object? sign = freezed,Object? evasionRateStart = null,Object? evasionRateEnd = null,}) {
   return _then(_PhysiqueCategoryCandidate(
 textKey: null == textKey ? _self.textKey : textKey // ignore: cast_nullable_to_non_nullable
 as String,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,sign: freezed == sign ? _self.sign : sign // ignore: cast_nullable_to_non_nullable
+as String?,evasionRateStart: null == evasionRateStart ? _self.evasionRateStart : evasionRateStart // ignore: cast_nullable_to_non_nullable
+as int,evasionRateEnd: null == evasionRateEnd ? _self.evasionRateEnd : evasionRateEnd // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

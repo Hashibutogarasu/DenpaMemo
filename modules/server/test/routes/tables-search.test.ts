@@ -58,11 +58,11 @@ const evasionRows: EvasionRow[] = [
 ];
 
 const categoryRows = [
-  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 0, textKey: 'largest' },
-  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 1, textKey: 'large' },
-  { evasionRateStart: 5, evasionRateEnd: 5, startColumn: 3, columnOffset: 0, textKey: 'medium' },
-  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 4, columnOffset: 0, textKey: 'fast' },
-  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 3, columnOffset: 1, textKey: 'fastest' },
+  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 0, textKey: 'largest', note: null },
+  { evasionRateStart: 0, evasionRateEnd: 0, startColumn: 1, columnOffset: 1, textKey: 'large', note: null },
+  { evasionRateStart: 5, evasionRateEnd: 5, startColumn: 3, columnOffset: 0, textKey: 'medium', note: null },
+  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 4, columnOffset: 0, textKey: 'fast', note: '準速+のうち1列目' },
+  { evasionRateStart: 10, evasionRateEnd: 10, startColumn: 3, columnOffset: 1, textKey: 'fastest', note: null },
 ];
 
 function matchesWhere<T>(row: T, where: Partial<T>): boolean {
@@ -164,7 +164,7 @@ describe('GET /tables/search', () => {
           anntenaCategory: 'アンテナ無し',
           lineOffset: 0,
           columnIndex: 2,
-          candidates: [{ textKey: 'medium', text: '中間' }],
+          candidates: [{ textKey: 'medium', text: '中間', sign: null, evasionRateStart: 5, evasionRateEnd: 5 }],
         },
       ],
       info: null,
@@ -182,14 +182,14 @@ describe('GET /tables/search', () => {
           anntenaCategory: 'アンテナ無し',
           lineOffset: 0,
           columnIndex: 0,
-          candidates: [{ textKey: 'largest', text: '最大' }],
+          candidates: [{ textKey: 'largest', text: '最大', sign: null, evasionRateStart: 0, evasionRateEnd: 0 }],
         },
         {
           level: '1',
           anntenaCategory: 'アンテナ無し',
           lineOffset: 0,
           columnIndex: 1,
-          candidates: [{ textKey: 'large', text: '準大' }],
+          candidates: [{ textKey: 'large', text: '準大', sign: null, evasionRateStart: 0, evasionRateEnd: 0 }],
         },
       ],
       info: null,
@@ -208,8 +208,8 @@ describe('GET /tables/search', () => {
           lineOffset: 0,
           columnIndex: 3,
           candidates: [
-            { textKey: 'fast', text: '準速' },
-            { textKey: 'fastest', text: '最速' },
+            { textKey: 'fast', text: '準速', sign: 'plus', evasionRateStart: 10, evasionRateEnd: 10 },
+            { textKey: 'fastest', text: '最速', sign: null, evasionRateStart: 10, evasionRateEnd: 10 },
           ],
         },
       ],
@@ -245,14 +245,14 @@ describe('GET /tables/search', () => {
           anntenaCategory: 'アンテナ無し',
           lineOffset: 0,
           columnIndex: 0,
-          candidates: [{ textKey: 'largest', text: '最大' }],
+          candidates: [{ textKey: 'largest', text: '最大', sign: null, evasionRateStart: 0, evasionRateEnd: 0 }],
         },
         {
           level: '1',
           anntenaCategory: 'アンテナ無し',
           lineOffset: 0,
           columnIndex: 1,
-          candidates: [{ textKey: 'large', text: '準大' }],
+          candidates: [{ textKey: 'large', text: '準大', sign: null, evasionRateStart: 0, evasionRateEnd: 0 }],
         },
       ],
       info: null,

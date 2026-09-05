@@ -626,6 +626,12 @@ class Translations$physiqueIdentification$ja {
 	/// ja: '体格を選択してください'
 	String get chooseCandidateTitle => '体格を選択してください';
 
+	/// ja: '回避率 ${value}'
+	String candidateEvasionRateExact({required Object value}) => '回避率 ${value}';
+
+	/// ja: '回避率 ${start}〜${end}'
+	String candidateEvasionRateRange({required Object start, required Object end}) => '回避率 ${start}〜${end}';
+
 	/// ja: '体格特定デバッグ情報'
 	String get debugTitle => '体格特定デバッグ情報';
 
@@ -1383,6 +1389,8 @@ extension on Translations {
 			'physiqueIdentification.error' => '体格の特定に失敗しました',
 			'physiqueIdentification.multipleCandidates' => '候補が複数あります',
 			'physiqueIdentification.chooseCandidateTitle' => '体格を選択してください',
+			'physiqueIdentification.candidateEvasionRateExact' => ({required Object value}) => '回避率 ${value}',
+			'physiqueIdentification.candidateEvasionRateRange' => ({required Object start, required Object end}) => '回避率 ${start}〜${end}',
 			'physiqueIdentification.debugTitle' => '体格特定デバッグ情報',
 			'physiqueIdentification.debugQueryLabel' => '検索条件',
 			'physiqueIdentification.debugQueryValue' => ({required Object type, required Object against, required Object evasionRate, required Object hp, required Object level, required Object antenna, required Object anntenaCategory}) => '種別: ${type} / 対象: ${against} / 回避率: ${evasionRate} / HP: ${hp} / レベル: ${level} / アンテナ: ${antenna} / アンテナカテゴリ: ${anntenaCategory}',
