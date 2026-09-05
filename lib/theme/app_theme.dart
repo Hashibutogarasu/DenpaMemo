@@ -82,6 +82,10 @@ abstract final class AppLightTheme {
         displayDuration: Duration(seconds: 1),
         fadeOutDuration: Duration(milliseconds: 400),
       ),
+      PhysiqueLegendGridThemeData(
+        highlightBorderColor: Color(0xFFE53935),
+        dimmedBackgroundColor: Color(0x14000000),
+      ),
     ],
   );
 }
@@ -154,6 +158,10 @@ abstract final class AppDarkTheme {
         appNameFontSize: 34,
         displayDuration: Duration(seconds: 1),
         fadeOutDuration: Duration(milliseconds: 400),
+      ),
+      PhysiqueLegendGridThemeData(
+        highlightBorderColor: Color(0xFFEF5350),
+        dimmedBackgroundColor: Color(0x1FFFFFFF),
       ),
     ],
   );

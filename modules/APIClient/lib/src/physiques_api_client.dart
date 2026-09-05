@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show compute;
 import 'package:http/http.dart' as http;
 
+import 'legend_grid_request.dart';
+import 'legend_grid_result.dart';
 import 'physique_column_search_query.dart';
 import 'physique_search_result.dart';
 import 'physique_table_record.dart';
@@ -186,6 +188,24 @@ class PhysiquesApiClient {
     );
     final body = await _decodeMapOrThrow(response);
     return PhysiqueSearchResult.fromJson(body);
+  }
+
+  /// Fetches the "matching location" grid for one `level`/`anntenaCategory`
+  /// pair: the physique-category legend merged with the level/antenna's
+  /// real evasion-rate and HP values, with the cell identified by
+  /// [request]'s `matchColumnIndex`/`matchLineOffset`/`matchEvasionRate`
+  /// flagged — see `GET /tables/legend-grid` on the server.
+  Future<LegendGridResult> legendGrid(LegendGridRequest request) async {
+    final response = await http.get(
+      _baseUrl.replace(
+        path: '/tables/legend-grid',
+        queryParameters: {
+          for (final entry in request.toJson().entries) entry.key: '${entry.value}',
+        },
+      ),
+    );
+    final body = await _decodeMapOrThrow(response);
+    return LegendGridResult.fromJson(body);
   }
 
   static const Map<String, String> _jsonHeaders = {

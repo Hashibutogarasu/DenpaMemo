@@ -2,11 +2,11 @@ import { describe, expect, test } from 'vitest';
 import { resolvePhysiqueCategoryKeys } from '../../../src/domain/physique/physique-evasion-rate-category';
 
 const categories = [
-  { evasionRateStart: 0, evasionRateEnd: 0, columnIndex: 0, textKey: 'largest', sign: null },
-  { evasionRateStart: 0, evasionRateEnd: 0, columnIndex: 1, textKey: 'large', sign: null },
-  { evasionRateStart: 3, evasionRateEnd: 3, columnIndex: 1, textKey: 'fast', sign: 'plus' },
-  { evasionRateStart: 3, evasionRateEnd: 3, columnIndex: 1, textKey: 'fast', sign: 'minus' },
-  { evasionRateStart: 6, evasionRateEnd: 10, columnIndex: 1, textKey: 'large', sign: 'minus' },
+  { id: 'a', evasionRateStart: 0, evasionRateEnd: 0, columnIndex: 0, textKey: 'largest', sign: null },
+  { id: 'b', evasionRateStart: 0, evasionRateEnd: 0, columnIndex: 1, textKey: 'large', sign: null },
+  { id: 'c', evasionRateStart: 3, evasionRateEnd: 3, columnIndex: 1, textKey: 'fast', sign: 'plus' },
+  { id: 'd', evasionRateStart: 3, evasionRateEnd: 3, columnIndex: 1, textKey: 'fast', sign: 'minus' },
+  { id: 'e', evasionRateStart: 6, evasionRateEnd: 10, columnIndex: 1, textKey: 'large', sign: 'minus' },
 ] as const;
 
 const fakeRepo = { find: async () => categories.map((category) => ({ ...category })) };

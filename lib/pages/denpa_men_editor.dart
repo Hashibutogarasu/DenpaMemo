@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../data/server/physique_legend_grid_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
@@ -17,6 +18,7 @@ import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/dialog/physique_search_debug_dialog.dart';
 import '../widgets/icon/editable_denpa_men_icon_swiper.dart';
+import '../widgets/icon/evasion_rate_sign_icon.dart';
 import 'denpa_men_selection.dart';
 
 /// Arguments passed as `$extra` by `AddDenpaMenRoute` (see
@@ -160,6 +162,27 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         [final only] => only.text ?? only.textKey,
         _ => t.physiqueIdentification.multipleCandidates,
       },
+      extraActions: (context, result) {
+        final match = result.matches.firstOrNull;
+        if (match == null) return const [];
+        return [
+          OutlinedButton.icon(
+            icon: const Icon(Icons.grid_on),
+            label: Text(t.physiqueIdentification.matchingLocationButton),
+            onPressed: () {
+              PhysiqueLegendGridRoute(
+                $extra: PhysiqueLegendGridArgs(
+                  level: match.level,
+                  anntenaCategory: match.anntenaCategory,
+                  matchColumnIndex: match.columnIndex,
+                  matchLineOffset: match.lineOffset,
+                  matchEvasionRate: _denpaMen.evasionRate,
+                ),
+              ).push(context);
+            },
+          ),
+        ];
+      },
     );
     if (result == null || !context.mounted) {
       return null;
@@ -179,11 +202,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         title: t.physiqueIdentification.chooseCandidateTitle,
         candidates: candidates,
         label: (candidate) => candidate.text ?? candidate.textKey,
-        leading: (candidate) => switch (candidate.sign) {
-          'plus' => const Icon(Icons.add),
-          'minus' => const Icon(Icons.remove),
-          _ => null,
-        },
+        leading: (candidate) => EvasionRateSignIcon(sign: candidate.sign),
         subtitle: (candidate) => candidate.evasionRateStart == candidate.evasionRateEnd
             ? t.physiqueIdentification.candidateEvasionRateExact(
                 value: candidate.evasionRateStart,
@@ -192,6 +211,19 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
                 start: candidate.evasionRateStart,
                 end: candidate.evasionRateEnd,
               ),
+        trailingActionIcon: Icons.grid_on,
+        onTrailingAction: (candidate) {
+          final match = matches.first;
+          PhysiqueLegendGridRoute(
+            $extra: PhysiqueLegendGridArgs(
+              level: match.level,
+              anntenaCategory: match.anntenaCategory,
+              matchColumnIndex: match.columnIndex,
+              matchLineOffset: match.lineOffset,
+              matchEvasionRate: _denpaMen.evasionRate,
+            ),
+          ).push(context);
+        },
       ).then((candidate) => candidate?.textKey),
     };
     final physique = chosenKey == null

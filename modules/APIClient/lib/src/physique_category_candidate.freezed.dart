@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueCategoryCandidate {
 
- String get textKey; String? get text; String? get sign; int get evasionRateStart; int get evasionRateEnd;
+ String get textKey; String? get text; EvasionRateSign? get sign; int get evasionRateStart; int get evasionRateEnd;
 /// Create a copy of PhysiqueCategoryCandidate
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueCategoryCandidateCopyWith<$Res>  {
   factory $PhysiqueCategoryCandidateCopyWith(PhysiqueCategoryCandidate value, $Res Function(PhysiqueCategoryCandidate) _then) = _$PhysiqueCategoryCandidateCopyWithImpl;
 @useResult
 $Res call({
- String textKey, String? text, String? sign, int evasionRateStart, int evasionRateEnd
+ String textKey, String? text, EvasionRateSign? sign, int evasionRateStart, int evasionRateEnd
 });
 
 
@@ -70,7 +70,7 @@ class _$PhysiqueCategoryCandidateCopyWithImpl<$Res>
 textKey: null == textKey ? _self.textKey : textKey // ignore: cast_nullable_to_non_nullable
 as String,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String?,sign: freezed == sign ? _self.sign : sign // ignore: cast_nullable_to_non_nullable
-as String?,evasionRateStart: null == evasionRateStart ? _self.evasionRateStart : evasionRateStart // ignore: cast_nullable_to_non_nullable
+as EvasionRateSign?,evasionRateStart: null == evasionRateStart ? _self.evasionRateStart : evasionRateStart // ignore: cast_nullable_to_non_nullable
 as int,evasionRateEnd: null == evasionRateEnd ? _self.evasionRateEnd : evasionRateEnd // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String textKey,  String? text,  String? sign,  int evasionRateStart,  int evasionRateEnd)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String textKey,  String? text,  EvasionRateSign? sign,  int evasionRateStart,  int evasionRateEnd)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueCategoryCandidate() when $default != null:
 return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that.evasionRateEnd);case _:
@@ -178,7 +178,7 @@ return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String textKey,  String? text,  String? sign,  int evasionRateStart,  int evasionRateEnd)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String textKey,  String? text,  EvasionRateSign? sign,  int evasionRateStart,  int evasionRateEnd)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueCategoryCandidate():
 return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that.evasionRateEnd);case _:
@@ -198,7 +198,7 @@ return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String textKey,  String? text,  String? sign,  int evasionRateStart,  int evasionRateEnd)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String textKey,  String? text,  EvasionRateSign? sign,  int evasionRateStart,  int evasionRateEnd)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueCategoryCandidate() when $default != null:
 return $default(_that.textKey,_that.text,_that.sign,_that.evasionRateStart,_that.evasionRateEnd);case _:
@@ -218,7 +218,7 @@ class _PhysiqueCategoryCandidate implements PhysiqueCategoryCandidate {
 
 @override final  String textKey;
 @override final  String? text;
-@override final  String? sign;
+@override final  EvasionRateSign? sign;
 @override final  int evasionRateStart;
 @override final  int evasionRateEnd;
 
@@ -255,7 +255,7 @@ abstract mixin class _$PhysiqueCategoryCandidateCopyWith<$Res> implements $Physi
   factory _$PhysiqueCategoryCandidateCopyWith(_PhysiqueCategoryCandidate value, $Res Function(_PhysiqueCategoryCandidate) _then) = __$PhysiqueCategoryCandidateCopyWithImpl;
 @override @useResult
 $Res call({
- String textKey, String? text, String? sign, int evasionRateStart, int evasionRateEnd
+ String textKey, String? text, EvasionRateSign? sign, int evasionRateStart, int evasionRateEnd
 });
 
 
@@ -277,7 +277,7 @@ class __$PhysiqueCategoryCandidateCopyWithImpl<$Res>
 textKey: null == textKey ? _self.textKey : textKey // ignore: cast_nullable_to_non_nullable
 as String,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String?,sign: freezed == sign ? _self.sign : sign // ignore: cast_nullable_to_non_nullable
-as String?,evasionRateStart: null == evasionRateStart ? _self.evasionRateStart : evasionRateStart // ignore: cast_nullable_to_non_nullable
+as EvasionRateSign?,evasionRateStart: null == evasionRateStart ? _self.evasionRateStart : evasionRateStart // ignore: cast_nullable_to_non_nullable
 as int,evasionRateEnd: null == evasionRateEnd ? _self.evasionRateEnd : evasionRateEnd // ignore: cast_nullable_to_non_nullable
 as int,
   ));

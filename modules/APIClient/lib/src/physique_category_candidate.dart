@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'evasion_rate_sign.dart';
+
 part 'physique_category_candidate.freezed.dart';
 part 'physique_category_candidate.g.dart';
 
@@ -19,7 +21,7 @@ abstract class PhysiqueCategoryCandidate with _$PhysiqueCategoryCandidate {
   const factory PhysiqueCategoryCandidate({
     required String textKey,
     String? text,
-    String? sign,
+    EvasionRateSign? sign,
     required int evasionRateStart,
     required int evasionRateEnd,
   }) = _PhysiqueCategoryCandidate;

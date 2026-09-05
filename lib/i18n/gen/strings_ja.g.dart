@@ -632,6 +632,21 @@ class Translations$physiqueIdentification$ja {
 	/// ja: '回避率 ${start}〜${end}'
 	String candidateEvasionRateRange({required Object start, required Object end}) => '回避率 ${start}〜${end}';
 
+	/// ja: '該当箇所'
+	String get matchingLocationButton => '該当箇所';
+
+	/// ja: '該当箇所'
+	String get legendGridPageTitle => '該当箇所';
+
+	/// ja: '回避率の意味'
+	String get legendGridSectionTitle => '回避率の意味';
+
+	/// ja: 'HP'
+	String get hpGridSectionTitle => 'HP';
+
+	/// ja: 'データの取得に失敗しました'
+	String get legendGridLoadError => 'データの取得に失敗しました';
+
 	/// ja: '体格特定デバッグ情報'
 	String get debugTitle => '体格特定デバッグ情報';
 
@@ -1391,6 +1406,11 @@ extension on Translations {
 			'physiqueIdentification.chooseCandidateTitle' => '体格を選択してください',
 			'physiqueIdentification.candidateEvasionRateExact' => ({required Object value}) => '回避率 ${value}',
 			'physiqueIdentification.candidateEvasionRateRange' => ({required Object start, required Object end}) => '回避率 ${start}〜${end}',
+			'physiqueIdentification.matchingLocationButton' => '該当箇所',
+			'physiqueIdentification.legendGridPageTitle' => '該当箇所',
+			'physiqueIdentification.legendGridSectionTitle' => '回避率の意味',
+			'physiqueIdentification.hpGridSectionTitle' => 'HP',
+			'physiqueIdentification.legendGridLoadError' => 'データの取得に失敗しました',
 			'physiqueIdentification.debugTitle' => '体格特定デバッグ情報',
 			'physiqueIdentification.debugQueryLabel' => '検索条件',
 			'physiqueIdentification.debugQueryValue' => ({required Object type, required Object against, required Object evasionRate, required Object hp, required Object level, required Object antenna, required Object anntenaCategory}) => '種別: ${type} / 対象: ${against} / 回避率: ${evasionRate} / HP: ${hp} / レベル: ${level} / アンテナ: ${antenna} / アンテナカテゴリ: ${anntenaCategory}',

@@ -1,5 +1,10 @@
 library;
 
+export 'src/evasion_rate_sign.dart';
+export 'src/hp_cell.dart';
+export 'src/legend_cell.dart';
+export 'src/legend_grid_request.dart';
+export 'src/legend_grid_result.dart';
 export 'src/physique_category_candidate.dart';
 export 'src/physique_column_match.dart';
 export 'src/physique_column_search_query.dart';

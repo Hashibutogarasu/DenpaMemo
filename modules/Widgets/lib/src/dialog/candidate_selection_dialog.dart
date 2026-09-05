@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 /// to any one candidate shape — the caller decides what [T] is. [leading]
 /// and [subtitle] are optional per-candidate extras (e.g. a disambiguating
 /// icon and a secondary line of text) rendered alongside [label].
+/// [trailingActionIcon]/[onTrailingAction] add an optional per-candidate
+/// trailing button that fires [onTrailingAction] without selecting the
+/// candidate or closing the dialog — e.g. to preview a candidate's detail
+/// page before committing to it.
 class CandidateSelectionDialog<T> extends StatelessWidget {
   const CandidateSelectionDialog({
     super.key,
@@ -13,6 +17,8 @@ class CandidateSelectionDialog<T> extends StatelessWidget {
     required this.label,
     this.leading,
     this.subtitle,
+    this.trailingActionIcon,
+    this.onTrailingAction,
   });
 
   final String title;
@@ -20,6 +26,8 @@ class CandidateSelectionDialog<T> extends StatelessWidget {
   final String Function(T candidate) label;
   final Widget? Function(T candidate)? leading;
   final String? Function(T candidate)? subtitle;
+  final IconData? trailingActionIcon;
+  final void Function(T candidate)? onTrailingAction;
 
   static Future<T?> show<T>(
     BuildContext context, {
@@ -28,6 +36,8 @@ class CandidateSelectionDialog<T> extends StatelessWidget {
     required String Function(T candidate) label,
     Widget? Function(T candidate)? leading,
     String? Function(T candidate)? subtitle,
+    IconData? trailingActionIcon,
+    void Function(T candidate)? onTrailingAction,
   }) {
     return showDialog<T>(
       context: context,
@@ -37,6 +47,8 @@ class CandidateSelectionDialog<T> extends StatelessWidget {
         label: label,
         leading: leading,
         subtitle: subtitle,
+        trailingActionIcon: trailingActionIcon,
+        onTrailingAction: onTrailingAction,
       ),
     );
   }
@@ -57,6 +69,12 @@ class CandidateSelectionDialog<T> extends StatelessWidget {
                 final text? => Text(text),
                 null => null,
               },
+              trailing: onTrailingAction == null
+                  ? null
+                  : IconButton(
+                      icon: Icon(trailingActionIcon ?? Icons.search),
+                      onPressed: () => onTrailingAction!(candidate),
+                    ),
             ),
           ),
       ],

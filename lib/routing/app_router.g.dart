@@ -26,6 +26,7 @@ List<RouteBase> get $appRoutes => [
   $dataManagementRoute,
   $physiqueTableListRoute,
   $physiqueTableViewRoute,
+  $physiqueLegendGridRoute,
   $physiqueTableEditRoute,
   $cloudBackupShellRouteData,
 ];
@@ -650,6 +651,37 @@ mixin $PhysiqueTableViewRoute on GoRouteData {
   @override
   String get location =>
       GoRouteData.$location('/settings/developer/physiques/view');
+
+  @override
+  void go(BuildContext context) => context.go(location, extra: _self.$extra);
+
+  @override
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: _self.$extra);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: _self.$extra);
+
+  @override
+  void replace(BuildContext context) =>
+      context.replace(location, extra: _self.$extra);
+}
+
+RouteBase get $physiqueLegendGridRoute => GoRouteData.$route(
+  path: '/physique-legend-grid',
+  hasOverriddenOnExit: false,
+  factory: $PhysiqueLegendGridRoute._fromState,
+);
+
+mixin $PhysiqueLegendGridRoute on GoRouteData {
+  static PhysiqueLegendGridRoute _fromState(GoRouterState state) =>
+      PhysiqueLegendGridRoute($extra: state.extra as PhysiqueLegendGridArgs);
+
+  PhysiqueLegendGridRoute get _self => this as PhysiqueLegendGridRoute;
+
+  @override
+  String get location => GoRouteData.$location('/physique-legend-grid');
 
   @override
   void go(BuildContext context) => context.go(location, extra: _self.$extra);

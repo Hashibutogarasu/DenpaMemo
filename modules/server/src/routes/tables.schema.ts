@@ -87,3 +87,16 @@ export const searchTablesQuerySchema = z.object({
   category: z.string().min(1).optional(),
   antenna: z.string().min(1).optional(),
 });
+
+export const legendGridQuerySchema = z
+  .object({
+    level: z.string().min(1),
+    anntenaCategory: z.string().min(1).optional(),
+    antenna: z.string().min(1).optional(),
+    matchColumnIndex: z.coerce.number().int().nonnegative(),
+    matchLineOffset: z.coerce.number().int().nonnegative(),
+    matchEvasionRate: z.coerce.number().int(),
+  })
+  .refine((query) => query.anntenaCategory !== undefined || query.antenna !== undefined, {
+    message: 'One of anntenaCategory or antenna must be provided',
+  });

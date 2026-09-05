@@ -95,6 +95,7 @@ export 'src/theme/app_dialog_theme.dart';
 export 'src/theme/denpa_men_container_theme.dart';
 export 'src/theme/denpa_men_label_theme.dart';
 export 'src/theme/fab_button_theme.dart';
+export 'src/theme/physique_legend_grid_theme.dart';
 export 'src/theme/slanted_header_theme.dart';
 export 'src/theme/splash_theme.dart';
 export 'src/unfocus_on_tap.dart';

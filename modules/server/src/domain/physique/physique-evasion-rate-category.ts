@@ -2,6 +2,7 @@
 export type EvasionRateSign = 'plus' | 'minus' | null;
 
 export interface PhysiqueEvasionRateCategoryRow {
+  id: string;
   evasionRateStart: number;
   evasionRateEnd: number;
   columnIndex: number;

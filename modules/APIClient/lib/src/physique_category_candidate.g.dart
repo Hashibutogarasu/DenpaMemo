@@ -11,7 +11,7 @@ _PhysiqueCategoryCandidate _$PhysiqueCategoryCandidateFromJson(
 ) => _PhysiqueCategoryCandidate(
   textKey: json['textKey'] as String,
   text: json['text'] as String?,
-  sign: json['sign'] as String?,
+  sign: $enumDecodeNullable(_$EvasionRateSignEnumMap, json['sign']),
   evasionRateStart: (json['evasionRateStart'] as num).toInt(),
   evasionRateEnd: (json['evasionRateEnd'] as num).toInt(),
 );
@@ -21,7 +21,12 @@ Map<String, dynamic> _$PhysiqueCategoryCandidateToJson(
 ) => <String, dynamic>{
   'textKey': instance.textKey,
   'text': instance.text,
-  'sign': instance.sign,
+  'sign': _$EvasionRateSignEnumMap[instance.sign],
   'evasionRateStart': instance.evasionRateStart,
   'evasionRateEnd': instance.evasionRateEnd,
+};
+
+const _$EvasionRateSignEnumMap = {
+  EvasionRateSign.plus: 'plus',
+  EvasionRateSign.minus: 'minus',
 };

@@ -2,6 +2,7 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../data/server/physique_legend_grid_args.dart';
 import '../data/server/physique_table_args.dart';
 import '../pages/account_settings.dart';
 import '../pages/analysis.dart';
@@ -19,6 +20,7 @@ import '../pages/language_settings.dart';
 import '../pages/monster_exp.dart';
 import '../pages/monster_selection.dart';
 import '../pages/open_source_licenses.dart';
+import '../pages/physique_legend_grid_page.dart';
 import '../pages/physique_table_edit.dart';
 import '../pages/physique_table_list.dart';
 import '../pages/physique_table_view.dart';
@@ -332,6 +334,21 @@ class PhysiqueTableViewRoute extends GoRouteData with $PhysiqueTableViewRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       PhysiqueTableViewPage(args: $extra);
+}
+
+/// Pushed from the physique-identification candidate dialog's "matching
+/// location" button. `$extra` carries the level/antenna pair plus the
+/// matched column/lineOffset/evasion-rate, since it can't round-trip
+/// through a URL (see [PhysiqueTableViewRoute] for the same pattern).
+@TypedGoRoute<PhysiqueLegendGridRoute>(path: '/physique-legend-grid')
+class PhysiqueLegendGridRoute extends GoRouteData with $PhysiqueLegendGridRoute {
+  const PhysiqueLegendGridRoute({required this.$extra});
+
+  final PhysiqueLegendGridArgs $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      PhysiqueLegendGridPage(args: $extra);
 }
 
 /// Pushed from [PhysiqueTableViewPage]'s edit button.

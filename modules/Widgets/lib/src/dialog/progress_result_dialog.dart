@@ -10,7 +10,9 @@ import '../../i18n/gen/strings.g.dart';
 /// instead, with its own OK button popping with `null` — the dialog never
 /// closes itself without the user tapping one of these buttons. Not
 /// specific to any one [task] shape — the caller decides what [T] is and
-/// how to render it.
+/// how to render it. [extraActions], when given, renders additional
+/// buttons between the result label and the OK button on success (e.g. a
+/// "view detail" shortcut) without affecting what the dialog pops with.
 class ProgressResultDialog<T> extends StatefulWidget {
   const ProgressResultDialog({
     super.key,
@@ -19,6 +21,7 @@ class ProgressResultDialog<T> extends StatefulWidget {
     required this.errorMessage,
     required this.task,
     required this.resultLabel,
+    this.extraActions,
   });
 
   final String loadingMessage;
@@ -26,6 +29,7 @@ class ProgressResultDialog<T> extends StatefulWidget {
   final String errorMessage;
   final Future<T> Function() task;
   final String Function(T result) resultLabel;
+  final List<Widget> Function(BuildContext context, T result)? extraActions;
 
   static Future<T?> show<T>(
     BuildContext context, {
@@ -34,6 +38,7 @@ class ProgressResultDialog<T> extends StatefulWidget {
     required String errorMessage,
     required Future<T> Function() task,
     required String Function(T result) resultLabel,
+    List<Widget> Function(BuildContext context, T result)? extraActions,
   }) {
     return showDialog<T>(
       context: context,
@@ -44,6 +49,7 @@ class ProgressResultDialog<T> extends StatefulWidget {
         errorMessage: errorMessage,
         task: task,
         resultLabel: resultLabel,
+        extraActions: extraActions,
       ),
     );
   }
@@ -100,6 +106,12 @@ class _ProgressResultDialogState<T> extends State<ProgressResultDialog<T>> {
                   widget.resultLabel(result),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                ...?widget.extraActions?.call(context, result).map(
+                  (action) => Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: action,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 FilledButton(

@@ -3,7 +3,8 @@ import type { DataSource } from 'typeorm';
 import type { z } from 'zod';
 import { createAntennaCategoryLinkDataSource } from '../domain/physique/antenna-category-link-data-source';
 import { findEvasionRateMatches } from '../domain/physique/evasion-rate-search';
-import { resolvePhysiqueCategoryKeys } from '../domain/physique/physique-evasion-rate-category';
+import { buildLegendGrid } from '../domain/physique/legend-grid';
+import { resolvePhysiqueCategoryKeys, type PhysiqueEvasionRateCategoryRow } from '../domain/physique/physique-evasion-rate-category';
 import { TABLE_ENTITY_MAPPING } from '../domain/physique/table-registry';
 import {
   deleteTableRows,
@@ -21,6 +22,7 @@ import { categoryTranslator } from '../i18n/i18n';
 import {
   deleteTablesQuerySchema,
   getTablesQuerySchema,
+  legendGridQuerySchema,
   postTablesBodySchema,
   putTablesBodySchema,
   putTablesBodySchemaWithBounds,
@@ -334,6 +336,49 @@ export function tablesRoutes(dataSource: DataSource) {
             : null;
 
         return { matches: results, info };
+      })
+      .get('/legend-grid', async ({ query, set, headers }) => {
+        const parsed = legendGridQuerySchema.safeParse(query);
+        if (!parsed.success) {
+          set.status = 400;
+          return zodErrorResponse(parsed.error);
+        }
+        const { level, matchColumnIndex, matchLineOffset, matchEvasionRate } = parsed.data;
+        const locale = parseAcceptLanguage(headers['accept-language']);
+
+        let anntenaCategory = parsed.data.anntenaCategory;
+        if (anntenaCategory === undefined) {
+          anntenaCategory = await resolveAntennaCategory(parsed.data.antenna!, locale);
+        }
+
+        const evasionRateResolved = await resolve('evasionRate');
+        const hpResolved = await resolve('hp');
+        const [evasionRateRows, hpRows, categories] = await Promise.all([
+          dataSource
+            .getRepository(evasionRateResolved.entity)
+            .find({ where: whereFor(evasionRateResolved, { level, anntenaCategory }) }),
+          dataSource.getRepository(hpResolved.entity).find({ where: whereFor(hpResolved, { level, anntenaCategory }) }),
+          evasionRateCategoryRepo.find(),
+        ]);
+
+        const grid = buildLegendGrid({
+          categories: categories as unknown as PhysiqueEvasionRateCategoryRow[],
+          evasionRateRows: evasionRateRows as unknown as TableRow[],
+          hpRows: hpRows as unknown as TableRow[],
+          matchColumnIndex,
+          matchLineOffset,
+          matchEvasionRate,
+        });
+
+        return {
+          level,
+          anntenaCategory,
+          legendCells: grid.legendCells.map((cell) => ({
+            ...cell,
+            text: categoryTranslator.translatePhysique(cell.textKey, locale) ?? null,
+          })),
+          hpCells: grid.hpCells,
+        };
       }),
   );
 }
