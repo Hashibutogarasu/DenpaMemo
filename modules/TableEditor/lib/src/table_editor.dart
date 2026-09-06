@@ -73,7 +73,10 @@ class TableEditor<T> extends StatelessWidget {
                   initialValue: column.valueOf(rowData),
                   onChanged: (value) => column.onChanged!(rowData, value),
                 )
-              : null,
+              : column.cellBuilder == null
+              ? null
+              : (context, rowData, isSelected, isDim) =>
+                    column.cellBuilder!(context, rowData),
         ),
       );
     }

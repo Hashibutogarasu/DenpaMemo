@@ -43,5 +43,6 @@
       "fileMatch": ["/assets/data/body_color_abnormality_resistance.json"],
       "url": "./assets/data/schemas/body_color_abnormality_resistance.schema.json"
     }
-  ]
+  ],
+  "remote.autoForwardPorts": false
 }

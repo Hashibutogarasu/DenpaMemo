@@ -1,17 +1,24 @@
+import 'package:api_client/api_client.dart';
+import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../data/server/physique_legend_grid_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
+import '../providers/physiques_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
+import '../widgets/dialog/physique_search_debug_dialog.dart';
 import '../widgets/icon/editable_denpa_men_icon_swiper.dart';
+import '../widgets/icon/evasion_rate_sign_icon.dart';
 import 'denpa_men_selection.dart';
 
 /// Arguments passed as `$extra` by `AddDenpaMenRoute` (see
@@ -104,6 +111,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         isSpColor: draft.isSpColor,
         headShape: draft.headShape,
         physique: draft.physique,
+        physiqueColumnIndex: draft.physiqueColumnIndex,
         personality: draft.personality,
         pattern: draft.pattern,
         anntena: draft.anntena,
@@ -130,6 +138,103 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         monsterExp: draft.monsterExp,
       );
     });
+  }
+
+  Future<PhysiqueIdentification?> _identifyPhysique(
+    BuildContext context,
+  ) async {
+    final t = context.t;
+    final result = await ProgressResultDialog.show<PhysiqueSearchResult>(
+      context,
+      loadingMessage: t.physiqueIdentification.identifying,
+      successMessage: t.physiqueIdentification.identified,
+      errorMessage: t.physiqueIdentification.error,
+      task: () => ref
+          .read(physiquesApiClientProvider)
+          .search(
+            hp: _denpaMen.hp,
+            evasionRate: _denpaMen.evasionRate,
+            antenna: _denpaMen.anntena.id,
+            level: '${_denpaMen.level}',
+          ),
+      resultLabel: (result) => switch (result.matches.firstOrNull?.candidates) {
+        null || [] => t.physiqueIdentification.notFound,
+        [final only] => only.text ?? only.textKey,
+        _ => t.physiqueIdentification.multipleCandidates,
+      },
+      extraActions: (context, result) {
+        final match = result.matches.firstOrNull;
+        if (match == null) return const [];
+        return [
+          OutlinedButton.icon(
+            icon: const Icon(Icons.grid_on),
+            label: Text(t.physiqueIdentification.matchingLocationButton),
+            onPressed: () {
+              PhysiqueLegendGridRoute(
+                $extra: PhysiqueLegendGridArgs(
+                  level: match.level,
+                  anntenaCategory: match.anntenaCategory,
+                  matchColumnIndex: match.columnIndex,
+                  matchLineOffset: match.lineOffset,
+                  matchEvasionRate: _denpaMen.evasionRate,
+                ),
+              ).push(context);
+            },
+          ),
+        ];
+      },
+    );
+    if (result == null || !context.mounted) {
+      return null;
+    }
+    if (kDebugMode && result.info != null) {
+      await PhysiqueSearchDebugDialog.show(context, info: result.info!);
+      if (!context.mounted) return null;
+    }
+    final matches = result.matches;
+    final columnIndex = matches.firstOrNull?.columnIndex;
+    final candidates = matches.firstOrNull?.candidates ?? const [];
+    final chosenKey = switch (candidates) {
+      [] => null,
+      [final only] => only.textKey,
+      _ => await CandidateSelectionDialog.show<PhysiqueCategoryCandidate>(
+        context,
+        title: t.physiqueIdentification.chooseCandidateTitle,
+        candidates: candidates,
+        label: (candidate) => candidate.text ?? candidate.textKey,
+        leading: (candidate) => EvasionRateSignIcon(sign: candidate.sign),
+        subtitle: (candidate) => candidate.evasionRateStart == candidate.evasionRateEnd
+            ? t.physiqueIdentification.candidateEvasionRateExact(
+                value: candidate.evasionRateStart,
+              )
+            : t.physiqueIdentification.candidateEvasionRateRange(
+                start: candidate.evasionRateStart,
+                end: candidate.evasionRateEnd,
+              ),
+        trailingActionIcon: Icons.grid_on,
+        onTrailingAction: (candidate) {
+          final match = matches.first;
+          PhysiqueLegendGridRoute(
+            $extra: PhysiqueLegendGridArgs(
+              level: match.level,
+              anntenaCategory: match.anntenaCategory,
+              matchColumnIndex: match.columnIndex,
+              matchLineOffset: match.lineOffset,
+              matchEvasionRate: _denpaMen.evasionRate,
+            ),
+          ).push(context);
+        },
+      ).then((candidate) => candidate?.textKey),
+    };
+    final physique = chosenKey == null
+        ? null
+        : widget.masterData.physiques.firstWhereOrNull(
+            (p) => p.id == chosenKey,
+          );
+    if (physique == null) {
+      return null;
+    }
+    return (physique: physique, columnIndex: columnIndex);
   }
 
   void _save() {
@@ -255,6 +360,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         onPickMonsterExp: (context) => MonsterExpRoute(
           $extra: _denpaMen.monsterExp,
         ).push<MonsterExp>(context),
+        onIdentifyPhysique: _identifyPhysique,
       ),
     );
   }

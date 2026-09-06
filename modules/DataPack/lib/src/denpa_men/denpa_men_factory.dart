@@ -29,6 +29,7 @@ DenpaMen createDenpaMen({
   required bool isSpColor,
   required HeadShape headShape,
   required Physique physique,
+  int? physiqueColumnIndex,
   required Personality personality,
   required Pattern pattern,
   required Anntena anntena,
@@ -59,7 +60,8 @@ DenpaMen createDenpaMen({
   if (bodyColors.length != 1 && bodyColors.length != 2) {
     throw InvalidBodyColorCountException(bodyColors.length);
   }
-  if (bodyColorShades.isNotEmpty && bodyColorShades.length != bodyColors.length) {
+  if (bodyColorShades.isNotEmpty &&
+      bodyColorShades.length != bodyColors.length) {
     throw InvalidBodyColorShadeCountException(bodyColorShades.length);
   }
   if (isSpColor && bodyColors.length != 1) {
@@ -90,6 +92,7 @@ DenpaMen createDenpaMen({
         : bodyColorShades,
     attributeResistance: const [],
     physique: physique,
+    physiqueColumnIndex: physiqueColumnIndex,
     personality: personality,
     pattern: pattern,
     headShape: headShape,
@@ -118,7 +121,8 @@ DenpaMen createDenpaMen({
     monsterExp: monsterExp,
   );
 
-  final resolvedResistances = resistances ?? draft.calculateResistances(masterData);
+  final resolvedResistances =
+      resistances ?? draft.calculateResistances(masterData);
   final withResistances = draft.copyWith(
     abnormalityResistances: resolvedResistances.abnormalityResistances,
     attributeResistance: resolvedResistances.attributeResistance,

@@ -10,6 +10,16 @@ final physiquesApiClientProvider = Provider<PhysiquesApiClient>(
   (ref) => PhysiquesApiClient(Uri.parse(physiqueServerConfig.baseUrl)),
 );
 
+/// The "matching location" grid for one identification result — see
+/// `PhysiquesApiClient.legendGrid`. Read-only reference data tied to a
+/// specific search result, so `autoDispose` is appropriate (no need to
+/// keep it cached once the page showing it is closed).
+final legendGridProvider = FutureProvider.autoDispose
+    .family<LegendGridResult, LegendGridRequest>(
+      (ref, request) =>
+          ref.read(physiquesApiClientProvider).legendGrid(request),
+    );
+
 /// Awaits [fetch] up to [timeout]; on success, [save]s it to the local
 /// cache before returning it. On timeout or any other failure, falls
 /// back to [cached] instead of leaving the caller waiting forever —

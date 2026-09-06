@@ -26,6 +26,7 @@ abstract class DenpaMen with _$DenpaMen {
     @Default(<int>[]) List<int> bodyColorShades,
     required List<AttributeResistance> attributeResistance,
     required Physique physique,
+    int? physiqueColumnIndex,
     required Personality personality,
     required Pattern pattern,
     required HeadShape headShape,

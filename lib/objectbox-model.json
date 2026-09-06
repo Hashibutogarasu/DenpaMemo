@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "39:3473083904217281237",
+      "lastPropertyId": "40:8221875653235792941",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -205,6 +205,11 @@
         {
           "id": "39:3473083904217281237",
           "name": "monsterExpRecipientCount",
+          "type": 6
+        },
+        {
+          "id": "40:8221875653235792941",
+          "name": "physiqueColumnIndex",
           "type": 6
         }
       ],

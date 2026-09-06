@@ -25,6 +25,8 @@ import 'label/joined_labels_text.dart';
 import 'responsive/responsive_provider.dart';
 import 'theme/denpa_men_container_theme.dart';
 
+typedef PhysiqueIdentification = ({Physique physique, int? columnIndex});
+
 /// Right-hand desktop pane letting the user edit [denpaMen] in place. Every
 /// edit produces a full draft [DenpaMen] via [onChanged] so the caller can
 /// re-derive resistances (e.g. through `createDenpaMen`) and update the
@@ -44,6 +46,7 @@ class EditableDenpaMenStatus extends ConsumerWidget {
     required this.parentCandidates,
     required this.onPickParents,
     required this.onPickMonsterExp,
+    required this.onIdentifyPhysique,
     this.qrCodeEditable = true,
   });
 
@@ -61,6 +64,8 @@ class EditableDenpaMenStatus extends ConsumerWidget {
   final List<DenpaMenRecord> parentCandidates;
   final Future<List<DenpaMenRecord>?> Function(BuildContext) onPickParents;
   final Future<MonsterExp?> Function(BuildContext) onPickMonsterExp;
+  final Future<PhysiqueIdentification?> Function(BuildContext)
+  onIdentifyPhysique;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -302,6 +307,27 @@ class EditableDenpaMenStatus extends ConsumerWidget {
             },
             child: Text(
               antennaDisplayName(t, denpaMen.anntena, denpaMen.antennaLevel),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 8),
+          SelectionTile(
+            label: t.editableStatus.physique,
+            onTap: () async {
+              final result = await onIdentifyPhysique(context);
+              if (result != null) {
+                onChanged(
+                  denpaMen.copyWith(
+                    physique: result.physique,
+                    physiqueColumnIndex: result.columnIndex,
+                  ),
+                );
+              }
+            },
+            child: Text(
+              denpaMen.physiqueColumnIndex == null
+                  ? t.common.unset
+                  : t.physique[denpaMen.physique.id] ?? denpaMen.physique.id,
               overflow: TextOverflow.ellipsis,
             ),
           ),

@@ -47,6 +47,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
 	late final Translations$physiqueTable$ja physiqueTable = Translations$physiqueTable$ja.internal(_root);
+	late final Translations$physiqueIdentification$ja physiqueIdentification = Translations$physiqueIdentification$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$search$ja search = Translations$search$ja.internal(_root);
 	Map<String, String> get monster => {
@@ -597,6 +598,87 @@ class Translations$physiqueTable$ja {
 
 	/// ja: '表の読み込みに失敗しました。'
 	String get loadError => '表の読み込みに失敗しました。';
+}
+
+// Path: physiqueIdentification
+class Translations$physiqueIdentification$ja {
+	Translations$physiqueIdentification$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: '体格を特定しています'
+	String get identifying => '体格を特定しています';
+
+	/// ja: '体格を特定しました！'
+	String get identified => '体格を特定しました！';
+
+	/// ja: '体格を特定できませんでした'
+	String get notFound => '体格を特定できませんでした';
+
+	/// ja: '体格の特定に失敗しました'
+	String get error => '体格の特定に失敗しました';
+
+	/// ja: '候補が複数あります'
+	String get multipleCandidates => '候補が複数あります';
+
+	/// ja: '体格を選択してください'
+	String get chooseCandidateTitle => '体格を選択してください';
+
+	/// ja: '回避率 ${value}'
+	String candidateEvasionRateExact({required Object value}) => '回避率 ${value}';
+
+	/// ja: '回避率 ${start}〜${end}'
+	String candidateEvasionRateRange({required Object start, required Object end}) => '回避率 ${start}〜${end}';
+
+	/// ja: '該当箇所'
+	String get matchingLocationButton => '該当箇所';
+
+	/// ja: '該当箇所'
+	String get legendGridPageTitle => '該当箇所';
+
+	/// ja: '回避率の意味'
+	String get legendGridSectionTitle => '回避率の意味';
+
+	/// ja: 'HP'
+	String get hpGridSectionTitle => 'HP';
+
+	/// ja: 'データの取得に失敗しました'
+	String get legendGridLoadError => 'データの取得に失敗しました';
+
+	/// ja: '体格特定デバッグ情報'
+	String get debugTitle => '体格特定デバッグ情報';
+
+	/// ja: '検索条件'
+	String get debugQueryLabel => '検索条件';
+
+	/// ja: '種別: ${type} / 対象: ${against} / 回避率: ${evasionRate} / HP: ${hp} / レベル: ${level} / アンテナ: ${antenna} / アンテナカテゴリ: ${anntenaCategory}'
+	String debugQueryValue({required Object type, required Object against, required Object evasionRate, required Object hp, required Object level, required Object antenna, required Object anntenaCategory}) => '種別: ${type} / 対象: ${against} / 回避率: ${evasionRate} / HP: ${hp} / レベル: ${level} / アンテナ: ${antenna} / アンテナカテゴリ: ${anntenaCategory}';
+
+	/// ja: '回避率・HPが一致した列'
+	String get debugMatchesLabel => '回避率・HPが一致した列';
+
+	/// ja: '一致する列はありませんでした'
+	String get debugMatchesEmpty => '一致する列はありませんでした';
+
+	/// ja: 'レベル${level} / ${anntenaCategory} / 行${lineOffset} / 列${columnIndex}'
+	String debugMatchValue({required Object level, required Object anntenaCategory, required Object lineOffset, required Object columnIndex}) => 'レベル${level} / ${anntenaCategory} / 行${lineOffset} / 列${columnIndex}';
+
+	/// ja: '登録されている体格カテゴリパターン'
+	String get debugCategoryRowsLabel => '登録されている体格カテゴリパターン';
+
+	/// ja: '体格カテゴリパターンが1件も登録されていません'
+	String get debugCategoryRowsEmpty => '体格カテゴリパターンが1件も登録されていません';
+
+	/// ja: '回避率${evasionRateStart}〜${evasionRateEnd} / 開始列${startColumn} / オフセット${columnOffset} → ${textKey}'
+	String debugCategoryRowValue({required Object evasionRateStart, required Object evasionRateEnd, required Object startColumn, required Object columnOffset, required Object textKey}) => '回避率${evasionRateStart}〜${evasionRateEnd} / 開始列${startColumn} / オフセット${columnOffset} → ${textKey}';
+
+	/// ja: '詳細をコピー'
+	String get debugCopyDetails => '詳細をコピー';
+
+	/// ja: '詳細をコピーしました'
+	String get debugCopied => '詳細をコピーしました';
 }
 
 // Path: home
@@ -1316,6 +1398,30 @@ extension on Translations {
 			'physiqueTable.deleteSelectedRowsConfirmMessage' => '選択した行を削除します。この操作は取り消せません。よろしいですか?',
 			'physiqueTable.empty' => 'この表にはまだデータがありません。',
 			'physiqueTable.loadError' => '表の読み込みに失敗しました。',
+			'physiqueIdentification.identifying' => '体格を特定しています',
+			'physiqueIdentification.identified' => '体格を特定しました！',
+			'physiqueIdentification.notFound' => '体格を特定できませんでした',
+			'physiqueIdentification.error' => '体格の特定に失敗しました',
+			'physiqueIdentification.multipleCandidates' => '候補が複数あります',
+			'physiqueIdentification.chooseCandidateTitle' => '体格を選択してください',
+			'physiqueIdentification.candidateEvasionRateExact' => ({required Object value}) => '回避率 ${value}',
+			'physiqueIdentification.candidateEvasionRateRange' => ({required Object start, required Object end}) => '回避率 ${start}〜${end}',
+			'physiqueIdentification.matchingLocationButton' => '該当箇所',
+			'physiqueIdentification.legendGridPageTitle' => '該当箇所',
+			'physiqueIdentification.legendGridSectionTitle' => '回避率の意味',
+			'physiqueIdentification.hpGridSectionTitle' => 'HP',
+			'physiqueIdentification.legendGridLoadError' => 'データの取得に失敗しました',
+			'physiqueIdentification.debugTitle' => '体格特定デバッグ情報',
+			'physiqueIdentification.debugQueryLabel' => '検索条件',
+			'physiqueIdentification.debugQueryValue' => ({required Object type, required Object against, required Object evasionRate, required Object hp, required Object level, required Object antenna, required Object anntenaCategory}) => '種別: ${type} / 対象: ${against} / 回避率: ${evasionRate} / HP: ${hp} / レベル: ${level} / アンテナ: ${antenna} / アンテナカテゴリ: ${anntenaCategory}',
+			'physiqueIdentification.debugMatchesLabel' => '回避率・HPが一致した列',
+			'physiqueIdentification.debugMatchesEmpty' => '一致する列はありませんでした',
+			'physiqueIdentification.debugMatchValue' => ({required Object level, required Object anntenaCategory, required Object lineOffset, required Object columnIndex}) => 'レベル${level} / ${anntenaCategory} / 行${lineOffset} / 列${columnIndex}',
+			'physiqueIdentification.debugCategoryRowsLabel' => '登録されている体格カテゴリパターン',
+			'physiqueIdentification.debugCategoryRowsEmpty' => '体格カテゴリパターンが1件も登録されていません',
+			'physiqueIdentification.debugCategoryRowValue' => ({required Object evasionRateStart, required Object evasionRateEnd, required Object startColumn, required Object columnOffset, required Object textKey}) => '回避率${evasionRateStart}〜${evasionRateEnd} / 開始列${startColumn} / オフセット${columnOffset} → ${textKey}',
+			'physiqueIdentification.debugCopyDetails' => '詳細をコピー',
+			'physiqueIdentification.debugCopied' => '詳細をコピーしました',
 			'home.empty' => '電波人間が登録されていません',
 			'home.deleteConfirmTitle' => '削除の確認',
 			'home.deleteConfirmMessage' => 'この電波人間を削除しますか?',

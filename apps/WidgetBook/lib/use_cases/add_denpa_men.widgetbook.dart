@@ -3,7 +3,6 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:denpamemo_widgets/testing.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 
-
 @widgetbook.UseCase(name: 'Default', type: AddDenpaMen, path: 'denpa_men')
 Widget addDenpaMenUseCase(BuildContext context) {
   return AddDenpaMen(
@@ -15,5 +14,6 @@ Widget addDenpaMenUseCase(BuildContext context) {
     parentCandidates: const [],
     onPickParents: (_) async => null,
     onPickMonsterExp: (_) async => null,
+    onIdentifyPhysique: (_) async => null,
   );
 }

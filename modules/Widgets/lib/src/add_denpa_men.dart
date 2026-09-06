@@ -27,6 +27,7 @@ class AddDenpaMen extends StatefulWidget {
     required this.parentCandidates,
     required this.onPickParents,
     required this.onPickMonsterExp,
+    required this.onIdentifyPhysique,
     this.iconFile,
     this.qrCodeEditable = true,
     this.minPaneWidth = 360,
@@ -48,6 +49,8 @@ class AddDenpaMen extends StatefulWidget {
   final List<DenpaMenRecord> parentCandidates;
   final Future<List<DenpaMenRecord>?> Function(BuildContext) onPickParents;
   final Future<MonsterExp?> Function(BuildContext) onPickMonsterExp;
+  final Future<PhysiqueIdentification?> Function(BuildContext)
+  onIdentifyPhysique;
 
   @override
   State<AddDenpaMen> createState() => _AddDenpaMenState();
@@ -118,6 +121,7 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       parentCandidates: widget.parentCandidates,
       onPickParents: widget.onPickParents,
       onPickMonsterExp: widget.onPickMonsterExp,
+      onIdentifyPhysique: widget.onIdentifyPhysique,
     );
 
     return LayoutBuilder(

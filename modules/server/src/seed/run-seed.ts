@@ -26,9 +26,11 @@ import { PatternEntity } from '../entities/pattern.entity';
 import { MajorCategoryEntity } from '../entities/major-category.entity';
 import { MinorCategoryEntity } from '../entities/minor-category.entity';
 import { PhysiqueAntennaCategoryAntennaEntity } from '../entities/physique-antenna-category-antenna.entity';
+import { PhysiqueEvasionRateCategoryEntity } from '../entities/physique-evasion-rate-category.entity';
 import { loadMajorCategories } from './loaders/load-major-categories';
 import { loadMinorCategories } from './loaders/load-minor-categories';
 import { loadPhysiqueAntennaCategoryAntennas } from './loaders/load-physique-antenna-category-antennas';
+import { loadPhysiqueEvasionRateCategories } from './loaders/load-physique-evasion-rate-categories';
 import { seedPhysiqueTableDefaultsIfNeeded } from './seed-physique-table-defaults';
 
 const DATA_DIR = path.resolve(import.meta.dirname, '..', '..', 'data');
@@ -69,6 +71,7 @@ export async function runSeedIfNeeded(dataSource: DataSource, dataDir: string = 
   await seedMajorCategoriesIfNeeded(dataSource, dataDir);
   await seedMinorCategoriesIfNeeded(dataSource, dataDir);
   await seedPhysiqueAntennaCategoryAntennasIfNeeded(dataSource, dataDir);
+  await seedPhysiqueEvasionRateCategoriesIfNeeded(dataSource, dataDir);
 }
 
 /**
@@ -101,6 +104,15 @@ async function seedTableDefinitionsIfNeeded(dataSource: DataSource, dataDir: str
     return;
   }
   await loadTableDefinitions(dataSource, dataDir, new DuplicateIdGuard());
+}
+
+/** Same independent-gate reasoning as {@link seedPhysiqueAntennaCategoriesIfNeeded}. */
+async function seedPhysiqueEvasionRateCategoriesIfNeeded(dataSource: DataSource, dataDir: string): Promise<void> {
+  const categoryCount = await dataSource.getRepository(PhysiqueEvasionRateCategoryEntity).count();
+  if (categoryCount > 0) {
+    return;
+  }
+  await loadPhysiqueEvasionRateCategories(dataSource, dataDir);
 }
 
 /** Same independent-gate reasoning as {@link seedPhysiqueAntennaCategoriesIfNeeded}. */

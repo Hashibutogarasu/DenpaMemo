@@ -31,6 +31,8 @@ class DenpaMenEntity {
 
   String physiqueId;
 
+  int? physiqueColumnIndex;
+
   String personalityId;
 
   String patternId;
@@ -103,6 +105,7 @@ class DenpaMenEntity {
     required this.isSpColor,
     required this.headShapeId,
     required this.physiqueId,
+    this.physiqueColumnIndex,
     required this.personalityId,
     required this.patternId,
     required this.anntenaId,

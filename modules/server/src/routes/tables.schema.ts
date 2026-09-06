@@ -82,6 +82,21 @@ export const searchTablesQuerySchema = z.object({
   against: tableTypeSchema.optional().default('hp'),
   evasionRate: z.coerce.number().int(),
   hp: z.coerce.number().int(),
+  level: z.string().min(1).optional(),
   anntenaCategory: z.string().min(1).optional(),
   category: z.string().min(1).optional(),
+  antenna: z.string().min(1).optional(),
 });
+
+export const legendGridQuerySchema = z
+  .object({
+    level: z.string().min(1),
+    anntenaCategory: z.string().min(1).optional(),
+    antenna: z.string().min(1).optional(),
+    matchColumnIndex: z.coerce.number().int().nonnegative(),
+    matchLineOffset: z.coerce.number().int().nonnegative(),
+    matchEvasionRate: z.coerce.number().int(),
+  })
+  .refine((query) => query.anntenaCategory !== undefined || query.antenna !== undefined, {
+    message: 'One of anntenaCategory or antenna must be provided',
+  });

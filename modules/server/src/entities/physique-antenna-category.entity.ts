@@ -7,8 +7,8 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
  * rest of `modules/server`'s master data. Exposed read-only via
  * `MasterData.physiqueAntennaCategories` so the Flutter app can build its
  * category/antenna pickers before writing to `/physiques`. Does not
- * extend `BaseEntity`: `legacyId` is specifically the master-data seed
- * loaders' concept, and `anntenaCategory` is this entity's own unique key.
+ * extend `BaseEntity`: this entity has no JSON-authored `id` of its own,
+ * and `anntenaCategory` is its own unique key.
  */
 @Entity('physique_antenna_category')
 export class PhysiqueAntennaCategoryEntity {

@@ -26,7 +26,7 @@ export async function loadCorrections(
   const entities = rows.map((row) => {
     guard.check('correction', row.id, 'corrections.json');
     const entity = new CorrectionEntity();
-    entity.legacyId = row.id;
+    entity.id = row.id;
     entity.hpBonus = row.hpBonus ?? 0;
     entity.apBonus = row.apBonus ?? 0;
     entity.attackBonus = row.attackBonus ?? 0;

@@ -37,8 +37,8 @@ export async function loadAntennas(
   dataDir: string,
   guard: DuplicateIdGuard,
 ): Promise<void> {
-  const attributeByLegacyId = new Map(
-    (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.legacyId, attribute]),
+  const attributeById = new Map(
+    (await dataSource.getRepository(AttributeEntity).find()).map((attribute) => [attribute.id, attribute]),
   );
 
   const antennasDir = path.join(dataDir, 'antennas');
@@ -58,7 +58,7 @@ export async function loadAntennas(
     const repo = manager.getRepository(AnntenaEntity);
     for (const json of parsedRows) {
       const entity = new AnntenaEntity();
-      entity.legacyId = json.id;
+      entity.id = json.id;
       entity.categoryId = CATEGORY_IDS[json.category];
       entity.targetCount = json.targetCount ?? null;
       entity.targetModeId = deriveTargetModeId(json);
@@ -69,7 +69,7 @@ export async function loadAntennas(
       entity.variantGroupId = json.variantGroupId ?? null;
       entity.hasLevel = json.hasLevel ?? true;
       entity.attackAttributes = (json.attackAttributeIds ?? []).map((attributeId) => {
-        const attribute = attributeByLegacyId.get(attributeId);
+        const attribute = attributeById.get(attributeId);
         if (!attribute) {
           throw new Error(`Unknown attribute id "${attributeId}" for antenna "${json.id}"`);
         }
@@ -78,11 +78,11 @@ export async function loadAntennas(
       await repo.save(entity);
     }
 
-    const savedByLegacyId = new Map((await repo.find()).map((entity) => [entity.legacyId, entity]));
+    const savedById = new Map((await repo.find()).map((entity) => [entity.id, entity]));
     for (const json of parsedRows) {
       if (!json.evolvesToId) continue;
-      const entity = savedByLegacyId.get(json.id)!;
-      const evolvesTo = savedByLegacyId.get(json.evolvesToId);
+      const entity = savedById.get(json.id)!;
+      const evolvesTo = savedById.get(json.evolvesToId);
       if (!evolvesTo) {
         throw new Error(`Unknown evolvesToId "${json.evolvesToId}" for antenna "${json.id}"`);
       }

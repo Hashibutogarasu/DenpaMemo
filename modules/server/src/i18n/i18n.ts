@@ -6,6 +6,7 @@ import { supportedLocales } from './locale';
 interface CategoryCatalog {
   major_category?: Record<string, string>;
   minor_category?: Record<string, string>;
+  physique?: Record<string, string>;
 }
 
 /**
@@ -32,6 +33,11 @@ export class CategoryTranslator {
   /** Translates a minor category id, or `undefined` if the locale has no entry for it. */
   translateMinorCategory(id: string, locale: string): string | undefined {
     return this.catalog(locale).minor_category?.[id];
+  }
+
+  /** Translates a physique category id, or `undefined` if the locale has no entry for it. */
+  translatePhysique(id: string, locale: string): string | undefined {
+    return this.catalog(locale).physique?.[id];
   }
 
   /** Reverse lookup: the major category id whose translation in `locale` equals `value`, if any. */

@@ -144,6 +144,13 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	Map<String, String> get correction => {
 		'protagonist': '主人公補正',
 	};
+	Map<String, String> get physique => {
+		'largest': '最大',
+		'large': '準大',
+		'medium': '中間',
+		'fast': '準速',
+		'fastest': '最速',
+	};
 	Map<String, String> get headShape => {
 		'circle': 'まる',
 		'bowlCut': 'おかっぱ',
@@ -398,6 +405,9 @@ class Translations$editableStatus$ja {
 	/// ja: '親'
 	String get parents => '親';
 
+	/// ja: '体格'
+	String get physique => '体格';
+
 	/// ja: 'QRコード'
 	String get qrCode => 'QRコード';
 
@@ -536,6 +546,7 @@ extension on Translations {
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.monsterExp' => 'モンスターから獲得した経験値を記録',
 			'editableStatus.parents' => '親',
+			'editableStatus.physique' => '体格',
 			'editableStatus.qrCode' => 'QRコード',
 			'editableStatus.spColor' => 'SPカラー',
 			'backup.exportCompleteTitle' => 'エクスポート結果',
@@ -639,6 +650,11 @@ extension on Translations {
 			'bodyColor.gold' => 'きん',
 			'bodyColor.silver' => 'ぎん',
 			'correction.protagonist' => '主人公補正',
+			'physique.largest' => '最大',
+			'physique.large' => '準大',
+			'physique.medium' => '中間',
+			'physique.fast' => '準速',
+			'physique.fastest' => '最速',
 			'headShape.circle' => 'まる',
 			'headShape.bowlCut' => 'おかっぱ',
 			'headShape.bread' => 'しょくぱん',

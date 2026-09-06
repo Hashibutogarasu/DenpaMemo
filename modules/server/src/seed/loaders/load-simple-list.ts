@@ -7,7 +7,7 @@ interface IdOnlyJson {
   id: string;
 }
 
-export async function loadSimpleList<T extends ObjectLiteral & { legacyId: string }>(
+export async function loadSimpleList<T extends ObjectLiteral & { id: string }>(
   dataSource: DataSource,
   dataDir: string,
   fileName: string,
@@ -22,7 +22,7 @@ export async function loadSimpleList<T extends ObjectLiteral & { legacyId: strin
   for (const row of rows) {
     guard.check(entityType, row.id, fileName);
     const entity = new (entityTarget as { new (): T })();
-    entity.legacyId = row.id;
+    entity.id = row.id;
     entities.push(entity);
   }
 

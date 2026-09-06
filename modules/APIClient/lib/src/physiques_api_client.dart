@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show compute;
 import 'package:http/http.dart' as http;
 
+import 'legend_grid_request.dart';
+import 'legend_grid_result.dart';
+import 'physique_column_search_query.dart';
+import 'physique_search_result.dart';
 import 'physique_table_record.dart';
 import 'table_definition.dart';
 
@@ -150,15 +154,78 @@ class PhysiquesApiClient {
     _requireSuccess(response);
   }
 
+  /// Finds every column where a `type` (default `evasionRate`) row and an
+  /// `against` (default `hp`) row at the same `level`/`anntenaCategory`/
+  /// `lineOffset` both equal [evasionRate]/[hp] at that column — see
+  /// `findEvasionRateMatches` on the server. [antenna] is an antenna id,
+  /// resolved server-side to its `anntenaCategory`.
+  Future<PhysiqueSearchResult> search({
+    String type = 'evasionRate',
+    String against = 'hp',
+    required int evasionRate,
+    required int hp,
+    String? level,
+    String? anntenaCategory,
+    String? antenna,
+  }) async {
+    final query = PhysiqueColumnSearchQuery(
+      type: type,
+      against: against,
+      evasionRate: evasionRate,
+      hp: hp,
+      level: level,
+      anntenaCategory: anntenaCategory,
+      antenna: antenna,
+    );
+    final response = await http.get(
+      _baseUrl.replace(
+        path: '/tables/search',
+        queryParameters: {
+          for (final entry in query.toJson().entries)
+            if (entry.value != null) entry.key: '${entry.value}',
+        },
+      ),
+    );
+    final body = await _decodeMapOrThrow(response);
+    return PhysiqueSearchResult.fromJson(body);
+  }
+
+  /// Fetches the "matching location" grid for one `level`/`anntenaCategory`
+  /// pair: the physique-category legend merged with the level/antenna's
+  /// real evasion-rate and HP values, with the cell identified by
+  /// [request]'s `matchColumnIndex`/`matchLineOffset`/`matchEvasionRate`
+  /// flagged — see `GET /tables/legend-grid` on the server.
+  Future<LegendGridResult> legendGrid(LegendGridRequest request) async {
+    final response = await http.get(
+      _baseUrl.replace(
+        path: '/tables/legend-grid',
+        queryParameters: {
+          for (final entry in request.toJson().entries) entry.key: '${entry.value}',
+        },
+      ),
+    );
+    final body = await _decodeMapOrThrow(response);
+    return LegendGridResult.fromJson(body);
+  }
+
   static const Map<String, String> _jsonHeaders = {
     'Content-Type': 'application/json',
   };
 
-  static List<dynamic> _decodeJsonList(String body) => jsonDecode(body) as List<dynamic>;
+  static List<dynamic> _decodeJsonList(String body) =>
+      jsonDecode(body) as List<dynamic>;
+
+  static Map<String, dynamic> _decodeJsonMap(String body) =>
+      jsonDecode(body) as Map<String, dynamic>;
 
   Future<List<dynamic>> _decodeListOrThrow(http.Response response) async {
     _requireSuccess(response);
     return compute(_decodeJsonList, response.body);
+  }
+
+  Future<Map<String, dynamic>> _decodeMapOrThrow(http.Response response) async {
+    _requireSuccess(response);
+    return compute(_decodeJsonMap, response.body);
   }
 
   void _requireSuccess(http.Response response) {
@@ -172,6 +239,9 @@ class PhysiquesApiClient {
     } catch (_) {
       message = null;
     }
-    throw PhysiqueApiException(statusCode: response.statusCode, message: message);
+    throw PhysiqueApiException(
+      statusCode: response.statusCode,
+      message: message,
+    );
   }
 }
