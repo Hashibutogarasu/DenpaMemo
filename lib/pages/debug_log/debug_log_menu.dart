@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toaster/toaster.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../../providers/app_settings_providers.dart';
 import 'debug_log_view_model.dart';
 
 /// The Switch item toggling `debugPaintSizeEnabled`, isolated in its own
@@ -31,6 +32,32 @@ class DebugPaintToggleMenuItem extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// The Switch item toggling `AppSettings.buildTrackerEnabled` (`BuildTracker`
+/// and `debugPrintRebuildDirtyWidgets`), backed by [appSettingsProvider] so
+/// it redraws on its own once [DebugLogViewModel.toggleWidgetRebuildTrackingEnabled]
+/// saves the new value.
+class WidgetRebuildTrackingToggleMenuItem extends ConsumerWidget {
+  const WidgetRebuildTrackingToggleMenuItem({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = context.t;
+    final enabled = ref.watch(appSettingsProvider).buildTrackerEnabled;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(t.debugLog.widgetRebuildTracking),
+        Switch(
+          value: enabled,
+          onChanged: (_) => ref
+              .read(debugLogViewModelProvider)
+              .toggleWidgetRebuildTrackingEnabled(),
+        ),
+      ],
     );
   }
 }
@@ -82,6 +109,10 @@ class DebugLogMenu extends ConsumerWidget {
         ),
         PopupMenuItem(value: () => _clear(ref), child: Text(t.debugLog.clear)),
         PopupMenuItem(value: () {}, child: const DebugPaintToggleMenuItem()),
+        PopupMenuItem(
+          value: () {},
+          child: const WidgetRebuildTrackingToggleMenuItem(),
+        ),
       ],
     );
   }

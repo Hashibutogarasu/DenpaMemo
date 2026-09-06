@@ -20,6 +20,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:step_dialog/step_dialog.dart' as step_dialog;
 
 import 'data/objectbox/objectbox.dart';
+import 'data/settings/objectbox_app_settings_repository.dart';
 import 'i18n/gen/strings.g.dart';
 import 'l10n/croppy_localizations_ja.dart';
 import 'logging/build_tracker_bridge.dart';
@@ -42,7 +43,6 @@ Future<void> _main() async {
   await RustLib.init();
 
   if (kDebugMode) {
-    debugPrintRebuildDirtyWidgets = true;
     installDebugPrintInterceptor();
     installBuildTrackerBridge();
     await installLogFileWriter();
@@ -51,6 +51,11 @@ Future<void> _main() async {
   await initializeDateFormatting();
   final packageInfo = await PackageInfo.fromPlatform();
   final objectBox = await ObjectBox.create();
+
+  if (kDebugMode) {
+    debugPrintRebuildDirtyWidgets =
+        ObjectBoxAppSettingsRepository(objectBox).get().buildTrackerEnabled;
+  }
   final cacheIndexRepository = await CacheIndexRepository.open(
     packageInfo.packageName,
   );
@@ -129,7 +134,8 @@ class _ThemedMaterialApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(appInitializationProvider);
-    final themeMode = ref.watch(appSettingsProvider).themeMode;
+    final settings = ref.watch(appSettingsProvider);
+    final themeMode = settings.themeMode;
     return MaterialApp.router(
       title: t.app.name,
       scrollBehavior: const _DragAnywhereScrollBehavior(),
@@ -141,7 +147,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
         final splashGate = denpamemo_widgets.ResponsiveScope(
           child: SplashGate(child: child!),
         );
-        return kDebugMode
+        return settings.buildTrackerEnabled
             ? BuildTracker(
                 name: splashGate.runtimeType.toString(),
                 controller: buildTrackerController,

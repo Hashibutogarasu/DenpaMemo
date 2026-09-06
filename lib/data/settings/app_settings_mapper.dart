@@ -5,13 +5,20 @@ import 'app_settings_entity.dart';
 /// Converts domain [AppSettings] to its persisted [AppSettingsEntity] form.
 extension AppSettingsEntityMapper on AppSettings {
   AppSettingsEntity toEntity({int id = 0}) {
-    return AppSettingsEntity(id: id, themeMode: themeMode.name);
+    return AppSettingsEntity(
+      id: id,
+      themeMode: themeMode.name,
+      buildTrackerEnabled: buildTrackerEnabled,
+    );
   }
 }
 
 /// Rebuilds domain [AppSettings] from a persisted [AppSettingsEntity].
 extension AppSettingsEntityToDomain on AppSettingsEntity {
   AppSettings toDomain() {
-    return AppSettings(themeMode: AppThemeMode.values.byName(themeMode));
+    return AppSettings(
+      themeMode: AppThemeMode.values.byName(themeMode),
+      buildTrackerEnabled: buildTrackerEnabled,
+    );
   }
 }

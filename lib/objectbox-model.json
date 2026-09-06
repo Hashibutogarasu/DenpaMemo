@@ -282,7 +282,7 @@
     },
     {
       "id": "4:6878201578847630111",
-      "lastPropertyId": "2:9203438851673389464",
+      "lastPropertyId": "3:1858039301307882444",
       "name": "AppSettingsEntity",
       "properties": [
         {
@@ -295,6 +295,11 @@
           "id": "2:9203438851673389464",
           "name": "themeMode",
           "type": 9
+        },
+        {
+          "id": "3:1858039301307882444",
+          "name": "buildTrackerEnabled",
+          "type": 1
         }
       ],
       "relations": []

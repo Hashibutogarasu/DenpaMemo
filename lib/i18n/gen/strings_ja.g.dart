@@ -20,20 +20,21 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// Constructing via the enum [AppLocale.build] is preferred.
 	Translations({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<AppLocale, Translations>? meta})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
-		  $meta = meta ?? TranslationMetadata(
+		  _meta = meta ?? TranslationMetadata(
 		    locale: AppLocale.ja,
 		    overrides: overrides ?? {},
 		    cardinalResolver: cardinalResolver,
 		    ordinalResolver: ordinalResolver,
 		  ) {
-		$meta.setFlatMapFunction(_flatMapFunction);
+		_meta.setFlatMapFunction(_flatMapFunction);
 	}
 
 	/// Metadata for the translations of <ja>.
-	@override final TranslationMetadata<AppLocale, Translations> $meta;
+	final TranslationMetadata<AppLocale, Translations> _meta;
+	@override TranslationMetadata<AppLocale, Translations> get $meta => _meta;
 
 	/// Access flat map
-	dynamic operator[](String key) => $meta.getTranslation(key);
+	dynamic operator[](String key) => _meta.getTranslation(key);
 
 	late final Translations _root = this; // ignore: unused_field
 
@@ -635,6 +636,9 @@ class Translations$debugLog$ja {
 
 	/// ja: 'デバッグペイントを表示'
 	String get debugPaintSize => 'デバッグペイントを表示';
+
+	/// ja: 'ウィジットリビルドのログを記録'
+	String get widgetRebuildTracking => 'ウィジットリビルドのログを記録';
 
 	/// ja: 'ログはまだありません。'
 	String get empty => 'ログはまだありません。';
@@ -1447,6 +1451,7 @@ extension on Translations {
 			'debugLog.copyLogFilePath' => 'ログファイルのパスをコピー',
 			'debugLog.clear' => 'クリア',
 			'debugLog.debugPaintSize' => 'デバッグペイントを表示',
+			'debugLog.widgetRebuildTracking' => 'ウィジットリビルドのログを記録',
 			'debugLog.empty' => 'ログはまだありません。',
 			'physiqueIdentification.identifying' => '体格を特定しています',
 			'physiqueIdentification.identified' => '体格を特定しました！',

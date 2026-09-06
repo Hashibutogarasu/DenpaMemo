@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:data_pack/data_pack.dart';
+import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image/image.dart' as img;
 
@@ -74,22 +76,46 @@ Future<File?> renderClippedImage({
     return cached.file;
   }
 
-  final source = img.decodeImage(await rawFile.readAsBytes());
-  if (source == null) {
+  final cropped = await compute(_decodeCropAndEncode, (
+    bytes: await rawFile.readAsBytes(),
+    left: clippingSlot.left,
+    top: clippingSlot.top,
+    width: clippingSlot.width,
+    height: clippingSlot.height,
+  ));
+  if (cropped == null) {
     return rawFile;
   }
-  final cropped = img.copyCrop(
-    source,
-    x: (clippingSlot.left * source.width).round(),
-    y: (clippingSlot.top * source.height).round(),
-    width: (clippingSlot.width * source.width).round(),
-    height: (clippingSlot.height * source.height).round(),
-  );
 
   return clippedImageCacheManager.putFile(
     key,
-    img.encodePng(cropped),
+    cropped,
     key: key,
     fileExtension: 'png',
   );
+}
+
+/// Crops [request]'s raw image bytes to its relative rectangle and
+/// re-encodes the result as PNG, run off the main isolate via [compute]
+/// since `decodeImage`/`copyCrop`/`encodePng` are pure CPU work with no
+/// isolate-unsafe dependencies (unlike [clippedImageCacheManager]'s file
+/// I/O, which stays on the caller's isolate). Returns `null` if the raw
+/// bytes can't be decoded as an image, matching how the caller falls back
+/// to the raw file unmodified.
+Uint8List? _decodeCropAndEncode(
+  ({Uint8List bytes, double left, double top, double width, double height})
+  request,
+) {
+  final source = img.decodeImage(request.bytes);
+  if (source == null) {
+    return null;
+  }
+  final cropped = img.copyCrop(
+    source,
+    x: (request.left * source.width).round(),
+    y: (request.top * source.height).round(),
+    width: (request.width * source.width).round(),
+    height: (request.height * source.height).round(),
+  );
+  return img.encodePng(cropped);
 }

@@ -10,5 +10,11 @@ class AppSettingsEntity {
 
   String themeMode;
 
-  AppSettingsEntity({this.id = 0, this.themeMode = 'system'});
+  bool buildTrackerEnabled;
+
+  AppSettingsEntity({
+    this.id = 0,
+    this.themeMode = 'system',
+    this.buildTrackerEnabled = false,
+  });
 }

@@ -8,11 +8,10 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 Widget denpaMenBoxUseCase(BuildContext context) {
   return DenpaMenBox(
     records: [DenpaMenData.denpaMenRecord],
-    selectionMode: false,
-    selectedIds: const {},
-    cutIds: const {},
-    onSelectedChanged: (id, selected) {},
-    onTapRecord: (_) {},
+    cellBuilder: (context, record, cellSize) => DenpaMenContainer(
+      denpaMen: record.denpaMen,
+      size: cellSize,
+    ),
   );
 }
 
@@ -20,10 +19,12 @@ Widget denpaMenBoxUseCase(BuildContext context) {
 Widget denpaMenBoxSelectionModeUseCase(BuildContext context) {
   return DenpaMenBox(
     records: [DenpaMenData.denpaMenRecord],
-    selectionMode: true,
-    selectedIds: {DenpaMenData.denpaMenRecord.id},
-    cutIds: const {},
-    onSelectedChanged: (id, selected) {},
-    onTapRecord: (_) {},
+    cellBuilder: (context, record, cellSize) => DenpaMenContainer(
+      denpaMen: record.denpaMen,
+      selectionMode: true,
+      selected: record.id == DenpaMenData.denpaMenRecord.id,
+      onSelectedChanged: (_) {},
+      size: cellSize,
+    ),
   );
 }

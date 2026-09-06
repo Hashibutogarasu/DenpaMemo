@@ -5,6 +5,7 @@ import 'package:app_logging/app_logging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../logging/log_file_bridge.dart';
+import '../../providers/app_settings_providers.dart';
 
 /// Data operations for the debug log screen (reading/clearing a
 /// category's entries, resolving its log file path, toggling debug
@@ -46,6 +47,20 @@ class DebugLogViewModel {
     if (rootElement != null) {
       WidgetsBinding.instance.buildOwner!.reassemble(rootElement);
     }
+  }
+
+  /// Toggles `AppSettings.buildTrackerEnabled`, persists it, and applies
+  /// `debugPrintRebuildDirtyWidgets` immediately so `BuildTracker` and the
+  /// widget-rebuild log tab start or stop receiving entries without an
+  /// app restart.
+  void toggleWidgetRebuildTrackingEnabled() {
+    final settings = _ref.read(appSettingsProvider);
+    final enabled = !settings.buildTrackerEnabled;
+    _ref
+        .read(appSettingsRepositoryProvider)
+        .save(settings.copyWith(buildTrackerEnabled: enabled));
+    debugPrintRebuildDirtyWidgets = enabled;
+    _ref.invalidate(appSettingsProvider);
   }
 }
 

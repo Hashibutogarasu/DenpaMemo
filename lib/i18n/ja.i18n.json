@@ -157,6 +157,7 @@
     "copyLogFilePath": "ログファイルのパスをコピー",
     "clear": "クリア",
     "debugPaintSize": "デバッグペイントを表示",
+    "widgetRebuildTracking": "ウィジットリビルドのログを記録",
     "empty": "ログはまだありません。"
   },
   "physiqueIdentification": {
