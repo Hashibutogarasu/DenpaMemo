@@ -358,7 +358,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(4, 6878201578847630111),
     name: 'AppSettingsEntity',
-    lastPropertyId: const obx_int.IdUid(2, 9203438851673389464),
+    lastPropertyId: const obx_int.IdUid(3, 1858039301307882444),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -371,6 +371,12 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(2, 9203438851673389464),
         name: 'themeMode',
         type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 1858039301307882444),
+        name: 'buildTrackerEnabled',
+        type: 1,
         flags: 0,
       ),
     ],
@@ -1086,9 +1092,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
       },
       objectToFB: (AppSettingsEntity object, fb.Builder fbb) {
         final themeModeOffset = fbb.writeString(object.themeMode);
-        fbb.startTable(3);
+        fbb.startTable(4);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, themeModeOffset);
+        fbb.addBool(2, object.buildTrackerEnabled);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -1104,9 +1111,16 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final themeModeParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 6, '');
+        final buildTrackerEnabledParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          8,
+          false,
+        );
         final object = AppSettingsEntity(
           id: idParam,
           themeMode: themeModeParam,
+          buildTrackerEnabled: buildTrackerEnabledParam,
         );
 
         return object;
@@ -1696,6 +1710,10 @@ class AppSettingsEntity_ {
   static final themeMode = obx.QueryStringProperty<AppSettingsEntity>(
     _entities[3].properties[1],
   );
+
+  /// See [AppSettingsEntity.buildTrackerEnabled].
+  static final buildTrackerEnabled =
+      obx.QueryBooleanProperty<AppSettingsEntity>(_entities[3].properties[2]);
 }
 
 /// [CloudFileEntity] entity fields to define ObjectBox queries.

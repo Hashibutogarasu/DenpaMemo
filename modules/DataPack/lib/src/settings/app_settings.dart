@@ -9,5 +9,6 @@ part 'app_settings.freezed.dart';
 abstract class AppSettings with _$AppSettings {
   const factory AppSettings({
     @Default(AppThemeMode.system) AppThemeMode themeMode,
+    @Default(false) bool buildTrackerEnabled,
   }) = _AppSettings;
 }
