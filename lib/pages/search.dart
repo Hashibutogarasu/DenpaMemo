@@ -1,13 +1,14 @@
+import 'package:flutter/material.dart';
+
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql_client/graphql_client.dart';
 
 import '../i18n/gen/strings.g.dart';
 import '../providers/search_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
-import 'package:graphql_client/graphql_client.dart';
 
 class Search extends ConsumerWidget {
   const Search({super.key});
@@ -18,6 +19,16 @@ class Search extends ConsumerWidget {
     final t = context.t;
 
     listenForMasterDataErrors(ref, context);
+
+    final labelTheme = Theme.of(context).extension<FabLabelThemeData>()!;
+    final tooltip = labelTheme.showTooltip ? t.page.search : null;
+
+    void onPressed() {
+      ref.read(searchQueryProvider.notifier).state = ref.read(
+        searchFormDraftProvider,
+      );
+      const SearchResultsRoute().push(context);
+    }
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.search),
@@ -32,15 +43,18 @@ class Search extends ConsumerWidget {
         loading: () => const ProgressBar(),
         error: (_, _) => const SizedBox.shrink(),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          ref.read(searchQueryProvider.notifier).state = ref.read(
-            searchFormDraftProvider,
-          );
-          const SearchResultsRoute().push(context);
-        },
-        label: Text(t.page.search),
-      ),
+      floatingActionButton: labelTheme.showLabel
+          ? FloatingActionButton.extended(
+              onPressed: onPressed,
+              tooltip: tooltip,
+              icon: const Icon(Icons.search),
+              label: Text(t.page.search),
+            )
+          : FloatingActionButton(
+              onPressed: onPressed,
+              tooltip: tooltip,
+              child: const Icon(Icons.search),
+            ),
     );
   }
 }

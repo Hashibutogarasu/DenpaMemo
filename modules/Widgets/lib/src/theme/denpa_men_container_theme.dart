@@ -33,6 +33,7 @@ class DenpaMenContainerThemeData
     required this.accordionCheckboxSlotSize,
     required this.accordionAnimationDuration,
     required this.resistanceGap,
+    required this.nameFieldFillColor,
   });
 
   final Color statusBackgroundColor;
@@ -52,4 +53,5 @@ class DenpaMenContainerThemeData
   final double accordionCheckboxSlotSize;
   final Duration accordionAnimationDuration;
   final double resistanceGap;
+  final Color nameFieldFillColor;
 }

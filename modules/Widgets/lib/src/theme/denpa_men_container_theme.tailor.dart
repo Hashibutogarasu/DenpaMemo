@@ -28,6 +28,7 @@ mixin _$DenpaMenContainerThemeDataTailorMixin
   double get accordionCheckboxSlotSize;
   Duration get accordionAnimationDuration;
   double get resistanceGap;
+  Color get nameFieldFillColor;
 
   @override
   DenpaMenContainerThemeData copyWith({
@@ -48,6 +49,7 @@ mixin _$DenpaMenContainerThemeDataTailorMixin
     double? accordionCheckboxSlotSize,
     Duration? accordionAnimationDuration,
     double? resistanceGap,
+    Color? nameFieldFillColor,
   }) {
     return DenpaMenContainerThemeData(
       statusBackgroundColor:
@@ -72,6 +74,7 @@ mixin _$DenpaMenContainerThemeDataTailorMixin
       accordionAnimationDuration:
           accordionAnimationDuration ?? this.accordionAnimationDuration,
       resistanceGap: resistanceGap ?? this.resistanceGap,
+      nameFieldFillColor: nameFieldFillColor ?? this.nameFieldFillColor,
     );
   }
 
@@ -128,6 +131,11 @@ mixin _$DenpaMenContainerThemeDataTailorMixin
           ? accordionAnimationDuration
           : other.accordionAnimationDuration,
       resistanceGap: t < 0.5 ? resistanceGap : other.resistanceGap,
+      nameFieldFillColor: Color.lerp(
+        nameFieldFillColor,
+        other.nameFieldFillColor,
+        t,
+      )!,
     );
   }
 
@@ -203,6 +211,10 @@ mixin _$DenpaMenContainerThemeDataTailorMixin
             const DeepCollectionEquality().equals(
               resistanceGap,
               other.resistanceGap,
+            ) &&
+            const DeepCollectionEquality().equals(
+              nameFieldFillColor,
+              other.nameFieldFillColor,
             ));
   }
 
@@ -227,6 +239,7 @@ mixin _$DenpaMenContainerThemeDataTailorMixin
       const DeepCollectionEquality().hash(accordionCheckboxSlotSize),
       const DeepCollectionEquality().hash(accordionAnimationDuration),
       const DeepCollectionEquality().hash(resistanceGap),
+      const DeepCollectionEquality().hash(nameFieldFillColor),
     );
   }
 }

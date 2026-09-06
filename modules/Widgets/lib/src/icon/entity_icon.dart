@@ -26,7 +26,7 @@ class ResolvedEntityIcon extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: file == null
-          ? _placeholder()
+          ? _placeholder(context)
           : Image.file(
               file,
               key: ValueKey(file.path),
@@ -40,13 +40,18 @@ class ResolvedEntityIcon extends StatelessWidget {
     );
   }
 
-  Widget _placeholder() {
+  Widget _placeholder(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: size,
       height: size,
-      color: Colors.white,
+      color: colorScheme.surfaceContainerHighest,
       alignment: Alignment.center,
-      child: Icon(Icons.image_outlined, size: size * 0.6, color: Colors.grey),
+      child: Icon(
+        Icons.image_outlined,
+        size: size * 0.6,
+        color: colorScheme.onSurfaceVariant,
+      ),
     );
   }
 }

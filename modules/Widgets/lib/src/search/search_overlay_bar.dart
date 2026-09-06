@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../i18n/gen/strings.g.dart';
 import '../theme/denpa_men_container_theme.dart';
 
 /// Overlay search bar that slides down from the top of the screen when
@@ -63,7 +62,6 @@ class _SearchOverlayBarState extends State<SearchOverlayBar> {
 
   @override
   Widget build(BuildContext context) {
-    final t = context.t;
     final open = widget.open;
     final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
@@ -98,8 +96,7 @@ class _SearchOverlayBarState extends State<SearchOverlayBar> {
                         child: TextField(
                           controller: _controller,
                           focusNode: _focusNode,
-                          decoration: InputDecoration(
-                            hintText: t.home.searchHint,
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                           ),
                           onChanged: widget.onQueryNameChanged,

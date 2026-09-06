@@ -22,6 +22,8 @@ class DenpaMenLabelThemeData extends ThemeExtension<DenpaMenLabelThemeData>
     required this.expBarUnfilledColor,
     required this.maxedValueColor,
     required this.inactiveBonusColor,
+    required this.titleFillColor,
+    required this.expBarBorderColor,
   });
 
   final Color headerTitleOutlineColor;
@@ -31,4 +33,6 @@ class DenpaMenLabelThemeData extends ThemeExtension<DenpaMenLabelThemeData>
   final Color expBarUnfilledColor;
   final Color maxedValueColor;
   final Color inactiveBonusColor;
+  final Color titleFillColor;
+  final Color expBarBorderColor;
 }
