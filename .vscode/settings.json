@@ -1,5 +1,5 @@
 {
-  "dart.flutterSdkPath": ".fvm/versions/3.44.9",
+  "dart.flutterSdkPath": ".fvm/versions/3.38.3",
   "search.exclude": {
     "**/.fvm": true
   },
@@ -65,5 +65,6 @@
       "url": "./assets/data/schemas/body_color_abnormality_resistance.schema.json"
     }
   ],
-  "remote.autoForwardPorts": false
+  "remote.autoForwardPorts": false,
+  "dart.openDevTools": "never"
 }
