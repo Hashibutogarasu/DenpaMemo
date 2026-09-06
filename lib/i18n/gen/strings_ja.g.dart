@@ -562,6 +562,9 @@ class Translations$physiqueTable$ja {
 	/// ja: 'サーバーへの同期に失敗しました'
 	String get syncError => 'サーバーへの同期に失敗しました';
 
+	/// ja: 'サーバーへの同期に失敗しました: ${message}'
+	String syncErrorDescription({required Object message}) => 'サーバーへの同期に失敗しました: ${message}';
+
 	/// ja: 'この表を削除'
 	String get deleteTable => 'この表を削除';
 
@@ -1301,6 +1304,7 @@ extension on Translations {
 			'physiqueTable.sync' => 'サーバーに同期',
 			'physiqueTable.synced' => 'サーバーに同期しました',
 			'physiqueTable.syncError' => 'サーバーへの同期に失敗しました',
+			'physiqueTable.syncErrorDescription' => ({required Object message}) => 'サーバーへの同期に失敗しました: ${message}',
 			'physiqueTable.deleteTable' => 'この表を削除',
 			'physiqueTable.deleteTableConfirmTitle' => '体格表を削除',
 			'physiqueTable.deleteTableConfirmMessage' => 'この体格表を削除します。この操作は取り消せません。よろしいですか?',

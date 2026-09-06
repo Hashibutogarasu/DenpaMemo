@@ -122,6 +122,9 @@ class PhysiqueTableEditNotifier extends Notifier<PhysiqueTableEditState> {
             values: _parsedValues(row),
           ),
       ]);
+      cacheRepository.markRowsExistOnServer(args, [
+        for (final row in newRows) row.lineOffset,
+      ]);
     }
     await client.update(
       lineOffset: 0,
