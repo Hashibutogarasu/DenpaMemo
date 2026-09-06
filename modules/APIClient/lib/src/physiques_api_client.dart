@@ -32,14 +32,16 @@ class PhysiqueApiException implements Exception {
 /// shape, that is left to the caller. `type` selects which registered
 /// table (see `TableDefinition`/`GET /tables/types`) a call operates on.
 class PhysiquesApiClient {
-  const PhysiquesApiClient(this._baseUrl);
+  PhysiquesApiClient(this._baseUrl, {http.Client? client})
+    : _client = client ?? http.Client();
 
   final Uri _baseUrl;
+  final http.Client _client;
 
   /// Every registered table type (see `TableDefinitionEntity` on the
   /// server), so callers never hardcode which types exist.
   Future<List<TableDefinition>> fetchTypes() async {
-    final response = await http.get(_baseUrl.replace(path: '/tables/types'));
+    final response = await _client.get(_baseUrl.replace(path: '/tables/types'));
     final body = await _decodeListOrThrow(response);
     return [
       for (final row in body.cast<Map<String, dynamic>>())
@@ -53,7 +55,7 @@ class PhysiquesApiClient {
     String? anntenaCategory,
     String? category,
   }) async {
-    final response = await http.get(
+    final response = await _client.get(
       _baseUrl.replace(
         path: '/tables',
         queryParameters: {
@@ -74,7 +76,7 @@ class PhysiquesApiClient {
   Future<List<PhysiqueTableRecord>> create(
     List<PhysiqueTableRecord> records,
   ) async {
-    final response = await http.post(
+    final response = await _client.post(
       _baseUrl.replace(path: '/tables'),
       headers: _jsonHeaders,
       body: jsonEncode([for (final record in records) record.toJson()]),
@@ -93,7 +95,7 @@ class PhysiquesApiClient {
     required String anntenaCategory,
     required List<List<int?>> rowValues,
   }) async {
-    final response = await http.put(
+    final response = await _client.put(
       _baseUrl.replace(path: '/tables'),
       headers: _jsonHeaders,
       body: jsonEncode({
@@ -118,7 +120,7 @@ class PhysiquesApiClient {
     String? level,
     String? anntenaCategory,
   }) async {
-    final response = await http.delete(
+    final response = await _client.delete(
       _baseUrl.replace(
         path: '/tables',
         queryParameters: {
@@ -141,7 +143,7 @@ class PhysiquesApiClient {
     required String anntenaCategory,
     required List<int> lineOffsets,
   }) async {
-    final response = await http.delete(
+    final response = await _client.delete(
       _baseUrl.replace(
         path: '/tables',
         queryParameters: {
@@ -178,7 +180,7 @@ class PhysiquesApiClient {
       anntenaCategory: anntenaCategory,
       antenna: antenna,
     );
-    final response = await http.get(
+    final response = await _client.get(
       _baseUrl.replace(
         path: '/tables/search',
         queryParameters: {
@@ -197,11 +199,12 @@ class PhysiquesApiClient {
   /// [request]'s `matchColumnIndex`/`matchLineOffset`/`matchEvasionRate`
   /// flagged — see `GET /tables/legend-grid` on the server.
   Future<LegendGridResult> legendGrid(LegendGridRequest request) async {
-    final response = await http.get(
+    final response = await _client.get(
       _baseUrl.replace(
         path: '/tables/legend-grid',
         queryParameters: {
-          for (final entry in request.toJson().entries) entry.key: '${entry.value}',
+          for (final entry in request.toJson().entries)
+            entry.key: '${entry.value}',
         },
       ),
     );
@@ -212,8 +215,11 @@ class PhysiquesApiClient {
   /// Every raw physique-category legend row (`GET /tables/evasion-rate-categories`),
   /// untranslated, so a caller can cache them and run identification
   /// offline instead of only through `search`/`legendGrid`.
-  Future<List<PhysiqueEvasionRateCategoryRow>> fetchEvasionRateCategories() async {
-    final response = await http.get(_baseUrl.replace(path: '/tables/evasion-rate-categories'));
+  Future<List<PhysiqueEvasionRateCategoryRow>>
+  fetchEvasionRateCategories() async {
+    final response = await _client.get(
+      _baseUrl.replace(path: '/tables/evasion-rate-categories'),
+    );
     final body = await _decodeListOrThrow(response);
     return [
       for (final row in body.cast<Map<String, dynamic>>())

@@ -1,13 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart' show PointerDeviceKind;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+import 'package:app_logging/app_logging.dart';
 import 'package:croppy/croppy.dart';
 import 'package:data_cache/data_cache.dart';
 import 'package:denpamemo_logics/denpamemo_logics.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:firebase_sign_in/firebase_sign_in.dart';
-import 'package:flutter/gestures.dart' show PointerDeviceKind;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_build_tracker/flutter_build_tracker.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
@@ -18,6 +22,8 @@ import 'package:step_dialog/step_dialog.dart' as step_dialog;
 import 'data/objectbox/objectbox.dart';
 import 'i18n/gen/strings.g.dart';
 import 'l10n/croppy_localizations_ja.dart';
+import 'logging/build_tracker_bridge.dart';
+import 'logging/log_file_bridge.dart';
 import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
 import 'providers/objectbox_providers.dart';
@@ -27,9 +33,21 @@ import 'theme/app_theme_mode_mapping.dart';
 import 'widgets/restart_widget.dart';
 import 'widgets/splash/splash_gate.dart';
 
-void main() async {
+void main() {
+  runZonedWithPrintInterceptor(_main);
+}
+
+Future<void> _main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RustLib.init();
+
+  if (kDebugMode) {
+    debugPrintRebuildDirtyWidgets = true;
+    installDebugPrintInterceptor();
+    installBuildTrackerBridge();
+    await installLogFileWriter();
+  }
+
   await initializeDateFormatting();
   final packageInfo = await PackageInfo.fromPlatform();
   final objectBox = await ObjectBox.create();
@@ -119,7 +137,18 @@ class _ThemedMaterialApp extends ConsumerWidget {
       darkTheme: AppDarkTheme.theme,
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
-      builder: (context, child) => SplashGate(child: child!),
+      builder: (context, child) {
+        final splashGate = SplashGate(child: child!);
+        return kDebugMode
+            ? BuildTracker(
+                name: splashGate.runtimeType.toString(),
+                controller: buildTrackerController,
+                showOverlay: false,
+                logToConsole: false,
+                child: splashGate,
+              )
+            : splashGate;
+      },
       localizationsDelegates: const [
         CroppyLocalizationsJa.delegate,
         GlobalMaterialLocalizations.delegate,

@@ -22,6 +22,7 @@ workspace:
   - modules/TableEditor
   - modules/APIClient
   - modules/denpamemo_logics
+  - modules/Logging
   - apps/WidgetBook
 
 dependencies:
@@ -82,10 +83,14 @@ dependencies:
     path: modules/APIClient
   denpamemo_logics:
     path: modules/denpamemo_logics
+  app_logging:
+    path: modules/Logging
   icons_launcher: ^3.1.0
   http: ^1.6.0
   flutter_date_formatter: ^0.0.9
   intl: ^0.20.2
+  logger: ^2.5.0
+  flutter_build_tracker: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -102,6 +107,7 @@ dev_dependencies:
   path_provider_platform_interface: ^2.1.3
   melos: ^8.5.0
   pub_version_plus: ^3.1.3
+  tidy_imports: ^1.4.0
 
 flutter:
   uses-material-design: true

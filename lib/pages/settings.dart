@@ -1,8 +1,9 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations;
 import 'package:flutter/foundation.dart'
     show kDebugMode, kProfileMode, kReleaseMode;
 import 'package:flutter/material.dart';
+
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension, Translations;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_metadata.dart';
@@ -103,6 +104,11 @@ class Settings extends ConsumerWidget {
                           label: t.settings.editPhysiqueTable,
                           onTap: () =>
                               const PhysiqueTableListRoute().push(context),
+                        ),
+                        ListItemTile(
+                          icon: Icons.bug_report_outlined,
+                          label: t.settings.debugLog,
+                          onTap: () => const DebugLogRoute().push(context),
                         ),
                       ],
                     ),

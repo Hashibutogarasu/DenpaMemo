@@ -13,6 +13,10 @@
 
 - Never hand-edit code purely to reformat it, and never use a script (e.g. a Python one-off) to force a particular formatting.
 - Formatting is the compiler/toolchain's job: run `dart format` (or the equivalent `flutter format`) and let it decide the formatting.
+- Never hand-sort or reorder `import` directives by editing them one by one. Use the `tidy_imports` tool instead, so import order is decided by the tool rather than by hand:
+  - It is declared as a `dev_dependency` in the root `pubspec.yaml`.
+  - Run it from the repo root as `dart run tidy_imports --no-comments <files...>` — not a globally activated `tidy_imports` binary.
+  - Always pass `--no-comments`: this codebase does not use tidy_imports' "Dart imports:" / "Package imports:" / "Project imports:" group-header comments, so omitting the flag would introduce a comment style not used elsewhere in the repo.
 
 # Planning
 

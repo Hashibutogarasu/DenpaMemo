@@ -47,6 +47,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
 	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
 	late final Translations$physiqueTable$ja physiqueTable = Translations$physiqueTable$ja.internal(_root);
+	late final Translations$debugLog$ja debugLog = Translations$debugLog$ja.internal(_root);
 	late final Translations$physiqueIdentification$ja physiqueIdentification = Translations$physiqueIdentification$ja.internal(_root);
 	late final Translations$home$ja home = Translations$home$ja.internal(_root);
 	late final Translations$search$ja search = Translations$search$ja.internal(_root);
@@ -514,6 +515,9 @@ class Translations$settings$ja {
 
 	/// ja: '体格表を編集'
 	String get editPhysiqueTable => '体格表を編集';
+
+	/// ja: 'デバッグログ'
+	String get debugLog => 'デバッグログ';
 }
 
 // Path: physiqueTable
@@ -598,6 +602,42 @@ class Translations$physiqueTable$ja {
 
 	/// ja: '表の読み込みに失敗しました。'
 	String get loadError => '表の読み込みに失敗しました。';
+}
+
+// Path: debugLog
+class Translations$debugLog$ja {
+	Translations$debugLog$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'デバッグログ'
+	String get title => 'デバッグログ';
+
+	/// ja: '通常のログ'
+	String get tabNormal => '通常のログ';
+
+	/// ja: 'ウィジットリビルドのログ'
+	String get tabWidgetRebuild => 'ウィジットリビルドのログ';
+
+	/// ja: 'ネットワークログ'
+	String get tabNetwork => 'ネットワークログ';
+
+	/// ja: '現在のタブの内容をコピー'
+	String get copy => '現在のタブの内容をコピー';
+
+	/// ja: 'ログファイルのパスをコピー'
+	String get copyLogFilePath => 'ログファイルのパスをコピー';
+
+	/// ja: 'クリア'
+	String get clear => 'クリア';
+
+	/// ja: 'デバッグペイントを表示'
+	String get debugPaintSize => 'デバッグペイントを表示';
+
+	/// ja: 'ログはまだありません。'
+	String get empty => 'ログはまだありません。';
 }
 
 // Path: physiqueIdentification
@@ -1373,6 +1413,7 @@ extension on Translations {
 			'settings.dataManagementResultTitle' => '削除しました',
 			'settings.cloudBackup' => 'クラウドバックアップ&復元',
 			'settings.editPhysiqueTable' => '体格表を編集',
+			'settings.debugLog' => 'デバッグログ',
 			'physiqueTable.title' => '体格表',
 			'physiqueTable.tableTitle' => ({required Object level, required Object anntenaCategory, required Object statusName}) => 'レベル${level} - ${anntenaCategory} - ${statusName} の体格表',
 			'physiqueTable.enterLevel' => 'レベルを入力',
@@ -1398,6 +1439,15 @@ extension on Translations {
 			'physiqueTable.deleteSelectedRowsConfirmMessage' => '選択した行を削除します。この操作は取り消せません。よろしいですか?',
 			'physiqueTable.empty' => 'この表にはまだデータがありません。',
 			'physiqueTable.loadError' => '表の読み込みに失敗しました。',
+			'debugLog.title' => 'デバッグログ',
+			'debugLog.tabNormal' => '通常のログ',
+			'debugLog.tabWidgetRebuild' => 'ウィジットリビルドのログ',
+			'debugLog.tabNetwork' => 'ネットワークログ',
+			'debugLog.copy' => '現在のタブの内容をコピー',
+			'debugLog.copyLogFilePath' => 'ログファイルのパスをコピー',
+			'debugLog.clear' => 'クリア',
+			'debugLog.debugPaintSize' => 'デバッグペイントを表示',
+			'debugLog.empty' => 'ログはまだありません。',
 			'physiqueIdentification.identifying' => '体格を特定しています',
 			'physiqueIdentification.identified' => '体格を特定しました！',
 			'physiqueIdentification.notFound' => '体格を特定できませんでした',
