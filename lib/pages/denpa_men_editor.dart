@@ -150,7 +150,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       successMessage: t.physiqueIdentification.identified,
       errorMessage: t.physiqueIdentification.error,
       task: () => ref
-          .read(physiquesApiClientProvider)
+          .read(physiqueIdentificationServiceProvider)
           .search(
             hp: _denpaMen.hp,
             evasionRate: _denpaMen.evasionRate,

@@ -57,6 +57,10 @@ dist/
 .wrangler/
 .dev.vars
 
+# Rust/Wasm build artifacts (modules/denpamen_logics)
+modules/denpamen_logics/rust/target/
+modules/denpamen_logics/pkg-node/
+
 # Firebase config (contains this project's API keys)
 /android/app/google-services.json
 /ios/Runner/GoogleService-Info.plist

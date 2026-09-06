@@ -8,6 +8,7 @@ export 'src/legend_grid_result.dart';
 export 'src/physique_category_candidate.dart';
 export 'src/physique_column_match.dart';
 export 'src/physique_column_search_query.dart';
+export 'src/physique_evasion_rate_category_row.dart';
 export 'src/physique_search_debug_info.dart';
 export 'src/physique_search_result.dart';
 export 'src/physique_table_record.dart';

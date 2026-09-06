@@ -337,6 +337,17 @@ export function tablesRoutes(dataSource: DataSource) {
 
         return { matches: results, info };
       })
+      .get('/evasion-rate-categories', async () => {
+        const categories = await evasionRateCategoryRepo.find();
+        return categories.map((category) => ({
+          id: category.id,
+          evasionRateStart: category.evasionRateStart,
+          evasionRateEnd: category.evasionRateEnd,
+          columnIndex: category.columnIndex,
+          textKey: category.textKey,
+          sign: category.sign,
+        }));
+      })
       .get('/legend-grid', async ({ query, set, headers }) => {
         const parsed = legendGridQuerySchema.safeParse(query);
         if (!parsed.success) {

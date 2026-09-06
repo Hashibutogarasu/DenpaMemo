@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'legend_grid_request.dart';
 import 'legend_grid_result.dart';
 import 'physique_column_search_query.dart';
+import 'physique_evasion_rate_category_row.dart';
 import 'physique_search_result.dart';
 import 'physique_table_record.dart';
 import 'table_definition.dart';
@@ -206,6 +207,18 @@ class PhysiquesApiClient {
     );
     final body = await _decodeMapOrThrow(response);
     return LegendGridResult.fromJson(body);
+  }
+
+  /// Every raw physique-category legend row (`GET /tables/evasion-rate-categories`),
+  /// untranslated, so a caller can cache them and run identification
+  /// offline instead of only through `search`/`legendGrid`.
+  Future<List<PhysiqueEvasionRateCategoryRow>> fetchEvasionRateCategories() async {
+    final response = await http.get(_baseUrl.replace(path: '/tables/evasion-rate-categories'));
+    final body = await _decodeListOrThrow(response);
+    return [
+      for (final row in body.cast<Map<String, dynamic>>())
+        PhysiqueEvasionRateCategoryRow.fromJson(row),
+    ];
   }
 
   static const Map<String, String> _jsonHeaders = {

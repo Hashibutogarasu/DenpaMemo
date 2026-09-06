@@ -4,13 +4,20 @@
     "container:run": {
       "cache": false
     },
+    "build:wasm": {
+      "inputs": ["rust/src/**", "rust/Cargo.toml"],
+      "outputs": ["pkg-node/**"]
+    },
     "dev": {
-      "dependsOn": ["container:run"],
+      "dependsOn": ["container:run", "@denpamemo/denpamen-logics#build:wasm"],
       "cache": false,
       "persistent": true
     },
     "dev:deploy": {
       "cache": false
+    },
+    "build": {
+      "dependsOn": ["@denpamemo/denpamen-logics#build:wasm"]
     }
   }
 }

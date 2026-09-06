@@ -18,6 +18,7 @@ import 'data/account/account_entity.dart';
 import 'data/cloud_file/cloud_file_entity.dart';
 import 'data/denpa_men/denpa_men_entity.dart';
 import 'data/notification/app_notification_entity.dart';
+import 'data/physique_table/evasion_rate_category_cache_entity.dart';
 import 'data/physique_table/physique_table_metadata_cache_entity.dart';
 import 'data/physique_table/physique_table_row_entity.dart';
 import 'data/qr_code/qr_code_entity.dart';
@@ -551,6 +552,59 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(9, 1993981006494465469),
+    name: 'EvasionRateCategoryEntity',
+    lastPropertyId: const obx_int.IdUid(7, 4361149293653128732),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 8236370036498136397),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 8922551603802869428),
+        name: 'categoryId',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(6, 2671948309389777854),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 8895276544859083350),
+        name: 'evasionRateStart',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 8771654146320538151),
+        name: 'evasionRateEnd',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 1922260933112563179),
+        name: 'columnIndex',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 8603894201063681583),
+        name: 'textKey',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 4361149293653128732),
+        name: 'sign',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -596,8 +650,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(8, 2940214554105854855),
-    lastIndexId: const obx_int.IdUid(5, 2035784995792252963),
+    lastEntityId: const obx_int.IdUid(9, 1993981006494465469),
+    lastIndexId: const obx_int.IdUid(6, 2671948309389777854),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [],
@@ -1299,6 +1353,81 @@ obx_int.ModelDefinition getObjectBoxModel() {
             return object;
           },
         ),
+    EvasionRateCategoryEntity:
+        obx_int.EntityDefinition<EvasionRateCategoryEntity>(
+          model: _entities[8],
+          toOneRelations: (EvasionRateCategoryEntity object) => [],
+          toManyRelations: (EvasionRateCategoryEntity object) => {},
+          getId: (EvasionRateCategoryEntity object) => object.id,
+          setId: (EvasionRateCategoryEntity object, int id) {
+            object.id = id;
+          },
+          objectToFB: (EvasionRateCategoryEntity object, fb.Builder fbb) {
+            final categoryIdOffset = fbb.writeString(object.categoryId);
+            final textKeyOffset = fbb.writeString(object.textKey);
+            final signOffset = object.sign == null
+                ? null
+                : fbb.writeString(object.sign!);
+            fbb.startTable(8);
+            fbb.addInt64(0, object.id);
+            fbb.addOffset(1, categoryIdOffset);
+            fbb.addInt64(2, object.evasionRateStart);
+            fbb.addInt64(3, object.evasionRateEnd);
+            fbb.addInt64(4, object.columnIndex);
+            fbb.addOffset(5, textKeyOffset);
+            fbb.addOffset(6, signOffset);
+            fbb.finish(fbb.endTable());
+            return object.id;
+          },
+          objectFromFB: (obx.Store store, ByteData fbData) {
+            final buffer = fb.BufferContext(fbData);
+            final rootOffset = buffer.derefObject(0);
+            final idParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              4,
+              0,
+            );
+            final categoryIdParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 6, '');
+            final evasionRateStartParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              8,
+              0,
+            );
+            final evasionRateEndParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              10,
+              0,
+            );
+            final columnIndexParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              12,
+              0,
+            );
+            final textKeyParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 14, '');
+            final signParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGetNullable(buffer, rootOffset, 16);
+            final object = EvasionRateCategoryEntity(
+              id: idParam,
+              categoryId: categoryIdParam,
+              evasionRateStart: evasionRateStartParam,
+              evasionRateEnd: evasionRateEndParam,
+              columnIndex: columnIndexParam,
+              textKey: textKeyParam,
+              sign: signParam,
+            );
+
+            return object;
+          },
+        ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -1693,4 +1822,45 @@ class PhysiqueTableMetadataCacheEntity_ {
       obx.QueryStringProperty<PhysiqueTableMetadataCacheEntity>(
         _entities[7].properties[2],
       );
+}
+
+/// [EvasionRateCategoryEntity] entity fields to define ObjectBox queries.
+class EvasionRateCategoryEntity_ {
+  /// See [EvasionRateCategoryEntity.id].
+  static final id = obx.QueryIntegerProperty<EvasionRateCategoryEntity>(
+    _entities[8].properties[0],
+  );
+
+  /// See [EvasionRateCategoryEntity.categoryId].
+  static final categoryId = obx.QueryStringProperty<EvasionRateCategoryEntity>(
+    _entities[8].properties[1],
+  );
+
+  /// See [EvasionRateCategoryEntity.evasionRateStart].
+  static final evasionRateStart =
+      obx.QueryIntegerProperty<EvasionRateCategoryEntity>(
+        _entities[8].properties[2],
+      );
+
+  /// See [EvasionRateCategoryEntity.evasionRateEnd].
+  static final evasionRateEnd =
+      obx.QueryIntegerProperty<EvasionRateCategoryEntity>(
+        _entities[8].properties[3],
+      );
+
+  /// See [EvasionRateCategoryEntity.columnIndex].
+  static final columnIndex =
+      obx.QueryIntegerProperty<EvasionRateCategoryEntity>(
+        _entities[8].properties[4],
+      );
+
+  /// See [EvasionRateCategoryEntity.textKey].
+  static final textKey = obx.QueryStringProperty<EvasionRateCategoryEntity>(
+    _entities[8].properties[5],
+  );
+
+  /// See [EvasionRateCategoryEntity.sign].
+  static final sign = obx.QueryStringProperty<EvasionRateCategoryEntity>(
+    _entities[8].properties[6],
+  );
 }
