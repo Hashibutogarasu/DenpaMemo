@@ -35,7 +35,7 @@ dependencies:
   go_router: ^17.4.0
   freezed_annotation: ^3.1.0
   json_annotation: ^4.12.0
-  flutter_riverpod: ^3.4.2
+  flutter_riverpod: ">=3.3.0 <3.4.0"
   slang_flutter: ^4.19.0
   smooth_page_indicator: ^2.0.1
   objectbox: ^5.3.2
@@ -99,7 +99,7 @@ dev_dependencies:
   flutter_rust_bridge: 2.13.0
   flutter_lints: ^6.0.0
   go_router_builder: ^4.4.0
-  build_runner: ^2.15.1
+  build_runner: ">=2.15.1 <2.16.0"
   freezed: ^3.2.5
   json_serializable: ^6.14.1
   slang: ^4.19.0
@@ -163,3 +163,5 @@ melos:
 app_metadata:
   author: 'Hashibutogarasu'
   license: 'MIT'
+dependency_overrides:
+  test_api: 0.7.9

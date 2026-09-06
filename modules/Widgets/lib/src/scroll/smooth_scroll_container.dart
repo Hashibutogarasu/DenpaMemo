@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:silky_scroll/silky_scroll.dart';
 
@@ -43,7 +42,6 @@ class SmoothScrollContainer extends StatelessWidget {
     BuildContext context,
     ScrollController controller,
     ScrollPhysics physics,
-    PointerDeviceKind? pointerDeviceKind,
   ) {
     return PrimaryScrollController(
       controller: controller,
