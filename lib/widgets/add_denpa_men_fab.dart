@@ -42,24 +42,13 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
   late final bool _ownsExpansion = widget.expansionController == null;
   late final _mainButtonLayerLink = widget.mainButtonLayerLink ?? LayerLink();
 
-  bool get _open => _expansion.value;
-
-  @override
-  void initState() {
-    super.initState();
-    _expansion.addListener(_handleExpansionChanged);
-  }
-
   @override
   void dispose() {
-    _expansion.removeListener(_handleExpansionChanged);
     if (_ownsExpansion) {
       _expansion.dispose();
     }
     super.dispose();
   }
-
-  void _handleExpansionChanged() => setState(() {});
 
   void _toggle() => _expansion.value = !_expansion.value;
 
@@ -126,67 +115,72 @@ class _AddDenpaMenFabState extends State<AddDenpaMenFab> {
     final animationDuration =
         widget.animationDuration ?? fabTheme.mainButtonAnimationDuration;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        if (widget.onExport != null)
-          MiniFabOption(
-            label: t.home.exportSelected,
-            icon: Icons.ios_share,
-            onPressed: _export,
-            open: _open,
-            animationDuration: animationDuration,
-          ),
-        if (widget.onImport != null)
-          MiniFabOption(
-            label: t.home.importFromFile,
-            icon: Icons.file_upload,
-            onPressed: _import,
-            open: _open,
-            animationDuration: animationDuration,
-          ),
-        MiniFabOption(
-          label: t.home.addFromExistingQr,
-          icon: Icons.qr_code_scanner,
-          onPressed: _addFromExistingQr,
-          open: _open,
-          animationDuration: animationDuration,
-        ),
-        MiniFabOption(
-          label: t.home.addFromQrFile,
-          icon: Icons.upload_file,
-          onPressed: _addFromQrFile,
-          open: _open,
-          animationDuration: animationDuration,
-        ),
-        MiniFabOption(
-          label: t.home.addFromQr,
-          icon: Icons.qr_code,
-          onPressed: _addFromQr,
-          open: _open,
-          animationDuration: animationDuration,
-        ),
-        MiniFabOption(
-          label: t.home.addSingle,
-          icon: Icons.person_add,
-          onPressed: _addSingle,
-          open: _open,
-          animationDuration: animationDuration,
-        ),
-        CompositedTransformTarget(
-          link: _mainButtonLayerLink,
-          child: FloatingActionButton(
-            heroTag: null,
-            onPressed: _toggle,
-            child: AnimatedRotation(
-              duration: animationDuration,
-              turns: _open ? 0.125 : 0,
-              child: const Icon(Icons.add),
+    return ValueListenableBuilder<bool>(
+      valueListenable: _expansion,
+      builder: (context, open, _) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (widget.onExport != null)
+              MiniFabOption(
+                label: t.home.exportSelected,
+                icon: Icons.ios_share,
+                onPressed: _export,
+                open: open,
+                animationDuration: animationDuration,
+              ),
+            if (widget.onImport != null)
+              MiniFabOption(
+                label: t.home.importFromFile,
+                icon: Icons.file_upload,
+                onPressed: _import,
+                open: open,
+                animationDuration: animationDuration,
+              ),
+            MiniFabOption(
+              label: t.home.addFromExistingQr,
+              icon: Icons.qr_code_scanner,
+              onPressed: _addFromExistingQr,
+              open: open,
+              animationDuration: animationDuration,
             ),
-          ),
-        ),
-      ],
+            MiniFabOption(
+              label: t.home.addFromQrFile,
+              icon: Icons.upload_file,
+              onPressed: _addFromQrFile,
+              open: open,
+              animationDuration: animationDuration,
+            ),
+            MiniFabOption(
+              label: t.home.addFromQr,
+              icon: Icons.qr_code,
+              onPressed: _addFromQr,
+              open: open,
+              animationDuration: animationDuration,
+            ),
+            MiniFabOption(
+              label: t.home.addSingle,
+              icon: Icons.person_add,
+              onPressed: _addSingle,
+              open: open,
+              animationDuration: animationDuration,
+            ),
+            CompositedTransformTarget(
+              link: _mainButtonLayerLink,
+              child: FloatingActionButton(
+                heroTag: null,
+                onPressed: _toggle,
+                child: AnimatedRotation(
+                  duration: animationDuration,
+                  turns: open ? 0.125 : 0,
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

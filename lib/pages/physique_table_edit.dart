@@ -138,141 +138,214 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     final t = context.t;
     final editState = ref.watch(physiqueTableEditProvider(widget.args));
     final rows = editState.rows;
-    final typesAsync = ref.watch(tableTypesProvider);
-    final type = typesAsync.value?.firstWhereOrNull(
-      (type) => type.type == widget.args.type,
-    );
-    final columnCount = type?.columnCount;
-    return AppScaffold(
-      title: OutlinedTitleText(
-        text: t.physiqueTable.tableTitle(
-          level: widget.args.level,
-          anntenaCategory: widget.args.anntenaCategory,
-          statusName: type == null
-              ? ''
-              : (t[type.translationKey] as String?) ?? type.type,
-        ),
-      ),
-      floatingActionButton: rows == null || columnCount == null
-          ? null
-          : Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                FloatingActionButton.extended(
-                  heroTag: 'physiqueTableSync',
-                  icon: const Icon(Icons.cloud_upload_outlined),
-                  label: Text(t.physiqueTable.sync),
-                  onPressed: _sync,
+
+    return ref
+        .watch(tableTypesProvider)
+        .when(
+          data: (types) {
+            final type = types.firstWhereOrNull(
+              (type) => type.type == widget.args.type,
+            );
+            final columnCount = type?.columnCount;
+            if (columnCount == null) {
+              return _PhysiqueTableEditScaffold(
+                title: t.physiqueTable.tableTitle(
+                  level: widget.args.level,
+                  anntenaCategory: widget.args.anntenaCategory,
+                  statusName: '',
                 ),
-                const SizedBox(height: 12),
-                FloatingActionButton.extended(
-                  heroTag: 'physiqueTableSave',
-                  label: Text(t.physiqueTable.save),
-                  onPressed: _save,
-                ),
-              ],
-            ),
-      body:
-          editState.loadError ||
-              typesAsync.hasError ||
-              (typesAsync.hasValue && columnCount == null)
-          ? Center(child: Text(t.physiqueTable.loadError))
-          : LoadingOverlay(
-              loading:
-                  rows == null || typesAsync.isLoading || columnCount == null,
-              child: rows == null || columnCount == null
-                  ? const SizedBox.shrink()
+                body: Center(child: Text(t.physiqueTable.loadError)),
+              );
+            }
+            return _PhysiqueTableEditScaffold(
+              title: t.physiqueTable.tableTitle(
+                level: widget.args.level,
+                anntenaCategory: widget.args.anntenaCategory,
+                statusName: (t[type!.translationKey] as String?) ?? type.type,
+              ),
+              floatingActionButton: rows == null
+                  ? null
                   : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: rows.isEmpty
-                              ? Center(child: Text(t.physiqueTable.empty))
-                              : TableEditor<PhysiqueTableRow>(
-                                  columns: buildPhysiqueTableColumns(
-                                    columnCount: columnCount,
-                                    onValueChanged:
-                                        (lineOffset, columnIndex, newValue) =>
-                                            ref
-                                                .read(
-                                                  physiqueTableEditProvider(
-                                                    widget.args,
-                                                  ).notifier,
-                                                )
-                                                .onValueChanged(
-                                                  lineOffset,
-                                                  columnIndex,
-                                                  newValue,
-                                                ),
-                                  ),
-                                  data: rows,
-                                  rowId: (row) => row.lineOffset.toString(),
-                                  isSelectable: true,
-                                  selectionMode: SelectionMode.multiple,
-                                  selectedRows: _selectedRowIds,
-                                  onCheckboxChanged: (rowId, isSelected) =>
-                                      setState(() {
-                                        _selectedRowIds = Set.of(
-                                          _selectedRowIds,
-                                        );
-                                        if (isSelected) {
-                                          _selectedRowIds.add(rowId);
-                                        } else {
-                                          _selectedRowIds.remove(rowId);
-                                        }
-                                      }),
-                                  trailingCellBuilder: (row) => IconButton(
-                                    icon: Icon(
-                                      Icons.delete_outline,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.error,
-                                    ),
-                                    tooltip: t.physiqueTable.deleteRow,
-                                    onPressed: () => _deleteRow(row.lineOffset),
-                                  ),
-                                ),
+                        FloatingActionButton.extended(
+                          heroTag: 'physiqueTableSync',
+                          icon: const Icon(Icons.cloud_upload_outlined),
+                          label: Text(t.physiqueTable.sync),
+                          onPressed: _sync,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Wrap(
-                            spacing: 8,
-                            children: [
-                              OutlinedButton.icon(
-                                icon: const Icon(Icons.add),
-                                label: Text(t.physiqueTable.addRow),
-                                onPressed: () => ref
-                                    .read(
-                                      physiqueTableEditProvider(
-                                        widget.args,
-                                      ).notifier,
-                                    )
-                                    .addRow(columnCount),
-                              ),
-                              OutlinedButton.icon(
-                                icon: Icon(
-                                  Icons.delete_outline,
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                                label: Text(t.physiqueTable.deleteTable),
-                                onPressed: _deleteTable,
-                              ),
-                              OutlinedButton.icon(
-                                icon: Icon(
-                                  Icons.delete_outline,
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                                label: Text(t.physiqueTable.deleteSelectedRows),
-                                onPressed: _selectedRowIds.isEmpty
-                                    ? null
-                                    : _deleteSelectedRows,
-                              ),
-                            ],
-                          ),
+                        const SizedBox(height: 12),
+                        FloatingActionButton.extended(
+                          heroTag: 'physiqueTableSave',
+                          label: Text(t.physiqueTable.save),
+                          onPressed: _save,
                         ),
                       ],
                     ),
+              body: editState.loadError
+                  ? Center(child: Text(t.physiqueTable.loadError))
+                  : LoadingOverlay(
+                      loading: rows == null,
+                      child: rows == null
+                          ? const SizedBox.shrink()
+                          : Column(
+                              children: [
+                                Expanded(
+                                  child: rows.isEmpty
+                                      ? Center(
+                                          child: Text(t.physiqueTable.empty),
+                                        )
+                                      : TableEditor<PhysiqueTableRow>(
+                                          columns: buildPhysiqueTableColumns(
+                                            columnCount: columnCount,
+                                            onValueChanged:
+                                                (
+                                                  lineOffset,
+                                                  columnIndex,
+                                                  newValue,
+                                                ) => ref
+                                                    .read(
+                                                      physiqueTableEditProvider(
+                                                        widget.args,
+                                                      ).notifier,
+                                                    )
+                                                    .onValueChanged(
+                                                      lineOffset,
+                                                      columnIndex,
+                                                      newValue,
+                                                    ),
+                                          ),
+                                          data: rows,
+                                          rowId: (row) =>
+                                              row.lineOffset.toString(),
+                                          isSelectable: true,
+                                          selectionMode:
+                                              SelectionMode.multiple,
+                                          selectedRows: _selectedRowIds,
+                                          onCheckboxChanged:
+                                              (rowId, isSelected) => setState(() {
+                                                _selectedRowIds = Set.of(
+                                                  _selectedRowIds,
+                                                );
+                                                if (isSelected) {
+                                                  _selectedRowIds.add(rowId);
+                                                } else {
+                                                  _selectedRowIds.remove(
+                                                    rowId,
+                                                  );
+                                                }
+                                              }),
+                                          trailingCellBuilder: (row) =>
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.delete_outline,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.error,
+                                                ),
+                                                tooltip:
+                                                    t.physiqueTable.deleteRow,
+                                                onPressed: () => _deleteRow(
+                                                  row.lineOffset,
+                                                ),
+                                              ),
+                                        ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Wrap(
+                                    spacing: 8,
+                                    children: [
+                                      OutlinedButton.icon(
+                                        icon: const Icon(Icons.add),
+                                        label: Text(t.physiqueTable.addRow),
+                                        onPressed: () => ref
+                                            .read(
+                                              physiqueTableEditProvider(
+                                                widget.args,
+                                              ).notifier,
+                                            )
+                                            .addRow(columnCount),
+                                      ),
+                                      OutlinedButton.icon(
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.error,
+                                        ),
+                                        label: Text(
+                                          t.physiqueTable.deleteTable,
+                                        ),
+                                        onPressed: _deleteTable,
+                                      ),
+                                      OutlinedButton.icon(
+                                        icon: Icon(
+                                          Icons.delete_outline,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.error,
+                                        ),
+                                        label: Text(
+                                          t.physiqueTable.deleteSelectedRows,
+                                        ),
+                                        onPressed: _selectedRowIds.isEmpty
+                                            ? null
+                                            : _deleteSelectedRows,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+            );
+          },
+          loading: () => _PhysiqueTableEditScaffold(
+            title: t.physiqueTable.tableTitle(
+              level: widget.args.level,
+              anntenaCategory: widget.args.anntenaCategory,
+              statusName: '',
             ),
+            body: LoadingOverlay(
+              loading: true,
+              child: const SizedBox.shrink(),
+            ),
+          ),
+          error: (_, _) => _PhysiqueTableEditScaffold(
+            title: t.physiqueTable.tableTitle(
+              level: widget.args.level,
+              anntenaCategory: widget.args.anntenaCategory,
+              statusName: '',
+            ),
+            body: Center(child: Text(t.physiqueTable.loadError)),
+          ),
+        );
+  }
+}
+
+/// Thin [AppScaffold] wrapper so each `tableTypesProvider` [AsyncValue]
+/// branch in [_PhysiqueTableEditPageState.build] only has to supply its
+/// own `title`/`floatingActionButton`/`body`, without repeating the
+/// [OutlinedTitleText] wiring three times.
+class _PhysiqueTableEditScaffold extends StatelessWidget {
+  const _PhysiqueTableEditScaffold({
+    required this.title,
+    this.floatingActionButton,
+    required this.body,
+  });
+
+  final String title;
+  final Widget? floatingActionButton;
+  final Widget body;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppScaffold(
+      title: OutlinedTitleText(text: title),
+      floatingActionButton: floatingActionButton,
+      body: body,
     );
   }
 }

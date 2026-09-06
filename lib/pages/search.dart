@@ -15,24 +15,23 @@ class Search extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final masterDataAsync = ref.watch(masterDataProvider);
-    final masterData = masterDataAsync.value;
     final t = context.t;
 
     listenForMasterDataErrors(ref, context);
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.search),
-      body: masterData != null
-          ? SearchForm(
-              headShapes: masterData.headShapes,
-              anntenas: masterData.anntenas,
-              query: ref.watch(searchFormDraftProvider),
-              onChanged: (value) =>
-                  ref.read(searchFormDraftProvider.notifier).state = value,
-            )
-          : masterDataAsync.isLoading
-          ? const ProgressBar()
-          : const SizedBox.shrink(),
+      body: masterDataAsync.when(
+        data: (masterData) => SearchForm(
+          headShapes: masterData.headShapes,
+          anntenas: masterData.anntenas,
+          query: ref.watch(searchFormDraftProvider),
+          onChanged: (value) =>
+              ref.read(searchFormDraftProvider.notifier).state = value,
+        ),
+        loading: () => const ProgressBar(),
+        error: (_, _) => const SizedBox.shrink(),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ref.read(searchQueryProvider.notifier).state = ref.read(

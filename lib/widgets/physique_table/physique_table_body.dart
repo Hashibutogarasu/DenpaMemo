@@ -43,32 +43,40 @@ class _PhysiqueTableBodyState extends ConsumerState<PhysiqueTableBody> {
     final t = context.t;
     final editState = ref.watch(physiqueTableEditProvider(widget.args));
     final rows = editState.rows;
-    final typesAsync = ref.watch(tableTypesProvider);
-    final type = typesAsync.value?.firstWhereOrNull(
-      (type) => type.type == widget.args.type,
-    );
-    final columnCount = type?.columnCount;
 
-    if (editState.loadError ||
-        typesAsync.hasError ||
-        (typesAsync.hasValue && columnCount == null)) {
+    if (editState.loadError) {
       return Center(child: Text(t.physiqueTable.loadError));
     }
 
-    return LoadingOverlay(
-      loading: rows == null || typesAsync.isLoading || columnCount == null,
-      child: rows == null || columnCount == null
-          ? const SizedBox.shrink()
-          : (rows.isEmpty
-                ? Center(child: Text(t.physiqueTable.empty))
-                : TableEditor<PhysiqueTableRow>(
-                    columns: buildPhysiqueTableColumns(
-                      columnCount: columnCount,
-                      isHighlighted: widget.isHighlighted,
-                    ),
-                    data: rows,
-                    rowId: (row) => row.lineOffset.toString(),
-                  )),
-    );
+    return ref
+        .watch(tableTypesProvider)
+        .when(
+          data: (types) {
+            final columnCount = types
+                .firstWhereOrNull((type) => type.type == widget.args.type)
+                ?.columnCount;
+            if (columnCount == null) {
+              return Center(child: Text(t.physiqueTable.loadError));
+            }
+            return LoadingOverlay(
+              loading: rows == null,
+              child: rows == null
+                  ? const SizedBox.shrink()
+                  : (rows.isEmpty
+                        ? Center(child: Text(t.physiqueTable.empty))
+                        : TableEditor<PhysiqueTableRow>(
+                            columns: buildPhysiqueTableColumns(
+                              columnCount: columnCount,
+                              isHighlighted: widget.isHighlighted,
+                            ),
+                            data: rows,
+                            rowId: (row) => row.lineOffset.toString(),
+                          )),
+            );
+          },
+          loading: () =>
+              LoadingOverlay(loading: true, child: const SizedBox.shrink()),
+          error: (_, _) => Center(child: Text(t.physiqueTable.loadError)),
+        );
   }
 }

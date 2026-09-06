@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../header/slanted_app_bar.dart';
 import '../navigation/app_back_button.dart';
-import '../responsive/responsive.dart';
-import '../responsive/responsive_provider.dart';
 import '../theme/fab_button_theme.dart';
 import '../theme/slanted_header_theme.dart';
 
@@ -31,7 +28,7 @@ class AlwaysPoppableShellScope extends InheritedWidget {
 /// [FabButtonThemeData.miniOptionRowBottomPadding] like `MiniFabOption`)
 /// and [floatingActionButton] (bottom-right), both inset by [buttonInset].
 /// Also binds Escape to the same pop as the on-screen back button.
-class AppScaffold extends ConsumerWidget {
+class AppScaffold extends StatelessWidget {
   const AppScaffold({
     super.key,
     required this.title,
@@ -60,22 +57,9 @@ class AppScaffold extends ConsumerWidget {
   final Map<ShortcutActivator, VoidCallback> additionalShortcuts;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final canPop =
         Navigator.canPop(context) || AlwaysPoppableShellScope.of(context);
-
-    final shellState = ref.watch(appShellStateProvider);
-    final isMobile = isMobileWidth(context);
-    if (shellState.isMobile != isMobile) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!context.mounted) return;
-        ref
-            .read(appShellStateProvider.notifier)
-            .update(
-              (state) => (isMobile: isMobile, isLoading: state.isLoading),
-            );
-      });
-    }
 
     return CallbackShortcuts(
       bindings: {

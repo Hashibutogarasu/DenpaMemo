@@ -82,7 +82,7 @@ export 'src/middle_click_detector.dart';
 export 'src/navigation/app_back_button.dart';
 export 'src/progress_bar.dart';
 export 'src/responsive/responsive.dart';
-export 'src/responsive/responsive_provider.dart';
+export 'src/responsive/responsive_scope.dart';
 export 'src/scaffold/app_scaffold.dart';
 export 'src/scaffold/loading_overlay.dart';
 export 'src/scroll/smooth_scroll_container.dart';
