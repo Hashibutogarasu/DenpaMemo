@@ -12,7 +12,7 @@ class GraphQlClientFactory {
   const GraphQlClientFactory();
 
   static const _androidDebugEndpoint =
-      'https://denpamemo.karasu256.com/graphql';
+      'https://denpamemo-dev.karasu256.com/graphql';
 
   String get endpoint {
     if (Platform.isAndroid && kDebugMode) {

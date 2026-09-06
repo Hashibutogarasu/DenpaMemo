@@ -1,0 +1,8 @@
+{
+  "name": "@Hashibutogarasu/denpamemo-tunnels",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "cloudflared tunnel --config ./cloudflared.yml run"
+  }
+}
