@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:toaster/toaster.dart';
 
 import '../../i18n/gen/strings.g.dart';
 
-/// A settings row showing [trailingText]; tapping copies it to the
-/// clipboard and toasts confirmation, naming [label] rather than the
-/// copied value. With no [trailingText], the tile has nothing to copy and
-/// is disabled (no `onTap`), matching `ListItemTile`'s disabled-tile
-/// convention.
+/// [ListItemTile] view that copies [trailingText] to the clipboard on tap
+/// and toasts confirmation naming [label]. Disabled when [trailingText]
+/// is null.
 class CopyableListTile extends StatelessWidget {
   const CopyableListTile({
     super.key,
@@ -35,13 +36,11 @@ class CopyableListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final value = trailingText;
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label),
-      trailing: value != null ? Text(value) : null,
-      enabled: value != null,
-      onTap: value != null ? () => _copy(context) : null,
+    return ListItemTile(
+      icon: icon,
+      label: label,
+      trailingText: trailingText,
+      onTap: trailingText != null ? () => _copy(context) : null,
     );
   }
 }

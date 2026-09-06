@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../unfocus_on_tap.dart';
+import '../list/list_item_tile.dart';
 
-/// A dialog-backed filter row on the search page (head shape, body color,
-/// antenna). [onApply] and [onClear] are given the query-transform result
-/// directly; how that maps onto the caller's state is up to the caller.
+/// [ListItemTile] view for a dialog-backed filter row on the search page
+/// (head shape, body color, antenna). [onApply] and [onClear] are given
+/// the query-transform result directly; how that maps onto the caller's
+/// state is up to the caller.
 class SearchFilterTile<T> extends StatelessWidget {
   const SearchFilterTile({
     super.key,
@@ -25,23 +26,19 @@ class SearchFilterTile<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UnfocusOnTap(
+    return ListItemTile(
+      label: label,
+      subtitle: subtitle,
+      trailing: isSet
+          ? IconButton(icon: const Icon(Icons.close), onPressed: onClear)
+          : const Icon(Icons.chevron_right),
       onTap: () async {
+        FocusScope.of(context).unfocus();
         final result = await openDialog(context);
         if (result != null) {
           onApply(result);
         }
       },
-      child: Material(
-        type: MaterialType.transparency,
-        child: ListTile(
-          title: Text(label),
-          subtitle: subtitle,
-          trailing: isSet
-              ? IconButton(icon: const Icon(Icons.close), onPressed: onClear)
-              : const Icon(Icons.chevron_right),
-        ),
-      ),
     );
   }
 }

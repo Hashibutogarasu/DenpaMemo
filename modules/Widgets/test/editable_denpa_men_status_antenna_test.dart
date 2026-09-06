@@ -104,6 +104,7 @@ void main() {
 
     expect(find.text('ちょっとかいふく+3'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('ちょっとかいふく+3'));
     await tester.tap(find.text('ちょっとかいふく+3'));
     await tester.pumpAndSettle();
 
@@ -128,6 +129,7 @@ void main() {
 
     expect(find.text('ちょっとかいふく+9'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('ちょっとかいふく+9'));
     await tester.tap(find.text('ちょっとかいふく+9'));
     await tester.pumpAndSettle();
 
@@ -188,6 +190,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('ちょっとかいふく'), findsOneWidget);
+    await tester.ensureVisible(find.text('ちょっとかいふく'));
     await tester.tap(find.text('ちょっとかいふく'));
     await tester.pumpAndSettle();
 
@@ -207,6 +210,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('ちょっとかいふく+3'), findsOneWidget);
+    await tester.ensureVisible(find.text('ちょっとかいふく+3'));
     await tester.tap(find.text('ちょっとかいふく+3'));
     await tester.pumpAndSettle();
 
@@ -263,6 +267,7 @@ void main() {
     await tester.pumpWidget(_buildApp(denpaMen, masterData, (_) {}));
     await tester.pumpAndSettle();
 
+    await tester.ensureVisible(find.text('ちょっとかいふく+3'));
     await tester.tap(find.text('ちょっとかいふく+3'));
     await tester.pumpAndSettle();
 

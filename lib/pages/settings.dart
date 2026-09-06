@@ -10,8 +10,6 @@ import '../app_metadata.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_info_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/list/list_item_container.dart';
-import '../widgets/list/list_item_tile.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/app_icon.dart';
 import '../widgets/settings/copyable_list_tile.dart';

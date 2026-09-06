@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// A single row for any list of items: an optional leading [icon], a
-/// label, and a trailing slot that varies by what the caller passes in —
-/// a checkbox (selection mode), a `⋮` action menu, a chevron (navigable),
-/// [trailing], plain [trailingText], or nothing.
-///
-/// Passing only [icon]/[label]/[onTap]/[trailingText]/[color] reproduces
-/// the settings-list tile this was generalized from exactly; the
-/// selection/action-menu/[trailing] parameters are additive. [trailing]
-/// takes priority over [trailingText] when both are given, for a trailing
-/// slot that isn't plain text (e.g. a formatted-date widget).
+/// Domain-agnostic row for any list of items: an optional [leading]
+/// widget (or plain [icon]), a label, and a trailing slot that adapts to
+/// what's passed in — checkbox, action menu, chevron, [trailing]/
+/// [trailingText], or nothing.
 class ListItemTile extends StatelessWidget {
   const ListItemTile({
     super.key,
     this.icon,
+    this.leading,
     required this.label,
     this.subtitle,
     this.onTap,
@@ -28,8 +23,9 @@ class ListItemTile extends StatelessWidget {
   });
 
   final IconData? icon;
+  final Widget? leading;
   final String label;
-  final String? subtitle;
+  final Widget? subtitle;
   final VoidCallback? onTap;
   final String? trailingText;
   final Widget? trailing;
@@ -50,13 +46,16 @@ class ListItemTile extends StatelessWidget {
     final effectiveColor = enabled ? color : null;
     final showCheckbox = selectionMode && onSelectedChanged != null;
     final showActionMenu = !showCheckbox && actionMenuItemsBuilder != null;
+    final effectiveLeading =
+        leading ?? (icon != null ? Icon(icon, color: effectiveColor) : null);
     return ListTile(
-      leading: icon != null ? Icon(icon, color: effectiveColor) : null,
+      leading: effectiveLeading,
       title: Text(
         label,
         style: effectiveColor != null ? TextStyle(color: effectiveColor) : null,
       ),
-      subtitle: subtitle != null ? Text(subtitle!) : null,
+      subtitle: subtitle,
+      selected: selected,
       trailing: showCheckbox
           ? Checkbox(
               value: selected,

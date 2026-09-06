@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
 import 'package:firebase_sign_in/firebase_sign_in.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
@@ -9,8 +10,6 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/account_providers.dart';
 import '../providers/cloud_account_providers.dart';
 import '../widgets/dialog/confirm_dialog.dart';
-import '../widgets/list/list_item_container.dart';
-import '../widgets/list/list_item_tile.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/copyable_list_tile.dart';
 

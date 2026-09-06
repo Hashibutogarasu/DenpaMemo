@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../unfocus_on_tap.dart';
-import 'nested.dart';
+import '../list/list_item_tile.dart';
 
-/// Tappable [NestedContainer] with a small label above arbitrary content
-/// and a trailing chevron, used to open a selection dialog. See
-/// [UnfocusOnTap] for why [onTap] runs through it rather than a plain
-/// [InkWell].
+/// [ListItemTile] view over a selection-triggering row: [label] as the
+/// title, [child] plus a chevron as trailing, unfocusing before [onTap]
+/// opens a selection dialog.
 class SelectionTile extends StatelessWidget {
   const SelectionTile({
     super.key,
@@ -23,26 +21,21 @@ class SelectionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UnfocusOnTap(
-      borderRadius: BorderRadius.circular(20),
-      enabled: enabled,
-      onTap: onTap,
-      child: NestedContainer(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(label, style: Theme.of(context).textTheme.labelSmall),
-            Row(
-              children: [
-                Expanded(child: child),
-                const Icon(Icons.chevron_right),
-              ],
-            ),
-          ],
-        ),
+    return ListItemTile(
+      label: label,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(child: child),
+          const Icon(Icons.chevron_right),
+        ],
       ),
+      onTap: enabled
+          ? () {
+              FocusScope.of(context).unfocus();
+              onTap();
+            }
+          : null,
     );
   }
 }

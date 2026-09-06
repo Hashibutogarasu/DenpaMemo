@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+
 import 'package:api_client/api_client.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,7 +14,6 @@ import '../providers/physique_table_cache_providers.dart';
 import '../providers/physique_table_edit_providers.dart';
 import '../providers/physiques_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/list/list_item_container.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/physique_table/physique_antenna_category_selection_dialog.dart';
 import '../widgets/physique_table/table_type_selection_dialog.dart';

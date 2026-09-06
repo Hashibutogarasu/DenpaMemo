@@ -10,6 +10,7 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 import 'package:widgetbook_app/use_cases/add_denpa_men.widgetbook.dart'
     as _widgetbook_app_use_cases_add_denpa_men_widgetbook;
@@ -163,8 +164,6 @@ import 'package:widgetbook_app/use_cases/search/search_stat_grid.widgetbook.dart
     as _widgetbook_app_use_cases_search_search_stat_grid_widgetbook;
 import 'package:widgetbook_app/use_cases/snackbar/copyable_snack_bar.widgetbook.dart'
     as _widgetbook_app_use_cases_snackbar_copyable_snack_bar_widgetbook;
-import 'package:widgetbook_app/use_cases/unfocus_on_tap.widgetbook.dart'
-    as _widgetbook_app_use_cases_unfocus_on_tap_widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
@@ -293,21 +292,6 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'Default',
             builder: _widgetbook_app_use_cases_progress_bar_widgetbook
                 .progressBarUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'UnfocusOnTap',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder: _widgetbook_app_use_cases_unfocus_on_tap_widgetbook
-                .unfocusOnTapDefaultUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'Disabled',
-            builder: _widgetbook_app_use_cases_unfocus_on_tap_widgetbook
-                .unfocusOnTapDisabledUseCase,
           ),
         ],
       ),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import '../theme/list_item_container_theme.dart';
 
 /// Wraps a list of items (typically [ListItemTile]s) with a themed,
-/// rounded-corner, outer-padded container. A thin divider (from
-/// [ListItemContainerThemeData]) is drawn between adjacent items — not
-/// above the first or below the last, since those edges already meet the
-/// container's own rounded border.
+/// rounded-corner, outer-padded container. A thin divider is drawn
+/// between adjacent items only — not above the first or below the last,
+/// since those edges already meet the container's own rounded border.
 class ListItemContainer extends StatelessWidget {
   const ListItemContainer({super.key, required this.children});
 
