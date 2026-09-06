@@ -5,10 +5,10 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graphql_client/graphql_client.dart';
 
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
+import '../providers/physique_table_cache_providers.dart';
 import '../providers/physique_table_edit_providers.dart';
 import '../providers/physiques_providers.dart';
 import '../routing/app_router.dart';
@@ -52,28 +52,28 @@ Future<String?> _pickLevel(BuildContext context) {
   );
 }
 
-/// Fetches, for each of [types], whether it already has at least one row
-/// saved at [level]/[anntenaCategory] — shown as a ○/✕ mark in
+/// For each of [types], whether it already has at least one cached row
+/// at [level]/[anntenaCategory] — shown as a ○/✕ mark in
 /// [showTableTypeSelectionDialog] so the user can tell which types are
-/// existing tables to view versus still-empty ones.
-Future<Map<String, bool>> _fetchTypeAvailability(
+/// existing tables to view versus still-empty ones. Reads the local
+/// cache rather than the server, so it never hangs or errors offline.
+Map<String, bool> _typeAvailability(
   WidgetRef ref,
   List<TableDefinition> types,
   String level,
   String anntenaCategory,
-) async {
-  final client = ref.read(physiquesApiClientProvider);
-  final entries = await Future.wait([
+) {
+  final cacheRepository = ref.read(physiqueTableCacheRepositoryProvider);
+  return {
     for (final type in types)
-      client
-          .fetch(
-            type: type.type,
-            level: level,
-            anntenaCategory: anntenaCategory,
-          )
-          .then((rows) => MapEntry(type.type, rows.isNotEmpty)),
-  ]);
-  return Map.fromEntries(entries);
+      type.type: cacheRepository.hasDataFor(
+        PhysiqueTableArgs(
+          type: type.type,
+          level: level,
+          anntenaCategory: anntenaCategory,
+        ),
+      ),
+  };
 }
 
 /// Entry point for the developer-only physique table editor: lists every
@@ -115,7 +115,7 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
   ) async {
     final level = await _pickLevel(context);
     if (level == null || !mounted) return;
-    final dataAvailability = await _fetchTypeAvailability(
+    final dataAvailability = _typeAvailability(
       ref,
       types,
       level,
@@ -169,7 +169,7 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
   ) async {
     final level = await _pickLevel(context);
     if (level == null || !mounted) return;
-    final dataAvailability = await _fetchTypeAvailability(
+    final dataAvailability = _typeAvailability(
       ref,
       types,
       level,
@@ -196,13 +196,11 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final metadataAsync = ref.watch(physiqueTableMetadataProvider);
+    final metadataAsync = ref.watch(physiqueTableMetadataWithCacheProvider);
     final typesAsync = ref.watch(tableTypesProvider);
-    final categoriesWithDataAsync = ref.watch(
+    final categoriesWithData = ref.watch(
       physiqueTableAnntenaCategoriesWithDataProvider,
     );
-    final categoriesWithData =
-        categoriesWithDataAsync.value ?? const <String>{};
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.physiqueTable.title),

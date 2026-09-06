@@ -7,6 +7,8 @@ import '../account/account_entity.dart';
 import '../cloud_file/cloud_file_entity.dart';
 import '../denpa_men/denpa_men_entity.dart';
 import '../notification/app_notification_entity.dart';
+import '../physique_table/physique_table_metadata_cache_entity.dart';
+import '../physique_table/physique_table_row_entity.dart';
 import '../qr_code/qr_code_entity.dart';
 import '../settings/app_settings_entity.dart';
 
@@ -23,6 +25,9 @@ class ObjectBox {
   late final Box<AppSettingsEntity> settingsBox;
   late final Box<CloudFileEntity> cloudFileBox;
   late final Box<AppNotificationEntity> appNotificationBox;
+  late final Box<PhysiqueTableRowEntity> physiqueTableRowBox;
+  late final Box<PhysiqueTableMetadataCacheEntity>
+  physiqueTableMetadataCacheBox;
 
   ObjectBox._create(this.store) {
     denpaMenBox = Box<DenpaMenEntity>(store);
@@ -31,6 +36,10 @@ class ObjectBox {
     settingsBox = Box<AppSettingsEntity>(store);
     cloudFileBox = Box<CloudFileEntity>(store);
     appNotificationBox = Box<AppNotificationEntity>(store);
+    physiqueTableRowBox = Box<PhysiqueTableRowEntity>(store);
+    physiqueTableMetadataCacheBox = Box<PhysiqueTableMetadataCacheEntity>(
+      store,
+    );
 
     if (accountBox.isEmpty()) {
       accountBox.put(AccountEntity(cuid: cuid(), createdAt: DateTime.now()));

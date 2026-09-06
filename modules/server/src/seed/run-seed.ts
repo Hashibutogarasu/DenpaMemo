@@ -23,6 +23,7 @@ import { AbnormalityTypeEntity } from '../entities/abnormality-type.entity';
 import { PhysiqueEntity } from '../entities/physique.entity';
 import { PersonalityEntity } from '../entities/personality.entity';
 import { PatternEntity } from '../entities/pattern.entity';
+import { seedPhysiqueTableDefaultsIfNeeded } from './seed-physique-table-defaults';
 
 const DATA_DIR = path.resolve(import.meta.dirname, '..', '..', 'data');
 
@@ -58,6 +59,7 @@ export async function runSeedIfNeeded(dataSource: DataSource, dataDir: string = 
   await seedPhysiqueAntennaCategoriesIfNeeded(dataSource, dataDir);
   await seedPhysiqueStatusCategoriesIfNeeded(dataSource, dataDir);
   await seedTableDefinitionsIfNeeded(dataSource, dataDir);
+  await seedPhysiqueTableDefaultsIfNeeded(dataSource);
 }
 
 /**

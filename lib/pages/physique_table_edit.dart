@@ -113,27 +113,58 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
     await Toaster.show(context, context.t.physiqueTable.saved);
   }
 
+  Future<void> _sync() async {
+    try {
+      await ref
+          .read(physiqueTableEditProvider(widget.args).notifier)
+          .syncToServer();
+      if (!mounted) return;
+      await Toaster.show(context, context.t.physiqueTable.synced);
+    } catch (_) {
+      if (!mounted) return;
+      await Toaster.show(context, context.t.physiqueTable.syncError);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = context.t;
     final editState = ref.watch(physiqueTableEditProvider(widget.args));
     final rows = editState.rows;
     final typesAsync = ref.watch(tableTypesProvider);
-    final columnCount = typesAsync.value
-        ?.firstWhereOrNull((type) => type.type == widget.args.type)
-        ?.columnCount;
+    final type = typesAsync.value?.firstWhereOrNull(
+      (type) => type.type == widget.args.type,
+    );
+    final columnCount = type?.columnCount;
     return AppScaffold(
       title: OutlinedTitleText(
         text: t.physiqueTable.tableTitle(
           level: widget.args.level,
           anntenaCategory: widget.args.anntenaCategory,
+          statusName: type == null
+              ? ''
+              : (t[type.translationKey] as String?) ?? type.type,
         ),
       ),
       floatingActionButton: rows == null || columnCount == null
           ? null
-          : FloatingActionButton.extended(
-              label: Text(t.physiqueTable.save),
-              onPressed: _save,
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: 'physiqueTableSync',
+                  icon: const Icon(Icons.cloud_upload_outlined),
+                  label: Text(t.physiqueTable.sync),
+                  onPressed: _sync,
+                ),
+                const SizedBox(height: 12),
+                FloatingActionButton.extended(
+                  heroTag: 'physiqueTableSave',
+                  label: Text(t.physiqueTable.save),
+                  onPressed: _save,
+                ),
+              ],
             ),
       body:
           editState.loadError ||

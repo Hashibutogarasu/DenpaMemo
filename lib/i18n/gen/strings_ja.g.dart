@@ -526,8 +526,8 @@ class Translations$physiqueTable$ja {
 	/// ja: '体格表'
 	String get title => '体格表';
 
-	/// ja: 'レベル${level} - ${anntenaCategory} の体格表'
-	String tableTitle({required Object level, required Object anntenaCategory}) => 'レベル${level} - ${anntenaCategory} の体格表';
+	/// ja: 'レベル${level} - ${anntenaCategory} - ${statusName} の体格表'
+	String tableTitle({required Object level, required Object anntenaCategory, required Object statusName}) => 'レベル${level} - ${anntenaCategory} - ${statusName} の体格表';
 
 	/// ja: 'レベルを入力'
 	String get enterLevel => 'レベルを入力';
@@ -550,8 +550,17 @@ class Translations$physiqueTable$ja {
 	/// ja: '保存'
 	String get save => '保存';
 
-	/// ja: '保存しました'
-	String get saved => '保存しました';
+	/// ja: '端末に保存しました'
+	String get saved => '端末に保存しました';
+
+	/// ja: 'サーバーに同期'
+	String get sync => 'サーバーに同期';
+
+	/// ja: 'サーバーに同期しました'
+	String get synced => 'サーバーに同期しました';
+
+	/// ja: 'サーバーへの同期に失敗しました'
+	String get syncError => 'サーバーへの同期に失敗しました';
 
 	/// ja: 'この表を削除'
 	String get deleteTable => 'この表を削除';
@@ -1280,7 +1289,7 @@ extension on Translations {
 			'settings.cloudBackup' => 'クラウドバックアップ&復元',
 			'settings.editPhysiqueTable' => '体格表を編集',
 			'physiqueTable.title' => '体格表',
-			'physiqueTable.tableTitle' => ({required Object level, required Object anntenaCategory}) => 'レベル${level} - ${anntenaCategory} の体格表',
+			'physiqueTable.tableTitle' => ({required Object level, required Object anntenaCategory, required Object statusName}) => 'レベル${level} - ${anntenaCategory} - ${statusName} の体格表',
 			'physiqueTable.enterLevel' => 'レベルを入力',
 			'physiqueTable.selectStatusCategory' => 'ステータスを選択',
 			'physiqueTable.selectAnntenaCategory' => 'アンテナを選択',
@@ -1288,7 +1297,10 @@ extension on Translations {
 			'physiqueTable.edit' => '編集',
 			'physiqueTable.addRow' => '行を追加',
 			'physiqueTable.save' => '保存',
-			'physiqueTable.saved' => '保存しました',
+			'physiqueTable.saved' => '端末に保存しました',
+			'physiqueTable.sync' => 'サーバーに同期',
+			'physiqueTable.synced' => 'サーバーに同期しました',
+			'physiqueTable.syncError' => 'サーバーへの同期に失敗しました',
 			'physiqueTable.deleteTable' => 'この表を削除',
 			'physiqueTable.deleteTableConfirmTitle' => '体格表を削除',
 			'physiqueTable.deleteTableConfirmMessage' => 'この体格表を削除します。この操作は取り消せません。よろしいですか?',

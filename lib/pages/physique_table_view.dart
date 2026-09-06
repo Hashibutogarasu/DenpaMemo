@@ -40,16 +40,27 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
     final editState = ref.watch(physiqueTableEditProvider(widget.args));
     final rows = editState.rows;
     final typesAsync = ref.watch(tableTypesProvider);
-    final columnCount = typesAsync.value
-        ?.firstWhereOrNull((type) => type.type == widget.args.type)
-        ?.columnCount;
+    final type = typesAsync.value?.firstWhereOrNull(
+      (type) => type.type == widget.args.type,
+    );
+    final columnCount = type?.columnCount;
     return AppScaffold(
       title: OutlinedTitleText(
         text: t.physiqueTable.tableTitle(
           level: widget.args.level,
           anntenaCategory: widget.args.anntenaCategory,
+          statusName: type == null
+              ? ''
+              : (t[type.translationKey] as String?) ?? type.type,
         ),
       ),
+      floatingActionButton: rows == null || columnCount == null
+          ? null
+          : FloatingActionButton.extended(
+              label: Text(t.physiqueTable.edit),
+              onPressed: () =>
+                  PhysiqueTableEditRoute($extra: widget.args).push(context),
+            ),
       body:
           editState.loadError ||
               typesAsync.hasError ||
@@ -60,31 +71,15 @@ class _PhysiqueTableViewPageState extends ConsumerState<PhysiqueTableViewPage> {
                   rows == null || typesAsync.isLoading || columnCount == null,
               child: rows == null || columnCount == null
                   ? const SizedBox.shrink()
-                  : Column(
-                      children: [
-                        Expanded(
-                          child: rows.isEmpty
-                              ? Center(child: Text(t.physiqueTable.empty))
-                              : TableEditor<PhysiqueTableRow>(
-                                  columns: buildPhysiqueTableColumns(
-                                    columnCount: columnCount,
-                                  ),
-                                  data: rows,
-                                  rowId: (row) => row.lineOffset.toString(),
-                                ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: FilledButton.icon(
-                            icon: const Icon(Icons.edit_outlined),
-                            label: Text(t.physiqueTable.edit),
-                            onPressed: () => PhysiqueTableEditRoute(
-                              $extra: widget.args,
-                            ).push(context),
-                          ),
-                        ),
-                      ],
-                    ),
+                  : (rows.isEmpty
+                        ? Center(child: Text(t.physiqueTable.empty))
+                        : TableEditor<PhysiqueTableRow>(
+                            columns: buildPhysiqueTableColumns(
+                              columnCount: columnCount,
+                            ),
+                            data: rows,
+                            rowId: (row) => row.lineOffset.toString(),
+                          )),
             ),
     );
   }
