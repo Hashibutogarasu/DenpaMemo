@@ -25,6 +25,7 @@ List<RouteBase> get $appRoutes => [
   $openSourceLicensesRoute,
   $dataManagementRoute,
   $physiqueTableListRoute,
+  $debugLogRoute,
   $physiqueTableViewRoute,
   $physiqueLegendGridRoute,
   $physiqueTableEditRoute,
@@ -621,6 +622,32 @@ mixin $PhysiqueTableListRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings/developer/physiques');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $debugLogRoute => GoRouteData.$route(
+  path: '/settings/developer/debug-log',
+  hasOverriddenOnExit: false,
+  factory: $DebugLogRoute._fromState,
+);
+
+mixin $DebugLogRoute on GoRouteData {
+  static DebugLogRoute _fromState(GoRouterState state) => const DebugLogRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/developer/debug-log');
 
   @override
   void go(BuildContext context) => context.go(location);

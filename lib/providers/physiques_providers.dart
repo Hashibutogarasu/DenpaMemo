@@ -1,4 +1,5 @@
 import 'package:api_client/api_client.dart';
+import 'package:app_logging/app_logging.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
@@ -11,7 +12,10 @@ import 'app_initialization_providers.dart';
 import 'physique_table_cache_providers.dart';
 
 final physiquesApiClientProvider = Provider<PhysiquesApiClient>(
-  (ref) => PhysiquesApiClient(Uri.parse(physiqueServerConfig.baseUrl)),
+  (ref) => PhysiquesApiClient(
+    Uri.parse(physiqueServerConfig.baseUrl),
+    client: LoggingHttpClient(),
+  ),
 );
 
 final physiqueAntennaCategoryResolverProvider =

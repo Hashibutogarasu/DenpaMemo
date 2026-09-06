@@ -118,7 +118,8 @@
     "dataManagementClearCacheResult": "キャッシュデータを削除しました",
     "dataManagementResultTitle": "削除しました",
     "cloudBackup": "クラウドバックアップ&復元",
-    "editPhysiqueTable": "体格表を編集"
+    "editPhysiqueTable": "体格表を編集",
+    "debugLog": "デバッグログ"
   },
   "physiqueTable": {
     "title": "体格表",
@@ -146,6 +147,17 @@
     "deleteSelectedRowsConfirmMessage": "選択した行を削除します。この操作は取り消せません。よろしいですか?",
     "empty": "この表にはまだデータがありません。",
     "loadError": "表の読み込みに失敗しました。"
+  },
+  "debugLog": {
+    "title": "デバッグログ",
+    "tabNormal": "通常のログ",
+    "tabWidgetRebuild": "ウィジットリビルドのログ",
+    "tabNetwork": "ネットワークログ",
+    "copy": "現在のタブの内容をコピー",
+    "copyLogFilePath": "ログファイルのパスをコピー",
+    "clear": "クリア",
+    "debugPaintSize": "デバッグペイントを表示",
+    "empty": "ログはまだありません。"
   },
   "physiqueIdentification": {
     "identifying": "体格を特定しています",

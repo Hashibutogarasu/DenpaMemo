@@ -1,5 +1,6 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/server/physique_legend_grid_args.dart';
@@ -7,10 +8,11 @@ import '../data/server/physique_table_args.dart';
 import '../pages/account_settings.dart';
 import '../pages/analysis.dart';
 import '../pages/birth_guide.dart';
+import '../pages/clipping_settings.dart';
 import '../pages/cloud_backup.dart';
 import '../pages/cloud_backup_history.dart';
-import '../pages/clipping_settings.dart';
 import '../pages/data_management.dart';
+import '../pages/debug_log/debug_log_page.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';
 import '../pages/denpa_men_selection.dart';
@@ -320,6 +322,16 @@ class PhysiqueTableListRoute extends GoRouteData with $PhysiqueTableListRoute {
       const PhysiqueTableListPage();
 }
 
+/// Pushed from the settings list's "developer" section, debug builds only.
+@TypedGoRoute<DebugLogRoute>(path: '/settings/developer/debug-log')
+class DebugLogRoute extends GoRouteData with $DebugLogRoute {
+  const DebugLogRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const DebugLogPage();
+}
+
 /// Pushed from [PhysiqueTableListPage] once a level/antenna category pair
 /// is chosen. `$extra` carries that pair, since it can't round-trip
 /// through a URL (see [DenpaMenSelectionRoute] for the same pattern).
@@ -341,7 +353,8 @@ class PhysiqueTableViewRoute extends GoRouteData with $PhysiqueTableViewRoute {
 /// matched column/lineOffset/evasion-rate, since it can't round-trip
 /// through a URL (see [PhysiqueTableViewRoute] for the same pattern).
 @TypedGoRoute<PhysiqueLegendGridRoute>(path: '/physique-legend-grid')
-class PhysiqueLegendGridRoute extends GoRouteData with $PhysiqueLegendGridRoute {
+class PhysiqueLegendGridRoute extends GoRouteData
+    with $PhysiqueLegendGridRoute {
   const PhysiqueLegendGridRoute({required this.$extra});
 
   final PhysiqueLegendGridArgs $extra;
