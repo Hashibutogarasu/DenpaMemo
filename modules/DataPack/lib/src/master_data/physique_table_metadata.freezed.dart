@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueTableMetadata {
 
- List<PhysiqueAntennaCategory> get physiqueAntennaCategories; List<PhysiqueStatusCategory> get physiqueStatusCategories;
+ List<PhysiqueAntennaCategory> get physiqueAntennaCategories; List<PhysiqueStatusCategory> get physiqueStatusCategories; List<PhysiqueAntennaCategoryAntennaLink> get physiqueAntennaCategoryAntennaLinks;
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PhysiqueTableMetadataCopyWith<PhysiqueTableMetadata> get copyWith => _$Physique
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other.physiqueAntennaCategories, physiqueAntennaCategories)&&const DeepCollectionEquality().equals(other.physiqueStatusCategories, physiqueStatusCategories));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other.physiqueAntennaCategories, physiqueAntennaCategories)&&const DeepCollectionEquality().equals(other.physiqueStatusCategories, physiqueStatusCategories)&&const DeepCollectionEquality().equals(other.physiqueAntennaCategoryAntennaLinks, physiqueAntennaCategoryAntennaLinks));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(physiqueAntennaCategories),const DeepCollectionEquality().hash(physiqueStatusCategories));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(physiqueAntennaCategories),const DeepCollectionEquality().hash(physiqueStatusCategories),const DeepCollectionEquality().hash(physiqueAntennaCategoryAntennaLinks));
 
 @override
 String toString() {
-  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueStatusCategories: $physiqueStatusCategories)';
+  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueStatusCategories: $physiqueStatusCategories, physiqueAntennaCategoryAntennaLinks: $physiqueAntennaCategoryAntennaLinks)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueTableMetadataCopyWith<$Res>  {
   factory $PhysiqueTableMetadataCopyWith(PhysiqueTableMetadata value, $Res Function(PhysiqueTableMetadata) _then) = _$PhysiqueTableMetadataCopyWithImpl;
 @useResult
 $Res call({
- List<PhysiqueAntennaCategory> physiqueAntennaCategories, List<PhysiqueStatusCategory> physiqueStatusCategories
+ List<PhysiqueAntennaCategory> physiqueAntennaCategories, List<PhysiqueStatusCategory> physiqueStatusCategories, List<PhysiqueAntennaCategoryAntennaLink> physiqueAntennaCategoryAntennaLinks
 });
 
 
@@ -65,11 +65,12 @@ class _$PhysiqueTableMetadataCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? physiqueAntennaCategories = null,Object? physiqueStatusCategories = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? physiqueAntennaCategories = null,Object? physiqueStatusCategories = null,Object? physiqueAntennaCategoryAntennaLinks = null,}) {
   return _then(_self.copyWith(
 physiqueAntennaCategories: null == physiqueAntennaCategories ? _self.physiqueAntennaCategories : physiqueAntennaCategories // ignore: cast_nullable_to_non_nullable
 as List<PhysiqueAntennaCategory>,physiqueStatusCategories: null == physiqueStatusCategories ? _self.physiqueStatusCategories : physiqueStatusCategories // ignore: cast_nullable_to_non_nullable
-as List<PhysiqueStatusCategory>,
+as List<PhysiqueStatusCategory>,physiqueAntennaCategoryAntennaLinks: null == physiqueAntennaCategoryAntennaLinks ? _self.physiqueAntennaCategoryAntennaLinks : physiqueAntennaCategoryAntennaLinks // ignore: cast_nullable_to_non_nullable
+as List<PhysiqueAntennaCategoryAntennaLink>,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories,  List<PhysiqueAntennaCategoryAntennaLink> physiqueAntennaCategoryAntennaLinks)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueTableMetadata() when $default != null:
-return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);case _:
+return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories,_that.physiqueAntennaCategoryAntennaLinks);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories,  List<PhysiqueAntennaCategoryAntennaLink> physiqueAntennaCategoryAntennaLinks)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableMetadata():
-return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);case _:
+return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories,_that.physiqueAntennaCategoryAntennaLinks);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PhysiqueAntennaCategory> physiqueAntennaCategories,  List<PhysiqueStatusCategory> physiqueStatusCategories,  List<PhysiqueAntennaCategoryAntennaLink> physiqueAntennaCategoryAntennaLinks)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueTableMetadata() when $default != null:
-return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);case _:
+return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories,_that.physiqueAntennaCategoryAntennaLinks);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.physiqueAntennaCategories,_that.physiqueStatusCategories);
 @JsonSerializable()
 
 class _PhysiqueTableMetadata implements PhysiqueTableMetadata {
-  const _PhysiqueTableMetadata({required final  List<PhysiqueAntennaCategory> physiqueAntennaCategories, required final  List<PhysiqueStatusCategory> physiqueStatusCategories}): _physiqueAntennaCategories = physiqueAntennaCategories,_physiqueStatusCategories = physiqueStatusCategories;
+  const _PhysiqueTableMetadata({required final  List<PhysiqueAntennaCategory> physiqueAntennaCategories, required final  List<PhysiqueStatusCategory> physiqueStatusCategories, required final  List<PhysiqueAntennaCategoryAntennaLink> physiqueAntennaCategoryAntennaLinks}): _physiqueAntennaCategories = physiqueAntennaCategories,_physiqueStatusCategories = physiqueStatusCategories,_physiqueAntennaCategoryAntennaLinks = physiqueAntennaCategoryAntennaLinks;
   factory _PhysiqueTableMetadata.fromJson(Map<String, dynamic> json) => _$PhysiqueTableMetadataFromJson(json);
 
  final  List<PhysiqueAntennaCategory> _physiqueAntennaCategories;
@@ -227,6 +228,13 @@ class _PhysiqueTableMetadata implements PhysiqueTableMetadata {
   return EqualUnmodifiableListView(_physiqueStatusCategories);
 }
 
+ final  List<PhysiqueAntennaCategoryAntennaLink> _physiqueAntennaCategoryAntennaLinks;
+@override List<PhysiqueAntennaCategoryAntennaLink> get physiqueAntennaCategoryAntennaLinks {
+  if (_physiqueAntennaCategoryAntennaLinks is EqualUnmodifiableListView) return _physiqueAntennaCategoryAntennaLinks;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_physiqueAntennaCategoryAntennaLinks);
+}
+
 
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +249,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other._physiqueAntennaCategories, _physiqueAntennaCategories)&&const DeepCollectionEquality().equals(other._physiqueStatusCategories, _physiqueStatusCategories));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueTableMetadata&&const DeepCollectionEquality().equals(other._physiqueAntennaCategories, _physiqueAntennaCategories)&&const DeepCollectionEquality().equals(other._physiqueStatusCategories, _physiqueStatusCategories)&&const DeepCollectionEquality().equals(other._physiqueAntennaCategoryAntennaLinks, _physiqueAntennaCategoryAntennaLinks));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_physiqueAntennaCategories),const DeepCollectionEquality().hash(_physiqueStatusCategories));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_physiqueAntennaCategories),const DeepCollectionEquality().hash(_physiqueStatusCategories),const DeepCollectionEquality().hash(_physiqueAntennaCategoryAntennaLinks));
 
 @override
 String toString() {
-  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueStatusCategories: $physiqueStatusCategories)';
+  return 'PhysiqueTableMetadata(physiqueAntennaCategories: $physiqueAntennaCategories, physiqueStatusCategories: $physiqueStatusCategories, physiqueAntennaCategoryAntennaLinks: $physiqueAntennaCategoryAntennaLinks)';
 }
 
 
@@ -261,7 +269,7 @@ abstract mixin class _$PhysiqueTableMetadataCopyWith<$Res> implements $PhysiqueT
   factory _$PhysiqueTableMetadataCopyWith(_PhysiqueTableMetadata value, $Res Function(_PhysiqueTableMetadata) _then) = __$PhysiqueTableMetadataCopyWithImpl;
 @override @useResult
 $Res call({
- List<PhysiqueAntennaCategory> physiqueAntennaCategories, List<PhysiqueStatusCategory> physiqueStatusCategories
+ List<PhysiqueAntennaCategory> physiqueAntennaCategories, List<PhysiqueStatusCategory> physiqueStatusCategories, List<PhysiqueAntennaCategoryAntennaLink> physiqueAntennaCategoryAntennaLinks
 });
 
 
@@ -278,11 +286,12 @@ class __$PhysiqueTableMetadataCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueTableMetadata
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? physiqueAntennaCategories = null,Object? physiqueStatusCategories = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? physiqueAntennaCategories = null,Object? physiqueStatusCategories = null,Object? physiqueAntennaCategoryAntennaLinks = null,}) {
   return _then(_PhysiqueTableMetadata(
 physiqueAntennaCategories: null == physiqueAntennaCategories ? _self._physiqueAntennaCategories : physiqueAntennaCategories // ignore: cast_nullable_to_non_nullable
 as List<PhysiqueAntennaCategory>,physiqueStatusCategories: null == physiqueStatusCategories ? _self._physiqueStatusCategories : physiqueStatusCategories // ignore: cast_nullable_to_non_nullable
-as List<PhysiqueStatusCategory>,
+as List<PhysiqueStatusCategory>,physiqueAntennaCategoryAntennaLinks: null == physiqueAntennaCategoryAntennaLinks ? _self._physiqueAntennaCategoryAntennaLinks : physiqueAntennaCategoryAntennaLinks // ignore: cast_nullable_to_non_nullable
+as List<PhysiqueAntennaCategoryAntennaLink>,
   ));
 }
 

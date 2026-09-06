@@ -1,0 +1,9 @@
+[
+  { "id": "none" },
+  { "id": "profit" },
+  { "id": "healing" },
+  { "id": "treatment" },
+  { "id": "buff" },
+  { "id": "support" },
+  { "id": "attack" }
+]

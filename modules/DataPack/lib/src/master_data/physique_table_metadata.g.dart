@@ -18,6 +18,14 @@ _PhysiqueTableMetadata _$PhysiqueTableMetadataFromJson(
   physiqueStatusCategories: (json['physiqueStatusCategories'] as List<dynamic>)
       .map((e) => PhysiqueStatusCategory.fromJson(e as Map<String, dynamic>))
       .toList(),
+  physiqueAntennaCategoryAntennaLinks:
+      (json['physiqueAntennaCategoryAntennaLinks'] as List<dynamic>)
+          .map(
+            (e) => PhysiqueAntennaCategoryAntennaLink.fromJson(
+              e as Map<String, dynamic>,
+            ),
+          )
+          .toList(),
 );
 
 Map<String, dynamic> _$PhysiqueTableMetadataToJson(
@@ -25,4 +33,6 @@ Map<String, dynamic> _$PhysiqueTableMetadataToJson(
 ) => <String, dynamic>{
   'physiqueAntennaCategories': instance.physiqueAntennaCategories,
   'physiqueStatusCategories': instance.physiqueStatusCategories,
+  'physiqueAntennaCategoryAntennaLinks':
+      instance.physiqueAntennaCategoryAntennaLinks,
 };

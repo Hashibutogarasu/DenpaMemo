@@ -11,9 +11,12 @@ import { BodyColorAbnormalityResistanceRuleEntity } from '../entities/body-color
 import { BodyColorResistanceRuleEntity } from '../entities/body-color-resistance-rule.entity';
 import { CorrectionEntity } from '../entities/correction.entity';
 import { HeadShapeEntity } from '../entities/head-shape.entity';
+import { MajorCategoryEntity } from '../entities/major-category.entity';
+import { MinorCategoryEntity } from '../entities/minor-category.entity';
 import { MonsterEntity } from '../entities/monster.entity';
 import { PatternEntity } from '../entities/pattern.entity';
 import { PersonalityEntity } from '../entities/personality.entity';
+import { PhysiqueAntennaCategoryAntennaEntity } from '../entities/physique-antenna-category-antenna.entity';
 import { PhysiqueAntennaCategoryEntity } from '../entities/physique-antenna-category.entity';
 import { PhysiqueEvasionRateTableEntity } from '../entities/physique-evasion-rate-table.entity';
 import { PhysiqueStatusCategoryEntity } from '../entities/physique-status-category.entity';
@@ -39,9 +42,12 @@ export const AppDataSource = new DataSource({
     BodyColorResistanceRuleEntity,
     CorrectionEntity,
     HeadShapeEntity,
+    MajorCategoryEntity,
+    MinorCategoryEntity,
     MonsterEntity,
     PatternEntity,
     PersonalityEntity,
+    PhysiqueAntennaCategoryAntennaEntity,
     PhysiqueAntennaCategoryEntity,
     PhysiqueEntity,
     PhysiqueEvasionRateTableEntity,

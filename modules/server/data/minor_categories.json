@@ -1,0 +1,22 @@
+[
+  { "id": "none", "majorCategoryId": "none" },
+  { "id": "leg_guard", "majorCategoryId": "profit" },
+  { "id": "heal_solo", "majorCategoryId": "healing" },
+  { "id": "heal_all", "majorCategoryId": "healing" },
+  { "id": "revive_solo", "majorCategoryId": "treatment" },
+  { "id": "revive_all", "majorCategoryId": "treatment" },
+  { "id": "cure_poison", "majorCategoryId": "treatment" },
+  { "id": "cure_paralysis", "majorCategoryId": "treatment" },
+  { "id": "cure_sleep", "majorCategoryId": "treatment" },
+  { "id": "cure_attribute", "majorCategoryId": "treatment" },
+  { "id": "cure_all", "majorCategoryId": "treatment" },
+  { "id": "invincible", "majorCategoryId": "buff" },
+  { "id": "excite", "majorCategoryId": "buff" },
+  { "id": "charge", "majorCategoryId": "buff" },
+  { "id": "buff_solo", "majorCategoryId": "buff" },
+  { "id": "buff_all", "majorCategoryId": "buff" },
+  { "id": "weaken", "majorCategoryId": "support" },
+  { "id": "attack_solo", "majorCategoryId": "attack" },
+  { "id": "attack_all", "majorCategoryId": "attack" },
+  { "id": "knockdown", "majorCategoryId": "attack" }
+]
