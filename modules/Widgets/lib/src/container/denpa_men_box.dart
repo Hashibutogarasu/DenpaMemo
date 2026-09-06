@@ -1,33 +1,29 @@
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import '../denpa_men_container.dart';
-
-/// Scrollable icon grid of [DenpaMenRecord]s, laid out with
-/// [DenpaMenContainer] cells. Used as the grid alternative to the home
-/// screen's list-tile display (see `HomeTileMode.grid` in
+/// Scrollable icon grid of [DenpaMenRecord]s. Used as the grid alternative
+/// to the home screen's list-tile display (see `HomeTileMode.grid` in
 /// `home_view_providers.dart`).
 ///
 /// Virtualized via [CustomScrollView] and [SliverGrid] since the record
 /// count can reach into the hundreds, unlike the small fixed-size grids
-/// elsewhere in the app (e.g. `EditableStatGrid`). [trailing] lets a
-/// caller append a footer (a load-more spinner or an end-of-list
-/// message) inside the same scrollable, e.g. to drive pagination from
-/// outside without this widget knowing about it.
+/// elsewhere in the app (e.g. `EditableStatGrid`). [cellBuilder] builds
+/// each cell's full content (icon, selection, tap handling) for one
+/// [DenpaMenRecord] at the given cell size — called lazily by
+/// [SliverChildBuilderDelegate] only for cells actually realized near the
+/// viewport, so a caller resolving each cell's icon from a provider (e.g.
+/// wrapping a [ConsumerWidget]) only ever watches providers for the
+/// records currently on screen, not the whole (possibly paginated) list.
+/// [trailing] lets a caller append a footer (a load-more spinner or an
+/// end-of-list message) inside the same scrollable, e.g. to drive
+/// pagination from outside without this widget knowing about it.
 class DenpaMenBox extends StatelessWidget {
   const DenpaMenBox({
     super.key,
     required this.records,
-    required this.selectionMode,
-    required this.selectedIds,
-    required this.cutIds,
-    required this.onSelectedChanged,
-    required this.onTapRecord,
-    this.iconsById = const {},
-    this.zoomCandidatesById = const {},
+    required this.cellBuilder,
     this.columns,
     this.itemSize = 56,
     this.gap = 8,
@@ -36,13 +32,12 @@ class DenpaMenBox extends StatelessWidget {
   });
 
   final List<DenpaMenRecord> records;
-  final bool selectionMode;
-  final Set<int> selectedIds;
-  final Set<int> cutIds;
-  final void Function(int id, bool selected) onSelectedChanged;
-  final ValueChanged<DenpaMen> onTapRecord;
-  final Map<String, File?> iconsById;
-  final Map<String, List<DenpaMenZoomCandidate>> zoomCandidatesById;
+  final Widget Function(
+    BuildContext context,
+    DenpaMenRecord record,
+    double cellSize,
+  )
+  cellBuilder;
 
   /// Fixed column count. When null, the column count is derived from the
   /// available width, [itemSize], and [gap] instead.
@@ -74,24 +69,11 @@ class DenpaMenBox extends StatelessWidget {
                   mainAxisSpacing: gap,
                   crossAxisSpacing: gap,
                 ),
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  final record = records[index];
-                  return Opacity(
-                    opacity: cutIds.contains(record.id) ? 0.5 : 1,
-                    child: DenpaMenContainer(
-                      denpaMen: record.denpaMen,
-                      selectionMode: selectionMode,
-                      selected: selectedIds.contains(record.id),
-                      onSelectedChanged: (selected) =>
-                          onSelectedChanged(record.id, selected),
-                      onTap: () => onTapRecord(record.denpaMen),
-                      enableLongPressPreview: false,
-                      iconFile: iconsById[record.denpaMen.id],
-                      zoomCandidates: zoomCandidatesById[record.denpaMen.id],
-                      size: itemSize,
-                    ),
-                  );
-                }, childCount: records.length),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) =>
+                      cellBuilder(context, records[index], itemSize),
+                  childCount: records.length,
+                ),
               ),
             ),
             if (trailing != null) SliverToBoxAdapter(child: trailing),

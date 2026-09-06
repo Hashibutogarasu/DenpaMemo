@@ -1,16 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension, Translations;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
 import '../../i18n/gen/strings.g.dart';
-import '../../providers/clipping_slot_providers.dart';
 import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';
-import '../../providers/entity_image_providers.dart';
 import '../../providers/home_view_providers.dart';
 import '../../providers/search_providers.dart';
 import '../denpa_men_lineage_tree.dart';
@@ -358,41 +357,6 @@ class _HomeRecordList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final iconsById = {
-      for (final record in visibleRecords)
-        record.denpaMen.id: ref
-            .watch(denpaMenIconProvider(record.denpaMen.id))
-            .value,
-    };
-    final zoomCandidatesById = {
-      for (final record in visibleRecords)
-        record.denpaMen.id: [
-          for (final slotType in DenpaMenImageSlotType.values)
-            if (ref
-                    .watch(
-                      entityImageProvider((
-                        denpaMenIconCategory,
-                        record.denpaMen.id,
-                        slotType,
-                        ref
-                            .watch(
-                              denpaMenClippingProfileIdProvider(
-                                record.denpaMen.id,
-                              ),
-                            )
-                            .value,
-                      )),
-                    )
-                    .value
-                case final file?)
-              (
-                priority: DenpaMenImageSlotType.defaultPriority[slotType]!,
-                file: file,
-                label: defaultClippingSlotLabel(slotType),
-              ),
-        ],
-    };
-
     final contentPadding = EdgeInsets.fromLTRB(
       isMobile ? 0 : 16,
       0,
@@ -408,19 +372,22 @@ class _HomeRecordList extends ConsumerWidget {
         final content = switch (tileMode) {
           HomeTileMode.grid => DenpaMenBox(
             records: visibleRecords,
-            selectionMode: selectionMode,
-            selectedIds: selectedIds,
-            cutIds: cutIds,
-            onSelectedChanged: (id, selected) => onSetSelected(id, selected),
-            onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
-              context,
-              denpaMen: denpaMen,
-              totalAttributeCount: totalAttributeCount,
-              iconBuilder: (size) =>
-                  DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
+            cellBuilder: (context, record, cellSize) => _DenpaMenGridCell(
+              record: record,
+              selectionMode: selectionMode,
+              selected: selectedIds.contains(record.id),
+              cut: cutIds.contains(record.id),
+              onSelectedChanged: (selected) =>
+                  onSetSelected(record.id, selected),
+              onTap: () => DenpaMenPreviewDialog.show(
+                context,
+                denpaMen: record.denpaMen,
+                totalAttributeCount: totalAttributeCount,
+                iconBuilder: (size) =>
+                    DenpaMenIcon(denpaMenId: record.denpaMen.id, size: size),
+              ),
+              size: cellSize,
             ),
-            iconsById: iconsById,
-            zoomCandidatesById: zoomCandidatesById,
             padding: contentPadding,
             trailing: footer,
           ),
@@ -438,7 +405,7 @@ class _HomeRecordList extends ConsumerWidget {
                 child: isMobile
                     ? Opacity(
                         opacity: cutIds.contains(record.id) ? 0.5 : 1,
-                        child: DenpaMenListTile(
+                        child: _DenpaMenListTileCell(
                           denpaMen: denpaMen,
                           selectionMode: selectionMode,
                           selected: selectedIds.contains(record.id),
@@ -453,8 +420,6 @@ class _HomeRecordList extends ConsumerWidget {
                               size: size,
                             ),
                           ),
-                          enableLongPressPreview: false,
-                          iconFile: iconsById[denpaMen.id],
                           actionMenuItemsBuilder: (context) =>
                               denpaMenActionMenuItems(
                                 context,
@@ -498,6 +463,87 @@ class _HomeRecordList extends ConsumerWidget {
       },
       loading: () => const SizedBox.shrink(),
       error: (error, stackTrace) => Center(child: Text('$error')),
+    );
+  }
+}
+
+/// One [DenpaMenBox] grid cell: resolves [record]'s icon itself, so only
+/// the records [DenpaMenBox]'s `SliverChildBuilderDelegate` actually
+/// realizes near the viewport ever watch [denpaMenIconProvider], instead
+/// of every paginated record watching it upfront in [_HomeRecordList].
+/// Deliberately passes no [DenpaMenContainer.zoomCandidates]: the grid
+/// cell's icon is a plain, non-zoomable display — tapping it opens
+/// [DenpaMenPreviewDialog] instead (see [onTap]).
+class _DenpaMenGridCell extends ConsumerWidget {
+  const _DenpaMenGridCell({
+    required this.record,
+    required this.selectionMode,
+    required this.selected,
+    required this.cut,
+    required this.onSelectedChanged,
+    required this.onTap,
+    required this.size,
+  });
+
+  final DenpaMenRecord record;
+  final bool selectionMode;
+  final bool selected;
+  final bool cut;
+  final ValueChanged<bool> onSelectedChanged;
+  final VoidCallback onTap;
+  final double size;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final iconFile = ref.watch(denpaMenIconProvider(record.denpaMen.id)).value;
+    return Opacity(
+      opacity: cut ? 0.5 : 1,
+      child: DenpaMenContainer(
+        denpaMen: record.denpaMen,
+        selectionMode: selectionMode,
+        selected: selected,
+        onSelectedChanged: onSelectedChanged,
+        onTap: onTap,
+        enableLongPressPreview: false,
+        iconFile: iconFile,
+        size: size,
+      ),
+    );
+  }
+}
+
+/// One [HomeTileMode.tile] mobile row: resolves [denpaMen]'s icon itself,
+/// for the same reason as [_DenpaMenGridCell].
+class _DenpaMenListTileCell extends ConsumerWidget {
+  const _DenpaMenListTileCell({
+    required this.denpaMen,
+    required this.selectionMode,
+    required this.selected,
+    required this.onSelectedChanged,
+    required this.onTap,
+    required this.actionMenuItemsBuilder,
+  });
+
+  final DenpaMen denpaMen;
+  final bool selectionMode;
+  final bool selected;
+  final ValueChanged<bool> onSelectedChanged;
+  final VoidCallback onTap;
+  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)
+  actionMenuItemsBuilder;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final iconFile = ref.watch(denpaMenIconProvider(denpaMen.id)).value;
+    return DenpaMenListTile(
+      denpaMen: denpaMen,
+      selectionMode: selectionMode,
+      selected: selected,
+      onSelectedChanged: onSelectedChanged,
+      onTap: onTap,
+      enableLongPressPreview: false,
+      iconFile: iconFile,
+      actionMenuItemsBuilder: actionMenuItemsBuilder,
     );
   }
 }
