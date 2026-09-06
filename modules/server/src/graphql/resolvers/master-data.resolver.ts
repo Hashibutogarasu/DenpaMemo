@@ -95,6 +95,7 @@ export async function resolveMasterData(dataSource: DataSource) {
         categoryTranslator.translateMajorCategory(link.minorCategory.majorCategoryId, locale) ??
         link.minorCategory.majorCategoryId,
       minor: categoryTranslator.translateMinorCategory(link.minorCategoryId, locale) ?? link.minorCategoryId,
+      antennaId: link.anntena.id,
       antennaName: antennaNameById.get(link.anntena.id) ?? link.anntena.id,
     })),
   };

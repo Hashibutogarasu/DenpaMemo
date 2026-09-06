@@ -1,6 +1,8 @@
 packages:
   - modules/auth
   - modules/CloudData
+  - modules/denpamemo_logics
+  - modules/denpamemo_logics/pkg-node
   - modules/server
   - modules/tunnel
 allowBuilds:

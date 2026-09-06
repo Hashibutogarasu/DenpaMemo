@@ -21,6 +21,7 @@ workspace:
   - modules/Toaster
   - modules/TableEditor
   - modules/APIClient
+  - modules/denpamemo_logics
   - apps/WidgetBook
 
 dependencies:
@@ -79,6 +80,8 @@ dependencies:
     path: modules/TableEditor
   api_client:
     path: modules/APIClient
+  denpamemo_logics:
+    path: modules/denpamemo_logics
   icons_launcher: ^3.1.0
   http: ^1.6.0
   flutter_date_formatter: ^0.0.9
@@ -87,6 +90,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_rust_bridge: 2.13.0
   flutter_lints: ^6.0.0
   go_router_builder: ^4.4.0
   build_runner: ^2.15.1

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:croppy/croppy.dart';
 import 'package:data_cache/data_cache.dart';
+import 'package:denpamemo_logics/denpamemo_logics.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart' as denpamemo_widgets;
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
@@ -20,7 +21,6 @@ import 'l10n/croppy_localizations_ja.dart';
 import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
 import 'providers/objectbox_providers.dart';
-import 'providers/physique_table_startup_sync_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
 import 'theme/app_theme_mode_mapping.dart';
@@ -29,6 +29,7 @@ import 'widgets/splash/splash_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await RustLib.init();
   await initializeDateFormatting();
   final packageInfo = await PackageInfo.fromPlatform();
   final objectBox = await ObjectBox.create();
@@ -110,7 +111,6 @@ class _ThemedMaterialApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(appInitializationProvider);
-    ref.watch(physiqueTableInitializationProvider);
     final themeMode = ref.watch(appSettingsProvider).themeMode;
     return MaterialApp.router(
       title: t.app.name,

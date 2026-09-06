@@ -1,4 +1,5 @@
-import { collectColumns, type PhysiqueTableRowLike } from './evasion-rate-search';
+import { buildCategoryGrid, compactCategories } from 'denpamemo_logics';
+import type { PhysiqueTableRowLike } from './evasion-rate-search';
 import type { EvasionRateSign, PhysiqueEvasionRateCategoryRow } from './physique-evasion-rate-category';
 
 export interface LegendCell {
@@ -24,55 +25,46 @@ export interface LegendGridResult {
   hpCells: HpCell[];
 }
 
+function toRustCategory(row: PhysiqueEvasionRateCategoryRow) {
+  return {
+    id: row.id ?? '',
+    rangeStart: row.evasionRateStart,
+    rangeEnd: row.evasionRateEnd,
+    columnIndex: row.columnIndex,
+    categoryKey: row.textKey,
+    tag: row.sign,
+  };
+}
+
+function toRustRow(row: PhysiqueTableRowLike) {
+  return { group: [row.level, row.anntenaCategory], lineOffset: row.lineOffset, values: row.values };
+}
+
 /**
  * Merges adjacent legend rows in the same column that share the same
  * category and sign into one wider evasion-rate range, without
- * touching the underlying seed data. The source spreadsheet expands a
- * range like "7~10" into one row per value (see
- * `load-physique-evasion-rate-categories.ts`), which is faithful to the
- * spreadsheet but noisy to display; this collapses runs of consecutive
- * evasion-rate values back into a single range wherever their content
- * is identical. Rows that merely share a start value but differ in sign
- * (e.g. the evasion-rate-3 plus/minus pair) are never merged, since they
- * represent genuinely different categories.
+ * touching the underlying seed data. Delegates to `denpamemo_logics`'s
+ * generic `compactCategories` (Wasm).
  */
 export function compactLegendCategories(
   categories: PhysiqueEvasionRateCategoryRow[],
 ): PhysiqueEvasionRateCategoryRow[] {
-  const byColumn = new Map<number, PhysiqueEvasionRateCategoryRow[]>();
-  for (const category of categories) {
-    const group = byColumn.get(category.columnIndex);
-    if (group) {
-      group.push(category);
-    } else {
-      byColumn.set(category.columnIndex, [category]);
-    }
-  }
-
-  function canExtend(
-    previous: PhysiqueEvasionRateCategoryRow,
-    next: PhysiqueEvasionRateCategoryRow,
-  ): boolean {
-    return (
-      previous.textKey === next.textKey &&
-      previous.sign === next.sign &&
-      previous.evasionRateEnd + 1 === next.evasionRateStart
-    );
-  }
-
-  const compacted: PhysiqueEvasionRateCategoryRow[] = [];
-  for (const group of byColumn.values()) {
-    const ordered = [...group].sort((a, b) => a.evasionRateStart - b.evasionRateStart);
-    for (const row of ordered) {
-      const last = compacted.at(-1);
-      if (last !== undefined && last.columnIndex === row.columnIndex && canExtend(last, row)) {
-        compacted[compacted.length - 1] = { ...last, evasionRateEnd: row.evasionRateEnd };
-      } else {
-        compacted.push({ ...row });
-      }
-    }
-  }
-  return compacted;
+  const compacted = compactCategories(categories.map(toRustCategory)) as {
+    id: string;
+    rangeStart: number;
+    rangeEnd: number;
+    columnIndex: number;
+    categoryKey: string;
+    tag: EvasionRateSign;
+  }[];
+  return compacted.map((category) => ({
+    id: category.id,
+    evasionRateStart: category.rangeStart,
+    evasionRateEnd: category.rangeEnd,
+    columnIndex: category.columnIndex,
+    textKey: category.categoryKey,
+    sign: category.tag,
+  }));
 }
 
 /**
@@ -80,7 +72,9 @@ export function compactLegendCategories(
  * with whichever real evasion-rate values (for the given level/antenna
  * group) fall in its range, plus the HP table's values for the same
  * group — each flagged with whether it is literally the cell an
- * identification search matched.
+ * identification search matched. Delegates the actual grid construction
+ * to `denpamemo_logics`'s generic, domain-agnostic `buildCategoryGrid`
+ * (Wasm), converting to/from its shape at the boundary.
  */
 export function buildLegendGrid(params: {
   categories: PhysiqueEvasionRateCategoryRow[];
@@ -90,44 +84,39 @@ export function buildLegendGrid(params: {
   matchLineOffset: number;
   matchEvasionRate: number;
 }): LegendGridResult {
-  const { evasionRateRows, hpRows, matchColumnIndex, matchLineOffset, matchEvasionRate } = params;
-  const categories = compactLegendCategories(params.categories);
-  const evasionColumns = collectColumns(evasionRateRows);
-  const hpColumns = collectColumns(hpRows);
+  const { categories, evasionRateRows, hpRows, matchColumnIndex, matchLineOffset, matchEvasionRate } = params;
+  const grid = buildCategoryGrid({
+    categories: categories.map(toRustCategory),
+    primaryRows: evasionRateRows.map(toRustRow),
+    companionRows: hpRows.map(toRustRow),
+    matchColumnIndex,
+    matchLineOffset,
+    matchValue: matchEvasionRate,
+  }) as {
+    categoryCells: {
+      categoryId: string;
+      rangeStart: number;
+      rangeEnd: number;
+      columnIndex: number;
+      categoryKey: string;
+      tag: EvasionRateSign;
+      liveValues: number[];
+      isMatch: boolean;
+    }[];
+    valueCells: { columnIndex: number; lineOffset: number; value: number; isMatch: boolean }[];
+  };
 
-  const legendCells: LegendCell[] = categories.map((category) => {
-    const column = evasionColumns[category.columnIndex] ?? [];
-    const liveValues = [
-      ...new Set(
-        column
-          .map((entry) => entry.value)
-          .filter((value) => value >= category.evasionRateStart && value <= category.evasionRateEnd),
-      ),
-    ];
-    const isMatch =
-      category.columnIndex === matchColumnIndex &&
-      matchEvasionRate >= category.evasionRateStart &&
-      matchEvasionRate <= category.evasionRateEnd;
-    return {
-      categoryId: category.id,
-      evasionRateStart: category.evasionRateStart,
-      evasionRateEnd: category.evasionRateEnd,
-      columnIndex: category.columnIndex,
-      textKey: category.textKey,
-      sign: category.sign,
-      liveValues,
-      isMatch,
-    };
-  });
-
-  const hpCells: HpCell[] = hpColumns.flatMap((entries, columnIndex) =>
-    entries.map((entry) => ({
-      columnIndex,
-      lineOffset: entry.lineOffset,
-      value: entry.value,
-      isMatch: columnIndex === matchColumnIndex && entry.lineOffset === matchLineOffset,
+  return {
+    legendCells: grid.categoryCells.map((cell) => ({
+      categoryId: cell.categoryId,
+      evasionRateStart: cell.rangeStart,
+      evasionRateEnd: cell.rangeEnd,
+      columnIndex: cell.columnIndex,
+      textKey: cell.categoryKey,
+      sign: cell.tag,
+      liveValues: cell.liveValues,
+      isMatch: cell.isMatch,
     })),
-  );
-
-  return { legendCells, hpCells };
+    hpCells: grid.valueCells,
+  };
 }

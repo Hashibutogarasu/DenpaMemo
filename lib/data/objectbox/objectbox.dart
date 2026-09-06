@@ -7,6 +7,7 @@ import '../account/account_entity.dart';
 import '../cloud_file/cloud_file_entity.dart';
 import '../denpa_men/denpa_men_entity.dart';
 import '../notification/app_notification_entity.dart';
+import '../physique_table/evasion_rate_category_cache_entity.dart';
 import '../physique_table/physique_table_metadata_cache_entity.dart';
 import '../physique_table/physique_table_row_entity.dart';
 import '../qr_code/qr_code_entity.dart';
@@ -28,6 +29,7 @@ class ObjectBox {
   late final Box<PhysiqueTableRowEntity> physiqueTableRowBox;
   late final Box<PhysiqueTableMetadataCacheEntity>
   physiqueTableMetadataCacheBox;
+  late final Box<EvasionRateCategoryEntity> evasionRateCategoryBox;
 
   ObjectBox._create(this.store) {
     denpaMenBox = Box<DenpaMenEntity>(store);
@@ -40,6 +42,7 @@ class ObjectBox {
     physiqueTableMetadataCacheBox = Box<PhysiqueTableMetadataCacheEntity>(
       store,
     );
+    evasionRateCategoryBox = Box<EvasionRateCategoryEntity>(store);
 
     if (accountBox.isEmpty()) {
       accountBox.put(AccountEntity(cuid: cuid(), createdAt: DateTime.now()));

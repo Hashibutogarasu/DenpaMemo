@@ -56,6 +56,11 @@ node_modules/
 dist/
 .wrangler/
 .dev.vars
+.turbo/
+
+# Rust/Wasm build artifacts (modules/denpamemo_logics)
+modules/denpamemo_logics/rust/target/
+modules/denpamemo_logics/pkg-node/
 
 # Firebase config (contains this project's API keys)
 /android/app/google-services.json

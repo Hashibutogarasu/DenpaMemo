@@ -4,6 +4,7 @@
     "cancel": "キャンセル",
     "confirm": "決定",
     "copy": "コピー",
+    "copyError": "エラー全体をコピー",
     "errorTitle": "エラー",
     "unset": "未設定"
   },

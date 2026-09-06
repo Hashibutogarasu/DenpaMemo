@@ -99,6 +99,7 @@ const typeDefs = `
   type PhysiqueAntennaCategoryAntennaLink {
     major: String!
     minor: String!
+    antennaId: String!
     antennaName: String!
   }
 

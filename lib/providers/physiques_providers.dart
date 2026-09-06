@@ -4,20 +4,59 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
 
 import '../config/physique_server_config.dart';
+import '../services/physique_antenna_category_resolver.dart';
+import '../services/physique_identification_service.dart';
+import '../services/physique_legend_grid_service.dart';
+import 'app_initialization_providers.dart';
 import 'physique_table_cache_providers.dart';
 
 final physiquesApiClientProvider = Provider<PhysiquesApiClient>(
   (ref) => PhysiquesApiClient(Uri.parse(physiqueServerConfig.baseUrl)),
 );
 
+final physiqueAntennaCategoryResolverProvider =
+    Provider<PhysiqueAntennaCategoryResolver>(
+      (ref) => PhysiqueAntennaCategoryResolver(
+        ref.watch(physiqueTableMetadataCacheRepositoryProvider),
+      ),
+    );
+
+/// Identifies a physique from cached table rows via `denpamemo_logics`
+/// — see [PhysiqueIdentificationService].
+final physiqueIdentificationServiceProvider =
+    Provider<PhysiqueIdentificationService>(
+      (ref) => PhysiqueIdentificationService(
+        tableCacheRepository: ref.watch(physiqueTableCacheRepositoryProvider),
+        categoryCacheRepository: ref.watch(
+          evasionRateCategoryCacheRepositoryProvider,
+        ),
+        antennaCategoryResolver: ref.watch(
+          physiqueAntennaCategoryResolverProvider,
+        ),
+        awaitInitialSync: () => ref.read(appInitializationProvider.future),
+      ),
+    );
+
+/// Builds the "matching location" grid from cached table rows via
+/// `denpamemo_logics` — see [PhysiqueLegendGridService].
+final physiqueLegendGridServiceProvider = Provider<PhysiqueLegendGridService>(
+  (ref) => PhysiqueLegendGridService(
+    tableCacheRepository: ref.watch(physiqueTableCacheRepositoryProvider),
+    categoryCacheRepository: ref.watch(
+      evasionRateCategoryCacheRepositoryProvider,
+    ),
+    awaitInitialSync: () => ref.read(appInitializationProvider.future),
+  ),
+);
+
 /// The "matching location" grid for one identification result — see
-/// `PhysiquesApiClient.legendGrid`. Read-only reference data tied to a
+/// [PhysiqueLegendGridService]. Read-only reference data tied to a
 /// specific search result, so `autoDispose` is appropriate (no need to
 /// keep it cached once the page showing it is closed).
 final legendGridProvider = FutureProvider.autoDispose
     .family<LegendGridResult, LegendGridRequest>(
       (ref, request) =>
-          ref.read(physiquesApiClientProvider).legendGrid(request),
+          ref.read(physiqueLegendGridServiceProvider).legendGrid(request),
     );
 
 /// Awaits [fetch] up to [timeout]; on success, [save]s it to the local
@@ -68,6 +107,23 @@ final physiqueTableMetadataWithCacheProvider =
         fetch: () => ref.read(physiqueTableMetadataProvider.future),
         save: cacheRepository.saveMetadata,
         cached: cacheRepository.cachedMetadata,
+      );
+    });
+
+/// The physique-category legend (`GET /tables/evasion-rate-categories`),
+/// falling back to the last successfully fetched rows when the server is
+/// unreachable — cached ahead of time so offline identification can
+/// resolve evasion-rate ranges to categories.
+final evasionRateCategoriesProvider =
+    FutureProvider<List<PhysiqueEvasionRateCategoryRow>>((ref) {
+      final client = ref.watch(physiquesApiClientProvider);
+      final cacheRepository = ref.watch(
+        evasionRateCategoryCacheRepositoryProvider,
+      );
+      return _fetchWithCacheFallback(
+        fetch: client.fetchEvasionRateCategories,
+        save: cacheRepository.replaceAll,
+        cached: cacheRepository.cachedCategories,
       );
     });
 

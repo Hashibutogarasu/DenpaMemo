@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
+import '../providers/app_initialization_providers.dart';
 import '../providers/physique_table_cache_providers.dart';
 import '../providers/physique_table_edit_providers.dart';
 import '../providers/physiques_providers.dart';
@@ -196,76 +197,70 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
-    final metadataAsync = ref.watch(physiqueTableMetadataWithCacheProvider);
-    final typesAsync = ref.watch(tableTypesProvider);
+    final metadata = ref.watch(cachedPhysiqueTableMetadataProvider);
+    final types = ref.watch(cachedTableTypesProvider);
     final categoriesWithData = ref.watch(
       physiqueTableAnntenaCategoriesWithDataProvider,
     );
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.physiqueTable.title),
-      floatingActionButton: switch ((metadataAsync, typesAsync)) {
-        (AsyncData(value: final metadata), AsyncData(value: final types)) =>
-          FloatingActionButton.extended(
-            label: Text(t.physiqueTable.createNewTable),
-            onPressed: () =>
-                _createNewTable(metadata.physiqueAntennaCategories, types),
-          ),
+      floatingActionButton: switch ((metadata, types)) {
+        (final metadata?, final types?) => FloatingActionButton.extended(
+          label: Text(t.physiqueTable.createNewTable),
+          onPressed: () =>
+              _createNewTable(metadata.physiqueAntennaCategories, types),
+        ),
         _ => null,
       },
-      body: switch ((metadataAsync, typesAsync)) {
-        (AsyncData(value: final metadata), AsyncData(value: final types)) =>
-          LoadingOverlay(
-            loading: _navigating,
-            child: Builder(
-              builder: (context) {
-                final byCategory = <String, List<PhysiqueAntennaCategory>>{};
-                for (final row in metadata.physiqueAntennaCategories) {
-                  byCategory.putIfAbsent(row.category, () => []).add(row);
-                }
+      body: switch ((metadata, types)) {
+        (final metadata?, final types?) => LoadingOverlay(
+          loading: _navigating,
+          child: Builder(
+            builder: (context) {
+              final byCategory = <String, List<PhysiqueAntennaCategory>>{};
+              for (final row in metadata.physiqueAntennaCategories) {
+                byCategory.putIfAbsent(row.category, () => []).add(row);
+              }
 
-                return ListView(
-                  children: [
-                    for (final entry in byCategory.entries) ...[
-                      ListTileSection(title: Text(entry.key)),
-                      ListItemContainer(
-                        children: [
-                          for (final row in entry.value)
-                            ListTile(
-                              leading: const Icon(Icons.table_rows_outlined),
-                              title: Text(row.anntenaCategory),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (categoriesWithData.contains(
-                                    row.anntenaCategory,
-                                  ))
-                                    IconButton(
-                                      icon: const Icon(Icons.edit_outlined),
-                                      tooltip: t.physiqueTable.edit,
-                                      onPressed: () =>
-                                          _startEditingExistingTable(
-                                            types,
-                                            row.anntenaCategory,
-                                          ),
+              return ListView(
+                children: [
+                  for (final entry in byCategory.entries) ...[
+                    ListTileSection(title: Text(entry.key)),
+                    ListItemContainer(
+                      children: [
+                        for (final row in entry.value)
+                          ListTile(
+                            leading: const Icon(Icons.table_rows_outlined),
+                            title: Text(row.anntenaCategory),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (categoriesWithData.contains(
+                                  row.anntenaCategory,
+                                ))
+                                  IconButton(
+                                    icon: const Icon(Icons.edit_outlined),
+                                    tooltip: t.physiqueTable.edit,
+                                    onPressed: () => _startEditingExistingTable(
+                                      types,
+                                      row.anntenaCategory,
                                     ),
-                                  const Icon(Icons.chevron_right),
-                                ],
-                              ),
-                              onTap: () => _viewExistingTable(
-                                types,
-                                row.anntenaCategory,
-                              ),
+                                  ),
+                                const Icon(Icons.chevron_right),
+                              ],
                             ),
-                        ],
-                      ),
-                    ],
+                            onTap: () =>
+                                _viewExistingTable(types, row.anntenaCategory),
+                          ),
+                      ],
+                    ),
                   ],
-                );
-              },
-            ),
+                ],
+              );
+            },
           ),
-        (AsyncError(), _) || (_, AsyncError()) => const SizedBox.shrink(),
+        ),
         _ => const ProgressBar(),
       },
     );

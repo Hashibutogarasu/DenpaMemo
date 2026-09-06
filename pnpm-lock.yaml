@@ -59,6 +59,10 @@ importers:
         specifier: ^4.0.0
         version: 4.127.1(@cloudflare/workers-types@4.20260702.1)
 
+  modules/denpamemo_logics: {}
+
+  modules/denpamemo_logics/pkg-node: {}
+
   modules/server:
     dependencies:
       '@elysiajs/node':
@@ -70,6 +74,9 @@ importers:
       ajv:
         specifier: ^8.17.1
         version: 8.20.0
+      denpamemo_logics:
+        specifier: workspace:*
+        version: link:../denpamemo_logics/pkg-node
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2

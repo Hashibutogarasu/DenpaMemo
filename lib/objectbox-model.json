@@ -450,10 +450,56 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "9:1993981006494465469",
+      "lastPropertyId": "7:4361149293653128732",
+      "name": "EvasionRateCategoryEntity",
+      "properties": [
+        {
+          "id": "1:8236370036498136397",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8922551603802869428",
+          "name": "categoryId",
+          "indexId": "6:2671948309389777854",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:8895276544859083350",
+          "name": "evasionRateStart",
+          "type": 6
+        },
+        {
+          "id": "4:8771654146320538151",
+          "name": "evasionRateEnd",
+          "type": 6
+        },
+        {
+          "id": "5:1922260933112563179",
+          "name": "columnIndex",
+          "type": 6
+        },
+        {
+          "id": "6:8603894201063681583",
+          "name": "textKey",
+          "type": 9
+        },
+        {
+          "id": "7:4361149293653128732",
+          "name": "sign",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "8:2940214554105854855",
-  "lastIndexId": "5:2035784995792252963",
+  "lastEntityId": "9:1993981006494465469",
+  "lastIndexId": "6:2671948309389777854",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

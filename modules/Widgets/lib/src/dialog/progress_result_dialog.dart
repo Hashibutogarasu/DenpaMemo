@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 
 import '../../i18n/gen/strings.g.dart';
 
@@ -8,11 +10,15 @@ import '../../i18n/gen/strings.g.dart';
 /// resolved value once it completes, with an OK button that pops the
 /// dialog with that value. If [task] throws, [errorMessage] is shown
 /// instead, with its own OK button popping with `null` — the dialog never
-/// closes itself without the user tapping one of these buttons. Not
-/// specific to any one [task] shape — the caller decides what [T] is and
-/// how to render it. [extraActions], when given, renders additional
-/// buttons between the result label and the OK button on success (e.g. a
-/// "view detail" shortcut) without affecting what the dialog pops with.
+/// closes itself without the user tapping one of these buttons. In debug
+/// builds, the error state also offers a button copying [task]'s actual
+/// error and stack trace, so what [errorMessage] otherwise hides behind
+/// one generic message can still be told apart (missing data vs. a bug in
+/// the task itself, say) without a debugger attached. Not specific to any
+/// one [task] shape — the caller decides what [T] is and how to render
+/// it. [extraActions], when given, renders additional buttons between the
+/// result label and the OK button on success (e.g. a "view detail"
+/// shortcut) without affecting what the dialog pops with.
 class ProgressResultDialog<T> extends StatefulWidget {
   const ProgressResultDialog({
     super.key,
@@ -78,6 +84,17 @@ class _ProgressResultDialogState<T> extends State<ProgressResultDialog<T>> {
                 children: [
                   Text(widget.errorMessage, textAlign: TextAlign.center),
                   const SizedBox(height: 20),
+                  if (kDebugMode) ...[
+                    OutlinedButton(
+                      onPressed: () => Clipboard.setData(
+                        ClipboardData(
+                          text: '${snapshot.error}\n\n${snapshot.stackTrace}',
+                        ),
+                      ),
+                      child: Text(t.common.copyError),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
                   FilledButton(
                     onPressed: () => Navigator.of(context).pop(),
                     child: Text(t.common.confirm),
@@ -107,12 +124,14 @@ class _ProgressResultDialogState<T> extends State<ProgressResultDialog<T>> {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                ...?widget.extraActions?.call(context, result).map(
-                  (action) => Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: action,
-                  ),
-                ),
+                ...?widget.extraActions
+                    ?.call(context, result)
+                    .map(
+                      (action) => Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: action,
+                      ),
+                    ),
                 const SizedBox(height: 20),
                 FilledButton(
                   onPressed: () => Navigator.of(context).pop(result),
