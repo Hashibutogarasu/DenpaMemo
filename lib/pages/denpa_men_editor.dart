@@ -3,6 +3,9 @@ import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/i18n/gen/strings.g.dart'
+    as wt
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -140,6 +143,14 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     });
   }
 
+  /// [candidate]'s display text: the server-translated [PhysiqueCategoryCandidate.text]
+  /// when identification went through `modules/server`, otherwise this
+  /// app's own local translation of [PhysiqueCategoryCandidate.textKey]
+  /// (identification computed offline never sets `text`, since that
+  /// translation lives server-side) — the raw key only as a last resort.
+  String _physiqueCategoryLabel(PhysiqueCategoryCandidate candidate) =>
+      candidate.text ?? wt.t.physique[candidate.textKey] ?? candidate.textKey;
+
   Future<PhysiqueIdentification?> _identifyPhysique(
     BuildContext context,
   ) async {
@@ -159,7 +170,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
           ),
       resultLabel: (result) => switch (result.matches.firstOrNull?.candidates) {
         null || [] => t.physiqueIdentification.notFound,
-        [final only] => only.text ?? only.textKey,
+        [final only] => _physiqueCategoryLabel(only),
         _ => t.physiqueIdentification.multipleCandidates,
       },
       extraActions: (context, result) {
@@ -201,9 +212,10 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         context,
         title: t.physiqueIdentification.chooseCandidateTitle,
         candidates: candidates,
-        label: (candidate) => candidate.text ?? candidate.textKey,
+        label: _physiqueCategoryLabel,
         leading: (candidate) => EvasionRateSignIcon(sign: candidate.sign),
-        subtitle: (candidate) => candidate.evasionRateStart == candidate.evasionRateEnd
+        subtitle: (candidate) =>
+            candidate.evasionRateStart == candidate.evasionRateEnd
             ? t.physiqueIdentification.candidateEvasionRateExact(
                 value: candidate.evasionRateStart,
               )

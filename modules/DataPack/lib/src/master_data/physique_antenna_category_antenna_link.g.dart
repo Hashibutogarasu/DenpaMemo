@@ -11,6 +11,7 @@ _$PhysiqueAntennaCategoryAntennaLinkFromJson(Map<String, dynamic> json) =>
     _PhysiqueAntennaCategoryAntennaLink(
       major: json['major'] as String,
       minor: json['minor'] as String,
+      antennaId: json['antennaId'] as String,
       antennaName: json['antennaName'] as String,
     );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$PhysiqueAntennaCategoryAntennaLinkToJson(
 ) => <String, dynamic>{
   'major': instance.major,
   'minor': instance.minor,
+  'antennaId': instance.antennaId,
   'antennaName': instance.antennaName,
 };

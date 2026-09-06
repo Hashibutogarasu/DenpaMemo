@@ -37,13 +37,21 @@ class PhysiqueTableMetadataCacheRepository {
     _box.put(entity);
   }
 
+  /// `null` both when nothing has been cached yet and when the cached
+  /// JSON no longer matches [TableDefinition]'s current shape (e.g. a
+  /// field added after this row was written) — either way, callers
+  /// should treat it the same as "no usable cache" rather than crash.
   List<TableDefinition>? cachedTableTypes() {
     final json = _box.getAll().firstOrNull?.tableTypesJson;
     if (json == null) return null;
-    return [
-      for (final row in jsonDecode(json) as List<dynamic>)
-        TableDefinition.fromJson(row as Map<String, dynamic>),
-    ];
+    try {
+      return [
+        for (final row in jsonDecode(json) as List<dynamic>)
+          TableDefinition.fromJson(row as Map<String, dynamic>),
+      ];
+    } catch (_) {
+      return null;
+    }
   }
 
   void saveMetadata(PhysiqueTableMetadata metadata) {
@@ -52,11 +60,19 @@ class PhysiqueTableMetadataCacheRepository {
     _box.put(entity);
   }
 
+  /// `null` both when nothing has been cached yet and when the cached
+  /// JSON no longer matches [PhysiqueTableMetadata]'s current shape (e.g.
+  /// a field added after this row was written) — either way, callers
+  /// should treat it the same as "no usable cache" rather than crash.
   PhysiqueTableMetadata? cachedMetadata() {
     final json = _box.getAll().firstOrNull?.metadataJson;
     if (json == null) return null;
-    return PhysiqueTableMetadata.fromJson(
-      jsonDecode(json) as Map<String, dynamic>,
-    );
+    try {
+      return PhysiqueTableMetadata.fromJson(
+        jsonDecode(json) as Map<String, dynamic>,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 }

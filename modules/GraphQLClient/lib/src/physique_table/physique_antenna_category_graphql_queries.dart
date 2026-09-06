@@ -17,6 +17,7 @@ query PhysiqueAntennaCategories {
     physiqueAntennaCategoryAntennaLinks {
       major
       minor
+      antennaId
       antennaName
     }
   }

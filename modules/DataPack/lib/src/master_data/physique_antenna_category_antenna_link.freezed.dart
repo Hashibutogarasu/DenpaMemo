@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PhysiqueAntennaCategoryAntennaLink {
 
- String get major; String get minor; String get antennaName;
+ String get major; String get minor; String get antennaId; String get antennaName;
 /// Create a copy of PhysiqueAntennaCategoryAntennaLink
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PhysiqueAntennaCategoryAntennaLinkCopyWith<PhysiqueAntennaCategoryAntennaLink> 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueAntennaCategoryAntennaLink&&(identical(other.major, major) || other.major == major)&&(identical(other.minor, minor) || other.minor == minor)&&(identical(other.antennaName, antennaName) || other.antennaName == antennaName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhysiqueAntennaCategoryAntennaLink&&(identical(other.major, major) || other.major == major)&&(identical(other.minor, minor) || other.minor == minor)&&(identical(other.antennaId, antennaId) || other.antennaId == antennaId)&&(identical(other.antennaName, antennaName) || other.antennaName == antennaName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,major,minor,antennaName);
+int get hashCode => Object.hash(runtimeType,major,minor,antennaId,antennaName);
 
 @override
 String toString() {
-  return 'PhysiqueAntennaCategoryAntennaLink(major: $major, minor: $minor, antennaName: $antennaName)';
+  return 'PhysiqueAntennaCategoryAntennaLink(major: $major, minor: $minor, antennaId: $antennaId, antennaName: $antennaName)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PhysiqueAntennaCategoryAntennaLinkCopyWith<$Res>  {
   factory $PhysiqueAntennaCategoryAntennaLinkCopyWith(PhysiqueAntennaCategoryAntennaLink value, $Res Function(PhysiqueAntennaCategoryAntennaLink) _then) = _$PhysiqueAntennaCategoryAntennaLinkCopyWithImpl;
 @useResult
 $Res call({
- String major, String minor, String antennaName
+ String major, String minor, String antennaId, String antennaName
 });
 
 
@@ -65,10 +65,11 @@ class _$PhysiqueAntennaCategoryAntennaLinkCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueAntennaCategoryAntennaLink
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? major = null,Object? minor = null,Object? antennaName = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? major = null,Object? minor = null,Object? antennaId = null,Object? antennaName = null,}) {
   return _then(_self.copyWith(
 major: null == major ? _self.major : major // ignore: cast_nullable_to_non_nullable
 as String,minor: null == minor ? _self.minor : minor // ignore: cast_nullable_to_non_nullable
+as String,antennaId: null == antennaId ? _self.antennaId : antennaId // ignore: cast_nullable_to_non_nullable
 as String,antennaName: null == antennaName ? _self.antennaName : antennaName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String major,  String minor,  String antennaName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String major,  String minor,  String antennaId,  String antennaName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PhysiqueAntennaCategoryAntennaLink() when $default != null:
-return $default(_that.major,_that.minor,_that.antennaName);case _:
+return $default(_that.major,_that.minor,_that.antennaId,_that.antennaName);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.major,_that.minor,_that.antennaName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String major,  String minor,  String antennaName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String major,  String minor,  String antennaId,  String antennaName)  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueAntennaCategoryAntennaLink():
-return $default(_that.major,_that.minor,_that.antennaName);case _:
+return $default(_that.major,_that.minor,_that.antennaId,_that.antennaName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.major,_that.minor,_that.antennaName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String major,  String minor,  String antennaName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String major,  String minor,  String antennaId,  String antennaName)?  $default,) {final _that = this;
 switch (_that) {
 case _PhysiqueAntennaCategoryAntennaLink() when $default != null:
-return $default(_that.major,_that.minor,_that.antennaName);case _:
+return $default(_that.major,_that.minor,_that.antennaId,_that.antennaName);case _:
   return null;
 
 }
@@ -211,11 +212,12 @@ return $default(_that.major,_that.minor,_that.antennaName);case _:
 @JsonSerializable()
 
 class _PhysiqueAntennaCategoryAntennaLink implements PhysiqueAntennaCategoryAntennaLink {
-  const _PhysiqueAntennaCategoryAntennaLink({required this.major, required this.minor, required this.antennaName});
+  const _PhysiqueAntennaCategoryAntennaLink({required this.major, required this.minor, required this.antennaId, required this.antennaName});
   factory _PhysiqueAntennaCategoryAntennaLink.fromJson(Map<String, dynamic> json) => _$PhysiqueAntennaCategoryAntennaLinkFromJson(json);
 
 @override final  String major;
 @override final  String minor;
+@override final  String antennaId;
 @override final  String antennaName;
 
 /// Create a copy of PhysiqueAntennaCategoryAntennaLink
@@ -231,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueAntennaCategoryAntennaLink&&(identical(other.major, major) || other.major == major)&&(identical(other.minor, minor) || other.minor == minor)&&(identical(other.antennaName, antennaName) || other.antennaName == antennaName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PhysiqueAntennaCategoryAntennaLink&&(identical(other.major, major) || other.major == major)&&(identical(other.minor, minor) || other.minor == minor)&&(identical(other.antennaId, antennaId) || other.antennaId == antennaId)&&(identical(other.antennaName, antennaName) || other.antennaName == antennaName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,major,minor,antennaName);
+int get hashCode => Object.hash(runtimeType,major,minor,antennaId,antennaName);
 
 @override
 String toString() {
-  return 'PhysiqueAntennaCategoryAntennaLink(major: $major, minor: $minor, antennaName: $antennaName)';
+  return 'PhysiqueAntennaCategoryAntennaLink(major: $major, minor: $minor, antennaId: $antennaId, antennaName: $antennaName)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$PhysiqueAntennaCategoryAntennaLinkCopyWith<$Res> implemen
   factory _$PhysiqueAntennaCategoryAntennaLinkCopyWith(_PhysiqueAntennaCategoryAntennaLink value, $Res Function(_PhysiqueAntennaCategoryAntennaLink) _then) = __$PhysiqueAntennaCategoryAntennaLinkCopyWithImpl;
 @override @useResult
 $Res call({
- String major, String minor, String antennaName
+ String major, String minor, String antennaId, String antennaName
 });
 
 
@@ -268,10 +270,11 @@ class __$PhysiqueAntennaCategoryAntennaLinkCopyWithImpl<$Res>
 
 /// Create a copy of PhysiqueAntennaCategoryAntennaLink
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? major = null,Object? minor = null,Object? antennaName = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? major = null,Object? minor = null,Object? antennaId = null,Object? antennaName = null,}) {
   return _then(_PhysiqueAntennaCategoryAntennaLink(
 major: null == major ? _self.major : major // ignore: cast_nullable_to_non_nullable
 as String,minor: null == minor ? _self.minor : minor // ignore: cast_nullable_to_non_nullable
+as String,antennaId: null == antennaId ? _self.antennaId : antennaId // ignore: cast_nullable_to_non_nullable
 as String,antennaName: null == antennaName ? _self.antennaName : antennaName // ignore: cast_nullable_to_non_nullable
 as String,
   ));
