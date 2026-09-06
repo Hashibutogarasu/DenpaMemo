@@ -102,8 +102,19 @@ class _DenpaMenAccordionTileState extends State<DenpaMenAccordionTile> {
                       opacity: _expanded ? 0 : 1,
                       child: Row(
                         children: [
-                          (widget.iconBuilder ?? staticDenpaMenIconBuilder(null))
-                              .call(theme.accordionIconSize),
+                          // While expanded this row is faded to invisible
+                          // rather than removed (so it can fade back in),
+                          // and DenpaMenStatus below already renders its
+                          // own icon at that point — so avoid decoding and
+                          // painting a second one for a header nobody can
+                          // see, keeping the slot's size stable instead.
+                          _expanded
+                              ? SizedBox.square(
+                                  dimension: theme.accordionIconSize,
+                                )
+                              : (widget.iconBuilder ??
+                                        staticDenpaMenIconBuilder(null))
+                                    .call(theme.accordionIconSize),
                           const SizedBox(width: 8),
                           Flexible(
                             child: OutlinedTitleText(

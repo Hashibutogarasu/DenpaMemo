@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:data_cache/data_cache.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/clipping/clipping_render.dart';
 import 'account_scoped_paths_providers.dart'
     show accountScopedAppDirectoryProvider, accountScopedTempDirectoryProvider;
 
 /// Aggregates every on-disk cache source (the offline data cache's SQLite
-/// files, and the account's temporary/cache directory) behind one API, so
-/// callers that need "every cached file" don't have to know how many
-/// sources exist or where each one lives.
+/// files, the account's temporary/cache directory, and the clipped-icon
+/// render cache) behind one API, so callers that need "every cached file"
+/// don't have to know how many sources exist or where each one lives.
 class CacheFileSources {
   const CacheFileSources(this._ref);
 
@@ -21,6 +22,7 @@ class CacheFileSources {
     final fileLists = await Future.wait([
       _listOfflineCacheFiles(),
       _listTempCacheFiles(),
+      _listClippedImageCacheFiles(),
     ]);
     return fileLists.expand((files) => files).toList();
   }
@@ -33,6 +35,30 @@ class CacheFileSources {
       accountScopedTempDirectoryProvider.future,
     );
     return listFilesRecursively(tempDirectory);
+  }
+
+  /// [clippedImageCacheManager] is app-wide rather than account-scoped
+  /// (its entries are fully reconstructable from account-scoped source
+  /// images either way) and manages its own storage location internally,
+  /// so its files are resolved through its own public API — asking its
+  /// [CacheInfoRepository] for every entry it knows about, then asking
+  /// the manager itself for each entry's actual file — rather than this
+  /// app guessing at (and duplicating) where `flutter_cache_manager`
+  /// happens to store things on disk.
+  Future<List<File>> _listClippedImageCacheFiles() async {
+    final repo = clippedImageCacheManager.config.repo;
+    await repo.open();
+    final objects = await repo.getAllObjects();
+    final files = <File>[];
+    for (final object in objects) {
+      final file = (await clippedImageCacheManager.getFileFromCache(
+        object.key,
+      ))?.file;
+      if (file != null && await file.exists()) {
+        files.add(file);
+      }
+    }
+    return files;
   }
 }
 

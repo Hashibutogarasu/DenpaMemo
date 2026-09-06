@@ -13,6 +13,21 @@ bool isWidgetRebuildLine(String message) {
   return trimmed.startsWith('Building ') || trimmed.startsWith('Rebuilding ');
 }
 
+final RegExp _rebuiltWidgetNamePattern = RegExp(
+  r'^(?:Building|Rebuilding) (\w+)',
+);
+
+/// `BuildTracker` (see `lib/main.dart`, wrapping the whole routed app for
+/// `flutter_build_tracker`'s own stats) rebuilds itself once per rendered
+/// frame by design, via its inner `Builder`, entirely independent of the
+/// app's actual rebuild frequency — so its own `Building`/`Rebuilding`
+/// lines are pure debug-tooling noise, never useful debugging signal, and
+/// are dropped instead of being routed to the widget-rebuild log.
+bool _isBuildTrackerNoise(String widgetRebuildLine) {
+  final name = _rebuiltWidgetNamePattern.firstMatch(widgetRebuildLine)?.group(1);
+  return name == 'BuildTracker' || name == 'Builder';
+}
+
 /// Replaces the framework's global `debugPrint` so every line printed
 /// through it — whether from `debugPrintRebuildDirtyWidgets`, `debugPrint`
 /// call sites elsewhere in the app, or third-party packages — is
@@ -23,6 +38,7 @@ void installDebugPrintInterceptor() {
     if (message == null) return;
     final timestamp = DateTime.now();
     if (isWidgetRebuildLine(message)) {
+      if (_isBuildTrackerNoise(message.trimLeft())) return;
       LogBus.instance.addWidgetRebuild(
         LogEntry.widgetRebuild(
           id: cuid(),

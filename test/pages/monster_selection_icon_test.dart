@@ -61,14 +61,17 @@ void main() {
     );
     await tester.pump();
 
-    final imageFinder = find.byWidgetPredicate(
-      (widget) =>
-          widget is Image &&
-          widget.image is FileImage &&
-          (widget.image as FileImage).file.path.contains(
+    final imageFinder = find.byWidgetPredicate((widget) {
+      if (widget is! Image) return false;
+      final provider = widget.image;
+      final fileImage = provider is ResizeImage
+          ? provider.imageProvider
+          : provider;
+      return fileImage is FileImage &&
+          fileImage.file.path.contains(
             '${Platform.pathSeparator}monsters${Platform.pathSeparator}swordmouse${Platform.pathSeparator}',
-          ),
-    );
+          );
+    });
     expect(imageFinder, findsOneWidget);
     expect(find.byIcon(Icons.image_outlined), findsNothing);
   });

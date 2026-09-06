@@ -60,7 +60,6 @@ final entityImageProvider =
         clippingSlotForProfileProvider((clippingProfileId, slot)).future,
       );
       return renderClippedImage(
-        ref,
         rawFile: rawFile,
         clippingSlot: clippingSlot,
         cacheKey: '$category-$entityId-${slot.name}',

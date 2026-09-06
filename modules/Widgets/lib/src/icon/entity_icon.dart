@@ -8,6 +8,11 @@ import 'package:flutter/material.dart';
 /// already been loaded ahead of time — e.g. lineage tree nodes, where
 /// every node's icon is resolved up front so the tree doesn't reflow
 /// node-by-node as each icon provider finishes loading.
+///
+/// Decodes [file] no larger than [size] needs (scaled by the device's
+/// pixel ratio) rather than at its own full resolution, since these are
+/// always displayed as small thumbnails — the source photos this reads
+/// are typically much larger than any icon actually shown on screen.
 class ResolvedEntityIcon extends StatelessWidget {
   const ResolvedEntityIcon({super.key, required this.file, required this.size});
 
@@ -16,11 +21,22 @@ class ResolvedEntityIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final file = this.file;
+    final decodeSize = (size * MediaQuery.devicePixelRatioOf(context)).round();
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: file == null
           ? _placeholder()
-          : Image.file(file!, width: size, height: size, fit: BoxFit.cover),
+          : Image.file(
+              file,
+              key: ValueKey(file.path),
+              width: size,
+              height: size,
+              fit: BoxFit.cover,
+              cacheWidth: decodeSize,
+              cacheHeight: decodeSize,
+              gaplessPlayback: true,
+            ),
     );
   }
 
