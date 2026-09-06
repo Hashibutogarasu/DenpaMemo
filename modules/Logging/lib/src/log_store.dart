@@ -20,15 +20,25 @@ const Duration flushInterval = Duration(milliseconds: 200);
 /// [LogBus] stream via [logBusStream], buffers incoming entries, and
 /// flushes them into state at most once per [flushInterval], keeping the
 /// newest [maxEntries] entries newest first.
+///
+/// [pauseLiveUpdates] lets a screen that is *itself* watching this state
+/// (and would therefore rebuild in response to its own new entries) stop
+/// new entries from reaching [state] while it's the one on screen —
+/// see [WidgetRebuildLogNotifier], where displaying a rebuild also
+/// produces a rebuild, which would otherwise feed right back into the
+/// same stream forever. Entries keep accumulating in [_pending] while
+/// paused (capped at [maxEntries] so a long pause can't grow it without
+/// bound) and are flushed once resumed.
 abstract class _LogBusNotifier extends Notifier<List<LogEntry>> {
   Stream<LogEntry> get logBusStream;
 
   final List<LogEntry> _pending = [];
   Timer? _flushTimer;
+  bool _liveUpdatesPaused = false;
 
   @override
   List<LogEntry> build() {
-    final subscription = logBusStream.listen(_pending.add);
+    final subscription = logBusStream.listen(_addPending);
     _flushTimer = Timer.periodic(flushInterval, (_) => _flush());
     ref.onDispose(() {
       subscription.cancel();
@@ -37,8 +47,34 @@ abstract class _LogBusNotifier extends Notifier<List<LogEntry>> {
     return const [];
   }
 
+  void _addPending(LogEntry entry) {
+    _pending.add(entry);
+    if (_pending.length > maxEntries) {
+      _pending.removeRange(0, _pending.length - maxEntries);
+    }
+  }
+
+  void pauseLiveUpdates(bool paused) {
+    _liveUpdatesPaused = paused;
+    if (!paused) {
+      _flush();
+    }
+  }
+
+  /// Applies whatever has accumulated in [_pending] right now as a one-off
+  /// snapshot, even while paused, without lifting the pause for entries
+  /// that arrive afterward — for a screen that wants to catch up exactly
+  /// once as it becomes visible (e.g. a tab being selected) and then go
+  /// back to not live-updating.
+  void flushPendingOnce() {
+    final wasPaused = _liveUpdatesPaused;
+    _liveUpdatesPaused = false;
+    _flush();
+    _liveUpdatesPaused = wasPaused;
+  }
+
   void _flush() {
-    if (_pending.isEmpty) return;
+    if (_liveUpdatesPaused || _pending.isEmpty) return;
     state = [
       for (final entry in _pending.reversed) entry,
       ...state,

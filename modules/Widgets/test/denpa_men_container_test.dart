@@ -30,7 +30,11 @@ void main() {
 
       expect(find.byType(Image), findsOneWidget);
       final image = tester.widget<Image>(find.byType(Image));
-      expect((image.image as FileImage).file.path, iconFile.path);
+      final resolvedProvider = image.image;
+      final fileImage = resolvedProvider is ResizeImage
+          ? resolvedProvider.imageProvider as FileImage
+          : resolvedProvider as FileImage;
+      expect(fileImage.file.path, iconFile.path);
     },
   );
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'i18n/gen/strings.g.dart';
+import 'src/responsive/responsive_scope.dart';
 import 'src/theme/app_dialog_theme.dart';
 import 'src/theme/denpa_men_container_theme.dart';
 import 'src/theme/denpa_men_label_theme.dart';
@@ -87,9 +88,9 @@ final ThemeData testAppTheme = ThemeData(
   ],
 );
 
-/// Wraps [home] with this package's [TranslationProvider] and a
-/// [MaterialApp] using [testAppTheme], for widget tests to pump instead of
-/// building their own `MaterialApp`.
+/// Wraps [home] with this package's [TranslationProvider], a
+/// [ResponsiveScope], and a [MaterialApp] using [testAppTheme], for widget
+/// tests to pump instead of building their own `MaterialApp`.
 class TestApp extends StatelessWidget {
   const TestApp({super.key, required this.home});
 
@@ -98,7 +99,11 @@ class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TranslationProvider(
-      child: MaterialApp(theme: testAppTheme, home: home),
+      child: MaterialApp(
+        theme: testAppTheme,
+        home: home,
+        builder: (context, child) => ResponsiveScope(child: child!),
+      ),
     );
   }
 }

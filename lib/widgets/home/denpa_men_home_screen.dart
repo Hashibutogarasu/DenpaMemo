@@ -12,7 +12,6 @@ import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';
 import '../../providers/entity_image_providers.dart';
 import '../../providers/home_view_providers.dart';
-import '../../providers/qr_code_providers.dart';
 import '../../providers/search_providers.dart';
 import '../denpa_men_lineage_tree.dart';
 import '../dialog/denpa_men_action_menu.dart';
@@ -73,23 +72,7 @@ class _DenpaMenHomeScreenState extends ConsumerState<DenpaMenHomeScreen> {
     final selectionMode = ref.watch(selectionModeProvider);
     final viewMode = ref.watch(homeViewModeProvider);
     final tileMode = ref.watch(homeTileModeProvider);
-    final isMobile = ref.watch(appShellStateProvider).isMobile;
-
-    final isLoading =
-        ref.watch(denpaMenListProvider(masterData)).isLoading ||
-        (viewMode == HomeViewMode.tree &&
-            ref.watch(qrCodeListProvider).isLoading);
-    final shellState = ref.read(appShellStateProvider);
-    if (shellState.isLoading != isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!context.mounted) return;
-        ref
-            .read(appShellStateProvider.notifier)
-            .update(
-              (state) => (isMobile: state.isMobile, isLoading: isLoading),
-            );
-      });
-    }
+    final isMobile = ResponsiveScope.isMobileOf(context);
 
     return AppScaffold(
       title: widget.title,
@@ -221,7 +204,11 @@ class _HomeBody extends ConsumerStatefulWidget {
 
 class _HomeBodyState extends ConsumerState<_HomeBody> {
   late int _visibleCount = widget.pageSize;
-  bool _isLoadingMore = false;
+
+  /// The in-flight page reveal, if any — its own [FutureBuilder]
+  /// connection state is the single source of truth for whether the
+  /// "loading more" footer shows, instead of a separately maintained flag.
+  Future<void>? _loadMoreFuture;
 
   void _setSelected(int id, bool selected) {
     final ids = Set<int>.from(ref.read(selectedDenpaMenIdsProvider));
@@ -239,19 +226,22 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
   void _resetPagination() {
     setState(() {
       _visibleCount = widget.pageSize;
-      _isLoadingMore = false;
+      _loadMoreFuture = null;
     });
   }
 
-  Future<void> _loadMore(int totalCount) async {
-    if (_isLoadingMore || _visibleCount >= totalCount) return;
-    setState(() => _isLoadingMore = true);
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-    if (!mounted) return;
+  void _loadMore(int totalCount) {
+    if (_loadMoreFuture != null || _visibleCount >= totalCount) return;
     setState(() {
-      final next = _visibleCount + widget.pageSize;
-      _visibleCount = next > totalCount ? totalCount : next;
-      _isLoadingMore = false;
+      _loadMoreFuture = Future<void>.delayed(const Duration(milliseconds: 200))
+          .then((_) {
+            if (!mounted) return;
+            setState(() {
+              final next = _visibleCount + widget.pageSize;
+              _visibleCount = next > totalCount ? totalCount : next;
+              _loadMoreFuture = null;
+            });
+          });
     });
   }
 
@@ -272,16 +262,102 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
     final selectionMode = ref.watch(selectionModeProvider);
     final selectedIds = ref.watch(selectedDenpaMenIdsProvider);
     final cutIds = ref.watch(cutDenpaMenIdsProvider);
-    final isMobile = ref.watch(appShellStateProvider).isMobile;
+    final isMobile = ResponsiveScope.isMobileOf(context);
     final tileMode = ref.watch(homeTileModeProvider);
     final totalAttributeCount = masterData.attributes.length;
 
     final visibleRecords = records.take(_visibleCount).toList();
-    final hasMore = _visibleCount < records.length;
-    final footer = _isLoadingMore
-        ? const _HomeListLoadMoreIndicator()
-        : (hasMore ? null : const _HomeListEndMessage());
+    final footer = _visibleCount < records.length
+        ? FutureBuilder<void>(
+            future: _loadMoreFuture,
+            builder: (context, snapshot) => Visibility(
+              visible: snapshot.connectionState == ConnectionState.waiting,
+              child: const _HomeListLoadMoreIndicator(),
+            ),
+          )
+        : const _HomeListEndMessage();
 
+    return Column(
+      children: [
+        const SizedBox(height: 64),
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: SmoothScrollContainer(
+                  child: _HomeRecordList(
+                    masterData: masterData,
+                    recordsAsync: recordsAsync,
+                    records: records,
+                    visibleRecords: visibleRecords,
+                    tileMode: tileMode,
+                    isMobile: isMobile,
+                    selectionMode: selectionMode,
+                    selectedIds: selectedIds,
+                    cutIds: cutIds,
+                    totalAttributeCount: totalAttributeCount,
+                    footer: footer,
+                    onSetSelected: _setSelected,
+                    onScrollMetricsChanged: _onScrollMetricsChanged,
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: SelectionFloatingMenu(masterData: masterData),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Renders [visibleRecords] as a grid or list (per [tileMode]), resolving
+/// each record's icon and zoom-candidate images itself. Split out of
+/// [_HomeBodyState] so that an individual record's icon/image provider
+/// resolving doesn't rebuild [_HomeBodyState]'s own subtree — most
+/// importantly its sibling [SelectionFloatingMenu] — along with it.
+class _HomeRecordList extends ConsumerWidget {
+  const _HomeRecordList({
+    required this.masterData,
+    required this.recordsAsync,
+    required this.records,
+    required this.visibleRecords,
+    required this.tileMode,
+    required this.isMobile,
+    required this.selectionMode,
+    required this.selectedIds,
+    required this.cutIds,
+    required this.totalAttributeCount,
+    required this.footer,
+    required this.onSetSelected,
+    required this.onScrollMetricsChanged,
+  });
+
+  final MasterData masterData;
+  final AsyncValue<List<DenpaMenRecord>> recordsAsync;
+  final List<DenpaMenRecord> records;
+  final List<DenpaMenRecord> visibleRecords;
+  final HomeTileMode tileMode;
+  final bool isMobile;
+  final bool selectionMode;
+  final Set<int> selectedIds;
+  final Set<int> cutIds;
+  final int totalAttributeCount;
+  final Widget? footer;
+  final void Function(int id, bool selected) onSetSelected;
+  final bool Function(ScrollMetrics metrics, int totalCount)
+  onScrollMetricsChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final iconsById = {
       for (final record in visibleRecords)
         record.denpaMen.id: ref
@@ -324,143 +400,104 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
       96,
     );
 
-    return Column(
-      children: [
-        const SizedBox(height: 64),
-        Expanded(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: SmoothScrollContainer(
-                  child: recordsAsync.when(
-                    data: (_) {
-                      if (records.isEmpty) {
-                        return Center(child: Text(context.t.home.empty));
-                      }
-                      final content = switch (tileMode) {
-                        HomeTileMode.grid => DenpaMenBox(
-                          records: visibleRecords,
+    return recordsAsync.when(
+      data: (_) {
+        if (records.isEmpty) {
+          return Center(child: Text(context.t.home.empty));
+        }
+        final content = switch (tileMode) {
+          HomeTileMode.grid => DenpaMenBox(
+            records: visibleRecords,
+            selectionMode: selectionMode,
+            selectedIds: selectedIds,
+            cutIds: cutIds,
+            onSelectedChanged: (id, selected) => onSetSelected(id, selected),
+            onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
+              context,
+              denpaMen: denpaMen,
+              totalAttributeCount: totalAttributeCount,
+              iconBuilder: (size) =>
+                  DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
+            ),
+            iconsById: iconsById,
+            zoomCandidatesById: zoomCandidatesById,
+            padding: contentPadding,
+            trailing: footer,
+          ),
+          HomeTileMode.tile => ListView.builder(
+            padding: contentPadding,
+            itemCount: visibleRecords.length + (footer != null ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index >= visibleRecords.length) {
+                return footer!;
+              }
+              final record = visibleRecords[index];
+              final denpaMen = record.denpaMen;
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: isMobile
+                    ? Opacity(
+                        opacity: cutIds.contains(record.id) ? 0.5 : 1,
+                        child: DenpaMenListTile(
+                          denpaMen: denpaMen,
                           selectionMode: selectionMode,
-                          selectedIds: selectedIds,
-                          cutIds: cutIds,
-                          onSelectedChanged: (id, selected) =>
-                              _setSelected(id, selected),
-                          onTapRecord: (denpaMen) => DenpaMenPreviewDialog.show(
+                          selected: selectedIds.contains(record.id),
+                          onSelectedChanged: (selected) =>
+                              onSetSelected(record.id, selected),
+                          onTap: () => DenpaMenPreviewDialog.show(
                             context,
                             denpaMen: denpaMen,
                             totalAttributeCount: totalAttributeCount,
-                            iconBuilder: (size) =>
-                                DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
-                          ),
-                          iconsById: iconsById,
-                          zoomCandidatesById: zoomCandidatesById,
-                          padding: contentPadding,
-                          trailing: footer,
-                        ),
-                        HomeTileMode.tile => ListView.builder(
-                          padding: contentPadding,
-                          itemCount:
-                              visibleRecords.length + (footer != null ? 1 : 0),
-                          itemBuilder: (context, index) {
-                            if (index >= visibleRecords.length) {
-                              return footer!;
-                            }
-                            final record = visibleRecords[index];
-                            final denpaMen = record.denpaMen;
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: isMobile
-                                  ? Opacity(
-                                      opacity: cutIds.contains(record.id)
-                                          ? 0.5
-                                          : 1,
-                                      child: DenpaMenListTile(
-                                        denpaMen: denpaMen,
-                                        selectionMode: selectionMode,
-                                        selected: selectedIds.contains(
-                                          record.id,
-                                        ),
-                                        onSelectedChanged: (selected) =>
-                                            _setSelected(record.id, selected),
-                                        onTap: () => DenpaMenPreviewDialog.show(
-                                          context,
-                                          denpaMen: denpaMen,
-                                          totalAttributeCount:
-                                              totalAttributeCount,
-                                          iconBuilder: (size) => DenpaMenIcon(
-                                            denpaMenId: denpaMen.id,
-                                            size: size,
-                                          ),
-                                        ),
-                                        enableLongPressPreview: false,
-                                        iconFile: iconsById[denpaMen.id],
-                                        actionMenuItemsBuilder: (context) =>
-                                            denpaMenActionMenuItems(
-                                              context,
-                                              ref,
-                                              record: record,
-                                              masterData: masterData,
-                                            ),
-                                      ),
-                                    )
-                                  : DenpaMenAccordionTile(
-                                      denpaMen: denpaMen,
-                                      totalAttributeCount: totalAttributeCount,
-                                      selectionMode: selectionMode,
-                                      selected: selectedIds.contains(record.id),
-                                      isCut: cutIds.contains(record.id),
-                                      onSelectedChanged: (selected) =>
-                                          _setSelected(record.id, selected),
-                                      iconBuilder: (size) => DenpaMenIcon(
-                                        denpaMenId: denpaMen.id,
-                                        size: size,
-                                      ),
-                                      actionMenuItemsBuilder: (context) =>
-                                          denpaMenActionMenuItems(
-                                            context,
-                                            ref,
-                                            record: record,
-                                            masterData: masterData,
-                                          ),
-                                    ),
-                            );
-                          },
-                        ),
-                      };
-                      return NotificationListener<ScrollMetricsNotification>(
-                        onNotification: (notification) =>
-                            _onScrollMetricsChanged(
-                              notification.metrics,
-                              records.length,
+                            iconBuilder: (size) => DenpaMenIcon(
+                              denpaMenId: denpaMen.id,
+                              size: size,
                             ),
-                        child: NotificationListener<ScrollNotification>(
-                          onNotification: (notification) =>
-                              _onScrollMetricsChanged(
-                                notification.metrics,
-                                records.length,
+                          ),
+                          enableLongPressPreview: false,
+                          iconFile: iconsById[denpaMen.id],
+                          actionMenuItemsBuilder: (context) =>
+                              denpaMenActionMenuItems(
+                                context,
+                                ref,
+                                record: record,
+                                masterData: masterData,
                               ),
-                          child: content,
                         ),
-                      );
-                    },
-                    loading: () => const SizedBox.shrink(),
-                    error: (error, stackTrace) => Center(child: Text('$error')),
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: SelectionFloatingMenu(masterData: masterData),
-                  ),
-                ),
-              ),
-            ],
+                      )
+                    : DenpaMenAccordionTile(
+                        denpaMen: denpaMen,
+                        totalAttributeCount: totalAttributeCount,
+                        selectionMode: selectionMode,
+                        selected: selectedIds.contains(record.id),
+                        isCut: cutIds.contains(record.id),
+                        onSelectedChanged: (selected) =>
+                            onSetSelected(record.id, selected),
+                        iconBuilder: (size) =>
+                            DenpaMenIcon(denpaMenId: denpaMen.id, size: size),
+                        actionMenuItemsBuilder: (context) =>
+                            denpaMenActionMenuItems(
+                              context,
+                              ref,
+                              record: record,
+                              masterData: masterData,
+                            ),
+                      ),
+              );
+            },
           ),
-        ),
-      ],
+        };
+        return NotificationListener<ScrollMetricsNotification>(
+          onNotification: (notification) =>
+              onScrollMetricsChanged(notification.metrics, records.length),
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (notification) =>
+                onScrollMetricsChanged(notification.metrics, records.length),
+            child: content,
+          ),
+        );
+      },
+      loading: () => const SizedBox.shrink(),
+      error: (error, stackTrace) => Center(child: Text('$error')),
     );
   }
 }

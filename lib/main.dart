@@ -138,7 +138,9 @@ class _ThemedMaterialApp extends ConsumerWidget {
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
       builder: (context, child) {
-        final splashGate = SplashGate(child: child!);
+        final splashGate = denpamemo_widgets.ResponsiveScope(
+          child: SplashGate(child: child!),
+        );
         return kDebugMode
             ? BuildTracker(
                 name: splashGate.runtimeType.toString(),

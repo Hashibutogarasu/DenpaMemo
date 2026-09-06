@@ -1,6 +1,5 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'color/color_dot.dart';
@@ -22,7 +21,7 @@ import 'field/outlined_inline_name_field.dart';
 import 'label/gauge_value.dart';
 import 'label/inline_gauge_label.dart';
 import 'label/joined_labels_text.dart';
-import 'responsive/responsive_provider.dart';
+import 'responsive/responsive_scope.dart';
 import 'theme/denpa_men_container_theme.dart';
 
 typedef PhysiqueIdentification = ({Physique physique, int? columnIndex});
@@ -31,7 +30,7 @@ typedef PhysiqueIdentification = ({Physique physique, int? columnIndex});
 /// edit produces a full draft [DenpaMen] via [onChanged] so the caller can
 /// re-derive resistances (e.g. through `createDenpaMen`) and update the
 /// read-only status area immediately.
-class EditableDenpaMenStatus extends ConsumerWidget {
+class EditableDenpaMenStatus extends StatelessWidget {
   const EditableDenpaMenStatus({
     super.key,
     required this.denpaMen,
@@ -68,9 +67,9 @@ class EditableDenpaMenStatus extends ConsumerWidget {
   onIdentifyPhysique;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final t = context.t;
-    final isMobile = ref.watch(appShellStateProvider).isMobile;
+    final isMobile = ResponsiveScope.isMobileOf(context);
     final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
 
     return StatusContainer(

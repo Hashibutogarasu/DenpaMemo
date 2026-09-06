@@ -34,6 +34,8 @@ class _WidgetbookApp extends StatelessWidget {
                 builder: (context, content, _) => content,
               ),
             ),
+            builder: (context, child) =>
+                denpamemo_widgets.ResponsiveScope(child: child!),
           ),
         ),
       ),

@@ -10,8 +10,11 @@ final authApiClientProvider = Provider<AuthApiClient>(
 
 /// Thin adapter over [firebaseSignInProvider] that keeps this app's
 /// existing synchronous `CloudAccountState`-shaped surface (`isSignedIn`/
-/// `email`/`uid`/`isLoading`, plain `Notifier` rather than `AsyncNotifier`)
-/// so `account_settings.dart` doesn't need to handle `AsyncValue` directly.
+/// `email`/`uid`, plain `Notifier` rather than `AsyncNotifier`) so
+/// `account_settings.dart` doesn't need to handle `AsyncValue` directly.
+/// Whether the underlying sign-in is still loading is available straight
+/// from [firebaseSignInProvider]'s own `AsyncValue` for callers that need
+/// it; this adapter only flattens the signed-in shape.
 /// [deleteCloudAccount] is app-specific orchestration (it also has to call
 /// `modules/auth`'s Worker, unrelated to Firebase) and stays here rather
 /// than in `firebase_sign_in`.
@@ -19,11 +22,7 @@ class CloudAccountNotifier extends Notifier<CloudAccountState> {
   @override
   CloudAccountState build() {
     final asyncState = ref.watch(firebaseSignInProvider);
-    return asyncState.when(
-      data: (data) => data,
-      loading: () => const CloudAccountState(isLoading: true),
-      error: (error, stackTrace) => const CloudAccountState(),
-    );
+    return asyncState.value ?? const CloudAccountState();
   }
 
   FirebaseSignInNotifier get _backend =>

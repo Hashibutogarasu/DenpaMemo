@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'container/indented_header.dart';
@@ -18,10 +17,10 @@ import 'label/gauge_value.dart';
 import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
 import 'label/status.dart';
-import 'responsive/responsive_provider.dart';
+import 'responsive/responsive_scope.dart';
 import 'theme/denpa_men_container_theme.dart';
 
-class DenpaMenStatus extends ConsumerWidget {
+class DenpaMenStatus extends StatelessWidget {
   const DenpaMenStatus({
     super.key,
     required this.name,
@@ -116,8 +115,8 @@ class DenpaMenStatus extends ConsumerWidget {
   final double entryHeight;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isMobile = ref.watch(appShellStateProvider).isMobile;
+  Widget build(BuildContext context) {
+    final isMobile = ResponsiveScope.isMobileOf(context);
     final content = _buildContent(context, isMobile);
     if (!showContainer) {
       return content;

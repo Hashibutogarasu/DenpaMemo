@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:app_logging/app_logging.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension, Translations;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import 'debug_log_menu.dart';
@@ -13,14 +14,14 @@ import 'log_category_tab_view.dart';
 /// messages, widget-rebuild activity, and network requests. Owns only the
 /// tab selection; entry display lives in [LogCategoryTabView] and the
 /// overflow-menu actions in [DebugLogMenu].
-class DebugLogPage extends StatefulWidget {
+class DebugLogPage extends ConsumerStatefulWidget {
   const DebugLogPage({super.key});
 
   @override
-  State<DebugLogPage> createState() => _DebugLogPageState();
+  ConsumerState<DebugLogPage> createState() => _DebugLogPageState();
 }
 
-class _DebugLogPageState extends State<DebugLogPage>
+class _DebugLogPageState extends ConsumerState<DebugLogPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController = TabController(
     length: LogCategory.values.length,
@@ -29,10 +30,26 @@ class _DebugLogPageState extends State<DebugLogPage>
 
   LogCategory _selectedCategory = LogCategory.values.first;
 
+  @override
+  void initState() {
+    super.initState();
+    // Displaying the widget-rebuild tab's own entries produces more
+    // rebuilds, which would otherwise feed right back into the same log
+    // forever (see WidgetRebuildLogNotifier.pauseLiveUpdates) — so it
+    // never live-updates on its own while this page is open, however many
+    // of its tabs `TabBarView` happens to keep mounted at once. It only
+    // gets a fresh snapshot at the moment it becomes the selected tab
+    // (see _onTabChanged), then goes back to not live-updating.
+    ref.read(widgetRebuildLogProvider.notifier).pauseLiveUpdates(true);
+  }
+
   void _onTabChanged() {
     final category = LogCategory.values[_tabController.index];
     if (category != _selectedCategory) {
       setState(() => _selectedCategory = category);
+    }
+    if (category == LogCategory.widgetRebuild) {
+      ref.read(widgetRebuildLogProvider.notifier).flushPendingOnce();
     }
   }
 
@@ -41,6 +58,7 @@ class _DebugLogPageState extends State<DebugLogPage>
     _tabController
       ..removeListener(_onTabChanged)
       ..dispose();
+    ref.read(widgetRebuildLogProvider.notifier).pauseLiveUpdates(false);
     super.dispose();
   }
 

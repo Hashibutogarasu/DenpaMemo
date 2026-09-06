@@ -49,20 +49,22 @@ class _SearchResultsState extends ConsumerState<SearchResults> {
   @override
   Widget build(BuildContext context) {
     final masterDataAsync = ref.watch(masterDataProvider);
-    final masterData = masterDataAsync.value;
 
     listenForMasterDataErrors(ref, context);
 
-    return masterData != null
-        ? DenpaMenHomeScreen(
-            title: OutlinedTitleText(text: context.t.page.searchResults),
-            masterData: masterData,
-          )
-        : AppScaffold(
-            title: OutlinedTitleText(text: context.t.page.searchResults),
-            body: masterDataAsync.isLoading
-                ? const ProgressBar()
-                : const SizedBox.shrink(),
-          );
+    return masterDataAsync.when(
+      data: (masterData) => DenpaMenHomeScreen(
+        title: OutlinedTitleText(text: context.t.page.searchResults),
+        masterData: masterData,
+      ),
+      loading: () => AppScaffold(
+        title: OutlinedTitleText(text: context.t.page.searchResults),
+        body: const ProgressBar(),
+      ),
+      error: (_, _) => AppScaffold(
+        title: OutlinedTitleText(text: context.t.page.searchResults),
+        body: const SizedBox.shrink(),
+      ),
+    );
   }
 }
