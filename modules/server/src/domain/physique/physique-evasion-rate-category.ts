@@ -1,4 +1,4 @@
-import { resolveCategories } from 'denpamen_logics';
+import { resolveCategories } from 'denpamemo_logics';
 
 /** Which side of the evasion-rate table's overlapping column patterns a category falls on, or `null` when the pattern isn't split into a plus/minus pair. */
 export type EvasionRateSign = 'plus' | 'minus' | null;
@@ -39,7 +39,7 @@ function toRustCategory(row: PhysiqueEvasionRateCategoryRow) {
  * candidate it falls under, per `physique_evasion_rate_category` (seeded
  * from `data/physique_evasion_rate_categories.xlsx`). Fetches the full
  * category table via `repo`, then delegates the range/column matching to
- * `denpamen_logics`'s generic, domain-agnostic `resolveCategories`
+ * `denpamemo_logics`'s generic, domain-agnostic `resolveCategories`
  * (Wasm).
  */
 export async function resolvePhysiqueCategoryKeys(

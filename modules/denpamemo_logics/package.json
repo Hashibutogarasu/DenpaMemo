@@ -1,0 +1,7 @@
+{
+  "name": "@denpamemo/denpamemo-logics",
+  "private": true,
+  "scripts": {
+    "build:wasm": "wasm-pack build rust --target nodejs --out-dir ../pkg-node --features wasm --no-default-features"
+  }
+}

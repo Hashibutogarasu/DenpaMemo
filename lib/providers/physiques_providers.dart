@@ -12,7 +12,7 @@ final physiquesApiClientProvider = Provider<PhysiquesApiClient>(
 );
 
 /// Identifies a physique and builds its "matching location" grid, falling
-/// back to a local `denpamen_logics` computation over cached table rows
+/// back to a local `denpamemo_logics` computation over cached table rows
 /// when `modules/server` is unreachable — see
 /// [PhysiqueIdentificationService].
 final physiqueIdentificationServiceProvider =

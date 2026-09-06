@@ -9,7 +9,7 @@
       "outputs": ["pkg-node/**"]
     },
     "dev": {
-      "dependsOn": ["container:run", "@denpamemo/denpamen-logics#build:wasm"],
+      "dependsOn": ["container:run", "@denpamemo/denpamemo-logics#build:wasm"],
       "cache": false,
       "persistent": true
     },
@@ -17,7 +17,7 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["@denpamemo/denpamen-logics#build:wasm"]
+      "dependsOn": ["@denpamemo/denpamemo-logics#build:wasm"]
     }
   }
 }

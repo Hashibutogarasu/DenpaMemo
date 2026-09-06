@@ -1,5 +1,5 @@
 import 'package:api_client/api_client.dart';
-import 'package:denpamen_logics/denpamen_logics.dart' as rust;
+import 'package:denpamemo_logics/denpamemo_logics.dart' as rust;
 
 import '../data/physique_table/objectbox_evasion_rate_category_cache_repository.dart';
 import '../data/physique_table/objectbox_physique_table_cache_repository.dart';
@@ -8,7 +8,7 @@ import '../widgets/physique_table/physique_table_row.dart';
 
 /// Identifies a physique and builds its "matching location" grid, trying
 /// `modules/server` first and falling back to a local computation (via
-/// `denpamen_logics`'s domain-agnostic Rust engine, over the raw table
+/// `denpamemo_logics`'s domain-agnostic Rust engine, over the raw table
 /// rows and category legend already cached in [tableCacheRepository]/
 /// [categoryCacheRepository]) when the server is unreachable. Unlike
 /// `_fetchWithCacheFallback` in `physiques_providers.dart` — which

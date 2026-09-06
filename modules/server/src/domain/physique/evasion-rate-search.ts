@@ -1,4 +1,4 @@
-import { findMatchingColumns } from 'denpamen_logics';
+import { findMatchingColumns } from 'denpamemo_logics';
 import type { TableValues } from '../../types/tables/table';
 
 /** A row shape shared by `PhysiqueEvasionRateTableEntity` and `PhysiqueTableEntity`. */
@@ -24,7 +24,7 @@ function toRustRow(row: PhysiqueTableRowLike) {
  * Finds every column where an `evasionRateRows` row and an `hpRows` row
  * at the same `level`/`anntenaCategory`/`lineOffset` both equal
  * `targetEvasionRate`/`targetHp` at that column — delegates the actual
- * search to `denpamen_logics`'s generic, domain-agnostic
+ * search to `denpamemo_logics`'s generic, domain-agnostic
  * `findMatchingColumns` (Wasm), converting to/from its `group`-keyed
  * row shape at the boundary.
  */

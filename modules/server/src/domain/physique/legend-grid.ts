@@ -1,4 +1,4 @@
-import { buildCategoryGrid, compactCategories } from 'denpamen_logics';
+import { buildCategoryGrid, compactCategories } from 'denpamemo_logics';
 import type { PhysiqueTableRowLike } from './evasion-rate-search';
 import type { EvasionRateSign, PhysiqueEvasionRateCategoryRow } from './physique-evasion-rate-category';
 
@@ -43,7 +43,7 @@ function toRustRow(row: PhysiqueTableRowLike) {
 /**
  * Merges adjacent legend rows in the same column that share the same
  * category and sign into one wider evasion-rate range, without
- * touching the underlying seed data. Delegates to `denpamen_logics`'s
+ * touching the underlying seed data. Delegates to `denpamemo_logics`'s
  * generic `compactCategories` (Wasm).
  */
 export function compactLegendCategories(
@@ -73,7 +73,7 @@ export function compactLegendCategories(
  * group) fall in its range, plus the HP table's values for the same
  * group — each flagged with whether it is literally the cell an
  * identification search matched. Delegates the actual grid construction
- * to `denpamen_logics`'s generic, domain-agnostic `buildCategoryGrid`
+ * to `denpamemo_logics`'s generic, domain-agnostic `buildCategoryGrid`
  * (Wasm), converting to/from its shape at the boundary.
  */
 export function buildLegendGrid(params: {
