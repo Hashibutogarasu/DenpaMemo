@@ -16,4 +16,12 @@
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+    <!-- Theme for SplashActivity, this app's launcher activity: a native
+         equivalent of the Flutter-drawn splash screen shown before
+         MainActivity's Flutter engine is ready. -->
+    <style name="SplashTheme" parent="@style/Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:colorBackground">@color/splash_background</item>
+        <item name="colorPrimary">@color/splash_progress_tint</item>
+    </style>
 </resources>

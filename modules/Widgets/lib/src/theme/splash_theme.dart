@@ -10,16 +10,16 @@ part 'splash_theme.tailor.dart';
 
 /// Styling for the app's startup splash ([LogoContainer] plus its
 /// full-screen host): background color, the app name text size, and the
-/// fixed display/fade-out durations. Actual values are supplied by the app
-/// via `ThemeData.extensions`, with [backgroundColor] set independently for
-/// the light and dark `ThemeData`.
+/// fade-out duration once the app signals it's ready to reveal the main
+/// screen. Actual values are supplied by the app via `ThemeData.extensions`,
+/// with [backgroundColor] set independently for the light and dark
+/// `ThemeData`.
 @appTailorMixin
 class SplashThemeData extends ThemeExtension<SplashThemeData>
     with _$SplashThemeDataTailorMixin {
   const SplashThemeData({
     required this.backgroundColor,
     required this.appNameFontSize,
-    required this.displayDuration,
     required this.fadeOutDuration,
   });
 
@@ -29,12 +29,10 @@ class SplashThemeData extends ThemeExtension<SplashThemeData>
   static const SplashThemeData defaults = SplashThemeData(
     backgroundColor: Color(0xFFFFFFFF),
     appNameFontSize: 34,
-    displayDuration: Duration(seconds: 1),
     fadeOutDuration: Duration(milliseconds: 400),
   );
 
   final Color backgroundColor;
   final double appNameFontSize;
-  final Duration displayDuration;
   final Duration fadeOutDuration;
 }

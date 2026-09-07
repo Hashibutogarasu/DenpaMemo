@@ -32,6 +32,7 @@ import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
 import 'theme/app_theme_mode_mapping.dart';
 import 'widgets/restart_widget.dart';
+import 'widgets/splash/native_splash.dart';
 import 'widgets/splash/splash_gate.dart';
 
 void main() {
@@ -134,7 +135,10 @@ class _ThemedMaterialApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(appInitializationProvider);
+    final mainScreenReady = !ref.watch(appInitializationProvider).isLoading;
+    ref.listen(appInitializationProvider, (previous, next) {
+      if (!next.isLoading) signalNativeSplashReady();
+    });
     final settings = ref.watch(appSettingsProvider);
     final themeMode = settings.themeMode;
     return MaterialApp.router(
@@ -146,7 +150,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
       routerConfig: appRouter,
       builder: (context, child) {
         final splashGate = denpamemo_widgets.ResponsiveScope(
-          child: SplashGate(child: child!),
+          child: SplashGate(ready: mainScreenReady, child: child!),
         );
         return settings.buildTrackerEnabled
             ? BuildTracker(

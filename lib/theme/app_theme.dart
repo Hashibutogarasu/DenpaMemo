@@ -178,7 +178,6 @@ ThemeData _buildTheme(Brightness brightness, _AppPalette palette) {
       SplashThemeData(
         backgroundColor: palette.splashBackgroundColor,
         appNameFontSize: 34,
-        displayDuration: const Duration(seconds: 1),
         fadeOutDuration: const Duration(milliseconds: 400),
       ),
       PhysiqueLegendGridThemeData(

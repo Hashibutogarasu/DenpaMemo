@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
-/// Full-screen splash shown for [SplashThemeData.displayDuration] at
-/// startup by [SplashGate]. Purely presentational: it never reads any
-/// initialization provider, since the splash is not meant to know what is
-/// loading.
+/// Full-screen splash shown at startup by [SplashGate] until it's told the
+/// main screen is ready. Purely presentational: it never reads any
+/// initialization provider itself.
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
