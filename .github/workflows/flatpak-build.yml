@@ -1,0 +1,25 @@
+name: flatpak-build
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  flatpak:
+    name: Flatpak
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: com.karasu256.denpamemo.flatpak
+          manifest-path: flatpak/com.karasu256.denpamemo.yml
+          cache-key: flatpak-builder-${{ github.sha }}

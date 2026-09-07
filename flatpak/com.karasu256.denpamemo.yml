@@ -1,0 +1,37 @@
+app-id: com.karasu256.denpamemo
+runtime: org.gnome.Platform
+runtime-version: "48"
+sdk: org.gnome.Sdk
+command: denpa_memo
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --share=network
+  - --device=dri
+  - --filesystem=xdg-documents
+
+modules:
+  - name: denpa_memo
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    build-commands:
+      - export PATH="$PWD/flutter-sdk/bin:$PATH" && flutter config --no-analytics
+      - export PATH="$PWD/flutter-sdk/bin:$PATH" && flutter pub get
+      - export PATH="$PWD/flutter-sdk/bin:$PATH" && flutter build linux --release
+      - install -Dm755 build/linux/x64/release/bundle/denpa_memo /app/bin/denpa_memo
+      - cp -r build/linux/x64/release/bundle/data /app/bin/data
+      - cp -r build/linux/x64/release/bundle/lib /app/bin/lib
+      - install -Dm644 flatpak/com.karasu256.denpamemo.desktop /app/share/applications/com.karasu256.denpamemo.desktop
+      - install -Dm644 flatpak/com.karasu256.denpamemo.metainfo.xml /app/share/metainfo/com.karasu256.denpamemo.metainfo.xml
+      - install -Dm644 assets/icons/app_icon.png /app/share/icons/hicolor/512x512/apps/com.karasu256.denpamemo.png
+    sources:
+      - type: dir
+        path: ..
+      - type: git
+        url: https://github.com/flutter/flutter.git
+        tag: "3.38.3"
+        dest: flutter-sdk
