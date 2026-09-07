@@ -24,6 +24,8 @@ jobs:
           flutter-version-file: .fvmrc
           channel: stable
 
+      - uses: dtolnay/rust-toolchain@stable
+
       - name: Decode Android signing secrets
         env:
           ANDROID_KEYSTORE_JKS_BASE64: ${{ secrets.ANDROID_KEYSTORE_JKS_BASE64 }}
