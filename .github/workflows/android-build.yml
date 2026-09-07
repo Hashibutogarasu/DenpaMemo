@@ -1,0 +1,89 @@
+name: android-build
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: android-build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ANDROID_KEYSTORE_JKS_BASE64: ${{ secrets.ANDROID_KEYSTORE_JKS_BASE64 }}
+  ANDROID_KEYSTORE_PEM_BASE64: ${{ secrets.ANDROID_KEYSTORE_PEM_BASE64 }}
+  ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+  GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+  GOOGLE_CLIENT_SECRETS_JSON_BASE64: ${{ secrets.GOOGLE_CLIENT_SECRETS_JSON_BASE64 }}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+  build-debug-apk:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-debug.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+
+  build-release-apk:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+
+  build-release-aab:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build release AAB
+        run: flutter build appbundle --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+  cleanup:
+    if: always()
+    needs:
+      - build-debug-apk
+      - build-release-apk
+      - build-release-aab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report build results
+        run: |
+          echo "debug apk: ${{ needs.build-debug-apk.result }}"
+          echo "release apk: ${{ needs.build-release-apk.result }}"
+          echo "release aab: ${{ needs.build-release-aab.result }}"

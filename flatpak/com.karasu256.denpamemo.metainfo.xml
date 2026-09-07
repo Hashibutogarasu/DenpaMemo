@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.karasu256.denpamemo</id>
+  <name>DenpaMemo</name>
+  <summary>An app to manage and analyze data of Denpa people</summary>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <description>
+    <p>An app to manage and analyze data of Denpa people</p>
+  </description>
+  <launchable type="desktop-id">com.karasu256.denpamemo.desktop</launchable>
+  <url type="homepage">https://github.com/Hashibutogarasu/DenpaMemo</url>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="0.1.0" date="2026-09-07" />
+  </releases>
+</component>

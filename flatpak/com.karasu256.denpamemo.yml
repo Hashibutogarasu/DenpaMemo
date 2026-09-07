@@ -1,0 +1,43 @@
+app-id: com.karasu256.denpamemo
+runtime: org.gnome.Platform
+runtime-version: "50"
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.llvm20
+command: denpa_memo
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --share=network
+  - --device=dri
+  - --filesystem=xdg-documents
+
+modules:
+  - name: denpa_memo
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+      append-path: /usr/lib/sdk/llvm20/bin
+      env:
+        TAR_OPTIONS: --no-same-owner
+    build-commands:
+      - CARGO_HOME=$PWD/.cargo RUSTUP_HOME=$PWD/.rustup curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | CARGO_HOME=$PWD/.cargo RUSTUP_HOME=$PWD/.rustup sh -s -- -y --profile minimal
+      - export CARGO_HOME="$PWD/.cargo" RUSTUP_HOME="$PWD/.rustup" PATH="$PWD/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter config --no-analytics
+      - export CARGO_HOME="$PWD/.cargo" RUSTUP_HOME="$PWD/.rustup" PATH="$PWD/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter pub get
+      - export CARGO_HOME="$PWD/.cargo" RUSTUP_HOME="$PWD/.rustup" PATH="$PWD/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter build linux --release
+      - install -Dm755 build/linux/x64/release/bundle/denpa_memo /app/bin/denpa_memo
+      - cp -r build/linux/x64/release/bundle/data /app/bin/data
+      - cp -r build/linux/x64/release/bundle/lib /app/bin/lib
+      - install -Dm644 flatpak/com.karasu256.denpamemo.desktop /app/share/applications/com.karasu256.denpamemo.desktop
+      - install -Dm644 flatpak/com.karasu256.denpamemo.metainfo.xml /app/share/metainfo/com.karasu256.denpamemo.metainfo.xml
+      - install -Dm644 assets/icons/app_icon.png /app/share/icons/hicolor/512x512/apps/com.karasu256.denpamemo.png
+    sources:
+      - type: dir
+        path: ..
+      - type: git
+        url: https://github.com/flutter/flutter.git
+        tag: "3.38.3"
+        dest: flutter-sdk
