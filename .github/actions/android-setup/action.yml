@@ -48,7 +48,7 @@ runs:
         cat <<EOF > "$GITHUB_WORKSPACE/android/key.properties"
         storePassword=$ANDROID_KEYSTORE_PASSWORD
         keyPassword=$ANDROID_KEYSTORE_PASSWORD
-        keyAlias=upload
+        keyAlias=release
         storeFile=$GITHUB_WORKSPACE/android/upload-keystore.jks
         EOF
 
