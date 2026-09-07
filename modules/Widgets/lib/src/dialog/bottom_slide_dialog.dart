@@ -55,47 +55,51 @@ class BottomSlideDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = context.t;
     final dialogTheme = Theme.of(context).dialogTheme;
+    final appDialogTheme = Theme.of(context).extension<AppDialogThemeData>()!;
 
     return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: 420,
-          maxHeight: MediaQuery.of(context).size.height * 0.7,
-        ),
-        child: Material(
-          color:
-              dialogTheme.backgroundColor ??
-              Theme.of(context).scaffoldBackgroundColor,
-          shape: dialogTheme.shape,
-          elevation: dialogTheme.elevation ?? 8,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(title, style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 12),
-                Flexible(child: content),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(t.common.cancel),
+      child: Padding(
+        padding: appDialogTheme.insetPadding,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 420,
+            maxHeight: MediaQuery.of(context).size.height * 0.7,
+          ),
+          child: Material(
+            color:
+                dialogTheme.backgroundColor ??
+                Theme.of(context).scaffoldBackgroundColor,
+            shape: dialogTheme.shape,
+            elevation: dialogTheme.elevation ?? 8,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(title, style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 12),
+                  Flexible(child: content),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(t.common.cancel),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: FilledButton(
-                        onPressed: confirmEnabled ? onConfirm : null,
-                        child: Text(t.common.confirm),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: FilledButton(
+                          onPressed: confirmEnabled ? onConfirm : null,
+                          child: Text(t.common.confirm),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

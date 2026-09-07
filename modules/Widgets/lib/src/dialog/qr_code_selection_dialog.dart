@@ -23,10 +23,8 @@ Future<QrCodeSelection?> showQrCodeSelectionDialog(
 }) {
   return showBottomSlideDialog<QrCodeSelection>(
     context: context,
-    builder: (context) => QrCodeSelectionDialog(
-      candidates: candidates,
-      initial: selected,
-    ),
+    builder: (context) =>
+        QrCodeSelectionDialog(candidates: candidates, initial: selected),
   );
 }
 
@@ -41,8 +39,7 @@ class QrCodeSelectionDialog extends StatefulWidget {
   final QrCodeRecord? initial;
 
   @override
-  State<QrCodeSelectionDialog> createState() =>
-      _QrCodeSelectionDialogState();
+  State<QrCodeSelectionDialog> createState() => _QrCodeSelectionDialogState();
 }
 
 class _QrCodeSelectionDialogState extends State<QrCodeSelectionDialog> {
@@ -54,8 +51,7 @@ class _QrCodeSelectionDialogState extends State<QrCodeSelectionDialog> {
 
     return BottomSlideDialog(
       title: t.editableStatus.qrCode,
-      onConfirm: () =>
-          Navigator.of(context).pop(QrCodeSelection(_selected)),
+      onConfirm: () => Navigator.of(context).pop(QrCodeSelection(_selected)),
       content: ListView(
         shrinkWrap: true,
         children: [

@@ -186,8 +186,7 @@ class AntennaSelectionDialog extends StatefulWidget {
   final int maxSelectableLevel;
 
   @override
-  State<AntennaSelectionDialog> createState() =>
-      _AntennaSelectionDialogState();
+  State<AntennaSelectionDialog> createState() => _AntennaSelectionDialogState();
 }
 
 class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>

@@ -14,10 +14,8 @@ Future<List<Correction>?> showCorrectionSelectionDialog(
 }) {
   return showBottomSlideDialog<List<Correction>>(
     context: context,
-    builder: (context) => CorrectionSelectionDialog(
-      corrections: corrections,
-      initial: selected,
-    ),
+    builder: (context) =>
+        CorrectionSelectionDialog(corrections: corrections, initial: selected),
   );
 }
 
@@ -36,8 +34,7 @@ class CorrectionSelectionDialog extends StatefulWidget {
       _CorrectionSelectionDialogState();
 }
 
-class _CorrectionSelectionDialogState
-    extends State<CorrectionSelectionDialog> {
+class _CorrectionSelectionDialogState extends State<CorrectionSelectionDialog> {
   late final List<Correction> _selected = List.of(widget.initial);
 
   void _toggle(Correction correction) {

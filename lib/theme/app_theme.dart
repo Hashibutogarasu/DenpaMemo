@@ -120,6 +120,7 @@ ThemeData _buildTheme(Brightness brightness) {
         transitionCurve: Curves.easeOutCubic,
         reverseTransitionCurve: Curves.easeInCubic,
         barrierColor: Colors.black54,
+        insetPadding: EdgeInsets.all(20),
       ),
       SplashThemeData(
         backgroundColor: isDark

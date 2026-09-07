@@ -104,6 +104,7 @@ final ThemeData testAppTheme = ThemeData(
       transitionCurve: Curves.easeOutCubic,
       reverseTransitionCurve: Curves.easeInCubic,
       barrierColor: Colors.black54,
+      insetPadding: EdgeInsets.all(20),
     ),
     const AppButtonThemeData(
       backgroundTintColor: Color(0x995B7FA6),

@@ -62,8 +62,7 @@ class BodyColorSelectionDialog extends StatefulWidget {
       _BodyColorSelectionDialogState();
 }
 
-class _BodyColorSelectionDialogState
-    extends State<BodyColorSelectionDialog> {
+class _BodyColorSelectionDialogState extends State<BodyColorSelectionDialog> {
   late final List<_BodyColorEntry> _entries = [
     for (var i = 0; i < widget.initial.length; i++)
       _BodyColorEntry(
@@ -238,7 +237,8 @@ class _ColorSwatch extends StatelessWidget {
                   ? Icon(
                       Icons.check,
                       size: 16,
-                      color: ThemeData.estimateBrightnessForColor(color) ==
+                      color:
+                          ThemeData.estimateBrightnessForColor(color) ==
                               Brightness.dark
                           ? Colors.white
                           : Colors.black,

@@ -14,6 +14,7 @@ mixin _$AppDialogThemeDataTailorMixin on ThemeExtension<AppDialogThemeData> {
   Curve get transitionCurve;
   Curve get reverseTransitionCurve;
   Color get barrierColor;
+  EdgeInsetsGeometry get insetPadding;
 
   @override
   AppDialogThemeData copyWith({
@@ -21,6 +22,7 @@ mixin _$AppDialogThemeDataTailorMixin on ThemeExtension<AppDialogThemeData> {
     Curve? transitionCurve,
     Curve? reverseTransitionCurve,
     Color? barrierColor,
+    EdgeInsetsGeometry? insetPadding,
   }) {
     return AppDialogThemeData(
       transitionDuration: transitionDuration ?? this.transitionDuration,
@@ -28,6 +30,7 @@ mixin _$AppDialogThemeDataTailorMixin on ThemeExtension<AppDialogThemeData> {
       reverseTransitionCurve:
           reverseTransitionCurve ?? this.reverseTransitionCurve,
       barrierColor: barrierColor ?? this.barrierColor,
+      insetPadding: insetPadding ?? this.insetPadding,
     );
   }
 
@@ -46,6 +49,7 @@ mixin _$AppDialogThemeDataTailorMixin on ThemeExtension<AppDialogThemeData> {
           ? reverseTransitionCurve
           : other.reverseTransitionCurve,
       barrierColor: Color.lerp(barrierColor, other.barrierColor, t)!,
+      insetPadding: t < 0.5 ? insetPadding : other.insetPadding,
     );
   }
 
@@ -69,6 +73,10 @@ mixin _$AppDialogThemeDataTailorMixin on ThemeExtension<AppDialogThemeData> {
             const DeepCollectionEquality().equals(
               barrierColor,
               other.barrierColor,
+            ) &&
+            const DeepCollectionEquality().equals(
+              insetPadding,
+              other.insetPadding,
             ));
   }
 
@@ -80,6 +88,7 @@ mixin _$AppDialogThemeDataTailorMixin on ThemeExtension<AppDialogThemeData> {
       const DeepCollectionEquality().hash(transitionCurve),
       const DeepCollectionEquality().hash(reverseTransitionCurve),
       const DeepCollectionEquality().hash(barrierColor),
+      const DeepCollectionEquality().hash(insetPadding),
     );
   }
 }

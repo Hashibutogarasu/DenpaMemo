@@ -13,10 +13,8 @@ Future<HeadShape?> showHeadShapeSelectionDialog(
 }) {
   return showBottomSlideDialog<HeadShape>(
     context: context,
-    builder: (context) => HeadShapeSelectionDialog(
-      headShapes: headShapes,
-      initial: selected,
-    ),
+    builder: (context) =>
+        HeadShapeSelectionDialog(headShapes: headShapes, initial: selected),
   );
 }
 
@@ -35,8 +33,7 @@ class HeadShapeSelectionDialog extends StatefulWidget {
       _HeadShapeSelectionDialogState();
 }
 
-class _HeadShapeSelectionDialogState
-    extends State<HeadShapeSelectionDialog> {
+class _HeadShapeSelectionDialogState extends State<HeadShapeSelectionDialog> {
   late HeadShape _selected = widget.initial;
 
   @override
