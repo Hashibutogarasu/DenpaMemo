@@ -16,10 +16,11 @@
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
-    <!-- Theme for SplashActivity, this app's launcher activity: a native
-         equivalent of the Flutter-drawn splash screen shown before
-         MainActivity's Flutter engine is ready. -->
-    <style name="SplashTheme" parent="@style/Theme.Material3.Dark.NoActionBar">
+    <!-- Theme wrapped around the inflater context used for MainActivity's
+         native splash overlay: com.google.android.material widgets (e.g.
+         LoadingIndicator) require a Theme.AppCompat/Material Components
+         descendant, which LaunchTheme/NormalTheme are not. -->
+    <style name="SplashOverlayTheme" parent="@style/Theme.Material3.Dark.NoActionBar">
         <item name="android:windowBackground">@color/splash_background</item>
         <item name="android:colorBackground">@color/splash_background</item>
         <item name="colorPrimary">@color/splash_progress_tint</item>

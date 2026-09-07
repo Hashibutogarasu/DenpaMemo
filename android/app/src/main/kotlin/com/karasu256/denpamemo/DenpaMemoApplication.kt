@@ -9,7 +9,7 @@ import io.flutter.plugin.common.MethodChannel
 /**
  * Starts Dart's `main()` the moment the OS process starts, registering
  * its `ready` method channel handler before the entrypoint runs so a
- * fast, debugger-free startup can't fire it before [SplashActivity]
+ * fast, debugger-free startup can't fire it before [MainActivity]
  * exists to observe [isMainScreenReady] or [onMainScreenReady].
  */
 class DenpaMemoApplication : Application() {

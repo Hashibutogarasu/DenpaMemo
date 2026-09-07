@@ -9,7 +9,7 @@ import 'splash_screen.dart';
 /// Wraps `MaterialApp.router`'s built content, showing [SplashScreen] until
 /// [ready] turns true, then fading it out over
 /// [SplashThemeData.fadeOutDuration] to reveal [child]. A no-op on
-/// Android, where `SplashActivity` shows a native equivalent instead.
+/// Android, where `MainActivity` overlays a native equivalent instead.
 class SplashGate extends StatefulWidget {
   const SplashGate({super.key, required this.child, required this.ready});
 
