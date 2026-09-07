@@ -10,7 +10,11 @@ enum MarkerVariant { plain, separator, border }
 /// status/activity lines (e.g. "Reviewed 8 related files", a step in a
 /// progress list). Compose it with [MarkerIcon] and [MarkerContent].
 class Marker extends StatelessWidget {
-  const Marker({super.key, this.variant = MarkerVariant.plain, required this.children});
+  const Marker({
+    super.key,
+    this.variant = MarkerVariant.plain,
+    required this.children,
+  });
 
   final MarkerVariant variant;
   final List<Widget> children;
@@ -21,11 +25,13 @@ class Marker extends StatelessWidget {
     final row = Row(
       mainAxisSize: MainAxisSize.max,
       children: [
-        if (variant == MarkerVariant.separator) Expanded(child: Divider(color: theme.dividerColor)),
+        if (variant == MarkerVariant.separator)
+          Expanded(child: Divider(color: theme.dividerColor)),
         if (variant == MarkerVariant.separator) const SizedBox(width: 8),
         ...children,
         if (variant == MarkerVariant.separator) const SizedBox(width: 8),
-        if (variant == MarkerVariant.separator) Expanded(child: Divider(color: theme.dividerColor)),
+        if (variant == MarkerVariant.separator)
+          Expanded(child: Divider(color: theme.dividerColor)),
       ],
     );
     return DefaultTextStyle(
@@ -38,7 +44,9 @@ class Marker extends StatelessWidget {
             ? const EdgeInsets.only(bottom: 8)
             : EdgeInsets.zero,
         decoration: variant == MarkerVariant.border
-            ? BoxDecoration(border: Border(bottom: BorderSide(color: theme.dividerColor)))
+            ? BoxDecoration(
+                border: Border(bottom: BorderSide(color: theme.dividerColor)),
+              )
             : null,
         child: row,
       ),
@@ -53,7 +61,8 @@ class MarkerIcon extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => SizedBox(width: 16, height: 16, child: child);
+  Widget build(BuildContext context) =>
+      SizedBox(width: 16, height: 16, child: child);
 }
 
 /// The text/content slot for a [Marker].

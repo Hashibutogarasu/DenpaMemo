@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Step;
+
 import 'package:step_dialog/step_dialog.dart'
     show ErrorDialog, Step, StepBatch, StepRunFailure;
 
@@ -176,7 +177,15 @@ class _SignInFlowContainerState<C> extends State<SignInFlowContainer<C>> {
   Widget _statusIcon(_StepStatus status) => switch (status) {
     _StepStatus.pending => const SizedBox.shrink(),
     _StepStatus.active => const CircularProgressIndicator(strokeWidth: 2),
-    _StepStatus.done => Icon(Icons.check, color: Theme.of(context).colorScheme.primary, size: 16),
-    _StepStatus.error => Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error, size: 16),
+    _StepStatus.done => Icon(
+      Icons.check,
+      color: Theme.of(context).colorScheme.primary,
+      size: 16,
+    ),
+    _StepStatus.error => Icon(
+      Icons.error_outline,
+      color: Theme.of(context).colorScheme.error,
+      size: 16,
+    ),
   };
 }

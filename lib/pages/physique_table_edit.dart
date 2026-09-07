@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 import 'package:table_editor/table_editor.dart';
 import 'package:toaster/toaster.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/physique_table_edit_providers.dart';
@@ -20,7 +19,7 @@ Future<bool> _confirm(
   required String message,
 }) async {
   final t = context.t;
-  final confirmed = await showDialog<bool>(
+  final confirmed = await AppDialog.show<bool>(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(title),

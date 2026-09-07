@@ -1,12 +1,13 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
+import 'package:data_pack/data_pack.dart';
+
+import '../../i18n/gen/strings.g.dart';
 import '../color/color_dot.dart';
 import '../dialog/antenna_selection_dialog.dart';
 import '../dialog/body_color_selection_dialog.dart';
 import '../dialog/head_shape_selection_dialog.dart';
 import '../domain/antenna_display_name.dart';
-import '../../i18n/gen/strings.g.dart';
 import 'search_filter_tile.dart';
 import 'search_stat_grid.dart';
 
@@ -36,9 +37,7 @@ class _SearchFormState extends State<SearchForm> {
   late final _nameController = TextEditingController(text: widget.query.name);
   late final _memoController = TextEditingController(text: widget.query.memo);
 
-  void _update(
-    DenpaMenSearchQuery Function(DenpaMenSearchQuery query) update,
-  ) {
+  void _update(DenpaMenSearchQuery Function(DenpaMenSearchQuery query) update) {
     widget.onChanged(update(widget.query));
   }
 
@@ -67,11 +66,7 @@ class _SearchFormState extends State<SearchForm> {
             decoration: InputDecoration(labelText: t.search.name),
             onChanged: (value) => _update((q) => q.copyWith(name: value)),
           ),
-          SearchStatGrid(
-            query: query,
-            columns: 1,
-            onChanged: widget.onChanged,
-          ),
+          SearchStatGrid(query: query, columns: 1, onChanged: widget.onChanged),
           SearchFilterTile<HeadShape>(
             label: t.editableStatus.headShape,
             isSet: query.headShapeId != null,
@@ -118,8 +113,9 @@ class _SearchFormState extends State<SearchForm> {
                 isSpColor: result.isSpColor,
               ),
             ),
-            onClear: () =>
-                _update((q) => q.copyWith(bodyColors: const [], isSpColor: null)),
+            onClear: () => _update(
+              (q) => q.copyWith(bodyColors: const [], isSpColor: null),
+            ),
           ),
           SearchFilterTile<AntennaSelectionResult>(
             label: t.editableStatus.antenna,
@@ -151,8 +147,9 @@ class _SearchFormState extends State<SearchForm> {
                 minAntennaLevel: result.level,
               ),
             ),
-            onClear: () =>
-                _update((q) => q.copyWith(antennaId: null, minAntennaLevel: null)),
+            onClear: () => _update(
+              (q) => q.copyWith(antennaId: null, minAntennaLevel: null),
+            ),
           ),
           TextField(
             controller: _memoController,

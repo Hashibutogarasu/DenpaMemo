@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
 import '../../i18n/gen/strings.g.dart';
+import 'app_dialog.dart';
 
 /// UI-only account creation dialog: manages the email/password fields and
 /// the in-flight sign-up [Future], and delegates the actual work to
@@ -14,11 +16,13 @@ class AccountSignUpDialog extends StatefulWidget {
 
   static Future<void> show(
     BuildContext context, {
-    required Future<void> Function(String email, String password) onSignUpWithEmail,
+    required Future<void> Function(String email, String password)
+    onSignUpWithEmail,
   }) {
-    return showDialog<void>(
+    return AppDialog.show<void>(
       context: context,
-      builder: (context) => AccountSignUpDialog(onSignUpWithEmail: onSignUpWithEmail),
+      builder: (context) =>
+          AccountSignUpDialog(onSignUpWithEmail: onSignUpWithEmail),
     );
   }
 
@@ -70,7 +74,8 @@ class _AccountSignUpDialogState extends State<AccountSignUpDialog> {
           child: FutureBuilder<void>(
             future: _signUpFuture,
             builder: (context, snapshot) {
-              final running = snapshot.connectionState == ConnectionState.waiting;
+              final running =
+                  snapshot.connectionState == ConnectionState.waiting;
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -103,7 +108,9 @@ class _AccountSignUpDialogState extends State<AccountSignUpDialog> {
                     children: [
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: running ? null : () => Navigator.of(context).pop(),
+                          onPressed: running
+                              ? null
+                              : () => Navigator.of(context).pop(),
                           child: Text(t.common.cancel),
                         ),
                       ),

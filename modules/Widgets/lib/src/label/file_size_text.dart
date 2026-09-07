@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:proper_filesize/proper_filesize.dart';
 
 /// Displays [bytes] as a human-readable file size (e.g. "12.5 MB"), via

@@ -1,6 +1,7 @@
-import 'package:app_launcher_icon_widget/app_launcher_icon_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:app_launcher_icon_widget/app_launcher_icon_widget.dart';
 
 /// Thin wrapper around [AppLauncherIcon], which only supports Android and
 /// iOS; on any other platform this falls back to a plain placeholder icon.

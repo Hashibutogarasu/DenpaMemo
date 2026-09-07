@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter_date_formatter/flutter_date_formatter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/cloud_backup_history_providers.dart';
 import '../providers/cloud_files_providers.dart';

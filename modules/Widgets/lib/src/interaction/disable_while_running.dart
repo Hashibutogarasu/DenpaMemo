@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Disables [builder]'s callback the instant it's pressed, ahead of
@@ -17,7 +18,8 @@ class DisableWhileRunning extends ConsumerStatefulWidget {
   final Widget Function(BuildContext context, VoidCallback? onPressed) builder;
 
   @override
-  ConsumerState<DisableWhileRunning> createState() => _DisableWhileRunningState();
+  ConsumerState<DisableWhileRunning> createState() =>
+      _DisableWhileRunningState();
 }
 
 class _DisableWhileRunningState extends ConsumerState<DisableWhileRunning> {

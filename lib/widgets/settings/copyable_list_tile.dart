@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:toaster/toaster.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
 /// [ListItemTile] view that copies [trailingText] to the clipboard on tap

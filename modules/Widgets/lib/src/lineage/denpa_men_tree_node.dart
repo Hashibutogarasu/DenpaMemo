@@ -1,6 +1,7 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 import 'package:tree_graph/tree_graph.dart';
 
 import '../denpa_men_selected_overlay.dart';
@@ -50,7 +51,11 @@ class DenpaMenTreeNode extends StatelessWidget {
   final ValueChanged<int> onToggleSelection;
   final ValueChanged<int> onMiddleClick;
   final VoidCallback onTap;
-  final Widget Function(BuildContext context, DenpaMenRecord record, Widget child)?
+  final Widget Function(
+    BuildContext context,
+    DenpaMenRecord record,
+    Widget child,
+  )?
   contextMenuBuilder;
   final VoidCallback? onHoverEnter;
   final VoidCallback? onHoverExit;

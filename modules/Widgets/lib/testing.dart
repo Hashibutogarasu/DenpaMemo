@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import 'i18n/gen/strings.g.dart';
 import 'src/responsive/responsive_scope.dart';
@@ -10,6 +11,7 @@ import 'src/theme/app_button_theme.dart';
 import 'src/theme/back_button_theme.dart';
 import 'src/theme/denpa_men_container_theme.dart';
 import 'src/theme/denpa_men_label_theme.dart';
+import 'src/theme/dialog_transition_theme.dart';
 import 'src/theme/fab_button_theme.dart';
 import 'src/theme/fab_label_theme.dart';
 import 'src/theme/list_item_container_theme.dart';
@@ -136,6 +138,12 @@ final ThemeData testAppTheme = ThemeData(
     ),
     const BackButtonThemeData(anchor: BackButtonAnchor.bottomLeft),
     const FabLabelThemeData(showLabel: false, showTooltip: true),
+    const DialogTransitionThemeData(
+      duration: Duration(milliseconds: 220),
+      curve: Curves.easeOut,
+      reverseCurve: Curves.easeIn,
+      beginOffset: Offset(0, 0.15),
+    ),
   ],
 );
 

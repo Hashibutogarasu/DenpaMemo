@@ -10,13 +10,6 @@ abstract final class AppCommonTheme {
     contentPadding: EdgeInsets.symmetric(horizontal: 16),
   );
 
-  static const DialogThemeData dialogTheme = DialogThemeData(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(24)),
-    ),
-    insetPadding: EdgeInsets.all(20),
-  );
-
   static const NavigationBarThemeData navigationBarTheme =
       NavigationBarThemeData(
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
@@ -47,11 +40,22 @@ ThemeData _buildTheme(Brightness brightness) {
     foregroundColor: Colors.white,
   );
   final settingsContainerColor = _settingsContainerColor(colorScheme);
+  final listItemSelectedColor = _selectedItemColor(
+    settingsContainerColor,
+    isDark,
+  );
 
   return ThemeData(
     colorScheme: colorScheme,
     listTileTheme: AppCommonTheme.listTileTheme,
-    dialogTheme: AppCommonTheme.dialogTheme,
+    dialogTheme: DialogThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(24)),
+        side: BorderSide(color: listItemSelectedColor, width: 5),
+      ),
+      insetPadding: const EdgeInsets.all(20),
+      backgroundColor: _lightenedBy(settingsContainerColor, 0.05),
+    ),
     navigationBarTheme: AppCommonTheme.navigationBarTheme,
     filledButtonTheme: FilledButtonThemeData(
       style: _frostedButtonStyle(buttonTheme),
@@ -149,10 +153,7 @@ ThemeData _buildTheme(Brightness brightness) {
         borderRadius: 20,
         tileBorderColor: colorScheme.outlineVariant,
         tileBorderWidth: 1,
-        selectedBackgroundColor: _selectedItemColor(
-          settingsContainerColor,
-          isDark,
-        ),
+        selectedBackgroundColor: listItemSelectedColor,
         checkAnimationDuration: const Duration(milliseconds: 200),
         checkAnimationInCurve: Curves.easeOut,
         checkAnimationOutCurve: Curves.easeIn,
@@ -165,6 +166,12 @@ ThemeData _buildTheme(Brightness brightness) {
       ),
       const BackButtonThemeData(anchor: BackButtonAnchor.bottomLeft),
       const FabLabelThemeData(showLabel: false, showTooltip: true),
+      const DialogTransitionThemeData(
+        duration: Duration(milliseconds: 220),
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeIn,
+        beginOffset: Offset(0, 0.15),
+      ),
     ],
   );
 }
@@ -205,4 +212,12 @@ Color _selectedItemColor(Color base, bool isDark) {
   final hsl = HSLColor.fromColor(base);
   final delta = isDark ? 0.12 : -0.08;
   return hsl.withLightness((hsl.lightness + delta).clamp(0.0, 1.0)).toColor();
+}
+
+/// [base], with its HSL lightness raised by [amount] (0-1), clamped to a
+/// valid lightness. Used for [DialogThemeData.backgroundColor], which reads
+/// as a paler tint of [ListItemContainerThemeData.backgroundColor].
+Color _lightenedBy(Color base, double amount) {
+  final hsl = HSLColor.fromColor(base);
+  return hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0)).toColor();
 }

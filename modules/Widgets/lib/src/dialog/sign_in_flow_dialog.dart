@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart' hide Step;
+
 import 'package:step_dialog/step_dialog.dart' show Step;
 
+import 'app_dialog.dart';
 import 'sign_in_flow_container.dart';
 
 /// Shows a [SignInFlowContainer] as a non-dismissible dialog — the only
@@ -20,7 +22,7 @@ class SignInFlowDialog {
     void Function(C stepContext)? onComplete,
     GlobalKey<ScaffoldMessengerState>? messengerKey,
   }) {
-    return showDialog<void>(
+    return AppDialog.show<void>(
       context: context,
       barrierDismissible: false,
       builder: (context) => SignInFlowContainer<C>(

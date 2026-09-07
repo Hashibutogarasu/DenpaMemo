@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 
+import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../routing/app_router.dart';
 import '../widgets/icon/monster_icon.dart';

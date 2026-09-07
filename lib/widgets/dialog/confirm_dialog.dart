@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
 /// Generic yes/no confirmation dialog for a destructive or otherwise
@@ -19,7 +20,7 @@ class ConfirmDialog extends StatelessWidget {
     required String title,
     required String message,
   }) async {
-    final confirmed = await showDialog<bool>(
+    final confirmed = await AppDialog.show<bool>(
       context: context,
       builder: (context) => ConfirmDialog(title: title, message: message),
     );

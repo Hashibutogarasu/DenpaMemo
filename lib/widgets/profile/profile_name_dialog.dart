@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
 /// Text-input dialog for naming a [Profile](../../data/profile/profile.dart),
@@ -12,7 +13,7 @@ class ProfileNameDialog extends StatefulWidget {
   final String initial;
 
   static Future<String?> show(BuildContext context, {String initial = ''}) {
-    return showDialog<String>(
+    return AppDialog.show<String>(
       context: context,
       builder: (context) => ProfileNameDialog(initial: initial),
     );

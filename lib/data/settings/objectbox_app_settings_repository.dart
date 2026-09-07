@@ -1,6 +1,6 @@
 import 'package:data_pack/data_pack.dart';
-import 'package:denpa_memo/objectbox.g.dart';
 
+import 'package:denpa_memo/objectbox.g.dart';
 import '../objectbox/objectbox.dart';
 import 'app_settings_entity.dart';
 import 'app_settings_mapper.dart';

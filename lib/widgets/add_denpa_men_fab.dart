@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+import 'package:data_pack/data_pack.dart';
+import 'package:file_picker/file_picker.dart';
+
+import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../pages/denpa_men_editor.dart';
 import '../pages/denpa_men_qr.dart';

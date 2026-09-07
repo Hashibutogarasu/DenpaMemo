@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:api_client/api_client.dart';
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:denpamemo_widgets/i18n/gen/strings.g.dart'
     as wt
     hide BuildContextTranslationsExtension;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_legend_grid_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';

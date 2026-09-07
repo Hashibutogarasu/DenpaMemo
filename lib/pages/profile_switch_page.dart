@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations, t;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations, t;
 import '../data/profile/profile.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/profile_providers.dart';

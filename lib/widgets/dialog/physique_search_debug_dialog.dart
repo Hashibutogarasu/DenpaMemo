@@ -1,10 +1,12 @@
 import 'dart:convert';
 
-import 'package:api_client/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
+
+import 'package:api_client/api_client.dart';
 import 'package:toaster/toaster.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
 /// Explains, in readable Japanese, why `GET /tables/search` couldn't
@@ -23,7 +25,7 @@ class PhysiqueSearchDebugDialog extends StatelessWidget {
     BuildContext context, {
     required PhysiqueSearchDebugInfo info,
   }) {
-    return showDialog<void>(
+    return AppDialog.show<void>(
       context: context,
       builder: (context) => PhysiqueSearchDebugDialog(info: info),
     );

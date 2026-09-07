@@ -1,5 +1,6 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'field/inline_nullable_number_field.dart';
@@ -37,9 +38,7 @@ class EditableExp extends StatelessWidget {
         Row(
           children: [
             StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
-            Expanded(
-              child: ExpProgress(progress: isMax ? null : progress),
-            ),
+            Expanded(child: ExpProgress(progress: isMax ? null : progress)),
           ],
         ),
         const SizedBox(height: 4),

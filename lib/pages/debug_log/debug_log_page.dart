@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:app_logging/app_logging.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations;
 import '../../i18n/gen/strings.g.dart';
 import 'debug_log_menu.dart';
 import 'log_category_tab_view.dart';

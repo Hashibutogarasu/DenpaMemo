@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// Displays the app's icon, name, license, package id, and author, plus a

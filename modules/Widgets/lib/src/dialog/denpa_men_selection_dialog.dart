@@ -1,11 +1,13 @@
 import 'dart:io';
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import '../denpa_men_list_tile.dart';
 import '../icon/denpa_men_icon_builder.dart';
+import 'app_dialog.dart';
 import 'denpa_men_preview_dialog.dart';
 
 /// Lets the user pick individuals out of [candidates], returning the
@@ -47,7 +49,7 @@ class DenpaMenSelectionDialog extends StatefulWidget {
     int minSelection = 1,
     Map<String, File?> iconsById = const {},
   }) {
-    return showDialog<List<DenpaMen>>(
+    return AppDialog.show<List<DenpaMen>>(
       context: context,
       builder: (context) => DenpaMenSelectionDialog.internal(
         title: title,

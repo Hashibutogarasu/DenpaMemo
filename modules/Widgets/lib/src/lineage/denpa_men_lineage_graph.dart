@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:tree_graph/tree_graph.dart';
 
+import '../dialog/app_dialog.dart';
 import '../dialog/qr_code_image_dialog.dart';
 import '../icon/denpa_men_icon_builder.dart';
 import 'denpa_men_node_data.dart';
@@ -14,7 +16,9 @@ List<Object?> _snapshot(
   List<TreeGroupSpec<QrCodeGroupData>> groups,
   List<TreeNodeSpec<DenpaMenNodeData>> nodes,
 ) {
-  final groupKeys = groups.map((g) => g.key).sorted((a, b) => a.toString().compareTo(b.toString()));
+  final groupKeys = groups
+      .map((g) => g.key)
+      .sorted((a, b) => a.toString().compareTo(b.toString()));
   final nodeSignatures = nodes
       .map(
         (n) => (
@@ -37,7 +41,9 @@ List<TreeGroupSpec<QrCodeGroupData>> _groupsOf(List<QrCodeRecord> qrCodes) => [
     ),
 ];
 
-List<TreeNodeSpec<DenpaMenNodeData>> _nodesOf(List<DenpaMenRecord> denpaMenRecords) => [
+List<TreeNodeSpec<DenpaMenNodeData>> _nodesOf(
+  List<DenpaMenRecord> denpaMenRecords,
+) => [
   for (final record in denpaMenRecords)
     TreeNodeSpec(
       key: record.denpaMen.id,
@@ -82,7 +88,11 @@ class DenpaMenLineageGraph extends StatefulWidget {
   final ValueChanged<int> onMiddleClickSelect;
   final void Function(BuildContext context, DenpaMen denpaMen) onTapNode;
   final ValueChanged<int?>? onHoveredRecordChanged;
-  final Widget Function(BuildContext context, DenpaMenRecord record, Widget child)?
+  final Widget Function(
+    BuildContext context,
+    DenpaMenRecord record,
+    Widget child,
+  )?
   contextMenuBuilder;
   final GraphViewController? graphViewController;
   final bool cursorEnabled;
@@ -94,15 +104,17 @@ class DenpaMenLineageGraph extends StatefulWidget {
 class _DenpaMenLineageGraphState extends State<DenpaMenLineageGraph> {
   bool _qrDialogOpen = false;
 
-  late final _controller = TreeGraphController<DenpaMenNodeData, QrCodeGroupData>(
-    groups: _groupsOf(widget.qrCodes),
-    nodes: _nodesOf(widget.denpaMenRecords),
-    snapshotOf: _snapshot,
-    siblingOrder: _compareSiblings,
-  );
+  late final _controller =
+      TreeGraphController<DenpaMenNodeData, QrCodeGroupData>(
+        groups: _groupsOf(widget.qrCodes),
+        nodes: _nodesOf(widget.denpaMenRecords),
+        snapshotOf: _snapshot,
+        siblingOrder: _compareSiblings,
+      );
 
   Map<String, DenpaMen> get _denpaMenById => {
-    for (final record in widget.denpaMenRecords) record.denpaMen.id: record.denpaMen,
+    for (final record in widget.denpaMenRecords)
+      record.denpaMen.id: record.denpaMen,
   };
 
   int _compareSiblings(
@@ -132,7 +144,10 @@ class _DenpaMenLineageGraphState extends State<DenpaMenLineageGraph> {
     if (widget.selectionMode != oldWidget.selectionMode) {
       _controller.selectionMode.value = widget.selectionMode;
     }
-    if (!const SetEquality<int>().equals(widget.selectedIds, oldWidget.selectedIds)) {
+    if (!const SetEquality<int>().equals(
+      widget.selectedIds,
+      oldWidget.selectedIds,
+    )) {
       _controller.selectedKeys.value = widget.selectedIds;
     }
   }
@@ -152,7 +167,7 @@ class _DenpaMenLineageGraphState extends State<DenpaMenLineageGraph> {
 
   Future<void> _showQrCodeImage(BuildContext context, String rawValue) async {
     setState(() => _qrDialogOpen = true);
-    await showDialog<void>(
+    await AppDialog.show<void>(
       context: context,
       builder: (context) => QrCodeImageDialog(rawValue: rawValue),
     );
@@ -186,7 +201,8 @@ class _DenpaMenLineageGraphState extends State<DenpaMenLineageGraph> {
       builder: (context) => DenpaMenTreeNode(
         key: ValueKey(nodeKey),
         data: data,
-        icon: widget.iconBuilder?.call(data.record.denpaMen.id, nodeSize) ??
+        icon:
+            widget.iconBuilder?.call(data.record.denpaMen.id, nodeSize) ??
             staticDenpaMenIconBuilder(null)(nodeSize),
         nodeSize: nodeSize,
         hoveredKey: _controller.hoveredKey,

@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'container/indented_header.dart';

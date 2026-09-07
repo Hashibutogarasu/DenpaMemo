@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:api_client/api_client.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_initialization_providers.dart';
@@ -22,7 +21,7 @@ import '../widgets/physique_table/table_type_selection_dialog.dart';
 /// [Physique] size id — see [PhysiqueTableArgs].
 Future<String?> _pickLevel(BuildContext context) {
   final controller = TextEditingController();
-  return showDialog<String>(
+  return AppDialog.show<String>(
     context: context,
     builder: (context) {
       final t = context.t;

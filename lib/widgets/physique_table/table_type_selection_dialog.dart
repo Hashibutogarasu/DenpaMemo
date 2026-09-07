@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:api_client/api_client.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 
+import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
 /// Shows an [AlertDialog] letting the user pick one [TableDefinition]
@@ -21,7 +20,7 @@ Future<TableDefinition?> showTableTypeSelectionDialog(
   TableDefinition? selected,
   Map<String, bool>? dataAvailability,
 }) {
-  return showDialog<TableDefinition>(
+  return AppDialog.show<TableDefinition>(
     context: context,
     builder: (context) => TableTypeSelectionDialog(
       types: types,

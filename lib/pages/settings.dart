@@ -2,10 +2,9 @@ import 'package:flutter/foundation.dart'
     show kDebugMode, kProfileMode, kReleaseMode;
 import 'package:flutter/material.dart';
 
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations;
 import '../app_metadata.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_info_providers.dart';

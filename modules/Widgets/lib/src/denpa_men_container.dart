@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
-import 'dialog/media_zoom_dialog.dart';
+import 'package:data_pack/data_pack.dart';
+
 import 'denpa_men_selected_overlay.dart';
+import 'dialog/media_zoom_dialog.dart';
 import 'icon/entity_icon.dart';
 
 /// One candidate image for [DenpaMenContainer]'s tap-to-zoom expansion:

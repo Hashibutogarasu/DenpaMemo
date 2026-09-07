@@ -1,9 +1,11 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import '../list/list_item_container.dart';
 import '../list/list_item_tile.dart';
+import 'app_dialog.dart';
 
 /// Wraps the result of [showQrCodeSelectionDialog]: distinguishes "cancelled"
 /// (the `Future` resolves to null) from "explicitly cleared" ([record] is
@@ -22,7 +24,7 @@ Future<QrCodeSelection?> showQrCodeSelectionDialog(
   required List<QrCodeRecord> candidates,
   required QrCodeRecord? selected,
 }) {
-  return showDialog<QrCodeSelection>(
+  return AppDialog.show<QrCodeSelection>(
     context: context,
     builder: (context) =>
         QrCodeSelectionDialog(candidates: candidates, initial: selected),

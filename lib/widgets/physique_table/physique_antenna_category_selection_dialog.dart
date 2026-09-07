@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 
+import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
 /// Shows an [AlertDialog] letting the user pick one
@@ -17,7 +16,7 @@ Future<PhysiqueAntennaCategory?> showPhysiqueAntennaCategorySelectionDialog(
   required List<PhysiqueAntennaCategory> categories,
   PhysiqueAntennaCategory? selected,
 }) {
-  return showDialog<PhysiqueAntennaCategory>(
+  return AppDialog.show<PhysiqueAntennaCategory>(
     context: context,
     builder: (context) => PhysiqueAntennaCategorySelectionDialog(
       categories: categories,

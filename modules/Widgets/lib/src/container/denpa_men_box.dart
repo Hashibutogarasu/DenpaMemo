@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 /// Scrollable icon grid of [DenpaMenRecord]s. Used as the grid alternative
 /// to the home screen's list-tile display (see `HomeTileMode.grid` in

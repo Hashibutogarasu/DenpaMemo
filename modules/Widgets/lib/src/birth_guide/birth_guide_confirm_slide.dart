@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import 'birth_guide_individual_slide.dart';
 

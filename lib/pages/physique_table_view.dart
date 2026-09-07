@@ -1,9 +1,9 @@
-import 'package:collection/collection.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
+
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/physique_table_edit_providers.dart';

@@ -4,6 +4,7 @@ import 'package:data_pack/data_pack.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import '../list/selectable_list_item_tile.dart';
+import 'app_dialog.dart';
 
 /// Shows an [AlertDialog] letting the user toggle any number of
 /// [Correction]s on/off from a list of tiles, returning the selected
@@ -13,7 +14,7 @@ Future<List<Correction>?> showCorrectionSelectionDialog(
   required List<Correction> corrections,
   required List<Correction> selected,
 }) {
-  return showDialog<List<Correction>>(
+  return AppDialog.show<List<Correction>>(
     context: context,
     builder: (context) =>
         CorrectionSelectionDialog(corrections: corrections, initial: selected),

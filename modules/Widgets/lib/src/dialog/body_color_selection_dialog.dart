@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../color/body_color_palette.dart';
 import '../color/color_dot.dart';
+import 'app_dialog.dart';
 
 /// Result of [showBodyColorSelectionDialog]: the chosen body color ids (with
 /// duplicates allowed at different shades), their per-entry shade levels
@@ -34,7 +35,7 @@ Future<BodyColorSelectionResult?> showBodyColorSelectionDialog(
   List<int> shades = const [],
   required bool isSpColor,
 }) {
-  return showDialog<BodyColorSelectionResult>(
+  return AppDialog.show<BodyColorSelectionResult>(
     context: context,
     builder: (context) => BodyColorSelectionDialog(
       initial: selected,

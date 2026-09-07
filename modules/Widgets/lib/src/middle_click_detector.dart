@@ -6,7 +6,11 @@ import 'package:flutter/widgets.dart';
 /// or any other gesture, so it can be layered over any existing
 /// `GestureDetector`/`InkWell` without interfering with it.
 class MiddleClickDetector extends StatelessWidget {
-  const MiddleClickDetector({super.key, required this.child, this.onMiddleClick});
+  const MiddleClickDetector({
+    super.key,
+    required this.child,
+    this.onMiddleClick,
+  });
 
   final Widget child;
   final VoidCallback? onMiddleClick;

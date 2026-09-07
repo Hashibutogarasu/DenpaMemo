@@ -1,9 +1,10 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql_client/graphql_client.dart';
+
+import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/dm_export_providers.dart';
@@ -14,7 +15,6 @@ import '../widgets/add_denpa_men_fab.dart';
 import '../widgets/dialog/import_complete_dialog.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
-import 'package:graphql_client/graphql_client.dart';
 
 final _addFabLayerLink = LayerLink();
 
@@ -76,10 +76,7 @@ class _HomeState extends ConsumerState<Home> {
                     ? null
                     : [
                         PopupMenuButton<void>(
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: theme.accentColor,
-                          ),
+                          icon: Icon(Icons.more_vert, color: theme.accentColor),
                           itemBuilder: (context) => [
                             PopupMenuItem(
                               enabled: selectedCount > 0,
@@ -106,11 +103,7 @@ class _HomeState extends ConsumerState<Home> {
                         ? () => _importFromFile(context, ref)
                         : null,
                     onExport: isMobile && selectedCount > 0
-                        ? () => exportSelectedDenpaMen(
-                            context,
-                            ref,
-                            masterData,
-                          )
+                        ? () => exportSelectedDenpaMen(context, ref, masterData)
                         : null,
                     mainButtonLayerLink: _addFabLayerLink,
                     expansionController: _addFabExpansion,

@@ -1,5 +1,6 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 /// Converts the domain [AppThemeMode] to Flutter's [ThemeMode].
 extension AppThemeModeMapping on AppThemeMode {

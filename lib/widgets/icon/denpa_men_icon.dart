@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations, t;
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations, t;
 import '../../providers/clipping_slot_providers.dart';
 import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/entity_image_providers.dart';

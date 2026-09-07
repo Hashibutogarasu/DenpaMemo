@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
-import 'package:dm_file/dm_file.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dm_file/dm_file.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../../domain/backup/dm_import_error.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_icon_providers.dart';
@@ -41,7 +41,7 @@ class ImportCompleteDialog extends StatelessWidget {
       ],
     );
     if (!context.mounted) return;
-    return showDialog<void>(
+    return AppDialog.show<void>(
       context: context,
       builder: (context) =>
           ImportCompleteDialog(result: result, iconsById: iconsById),

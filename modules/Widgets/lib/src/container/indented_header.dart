@@ -12,6 +12,9 @@ class IndentedHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(left: indent), child: child);
+    return Padding(
+      padding: EdgeInsets.only(left: indent),
+      child: child,
+    );
   }
 }

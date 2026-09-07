@@ -53,8 +53,9 @@ Future<void> _main() async {
   final objectBox = await ObjectBox.create();
 
   if (kDebugMode) {
-    debugPrintRebuildDirtyWidgets =
-        ObjectBoxAppSettingsRepository(objectBox).get().buildTrackerEnabled;
+    debugPrintRebuildDirtyWidgets = ObjectBoxAppSettingsRepository(
+      objectBox,
+    ).get().buildTrackerEnabled;
   }
   final cacheIndexRepository = await CacheIndexRepository.open(
     packageInfo.packageName,

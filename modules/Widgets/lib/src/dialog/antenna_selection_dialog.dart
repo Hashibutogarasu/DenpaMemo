@@ -7,6 +7,7 @@ import 'package:data_pack/data_pack.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../list/list_item_container.dart';
 import '../list/list_item_tile.dart';
+import 'app_dialog.dart';
 
 typedef AntennaSelectionResult = ({Anntena anntena, int level});
 
@@ -17,7 +18,7 @@ Future<AntennaSelectionResult?> showAntennaSelectionDialog(
   required int level,
   int maxSelectableLevel = 9,
 }) {
-  return showDialog<AntennaSelectionResult>(
+  return AppDialog.show<AntennaSelectionResult>(
     context: context,
     builder: (context) => AntennaSelectionDialog(
       anntenas: anntenas,

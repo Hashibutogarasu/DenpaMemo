@@ -23,8 +23,12 @@ class LoadingOverlay extends StatelessWidget {
           Positioned.fill(
             child: IgnorePointer(
               child: ColoredBox(
-                color: Theme.of(context).extension<FabButtonThemeData>()!.barrierColor,
-                child: const Center(child: RepaintBoundary(child: CircularProgressIndicator())),
+                color: Theme.of(
+                  context,
+                ).extension<FabButtonThemeData>()!.barrierColor,
+                child: const Center(
+                  child: RepaintBoundary(child: CircularProgressIndicator()),
+                ),
               ),
             ),
           ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'app_dialog.dart';
+
 /// Generic "pick one of [candidates]" modal: a [SimpleDialog] listing
 /// each candidate via [label], popping with the tapped one. Not specific
 /// to any one candidate shape — the caller decides what [T] is. [leading]
@@ -39,7 +41,7 @@ class CandidateSelectionDialog<T> extends StatelessWidget {
     IconData? trailingActionIcon,
     void Function(T candidate)? onTrailingAction,
   }) {
-    return showDialog<T>(
+    return AppDialog.show<T>(
       context: context,
       builder: (context) => CandidateSelectionDialog<T>(
         title: title,

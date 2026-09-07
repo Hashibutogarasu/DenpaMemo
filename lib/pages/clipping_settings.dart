@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations, t;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations, t;
 import '../data/clipping/clipping_slot_storage.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/clipping_slot_providers.dart';

@@ -1,9 +1,11 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import '../list/list_item_container.dart';
 import '../list/list_item_tile.dart';
+import 'app_dialog.dart';
 
 /// Shows an [AlertDialog] letting the user pick one [HeadShape] from a
 /// list of tiles, returning the selected shape or null if cancelled.
@@ -12,7 +14,7 @@ Future<HeadShape?> showHeadShapeSelectionDialog(
   required List<HeadShape> headShapes,
   required HeadShape selected,
 }) {
-  return showDialog<HeadShape>(
+  return AppDialog.show<HeadShape>(
     context: context,
     builder: (context) =>
         HeadShapeSelectionDialog(headShapes: headShapes, initial: selected),

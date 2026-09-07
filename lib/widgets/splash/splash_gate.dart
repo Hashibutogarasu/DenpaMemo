@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
+
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 
 import 'splash_screen.dart';
 

@@ -1,8 +1,8 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../../providers/monster_providers.dart';
 
 /// Shows the icon image registered for the `Monster` with [monsterId], or
