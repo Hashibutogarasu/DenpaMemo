@@ -1,0 +1,66 @@
+name: android-setup
+description: Shared toolchain setup, caches, and secret decoding for the Android build jobs.
+
+runs:
+  using: composite
+  steps:
+    - uses: jlumbroso/free-disk-space@main
+      with:
+        tool-cache: false
+        android: false
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: false
+
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: "17"
+
+    - uses: gradle/actions/setup-gradle@v4
+
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version-file: .fvmrc
+        channel: stable
+        cache: true
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/.pub-cache
+        key: pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          pub-${{ runner.os }}-
+
+    - uses: dtolnay/rust-toolchain@stable
+
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: modules/denpamemo_logics/rust
+
+    - name: Decode Android signing secrets
+      shell: bash
+      run: |
+        echo "$ANDROID_KEYSTORE_JKS_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/upload-keystore.jks"
+        echo "$ANDROID_KEYSTORE_PEM_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/upload-certificate.pem"
+        cat <<EOF > "$GITHUB_WORKSPACE/android/key.properties"
+        storePassword=$ANDROID_KEYSTORE_PASSWORD
+        keyPassword=$ANDROID_KEYSTORE_PASSWORD
+        keyAlias=upload
+        storeFile=$GITHUB_WORKSPACE/android/upload-keystore.jks
+        EOF
+
+    - name: Decode google-services.json
+      shell: bash
+      run: echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/app/google-services.json"
+
+    - name: Decode Google OAuth client secrets
+      shell: bash
+      run: |
+        mkdir -p "$GITHUB_WORKSPACE/assets/config/auth/google"
+        echo "$GOOGLE_CLIENT_SECRETS_JSON_BASE64" | base64 -d > "$GITHUB_WORKSPACE/assets/config/auth/google/google_client_secrets.json"
+
+    - run: flutter pub get
+      shell: bash

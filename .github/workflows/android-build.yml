@@ -12,85 +12,29 @@ concurrency:
   group: android-build-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  ANDROID_KEYSTORE_JKS_BASE64: ${{ secrets.ANDROID_KEYSTORE_JKS_BASE64 }}
+  ANDROID_KEYSTORE_PEM_BASE64: ${{ secrets.ANDROID_KEYSTORE_PEM_BASE64 }}
+  ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+  GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+  GOOGLE_CLIENT_SECRETS_JSON_BASE64: ${{ secrets.GOOGLE_CLIENT_SECRETS_JSON_BASE64 }}
+
 jobs:
-  build:
+  prepare:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
 
-      - uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: false
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: false
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-
-      - uses: gradle/actions/setup-gradle@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version-file: .fvmrc
-          channel: stable
-          cache: true
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/.pub-cache
-          key: pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            pub-${{ runner.os }}-
-
-      - uses: dtolnay/rust-toolchain@stable
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: modules/denpamemo_logics/rust
-
-      - name: Decode Android signing secrets
-        env:
-          ANDROID_KEYSTORE_JKS_BASE64: ${{ secrets.ANDROID_KEYSTORE_JKS_BASE64 }}
-          ANDROID_KEYSTORE_PEM_BASE64: ${{ secrets.ANDROID_KEYSTORE_PEM_BASE64 }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        run: |
-          echo "$ANDROID_KEYSTORE_JKS_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/upload-keystore.jks"
-          echo "$ANDROID_KEYSTORE_PEM_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/upload-certificate.pem"
-          cat <<EOF > "$GITHUB_WORKSPACE/android/key.properties"
-          storePassword=$ANDROID_KEYSTORE_PASSWORD
-          keyPassword=$ANDROID_KEYSTORE_PASSWORD
-          keyAlias=upload
-          storeFile=$GITHUB_WORKSPACE/android/upload-keystore.jks
-          EOF
-
-      - name: Decode google-services.json
-        env:
-          GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
-        run: echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/app/google-services.json"
-
-      - name: Decode Google OAuth client secrets
-        env:
-          GOOGLE_CLIENT_SECRETS_JSON_BASE64: ${{ secrets.GOOGLE_CLIENT_SECRETS_JSON_BASE64 }}
-        run: |
-          mkdir -p "$GITHUB_WORKSPACE/assets/config/auth/google"
-          echo "$GOOGLE_CLIENT_SECRETS_JSON_BASE64" | base64 -d > "$GITHUB_WORKSPACE/assets/config/auth/google/google_client_secrets.json"
-
-      - run: flutter pub get
+  build-debug-apk:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
 
       - name: Build debug APK
         run: flutter build apk --debug
-
-      - name: Build release APK
-        run: flutter build apk --release
-
-      - name: Build release AAB
-        run: flutter build appbundle --release
 
       - uses: actions/upload-artifact@v4
         with:
@@ -98,14 +42,48 @@ jobs:
           path: build/app/outputs/flutter-apk/app-debug.apk
           if-no-files-found: error
 
+  build-release-apk:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build release APK
+        run: flutter build apk --release
+
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
 
+  build-release-aab:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build release AAB
+        run: flutter build appbundle --release
+
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.aab
           path: build/app/outputs/bundle/release/app-release.aab
           if-no-files-found: error
+
+  cleanup:
+    if: always()
+    needs:
+      - build-debug-apk
+      - build-release-apk
+      - build-release-aab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report build results
+        run: |
+          echo "debug apk: ${{ needs.build-debug-apk.result }}"
+          echo "release apk: ${{ needs.build-release-apk.result }}"
+          echo "release aab: ${{ needs.build-release-aab.result }}"
