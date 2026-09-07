@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'i18n/gen/strings.g.dart';
 import 'src/responsive/responsive_scope.dart';
 import 'src/theme/app_button_theme.dart';
-import 'src/theme/app_dialog_theme.dart';
 import 'src/theme/back_button_theme.dart';
 import 'src/theme/denpa_men_container_theme.dart';
 import 'src/theme/denpa_men_label_theme.dart';
@@ -98,13 +97,6 @@ final ThemeData testAppTheme = ThemeData(
       inactiveBonusColor: Color(0xFFE53935),
       titleFillColor: Colors.white,
       expBarBorderColor: Colors.black,
-    ),
-    const AppDialogThemeData(
-      transitionDuration: Duration(milliseconds: 320),
-      transitionCurve: Curves.easeOutCubic,
-      reverseTransitionCurve: Curves.easeInCubic,
-      barrierColor: Colors.black54,
-      insetPadding: EdgeInsets.all(20),
     ),
     const AppButtonThemeData(
       backgroundTintColor: Color(0x995B7FA6),

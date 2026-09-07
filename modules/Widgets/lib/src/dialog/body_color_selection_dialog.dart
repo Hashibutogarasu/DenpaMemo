@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../color/body_color_palette.dart';
 import '../color/color_dot.dart';
-import 'bottom_slide_dialog.dart';
 
 /// Result of [showBodyColorSelectionDialog]: the chosen body color ids (with
 /// duplicates allowed at different shades), their per-entry shade levels
@@ -23,7 +22,7 @@ class _BodyColorEntry {
   int shade;
 }
 
-/// Shows [BottomSlideDialog] letting the user pick up to two body color
+/// Shows an [AlertDialog] letting the user pick up to two body color
 /// entries from a grid of round swatches. Each selected entry gets a list
 /// tile below the SP color switch with a shade slider (-1 thin, 0 normal, 1
 /// dark), so the same color id may be picked twice at different shades. An
@@ -35,7 +34,7 @@ Future<BodyColorSelectionResult?> showBodyColorSelectionDialog(
   List<int> shades = const [],
   required bool isSpColor,
 }) {
-  return showBottomSlideDialog<BodyColorSelectionResult>(
+  return showDialog<BodyColorSelectionResult>(
     context: context,
     builder: (context) => BodyColorSelectionDialog(
       initial: selected,
@@ -129,66 +128,79 @@ class _BodyColorSelectionDialogState extends State<BodyColorSelectionDialog> {
   Widget build(BuildContext context) {
     final t = context.t;
 
-    return BottomSlideDialog(
-      title: t.editableStatus.bodyColor,
-      confirmEnabled: _entries.isNotEmpty,
-      onConfirm: () => Navigator.of(context).pop((
-        bodyColors: [for (final entry in _entries) entry.colorId],
-        bodyColorShades: [for (final entry in _entries) entry.shade],
-        isSpColor: _isSpColor,
-      )),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                for (final colorId in bodyColorPalette.keys)
-                  _ColorSwatch(
-                    key: ValueKey(colorId),
-                    colorId: colorId,
-                    label: t.bodyColor[colorId] ?? colorId,
-                    checked: _isChecked(colorId),
-                    onTap: () => _onSwatchTap(colorId),
-                  ),
-              ],
-            ),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(t.editableStatus.spColor),
-              value: _isSpColor,
-              onChanged: _canBeSpColor
-                  ? (value) => setState(() => _isSpColor = value)
-                  : null,
-            ),
-            for (var i = 0; i < _entries.length; i++)
-              ListTile(
-                key: ValueKey(i),
-                contentPadding: const EdgeInsets.only(left: 8),
-                onTap: () => _focusEntry(i),
-                leading: ColorDot(
-                  colorId: _entries[i].colorId,
-                  shadeLevel: _entries[i].shade,
-                ),
-                title: Slider(
-                  value: _entries[i].shade.toDouble(),
-                  min: -1,
-                  max: 1,
-                  divisions: 2,
-                  label: _shadeLabel(t, _entries[i].shade),
-                  onChanged: (value) => _setShade(i, value.round()),
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => _removeEntry(i),
-                ),
+    return AlertDialog(
+      title: Text(t.editableStatus.bodyColor),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 12,
+                runSpacing: 12,
+                children: [
+                  for (final colorId in bodyColorPalette.keys)
+                    _ColorSwatch(
+                      key: ValueKey(colorId),
+                      colorId: colorId,
+                      label: t.bodyColor[colorId] ?? colorId,
+                      checked: _isChecked(colorId),
+                      onTap: () => _onSwatchTap(colorId),
+                    ),
+                ],
               ),
-          ],
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(t.editableStatus.spColor),
+                value: _isSpColor,
+                onChanged: _canBeSpColor
+                    ? (value) => setState(() => _isSpColor = value)
+                    : null,
+              ),
+              for (var i = 0; i < _entries.length; i++)
+                ListTile(
+                  key: ValueKey(i),
+                  contentPadding: const EdgeInsets.only(left: 8),
+                  onTap: () => _focusEntry(i),
+                  leading: ColorDot(
+                    colorId: _entries[i].colorId,
+                    shadeLevel: _entries[i].shade,
+                  ),
+                  title: Slider(
+                    value: _entries[i].shade.toDouble(),
+                    min: -1,
+                    max: 1,
+                    divisions: 2,
+                    label: _shadeLabel(t, _entries[i].shade),
+                    onChanged: (value) => _setShade(i, value.round()),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => _removeEntry(i),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.common.cancel),
+        ),
+        FilledButton(
+          onPressed: _entries.isEmpty
+              ? null
+              : () => Navigator.of(context).pop((
+                  bodyColors: [for (final entry in _entries) entry.colorId],
+                  bodyColorShades: [for (final entry in _entries) entry.shade],
+                  isSpColor: _isSpColor,
+                )),
+          child: Text(t.common.confirm),
+        ),
+      ],
     );
   }
 }

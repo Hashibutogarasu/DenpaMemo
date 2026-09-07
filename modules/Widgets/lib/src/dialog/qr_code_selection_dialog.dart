@@ -2,7 +2,6 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
-import 'bottom_slide_dialog.dart';
 
 /// Wraps the result of [showQrCodeSelectionDialog]: distinguishes "cancelled"
 /// (the `Future` resolves to null) from "explicitly cleared" ([record] is
@@ -13,7 +12,7 @@ class QrCodeSelection {
   final QrCodeRecord? record;
 }
 
-/// Shows [BottomSlideDialog] letting the user pick one [QrCodeRecord] from
+/// Shows an [AlertDialog] letting the user pick one [QrCodeRecord] from
 /// [candidates], or clear the selection, returning a [QrCodeSelection] or
 /// null if cancelled.
 Future<QrCodeSelection?> showQrCodeSelectionDialog(
@@ -21,7 +20,7 @@ Future<QrCodeSelection?> showQrCodeSelectionDialog(
   required List<QrCodeRecord> candidates,
   required QrCodeRecord? selected,
 }) {
-  return showBottomSlideDialog<QrCodeSelection>(
+  return showDialog<QrCodeSelection>(
     context: context,
     builder: (context) =>
         QrCodeSelectionDialog(candidates: candidates, initial: selected),
@@ -49,29 +48,42 @@ class _QrCodeSelectionDialogState extends State<QrCodeSelectionDialog> {
   Widget build(BuildContext context) {
     final t = context.t;
 
-    return BottomSlideDialog(
-      title: t.editableStatus.qrCode,
-      onConfirm: () => Navigator.of(context).pop(QrCodeSelection(_selected)),
-      content: ListView(
-        shrinkWrap: true,
-        children: [
-          ListTile(
-            title: Text(t.common.unset),
-            selected: _selected == null,
-            trailing: _selected == null ? const Icon(Icons.check) : null,
-            onTap: () => setState(() => _selected = null),
-          ),
-          for (final record in widget.candidates)
+    return AlertDialog(
+      title: Text(t.editableStatus.qrCode),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
             ListTile(
-              title: Text(record.qrCode.name ?? record.qrCode.id),
-              selected: _selected?.id == record.id,
-              trailing: _selected?.id == record.id
-                  ? const Icon(Icons.check)
-                  : null,
-              onTap: () => setState(() => _selected = record),
+              title: Text(t.common.unset),
+              selected: _selected == null,
+              trailing: _selected == null ? const Icon(Icons.check) : null,
+              onTap: () => setState(() => _selected = null),
             ),
-        ],
+            for (final record in widget.candidates)
+              ListTile(
+                title: Text(record.qrCode.name ?? record.qrCode.id),
+                selected: _selected?.id == record.id,
+                trailing: _selected?.id == record.id
+                    ? const Icon(Icons.check)
+                    : null,
+                onTap: () => setState(() => _selected = record),
+              ),
+          ],
+        ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.common.cancel),
+        ),
+        FilledButton(
+          onPressed: () =>
+              Navigator.of(context).pop(QrCodeSelection(_selected)),
+          child: Text(t.common.confirm),
+        ),
+      ],
     );
   }
 }

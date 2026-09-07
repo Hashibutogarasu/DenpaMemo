@@ -4,7 +4,6 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
-import 'bottom_slide_dialog.dart';
 
 typedef AntennaSelectionResult = ({Anntena anntena, int level});
 
@@ -15,7 +14,7 @@ Future<AntennaSelectionResult?> showAntennaSelectionDialog(
   required int level,
   int maxSelectableLevel = 9,
 }) {
-  return showBottomSlideDialog<AntennaSelectionResult>(
+  return showDialog<AntennaSelectionResult>(
     context: context,
     builder: (context) => AntennaSelectionDialog(
       anntenas: anntenas,
@@ -317,108 +316,122 @@ class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
         : 1;
     final resolvedLevel = (isDurationBased || hasNoLevel) ? 0 : _level;
 
-    return BottomSlideDialog(
-      title: t.editableStatus.antenna,
-      onConfirm: () => Navigator.of(
-        context,
-      ).pop((anntena: resolvedSelected.leaf, level: resolvedLevel)),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TabBar(
-            controller: _tabController,
-            tabs: [
-              for (final category in AnntenaCategory.values)
-                Tab(text: _categoryLabel(t, category)),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
+    return AlertDialog(
+      title: Text(t.editableStatus.antenna),
+      content: SizedBox(
+        width: double.maxFinite,
+        height: 400,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TabBar(
               controller: _tabController,
-              children: [
+              tabs: [
                 for (final category in AnntenaCategory.values)
-                  ListView(
-                    shrinkWrap: true,
-                    children: [
-                      for (final familyId in _familyIds.where(
-                        (familyId) =>
-                            _patternRootsOf(
-                              widget.anntenas,
-                              familyId,
-                            ).first.category ==
-                            category,
-                      ))
-                        _buildTile(t, familyId),
-                    ],
-                  ),
+                  Tab(text: _categoryLabel(t, category)),
               ],
             ),
-          ),
-          const SizedBox(height: 8),
-          if (isDurationBased)
-            if (durationChainLength > 1)
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  for (final category in AnntenaCategory.values)
+                    ListView(
+                      shrinkWrap: true,
+                      children: [
+                        for (final familyId in _familyIds.where(
+                          (familyId) =>
+                              _patternRootsOf(
+                                widget.anntenas,
+                                familyId,
+                              ).first.category ==
+                              category,
+                        ))
+                          _buildTile(t, familyId),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (isDurationBased)
+              if (durationChainLength > 1)
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(t.editableStatus.antennaEffectDuration),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Slider(
+                        value: _durationIndex.toDouble(),
+                        min: 0,
+                        max: (durationChainLength - 1).toDouble(),
+                        divisions: durationChainLength - 1,
+                        label: _displayName(t, resolvedSelected),
+                        onChanged: (value) =>
+                            setState(() => _durationIndex = value.round()),
+                      ),
+                    ),
+                  ],
+                )
+              else
+                const SizedBox.shrink()
+            else if (hasNoLevel)
+              const SizedBox.shrink()
+            else
               Row(
                 children: [
-                  Expanded(child: Text(t.editableStatus.antennaEffectDuration)),
+                  Expanded(child: Text(t.editableStatus.antennaLevel)),
                   Expanded(
                     flex: 3,
                     child: Slider(
-                      value: _durationIndex.toDouble(),
+                      value: _level.toDouble(),
                       min: 0,
-                      max: (durationChainLength - 1).toDouble(),
-                      divisions: durationChainLength - 1,
-                      label: _displayName(t, resolvedSelected),
+                      max: maxLevel.toDouble(),
+                      divisions: maxLevel,
+                      label: t.editableStatus.antennaPlusLevelValue(
+                        plusLevel: _level,
+                      ),
                       onChanged: (value) =>
-                          setState(() => _durationIndex = value.round()),
+                          setState(() => _level = value.round()),
                     ),
                   ),
                 ],
-              )
-            else
-              const SizedBox.shrink()
-          else if (hasNoLevel)
-            const SizedBox.shrink()
-          else
-            Row(
-              children: [
-                Expanded(child: Text(t.editableStatus.antennaLevel)),
-                Expanded(
-                  flex: 3,
-                  child: Slider(
-                    value: _level.toDouble(),
-                    min: 0,
-                    max: maxLevel.toDouble(),
-                    divisions: maxLevel,
-                    label: t.editableStatus.antennaPlusLevelValue(
-                      plusLevel: _level,
+              ),
+            if (selectedPatternRoots.length > 1)
+              Row(
+                children: [
+                  Expanded(child: Text(t.editableStatus.antennaTargetScope)),
+                  Expanded(
+                    flex: 3,
+                    child: Slider(
+                      value: _patternIndex.toDouble(),
+                      min: 0,
+                      max: (selectedPatternRoots.length - 1).toDouble(),
+                      divisions: selectedPatternRoots.length - 1,
+                      label: _displayName(t, resolvedSelected),
+                      onChanged: (value) =>
+                          setState(() => _patternIndex = value.round()),
                     ),
-                    onChanged: (value) =>
-                        setState(() => _level = value.round()),
                   ),
-                ),
-              ],
-            ),
-          if (selectedPatternRoots.length > 1)
-            Row(
-              children: [
-                Expanded(child: Text(t.editableStatus.antennaTargetScope)),
-                Expanded(
-                  flex: 3,
-                  child: Slider(
-                    value: _patternIndex.toDouble(),
-                    min: 0,
-                    max: (selectedPatternRoots.length - 1).toDouble(),
-                    divisions: selectedPatternRoots.length - 1,
-                    label: _displayName(t, resolvedSelected),
-                    onChanged: (value) =>
-                        setState(() => _patternIndex = value.round()),
-                  ),
-                ),
-              ],
-            ),
-        ],
+                ],
+              ),
+          ],
+        ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.common.cancel),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.of(
+            context,
+          ).pop((anntena: resolvedSelected.leaf, level: resolvedLevel)),
+          child: Text(t.common.confirm),
+        ),
+      ],
     );
   }
 }

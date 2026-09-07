@@ -14,6 +14,7 @@ abstract final class AppCommonTheme {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(24)),
     ),
+    insetPadding: EdgeInsets.all(20),
   );
 
   static const NavigationBarThemeData navigationBarTheme =
@@ -114,13 +115,6 @@ ThemeData _buildTheme(Brightness brightness) {
         inactiveBonusColor: const Color(0xFFE53935),
         titleFillColor: Colors.white,
         expBarBorderColor: isDark ? Colors.white70 : Colors.black,
-      ),
-      const AppDialogThemeData(
-        transitionDuration: Duration(milliseconds: 320),
-        transitionCurve: Curves.easeOutCubic,
-        reverseTransitionCurve: Curves.easeInCubic,
-        barrierColor: Colors.black54,
-        insetPadding: EdgeInsets.all(20),
       ),
       SplashThemeData(
         backgroundColor: isDark

@@ -56,8 +56,6 @@ import 'package:widgetbook_app/use_cases/dialog/birth_guide_error_dialog.widgetb
     as _widgetbook_app_use_cases_dialog_birth_guide_error_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/body_color_selection_dialog.widgetbook.dart'
     as _widgetbook_app_use_cases_dialog_body_color_selection_dialog_widgetbook;
-import 'package:widgetbook_app/use_cases/dialog/bottom_slide_dialog.widgetbook.dart'
-    as _widgetbook_app_use_cases_dialog_bottom_slide_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/correction_selection_dialog.widgetbook.dart'
     as _widgetbook_app_use_cases_dialog_correction_selection_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/denpa_men_preview_dialog.widgetbook.dart'
@@ -583,23 +581,6 @@ final directories = <_widgetbook.WidgetbookNode>[
             builder:
                 _widgetbook_app_use_cases_dialog_body_color_selection_dialog_widgetbook
                     .bodyColorSelectionDialogUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'BottomSlideDialog',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'ConfirmDisabled',
-            builder:
-                _widgetbook_app_use_cases_dialog_bottom_slide_dialog_widgetbook
-                    .bottomSlideDialogConfirmDisabledUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _widgetbook_app_use_cases_dialog_bottom_slide_dialog_widgetbook
-                    .bottomSlideDialogUseCase,
           ),
         ],
       ),
