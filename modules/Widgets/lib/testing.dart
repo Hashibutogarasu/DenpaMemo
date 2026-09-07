@@ -113,8 +113,8 @@ final ThemeData testAppTheme = ThemeData(
       highlightBorderRadius: 20,
       selectedIconColor: const Color(0xFF056193),
       unselectedIconColor: _testColorScheme.onSurfaceVariant,
-      slideDuration: const Duration(milliseconds: 200),
-      slideCurve: Curves.easeOutCubic,
+      slideDuration: const Duration(milliseconds: 220),
+      slideCurve: Curves.easeOutBack,
     ),
     ListItemContainerThemeData(
       backgroundColor: Color.alphaBlend(

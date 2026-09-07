@@ -193,8 +193,8 @@ ThemeData _buildTheme(Brightness brightness, _AppPalette palette) {
         highlightBorderRadius: 20,
         selectedIconColor: const Color(0xFF056193),
         unselectedIconColor: colorScheme.onSurfaceVariant,
-        slideDuration: const Duration(milliseconds: 200),
-        slideCurve: Curves.easeOutCubic,
+        slideDuration: const Duration(milliseconds: 220),
+        slideCurve: Curves.easeOutBack,
       ),
       ListItemContainerThemeData(
         backgroundColor: settingsContainerColor,

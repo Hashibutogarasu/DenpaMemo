@@ -5,8 +5,9 @@ import '../theme/toggle_button_group_theme.dart';
 /// Rounded, elevated group of icon toggle buttons backing a value of type
 /// [T] (e.g. a view-mode enum). Layout-agnostic — the caller positions it
 /// (typically via [Positioned]) and supplies one labeled icon per [values]
-/// entry via [children]. The selection highlight slides between segments
-/// instead of swapping instantly.
+/// entry via [children]. The selection highlight slides across the
+/// intervening segment boundaries and snaps into place on the selected
+/// segment.
 class ToggleButtonGroup<T> extends StatelessWidget {
   const ToggleButtonGroup({
     super.key,
