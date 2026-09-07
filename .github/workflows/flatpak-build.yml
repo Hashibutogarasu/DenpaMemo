@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: flatpak-build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   flatpak:
     name: Flatpak
