@@ -4,8 +4,8 @@ import '../label/outlined_title.dart';
 import '../theme/denpa_men_container_theme.dart';
 import 'inline_text_field.dart';
 
-/// Inline-editable name field styled like [OutlinedTitleText]: white fill
-/// over an outline stroked in the level label's color. Achieved by
+/// Inline-editable name field styled like [OutlinedTitleText]: a themed
+/// fill over an outline stroked in the level label's color. Achieved by
 /// layering a non-interactive stroked [Text] behind an [InlineTextField]
 /// whose own fill is white, since a single [TextStyle] can't paint both a
 /// fill and a stroke pass at once.
@@ -42,7 +42,7 @@ class OutlinedInlineNameField extends StatelessWidget {
         ),
         InlineTextField(
           value: value,
-          style: baseStyle.copyWith(color: Colors.white),
+          style: baseStyle.copyWith(color: theme.nameFieldFillColor),
           onChanged: onChanged,
         ),
       ],

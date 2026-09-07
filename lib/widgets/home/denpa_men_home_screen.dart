@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations;
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';

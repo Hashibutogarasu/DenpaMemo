@@ -1,10 +1,13 @@
 import 'dart:math' as math;
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
+import 'package:data_pack/data_pack.dart';
+
 import '../../i18n/gen/strings.g.dart';
-import 'bottom_slide_dialog.dart';
+import '../list/list_item_container.dart';
+import '../list/list_item_tile.dart';
+import 'app_dialog.dart';
 
 typedef AntennaSelectionResult = ({Anntena anntena, int level});
 
@@ -15,7 +18,7 @@ Future<AntennaSelectionResult?> showAntennaSelectionDialog(
   required int level,
   int maxSelectableLevel = 9,
 }) {
-  return showBottomSlideDialog<AntennaSelectionResult>(
+  return AppDialog.show<AntennaSelectionResult>(
     context: context,
     builder: (context) => AntennaSelectionDialog(
       anntenas: anntenas,
@@ -186,8 +189,7 @@ class AntennaSelectionDialog extends StatefulWidget {
   final int maxSelectableLevel;
 
   @override
-  State<AntennaSelectionDialog> createState() =>
-      _AntennaSelectionDialogState();
+  State<AntennaSelectionDialog> createState() => _AntennaSelectionDialogState();
 }
 
 class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
@@ -284,14 +286,33 @@ class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
       _byId,
     );
 
-    return Material(
-      type: MaterialType.transparency,
-      child: ListTile(
-        key: ValueKey(familyId),
-        title: Text(_displayName(t, resolution)),
-        selected: isSelected,
-        trailing: isSelected ? const Icon(Icons.check) : null,
-        onTap: () => _selectFamily(familyId, patternIndex),
+    return ListItemTile(
+      key: ValueKey(familyId),
+      label: _displayName(t, resolution),
+      trailing: const SizedBox.shrink(),
+      onTap: () => _selectFamily(familyId, patternIndex),
+    );
+  }
+
+  List<String> _familyIdsInCategory(AnntenaCategory category) => _familyIds
+      .where(
+        (familyId) =>
+            _patternRootsOf(widget.anntenas, familyId).first.category ==
+            category,
+      )
+      .toList();
+
+  Widget _buildCategoryTab(Translations t, AnntenaCategory category) {
+    final familyIdsInCategory = _familyIdsInCategory(category);
+    return SingleChildScrollView(
+      child: ListItemContainer(
+        selectedIndex: indexOfOrNull(
+          familyIdsInCategory,
+          (familyId) => familyId == _selectedFamilyId,
+        ),
+        children: [
+          for (final familyId in familyIdsInCategory) _buildTile(t, familyId),
+        ],
       ),
     );
   }
@@ -318,108 +339,109 @@ class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
         : 1;
     final resolvedLevel = (isDurationBased || hasNoLevel) ? 0 : _level;
 
-    return BottomSlideDialog(
-      title: t.editableStatus.antenna,
-      onConfirm: () => Navigator.of(
-        context,
-      ).pop((anntena: resolvedSelected.leaf, level: resolvedLevel)),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TabBar(
-            controller: _tabController,
-            tabs: [
-              for (final category in AnntenaCategory.values)
-                Tab(text: _categoryLabel(t, category)),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
+    return AlertDialog(
+      title: Text(t.editableStatus.antenna),
+      content: SizedBox(
+        width: double.maxFinite,
+        height: 400,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TabBar(
               controller: _tabController,
-              children: [
+              tabs: [
                 for (final category in AnntenaCategory.values)
-                  ListView(
-                    shrinkWrap: true,
-                    children: [
-                      for (final familyId in _familyIds.where(
-                        (familyId) =>
-                            _patternRootsOf(
-                              widget.anntenas,
-                              familyId,
-                            ).first.category ==
-                            category,
-                      ))
-                        _buildTile(t, familyId),
-                    ],
-                  ),
+                  Tab(text: _categoryLabel(t, category)),
               ],
             ),
-          ),
-          const SizedBox(height: 8),
-          if (isDurationBased)
-            if (durationChainLength > 1)
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  for (final category in AnntenaCategory.values)
+                    _buildCategoryTab(t, category),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (isDurationBased)
+              if (durationChainLength > 1)
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(t.editableStatus.antennaEffectDuration),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Slider(
+                        value: _durationIndex.toDouble(),
+                        min: 0,
+                        max: (durationChainLength - 1).toDouble(),
+                        divisions: durationChainLength - 1,
+                        label: _displayName(t, resolvedSelected),
+                        onChanged: (value) =>
+                            setState(() => _durationIndex = value.round()),
+                      ),
+                    ),
+                  ],
+                )
+              else
+                const SizedBox.shrink()
+            else if (hasNoLevel)
+              const SizedBox.shrink()
+            else
               Row(
                 children: [
-                  Expanded(child: Text(t.editableStatus.antennaEffectDuration)),
+                  Expanded(child: Text(t.editableStatus.antennaLevel)),
                   Expanded(
                     flex: 3,
                     child: Slider(
-                      value: _durationIndex.toDouble(),
+                      value: _level.toDouble(),
                       min: 0,
-                      max: (durationChainLength - 1).toDouble(),
-                      divisions: durationChainLength - 1,
-                      label: _displayName(t, resolvedSelected),
+                      max: maxLevel.toDouble(),
+                      divisions: maxLevel,
+                      label: t.editableStatus.antennaPlusLevelValue(
+                        plusLevel: _level,
+                      ),
                       onChanged: (value) =>
-                          setState(() => _durationIndex = value.round()),
+                          setState(() => _level = value.round()),
                     ),
                   ),
                 ],
-              )
-            else
-              const SizedBox.shrink()
-          else if (hasNoLevel)
-            const SizedBox.shrink()
-          else
-            Row(
-              children: [
-                Expanded(child: Text(t.editableStatus.antennaLevel)),
-                Expanded(
-                  flex: 3,
-                  child: Slider(
-                    value: _level.toDouble(),
-                    min: 0,
-                    max: maxLevel.toDouble(),
-                    divisions: maxLevel,
-                    label: t.editableStatus.antennaPlusLevelValue(
-                      plusLevel: _level,
+              ),
+            if (selectedPatternRoots.length > 1)
+              Row(
+                children: [
+                  Expanded(child: Text(t.editableStatus.antennaTargetScope)),
+                  Expanded(
+                    flex: 3,
+                    child: Slider(
+                      value: _patternIndex.toDouble(),
+                      min: 0,
+                      max: (selectedPatternRoots.length - 1).toDouble(),
+                      divisions: selectedPatternRoots.length - 1,
+                      label: _displayName(t, resolvedSelected),
+                      onChanged: (value) =>
+                          setState(() => _patternIndex = value.round()),
                     ),
-                    onChanged: (value) =>
-                        setState(() => _level = value.round()),
                   ),
-                ),
-              ],
-            ),
-          if (selectedPatternRoots.length > 1)
-            Row(
-              children: [
-                Expanded(child: Text(t.editableStatus.antennaTargetScope)),
-                Expanded(
-                  flex: 3,
-                  child: Slider(
-                    value: _patternIndex.toDouble(),
-                    min: 0,
-                    max: (selectedPatternRoots.length - 1).toDouble(),
-                    divisions: selectedPatternRoots.length - 1,
-                    label: _displayName(t, resolvedSelected),
-                    onChanged: (value) =>
-                        setState(() => _patternIndex = value.round()),
-                  ),
-                ),
-              ],
-            ),
-        ],
+                ],
+              ),
+          ],
+        ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.common.cancel),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.of(
+            context,
+          ).pop((anntena: resolvedSelected.leaf, level: resolvedLevel)),
+          child: Text(t.common.confirm),
+        ),
+      ],
     );
   }
 }

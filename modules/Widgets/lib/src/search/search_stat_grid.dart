@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../../i18n/gen/strings.g.dart';
 import '../field/inline_nullable_number_field.dart';
@@ -28,8 +29,16 @@ class SearchStatGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = context.t;
     final entries = <(String, int?, ValueChanged<int?>)>[
-      (t.stat.hp, query.minHp, (value) => onChanged(query.copyWith(minHp: value))),
-      (t.stat.ap, query.minAp, (value) => onChanged(query.copyWith(minAp: value))),
+      (
+        t.stat.hp,
+        query.minHp,
+        (value) => onChanged(query.copyWith(minHp: value)),
+      ),
+      (
+        t.stat.ap,
+        query.minAp,
+        (value) => onChanged(query.copyWith(minAp: value)),
+      ),
       (
         t.stat.attack,
         query.minAttack,

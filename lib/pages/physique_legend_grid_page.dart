@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:api_client/api_client.dart';
 import 'package:collection/collection.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_editor/table_editor.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_legend_grid_args.dart';
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';

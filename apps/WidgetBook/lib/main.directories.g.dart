@@ -10,6 +10,7 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 import 'package:widgetbook_app/use_cases/add_denpa_men.widgetbook.dart'
     as _widgetbook_app_use_cases_add_denpa_men_widgetbook;
@@ -55,8 +56,6 @@ import 'package:widgetbook_app/use_cases/dialog/birth_guide_error_dialog.widgetb
     as _widgetbook_app_use_cases_dialog_birth_guide_error_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/body_color_selection_dialog.widgetbook.dart'
     as _widgetbook_app_use_cases_dialog_body_color_selection_dialog_widgetbook;
-import 'package:widgetbook_app/use_cases/dialog/bottom_slide_dialog.widgetbook.dart'
-    as _widgetbook_app_use_cases_dialog_bottom_slide_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/correction_selection_dialog.widgetbook.dart'
     as _widgetbook_app_use_cases_dialog_correction_selection_dialog_widgetbook;
 import 'package:widgetbook_app/use_cases/dialog/denpa_men_preview_dialog.widgetbook.dart'
@@ -163,8 +162,6 @@ import 'package:widgetbook_app/use_cases/search/search_stat_grid.widgetbook.dart
     as _widgetbook_app_use_cases_search_search_stat_grid_widgetbook;
 import 'package:widgetbook_app/use_cases/snackbar/copyable_snack_bar.widgetbook.dart'
     as _widgetbook_app_use_cases_snackbar_copyable_snack_bar_widgetbook;
-import 'package:widgetbook_app/use_cases/unfocus_on_tap.widgetbook.dart'
-    as _widgetbook_app_use_cases_unfocus_on_tap_widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
@@ -293,21 +290,6 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'Default',
             builder: _widgetbook_app_use_cases_progress_bar_widgetbook
                 .progressBarUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'UnfocusOnTap',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder: _widgetbook_app_use_cases_unfocus_on_tap_widgetbook
-                .unfocusOnTapDefaultUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'Disabled',
-            builder: _widgetbook_app_use_cases_unfocus_on_tap_widgetbook
-                .unfocusOnTapDisabledUseCase,
           ),
         ],
       ),
@@ -599,23 +581,6 @@ final directories = <_widgetbook.WidgetbookNode>[
             builder:
                 _widgetbook_app_use_cases_dialog_body_color_selection_dialog_widgetbook
                     .bodyColorSelectionDialogUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'BottomSlideDialog',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'ConfirmDisabled',
-            builder:
-                _widgetbook_app_use_cases_dialog_bottom_slide_dialog_widgetbook
-                    .bottomSlideDialogConfirmDisabledUseCase,
-          ),
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder:
-                _widgetbook_app_use_cases_dialog_bottom_slide_dialog_widgetbook
-                    .bottomSlideDialogUseCase,
           ),
         ],
       ),

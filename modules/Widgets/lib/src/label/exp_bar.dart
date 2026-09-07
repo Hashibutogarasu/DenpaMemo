@@ -37,7 +37,11 @@ class ExpBar extends StatelessWidget {
             ),
           ),
           Positioned.fill(
-            child: CustomPaint(painter: _LeftSlantedBorderPainter()),
+            child: CustomPaint(
+              painter: _LeftSlantedBorderPainter(
+                borderColor: theme.expBarBorderColor,
+              ),
+            ),
           ),
         ],
       ),
@@ -64,17 +68,22 @@ class _LeftSlantedClipper extends CustomClipper<Path> {
 }
 
 class _LeftSlantedBorderPainter extends CustomPainter {
+  _LeftSlantedBorderPainter({required this.borderColor});
+
+  final Color borderColor;
+
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawPath(
       _slantedPath(size),
       Paint()
-        ..color = Colors.black
+        ..color = borderColor
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5,
     );
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _LeftSlantedBorderPainter oldDelegate) =>
+      oldDelegate.borderColor != borderColor;
 }

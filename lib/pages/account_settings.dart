@@ -1,16 +1,14 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
-import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter/material.dart';
+
+import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
+import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/account_providers.dart';
 import '../providers/cloud_account_providers.dart';
 import '../widgets/dialog/confirm_dialog.dart';
-import '../widgets/list/list_item_container.dart';
-import '../widgets/list/list_item_tile.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/copyable_list_tile.dart';
 
@@ -166,67 +164,76 @@ class AccountSettingsPage extends ConsumerWidget {
             ListTileSection(
               title: Text(t.settings.accountSettings.sectionCloud),
             ),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.cloud_outlined,
-                  label: cloudAccount.isSignedIn
-                      ? (cloudAccount.email ??
-                            t.settings.accountSettings.signIn)
-                      : t.settings.accountSettings.signIn,
-                  onTap: cloudAccount.isSignedIn
-                      ? null
-                      : () => _showSignInDialog(context, ref),
-                ),
-                CopyableListTile(
-                  icon: Icons.badge_outlined,
-                  label: t.settings.accountSettings.cloudUidLabel,
-                  trailingText: cloudAccount.uid,
-                ),
-                ListItemTile(
-                  icon: Icons.logout,
-                  label: t.settings.accountSettings.signOut,
-                  onTap: cloudAccount.isSignedIn
-                      ? () => _signOut(context, ref)
-                      : null,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.cloud_outlined,
+                    label: cloudAccount.isSignedIn
+                        ? (cloudAccount.email ??
+                              t.settings.accountSettings.signIn)
+                        : t.settings.accountSettings.signIn,
+                    onTap: cloudAccount.isSignedIn
+                        ? null
+                        : () => _showSignInDialog(context, ref),
+                  ),
+                  CopyableListTile(
+                    icon: Icons.badge_outlined,
+                    label: t.settings.accountSettings.cloudUidLabel,
+                    trailingText: cloudAccount.uid,
+                  ),
+                  ListItemTile(
+                    icon: Icons.logout,
+                    label: t.settings.accountSettings.signOut,
+                    onTap: cloudAccount.isSignedIn
+                        ? () => _signOut(context, ref)
+                        : null,
+                  ),
+                ],
+              ),
             ),
             ListTileSection(
               title: Text(t.settings.accountSettings.sectionLocal),
             ),
-            ListItemContainer(
-              children: [
-                CopyableListTile(
-                  icon: Icons.badge_outlined,
-                  label: t.settings.accountCuidLabel,
-                  trailingText: account.cuid,
-                ),
-                ListItemTile(
-                  icon: Icons.add_circle_outline,
-                  label: t.settings.accountSettings.addLocalAccount,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  CopyableListTile(
+                    icon: Icons.badge_outlined,
+                    label: t.settings.accountCuidLabel,
+                    trailingText: account.cuid,
+                  ),
+                  ListItemTile(
+                    icon: Icons.add_circle_outline,
+                    label: t.settings.accountSettings.addLocalAccount,
+                  ),
+                ],
+              ),
             ),
             ListTileSection(
               title: Text(t.settings.accountSettings.sectionDangerZone),
             ),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.delete_outline,
-                  label: t.settings.accountSettings.deleteCloudAccount,
-                  color: Theme.of(context).colorScheme.error,
-                  onTap: cloudAccount.isSignedIn
-                      ? () => _deleteCloudAccount(context, ref)
-                      : null,
-                ),
-                ListItemTile(
-                  icon: Icons.delete_outline,
-                  label: t.settings.accountSettings.deleteLocalAccount,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.delete_outline,
+                    label: t.settings.accountSettings.deleteCloudAccount,
+                    color: Theme.of(context).colorScheme.error,
+                    onTap: cloudAccount.isSignedIn
+                        ? () => _deleteCloudAccount(context, ref)
+                        : null,
+                  ),
+                  ListItemTile(
+                    icon: Icons.delete_outline,
+                    label: t.settings.accountSettings.deleteLocalAccount,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 
 import '../../i18n/gen/strings.g.dart';
+import 'app_dialog.dart';
 
 /// Generic "run [task], show a spinner while it's in flight, then show its
 /// result" modal: [loadingMessage] + a [CircularProgressIndicator] while
@@ -46,7 +47,7 @@ class ProgressResultDialog<T> extends StatefulWidget {
     required String Function(T result) resultLabel,
     List<Widget> Function(BuildContext context, T result)? extraActions,
   }) {
-    return showDialog<T>(
+    return AppDialog.show<T>(
       context: context,
       barrierDismissible: false,
       builder: (context) => ProgressResultDialog<T>(

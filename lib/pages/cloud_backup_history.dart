@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
-import 'package:flutter/material.dart';
 import 'package:flutter_date_formatter/flutter_date_formatter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/cloud_backup_history_providers.dart';
 import '../providers/cloud_files_providers.dart';
@@ -14,8 +14,6 @@ import '../widgets/dialog/cloud_backup_flows.dart';
 import '../widgets/dialog/cloud_file_action_menu.dart';
 import '../widgets/dialog/confirm_dialog.dart';
 import '../widgets/generic_selection_floating_menu.dart';
-import '../widgets/list/list_item_container.dart';
-import '../widgets/list/list_item_tile.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/scaffold/cloud_backup_shell.dart';
 
@@ -75,44 +73,53 @@ class CloudBackupHistoryPage extends ConsumerWidget {
                             pattern: 'yyyy/MM/dd',
                           ),
                         ),
-                        ListItemContainer(
-                          children: [
-                            for (final file in entry.value)
-                              DisableWhileRunning(
-                                provider: cloudBackupBusyProvider,
-                                onPressed: () =>
-                                    runCloudRestore(context, ref, target: file),
-                                builder: (context, onRestore) => ListItemTile(
-                                  icon: Icons.description_outlined,
-                                  label: file.filename,
-                                  trailing: FormattedDateText(
-                                    dateTime: file.uploadedAt,
-                                    pattern: 'HH:mm',
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: ListItemContainer(
+                            children: [
+                              for (final file in entry.value)
+                                DisableWhileRunning(
+                                  provider: cloudBackupBusyProvider,
+                                  onPressed: () => runCloudRestore(
+                                    context,
+                                    ref,
+                                    target: file,
                                   ),
-                                  selectionMode: selectionMode,
-                                  selected: selectedIds.contains(file.fileId),
-                                  onSelectedChanged: (_) =>
-                                      toggleCloudFileSelected(ref, file.fileId),
-                                  onLongPress: () {
-                                    ref
-                                            .read(
-                                              cloudFileSelectionModeProvider
-                                                  .notifier,
-                                            )
-                                            .state =
-                                        true;
-                                    toggleCloudFileSelected(ref, file.fileId);
-                                  },
-                                  actionMenuItemsBuilder: (context) =>
-                                      cloudFileActionMenuItems(
-                                        context,
-                                        ref,
-                                        cloudFile: file,
-                                        onRestore: onRestore,
-                                      ),
+                                  builder: (context, onRestore) => ListItemTile(
+                                    icon: Icons.description_outlined,
+                                    label: file.filename,
+                                    trailing: FormattedDateText(
+                                      dateTime: file.uploadedAt,
+                                      pattern: 'HH:mm',
+                                    ),
+                                    selectionMode: selectionMode,
+                                    selected: selectedIds.contains(file.fileId),
+                                    onSelectedChanged: (_) =>
+                                        toggleCloudFileSelected(
+                                          ref,
+                                          file.fileId,
+                                        ),
+                                    onLongPress: () {
+                                      ref
+                                              .read(
+                                                cloudFileSelectionModeProvider
+                                                    .notifier,
+                                              )
+                                              .state =
+                                          true;
+                                      toggleCloudFileSelected(ref, file.fileId);
+                                    },
+                                    actionMenuItemsBuilder: (context) =>
+                                        cloudFileActionMenuItems(
+                                          context,
+                                          ref,
+                                          cloudFile: file,
+                                          onRestore: onRestore,
+                                        ),
+                                  ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ],

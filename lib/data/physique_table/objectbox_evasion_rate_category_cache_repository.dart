@@ -27,21 +27,25 @@ class EvasionRateCategoryCacheRepository {
     _box.putMany([for (final category in categories) _toEntity(category)]);
   }
 
-  EvasionRateCategoryEntity _toEntity(PhysiqueEvasionRateCategoryRow row) => EvasionRateCategoryEntity(
-    categoryId: row.id,
-    evasionRateStart: row.evasionRateStart,
-    evasionRateEnd: row.evasionRateEnd,
-    columnIndex: row.columnIndex,
-    textKey: row.textKey,
-    sign: row.sign?.name,
-  );
+  EvasionRateCategoryEntity _toEntity(PhysiqueEvasionRateCategoryRow row) =>
+      EvasionRateCategoryEntity(
+        categoryId: row.id,
+        evasionRateStart: row.evasionRateStart,
+        evasionRateEnd: row.evasionRateEnd,
+        columnIndex: row.columnIndex,
+        textKey: row.textKey,
+        sign: row.sign?.name,
+      );
 
-  PhysiqueEvasionRateCategoryRow _toRow(EvasionRateCategoryEntity entity) => PhysiqueEvasionRateCategoryRow(
-    id: entity.categoryId,
-    evasionRateStart: entity.evasionRateStart,
-    evasionRateEnd: entity.evasionRateEnd,
-    columnIndex: entity.columnIndex,
-    textKey: entity.textKey,
-    sign: entity.sign == null ? null : EvasionRateSign.values.byName(entity.sign!),
-  );
+  PhysiqueEvasionRateCategoryRow _toRow(EvasionRateCategoryEntity entity) =>
+      PhysiqueEvasionRateCategoryRow(
+        id: entity.categoryId,
+        evasionRateStart: entity.evasionRateStart,
+        evasionRateEnd: entity.evasionRateEnd,
+        columnIndex: entity.columnIndex,
+        textKey: entity.textKey,
+        sign: entity.sign == null
+            ? null
+            : EvasionRateSign.values.byName(entity.sign!),
+      );
 }

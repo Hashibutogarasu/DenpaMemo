@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_lucide_animated/flutter_lucide_animated.dart' as lucide;
 
 /// Which endpoint an [ArrowIcon] points data toward: [toCloud] for a
@@ -40,7 +41,8 @@ class ArrowIcon extends StatefulWidget {
   State<ArrowIcon> createState() => _ArrowIconState();
 }
 
-class _ArrowIconState extends State<ArrowIcon> with SingleTickerProviderStateMixin {
+class _ArrowIconState extends State<ArrowIcon>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _bounceController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 500),
@@ -82,7 +84,9 @@ class _ArrowIconState extends State<ArrowIcon> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final effectiveColor =
-        widget.color ?? IconTheme.of(context).color ?? Theme.of(context).colorScheme.onSurface;
+        widget.color ??
+        IconTheme.of(context).color ??
+        Theme.of(context).colorScheme.onSurface;
     return AnimatedRotation(
       turns: widget.direction == ArrowDirection.toCloud ? 0.0 : 0.5,
       duration: const Duration(milliseconds: 300),
@@ -92,7 +96,11 @@ class _ArrowIconState extends State<ArrowIcon> with SingleTickerProviderStateMix
           offset: Offset(0, -_bounce.value * widget.size * 0.25),
           child: child,
         ),
-        child: lucide.LucideAnimatedIcon(icon: lucide.arrow_up, size: widget.size, color: effectiveColor),
+        child: lucide.LucideAnimatedIcon(
+          icon: lucide.arrow_up,
+          size: widget.size,
+          color: effectiveColor,
+        ),
       ),
     );
   }

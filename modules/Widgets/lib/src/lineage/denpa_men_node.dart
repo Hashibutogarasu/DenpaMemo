@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:tree_graph/tree_graph.dart';
 
 /// [icon] with [name] shown below. [hoverHighlightPainter], when set,

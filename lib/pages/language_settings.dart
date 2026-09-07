@@ -1,8 +1,8 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, LocaleSettings;
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide LocaleSettings;
 import '../i18n/gen/strings.g.dart';
 import '../providers/language_providers.dart';
 

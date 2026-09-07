@@ -1,12 +1,12 @@
-import 'package:collection/collection.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
+
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 import 'package:table_editor/table_editor.dart';
 import 'package:toaster/toaster.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/physique_table_edit_providers.dart';
@@ -19,7 +19,7 @@ Future<bool> _confirm(
   required String message,
 }) async {
   final t = context.t;
-  final confirmed = await showDialog<bool>(
+  final confirmed = await AppDialog.show<bool>(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(title),
@@ -176,11 +176,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                           onPressed: _sync,
                         ),
                         const SizedBox(height: 12),
-                        FloatingActionButton.extended(
-                          heroTag: 'physiqueTableSave',
-                          label: Text(t.physiqueTable.save),
-                          onPressed: _save,
-                        ),
+                        SaveButton(heroTag: 'physiqueTableSave', save: _save),
                       ],
                     ),
               body: editState.loadError
@@ -220,20 +216,20 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                                           rowId: (row) =>
                                               row.lineOffset.toString(),
                                           isSelectable: true,
-                                          selectionMode:
-                                              SelectionMode.multiple,
+                                          selectionMode: SelectionMode.multiple,
                                           selectedRows: _selectedRowIds,
                                           onCheckboxChanged:
-                                              (rowId, isSelected) => setState(() {
+                                              (
+                                                rowId,
+                                                isSelected,
+                                              ) => setState(() {
                                                 _selectedRowIds = Set.of(
                                                   _selectedRowIds,
                                                 );
                                                 if (isSelected) {
                                                   _selectedRowIds.add(rowId);
                                                 } else {
-                                                  _selectedRowIds.remove(
-                                                    rowId,
-                                                  );
+                                                  _selectedRowIds.remove(rowId);
                                                 }
                                               }),
                                           trailingCellBuilder: (row) =>
@@ -246,9 +242,8 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
                                                 ),
                                                 tooltip:
                                                     t.physiqueTable.deleteRow,
-                                                onPressed: () => _deleteRow(
-                                                  row.lineOffset,
-                                                ),
+                                                onPressed: () =>
+                                                    _deleteRow(row.lineOffset),
                                               ),
                                         ),
                                 ),
@@ -308,10 +303,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
               anntenaCategory: widget.args.anntenaCategory,
               statusName: '',
             ),
-            body: LoadingOverlay(
-              loading: true,
-              child: const SizedBox.shrink(),
-            ),
+            body: LoadingOverlay(loading: true, child: const SizedBox.shrink()),
           ),
           error: (_, _) => _PhysiqueTableEditScaffold(
             title: t.physiqueTable.tableTitle(

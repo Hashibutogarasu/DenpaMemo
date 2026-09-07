@@ -1,13 +1,11 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations, t;
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations, t;
 import '../data/profile/profile.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/profile_providers.dart';
-import '../widgets/list/list_item_container.dart';
-import '../widgets/list/list_item_tile.dart';
 import '../widgets/profile/profile_name_dialog.dart';
 
 /// Lets the user create and switch between [Profile]s for [namespace], a
@@ -49,15 +47,18 @@ class ProfileSwitchPage extends ConsumerWidget {
         error: (error, stackTrace) => Center(child: Text(error.toString())),
         data: (profiles) => ListView(
           children: [
-            ListItemContainer(
-              children: [
-                for (final profile in profiles)
-                  _ProfileTile(
-                    namespace: namespace,
-                    profile: profile,
-                    isCurrent: currentAsync.value?.id == profile.id,
-                  ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  for (final profile in profiles)
+                    _ProfileTile(
+                      namespace: namespace,
+                      profile: profile,
+                      isCurrent: currentAsync.value?.id == profile.id,
+                    ),
+                ],
+              ),
             ),
           ],
         ),

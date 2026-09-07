@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:api_client/api_client.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_table_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_initialization_providers.dart';
@@ -13,7 +13,6 @@ import '../providers/physique_table_cache_providers.dart';
 import '../providers/physique_table_edit_providers.dart';
 import '../providers/physiques_providers.dart';
 import '../routing/app_router.dart';
-import '../widgets/list/list_item_container.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/physique_table/physique_antenna_category_selection_dialog.dart';
 import '../widgets/physique_table/table_type_selection_dialog.dart';
@@ -22,7 +21,7 @@ import '../widgets/physique_table/table_type_selection_dialog.dart';
 /// [Physique] size id — see [PhysiqueTableArgs].
 Future<String?> _pickLevel(BuildContext context) {
   final controller = TextEditingController();
-  return showDialog<String>(
+  return AppDialog.show<String>(
     context: context,
     builder: (context) {
       final t = context.t;
@@ -227,33 +226,39 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
                 children: [
                   for (final entry in byCategory.entries) ...[
                     ListTileSection(title: Text(entry.key)),
-                    ListItemContainer(
-                      children: [
-                        for (final row in entry.value)
-                          ListTile(
-                            leading: const Icon(Icons.table_rows_outlined),
-                            title: Text(row.anntenaCategory),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (categoriesWithData.contains(
-                                  row.anntenaCategory,
-                                ))
-                                  IconButton(
-                                    icon: const Icon(Icons.edit_outlined),
-                                    tooltip: t.physiqueTable.edit,
-                                    onPressed: () => _startEditingExistingTable(
-                                      types,
-                                      row.anntenaCategory,
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ListItemContainer(
+                        children: [
+                          for (final row in entry.value)
+                            ListTile(
+                              leading: const Icon(Icons.table_rows_outlined),
+                              title: Text(row.anntenaCategory),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (categoriesWithData.contains(
+                                    row.anntenaCategory,
+                                  ))
+                                    IconButton(
+                                      icon: const Icon(Icons.edit_outlined),
+                                      tooltip: t.physiqueTable.edit,
+                                      onPressed: () =>
+                                          _startEditingExistingTable(
+                                            types,
+                                            row.anntenaCategory,
+                                          ),
                                     ),
-                                  ),
-                                const Icon(Icons.chevron_right),
-                              ],
+                                  const Icon(Icons.chevron_right),
+                                ],
+                              ),
+                              onTap: () => _viewExistingTable(
+                                types,
+                                row.anntenaCategory,
+                              ),
                             ),
-                            onTap: () =>
-                                _viewExistingTable(types, row.anntenaCategory),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ],

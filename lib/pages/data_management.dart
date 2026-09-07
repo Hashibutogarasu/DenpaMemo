@@ -1,8 +1,8 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/cache_file_providers.dart';
 import '../providers/data_cleanup_providers.dart';
@@ -15,7 +15,7 @@ Future<bool> _confirm(
   required String message,
 }) async {
   final t = context.t;
-  final confirmed = await showDialog<bool>(
+  final confirmed = await AppDialog.show<bool>(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(title),
@@ -41,7 +41,7 @@ Future<void> _notify(
   required String message,
 }) {
   final t = context.t;
-  return showDialog<void>(
+  return AppDialog.show<void>(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(title),

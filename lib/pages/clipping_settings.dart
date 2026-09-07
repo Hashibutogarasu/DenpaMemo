@@ -1,15 +1,14 @@
-import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension, Translations, t;
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart' hide Translations, t;
 import '../data/clipping/clipping_slot_storage.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/clipping_slot_providers.dart';
 import '../providers/profile_providers.dart';
 import '../widgets/dialog/confirm_dialog.dart';
-import '../widgets/list/list_item_tile.dart';
 
 IconData _iconFor(DenpaMenImageSlotType slotType) {
   switch (slotType) {
@@ -182,7 +181,7 @@ class _ClippingSlotTile extends ConsumerWidget {
     return ListItemTile(
       icon: _iconFor(slotType),
       label: slot?.name ?? defaultClippingSlotLabel(slotType),
-      subtitle: slot != null ? _rangeText(t, slot) : t.common.unset,
+      subtitle: Text(slot != null ? _rangeText(t, slot) : t.common.unset),
       onTap: () => ref
           .read(clippingSettingsControllerProvider)
           .configureSlot(context, slotType: slotType, existing: slot),

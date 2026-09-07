@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import 'app_dialog.dart';
 
 /// Generic multi-page zoomable dialog: doesn't know or care whether its
 /// pages are `File` images, QR codes, or anything else — [itemBuilder]
@@ -39,7 +42,7 @@ class MediaZoomDialog extends StatefulWidget {
     if (images.isEmpty) {
       return Future<void>.value();
     }
-    return showDialog<void>(
+    return AppDialog.show<void>(
       context: context,
       builder: (context) => MediaZoomDialog(
         itemCount: images.length,
@@ -88,9 +91,8 @@ class _MediaZoomDialogState extends State<MediaZoomDialog> {
             child: PageView.builder(
               controller: _controller,
               itemCount: widget.itemCount,
-              itemBuilder: (context, index) => InteractiveViewer(
-                child: widget.itemBuilder(context, index),
-              ),
+              itemBuilder: (context, index) =>
+                  InteractiveViewer(child: widget.itemBuilder(context, index)),
             ),
           ),
           const SizedBox(height: 8),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:silky_scroll/silky_scroll.dart';
 
 /// Wraps `silky_scroll`'s [SilkyScroll] with this app's default feel.

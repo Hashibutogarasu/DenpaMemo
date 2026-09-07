@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../theme/denpa_men_label_theme.dart';
 import 'exp_bar.dart';
 import 'outlined_title.dart';
 
@@ -16,6 +17,7 @@ class ExpProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final theme = Theme.of(context).extension<DenpaMenLabelThemeData>()!;
     final isMax = progress == null;
 
     return LayoutBuilder(
@@ -28,7 +30,7 @@ class ExpProgress extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8),
                 child: OutlinedTitleText(
                   text: t.denpaMenStatus.max,
-                  outlineColor: Colors.red,
+                  outlineColor: theme.inactiveBonusColor,
                   fontSize: 16,
                 ),
               ),

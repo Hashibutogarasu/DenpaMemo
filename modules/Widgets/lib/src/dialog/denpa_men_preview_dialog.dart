@@ -1,8 +1,10 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../denpa_men_status.dart';
 import '../icon/denpa_men_icon_builder.dart';
+import 'app_dialog.dart';
 
 /// Shows [denpaMen]'s read-only preview ([DenpaMenStatus]) in a dialog,
 /// used when tapping an individual's node in the app's lineage tree and
@@ -27,7 +29,7 @@ class DenpaMenPreviewDialog extends StatelessWidget {
     required int totalAttributeCount,
     DenpaMenIconBuilder? iconBuilder,
   }) {
-    return showDialog<void>(
+    return AppDialog.show<void>(
       context: context,
       builder: (context) => DenpaMenPreviewDialog(
         denpaMen: denpaMen,

@@ -1,6 +1,7 @@
-import 'package:croppy/croppy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:croppy/croppy.dart';
 
 import '../i18n/gen/strings.g.dart';
 

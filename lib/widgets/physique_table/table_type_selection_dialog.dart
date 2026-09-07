@@ -1,11 +1,11 @@
-import 'package:api_client/api_client.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 
+import 'package:api_client/api_client.dart';
+
+import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
 
-/// Shows [BottomSlideDialog] letting the user pick one [TableDefinition]
+/// Shows an [AlertDialog] letting the user pick one [TableDefinition]
 /// (a registered physique table type — HP, speed, evasion rate, ...
 /// fetched from `GET /tables/types`, see `tableTypesProvider`). Mirrors
 /// [showPhysiqueAntennaCategorySelectionDialog]'s shell: same shell, same
@@ -20,7 +20,7 @@ Future<TableDefinition?> showTableTypeSelectionDialog(
   TableDefinition? selected,
   Map<String, bool>? dataAvailability,
 }) {
-  return showBottomSlideDialog<TableDefinition>(
+  return AppDialog.show<TableDefinition>(
     context: context,
     builder: (context) => TableTypeSelectionDialog(
       types: types,
@@ -53,30 +53,48 @@ class _TableTypeSelectionDialogState extends State<TableTypeSelectionDialog> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final selected = _selected;
+    final selectedIndex = selected == null
+        ? null
+        : indexOfOrNull(widget.types, (row) => row.type == selected.type);
 
-    return BottomSlideDialog(
-      title: t.physiqueTable.selectStatusCategory,
-      confirmEnabled: _selected != null,
-      onConfirm: () => Navigator.of(context).pop(_selected),
-      content: ListView(
-        shrinkWrap: true,
-        children: [
-          for (final row in widget.types)
-            ListTile(
-              title: Text((t[row.translationKey] as String?) ?? row.type),
-              selected: _selected?.type == row.type,
-              trailing: _selected?.type == row.type
-                  ? const Icon(Icons.check)
-                  : switch (widget.dataAvailability?[row.type]) {
-                      final hasData? => Icon(
-                        hasData ? Icons.circle_outlined : Icons.close,
-                      ),
-                      null => null,
-                    },
-              onTap: () => setState(() => _selected = row),
-            ),
-        ],
+    return AlertDialog(
+      title: Text(t.physiqueTable.selectStatusCategory),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: SingleChildScrollView(
+          child: ListItemContainer(
+            selectedIndex: selectedIndex,
+            children: [
+              for (final row in widget.types)
+                ListItemTile(
+                  label: (t[row.translationKey] as String?) ?? row.type,
+                  trailing: _selected?.type == row.type
+                      ? const SizedBox.shrink()
+                      : switch (widget.dataAvailability?[row.type]) {
+                          final hasData? => Icon(
+                            hasData ? Icons.circle_outlined : Icons.close,
+                          ),
+                          null => const SizedBox.shrink(),
+                        },
+                  onTap: () => setState(() => _selected = row),
+                ),
+            ],
+          ),
+        ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.common.cancel),
+        ),
+        FilledButton(
+          onPressed: _selected == null
+              ? null
+              : () => Navigator.of(context).pop(_selected),
+          child: Text(t.common.confirm),
+        ),
+      ],
     );
   }
 }

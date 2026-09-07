@@ -1,24 +1,35 @@
 import 'dart:convert';
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:data_pack/data_pack.dart';
+
 import 'i18n/gen/strings.g.dart';
 import 'src/responsive/responsive_scope.dart';
-import 'src/theme/app_dialog_theme.dart';
+import 'src/theme/app_button_theme.dart';
+import 'src/theme/back_button_theme.dart';
 import 'src/theme/denpa_men_container_theme.dart';
 import 'src/theme/denpa_men_label_theme.dart';
+import 'src/theme/dialog_transition_theme.dart';
 import 'src/theme/fab_button_theme.dart';
+import 'src/theme/fab_label_theme.dart';
+import 'src/theme/list_item_container_theme.dart';
+import 'src/theme/navigation_bar_blur_theme.dart';
 import 'src/theme/slanted_header_theme.dart';
+import 'src/theme/toggle_button_group_theme.dart';
 
 /// The theme every widget/Widgetbook test in this package should render
 /// under, so individual tests don't each assemble their own ad hoc
 /// `ThemeData`/`extensions` — they all share one theme, matching how the
 /// real app's own theme is one `ThemeData(...)` shared by the whole app.
 /// Kept in sync with `lib/main.dart`'s theme in the `denpa_memo` app.
+final ColorScheme _testColorScheme = ColorScheme.fromSeed(
+  seedColor: Colors.deepPurple,
+);
+
 final ThemeData testAppTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+  colorScheme: _testColorScheme,
   listTileTheme: const ListTileThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -30,8 +41,15 @@ final ThemeData testAppTheme = ThemeData(
       borderRadius: BorderRadius.all(Radius.circular(24)),
     ),
   ),
-  extensions: const [
-    SlantedHeaderThemeData(
+  navigationBarTheme: const NavigationBarThemeData(
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+    indicatorColor: Colors.transparent,
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    surfaceTintColor: Colors.transparent,
+  ),
+  extensions: [
+    const SlantedHeaderThemeData(
       fillColor: Color(0xFF52BBE5),
       borderColor: Color(0xFF0865C2),
       borderWidth: 6,
@@ -69,8 +87,9 @@ final ThemeData testAppTheme = ThemeData(
       accordionCheckboxSlotSize: 40,
       accordionAnimationDuration: Duration(milliseconds: 200),
       resistanceGap: 5,
+      nameFieldFillColor: Colors.white,
     ),
-    DenpaMenLabelThemeData(
+    const DenpaMenLabelThemeData(
       headerTitleOutlineColor: Color(0xFF238BCB),
       pillBackgroundColor: Color(0xFF7FC9FF),
       pillTextColor: Color(0xFF2B2031),
@@ -78,12 +97,52 @@ final ThemeData testAppTheme = ThemeData(
       expBarUnfilledColor: Color(0xFF056193),
       maxedValueColor: Color(0xFF7BEA95),
       inactiveBonusColor: Color(0xFFE53935),
+      titleFillColor: Colors.white,
+      expBarBorderColor: Colors.black,
     ),
-    AppDialogThemeData(
-      transitionDuration: Duration(milliseconds: 320),
-      transitionCurve: Curves.easeOutCubic,
-      reverseTransitionCurve: Curves.easeInCubic,
-      barrierColor: Colors.black54,
+    const AppButtonThemeData(
+      backgroundTintColor: Color(0x995B7FA6),
+      blurSigma: 12,
+      foregroundColor: Colors.white,
+    ),
+    ToggleButtonGroupThemeData(
+      containerColor: _testColorScheme.surface,
+      containerElevation: 4,
+      containerBorderRadius: 22,
+      highlightColor: const Color(0xFF7FC9FF),
+      highlightBorderRadius: 20,
+      selectedIconColor: const Color(0xFF056193),
+      unselectedIconColor: _testColorScheme.onSurfaceVariant,
+      slideDuration: const Duration(milliseconds: 220),
+      slideCurve: Curves.easeOutBack,
+    ),
+    ListItemContainerThemeData(
+      backgroundColor: Color.alphaBlend(
+        const Color(0x1452BBE5),
+        _testColorScheme.surface,
+      ),
+      borderRadius: 20,
+      tileBorderColor: _testColorScheme.outlineVariant,
+      tileBorderWidth: 1,
+      selectedBackgroundColor: Color.alphaBlend(
+        const Color(0x33052744),
+        _testColorScheme.surface,
+      ),
+      checkAnimationDuration: const Duration(milliseconds: 200),
+      checkAnimationInCurve: Curves.easeOut,
+      checkAnimationOutCurve: Curves.easeIn,
+    ),
+    NavigationBarBlurThemeData(
+      tintColor: Colors.white.withValues(alpha: 0.5),
+      blurSigma: 12,
+    ),
+    const BackButtonThemeData(anchor: BackButtonAnchor.bottomLeft),
+    const FabLabelThemeData(showLabel: false, showTooltip: true),
+    const DialogTransitionThemeData(
+      duration: Duration(milliseconds: 220),
+      curve: Curves.easeOut,
+      reverseCurve: Curves.easeIn,
+      beginOffset: Offset(0, 0.15),
     ),
   ],
 );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:denpa_memo/widgets/list/list_item_tile.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
+import 'package:denpamemo_widgets/testing.dart';
 
 void main() {
   testWidgets(
@@ -10,7 +12,7 @@ void main() {
     (tester) async {
       var longPressed = false;
       await tester.pumpWidget(
-        MaterialApp(
+        TestApp(
           home: Scaffold(
             body: ListItemTile(
               icon: Icons.description_outlined,

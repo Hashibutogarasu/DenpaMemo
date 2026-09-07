@@ -1,5 +1,6 @@
-import 'package:api_client/api_client.dart';
 import 'package:flutter/material.dart';
+
+import 'package:api_client/api_client.dart';
 
 /// Renders [sign] as the plus/minus icon shared by every place that shows
 /// an `EvasionRateSign` (the physique-identification candidate dialog,

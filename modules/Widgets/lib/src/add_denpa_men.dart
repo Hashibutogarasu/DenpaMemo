@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'denpa_men_status.dart';

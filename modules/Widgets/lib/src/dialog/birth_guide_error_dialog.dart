@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import 'app_dialog.dart';
 
 Future<void> showBirthGuideErrorDialog(
   BuildContext context, {
   required VoidCallback onDismissed,
 }) {
-  return showDialog<void>(
+  return AppDialog.show<void>(
     context: context,
     builder: (context) => BirthGuideErrorDialog(onDismissed: onDismissed),
   );

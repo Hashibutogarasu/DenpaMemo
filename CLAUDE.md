@@ -28,6 +28,12 @@
 - Doc comments on individual fields are forbidden. If a field's purpose isn't obvious from its name and type, rename it instead of explaining it with a comment.
 - Doc comments on classes, functions, and methods are required, and must be written in English.
 
+# Device Execution
+
+- Never run `flutter devices`, `flutter run`, `flutter install`, `adb install`, `adb shell am start`/`monkey`, or any other command that installs, launches, or otherwise interacts with a real device or emulator — this includes screenshots, logcat capture, and UI automation against a running app — unless the user has explicitly asked for it in that turn. A prior build (`flutter build ...`) is not permission to install or run it.
+- If diagnosing a bug seems to require an actual run, say so and ask before doing it. Do not treat "let's figure out the root cause" as implicit permission to touch a connected device.
+- When wrapping up a task, do not solicit permission to run device/build verification (e.g. "let me know if you'd like me to run this"). State plainly that device verification wasn't performed and stop there; let the user bring it up themselves if they want it done.
+
 # Unrequested Bug Fixes
 
 - While writing code for a requested task, a bug noticed in unrelated, unrequested code must not be fixed unilaterally on the spot.

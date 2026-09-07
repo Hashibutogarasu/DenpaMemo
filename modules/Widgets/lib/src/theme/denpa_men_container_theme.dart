@@ -1,6 +1,7 @@
 // ignore_for_file: annotate_overrides
 
 import 'package:flutter/material.dart';
+
 import 'package:theme_tailor_annotation/theme_tailor_annotation.dart';
 
 import 'tailor_config.dart';
@@ -33,6 +34,7 @@ class DenpaMenContainerThemeData
     required this.accordionCheckboxSlotSize,
     required this.accordionAnimationDuration,
     required this.resistanceGap,
+    required this.nameFieldFillColor,
   });
 
   final Color statusBackgroundColor;
@@ -52,4 +54,5 @@ class DenpaMenContainerThemeData
   final double accordionCheckboxSlotSize;
   final Duration accordionAnimationDuration;
   final double resistanceGap;
+  final Color nameFieldFillColor;
 }

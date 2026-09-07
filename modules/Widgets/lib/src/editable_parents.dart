@@ -1,5 +1,6 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'container/selection_tile.dart';

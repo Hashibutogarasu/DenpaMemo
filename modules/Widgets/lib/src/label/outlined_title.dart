@@ -8,14 +8,14 @@ class OutlinedTitleText extends StatelessWidget {
   const OutlinedTitleText({
     super.key,
     required this.text,
-    this.fillColor = Colors.white,
+    this.fillColor,
     this.outlineColor,
     this.fontSize = 26,
     this.outlineWidth = 3,
   });
 
   final String text;
-  final Color fillColor;
+  final Color? fillColor;
   final Color? outlineColor;
   final double fontSize;
   final double outlineWidth;
@@ -45,7 +45,7 @@ class OutlinedTitleText extends StatelessWidget {
           text,
           overflow: TextOverflow.ellipsis,
           softWrap: false,
-          style: baseStyle.copyWith(color: fillColor),
+          style: baseStyle.copyWith(color: fillColor ?? theme.titleFillColor),
         ),
       ],
     );

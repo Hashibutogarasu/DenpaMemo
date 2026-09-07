@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:denpa_memo/widgets.dart';
 import '../../data/profile/profile.dart';
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/profile_providers.dart';
@@ -18,7 +20,7 @@ class ProfileSelectionDialog extends ConsumerWidget {
     BuildContext context, {
     required String namespace,
   }) {
-    return showDialog<Profile>(
+    return AppDialog.show<Profile>(
       context: context,
       builder: (context) => ProfileSelectionDialog(namespace: namespace),
     );

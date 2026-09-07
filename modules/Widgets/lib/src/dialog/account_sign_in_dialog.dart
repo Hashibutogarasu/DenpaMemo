@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
 import '../../i18n/gen/strings.g.dart';
+import 'app_dialog.dart';
 
 /// UI-only cloud sign-in dialog: manages the email/password fields and the
 /// in-flight sign-in [Future], and delegates the actual sign-in work to
@@ -32,12 +34,13 @@ class AccountSignInDialog extends StatefulWidget {
 
   static Future<void> show(
     BuildContext context, {
-    required Future<void> Function(String email, String password) onSignInWithEmail,
+    required Future<void> Function(String email, String password)
+    onSignInWithEmail,
     required Future<void> Function() onSignInWithGoogle,
     required VoidCallback onCreateAccount,
     GlobalKey<ScaffoldMessengerState>? messengerKey,
   }) {
-    return showDialog<void>(
+    return AppDialog.show<void>(
       context: context,
       builder: (context) => AccountSignInDialog(
         onSignInWithEmail: onSignInWithEmail,
@@ -84,8 +87,12 @@ class _AccountSignInDialogState extends State<AccountSignInDialog> {
     });
   }
 
-  void _signInWithEmail() =>
-      _run(() => widget.onSignInWithEmail(_emailController.text, _passwordController.text));
+  void _signInWithEmail() => _run(
+    () => widget.onSignInWithEmail(
+      _emailController.text,
+      _passwordController.text,
+    ),
+  );
 
   void _signInWithGoogle() => _run(widget.onSignInWithGoogle);
 
@@ -112,7 +119,8 @@ class _AccountSignInDialogState extends State<AccountSignInDialog> {
           child: FutureBuilder<void>(
             future: _signInFuture,
             builder: (context, snapshot) {
-              final running = snapshot.connectionState == ConnectionState.waiting;
+              final running =
+                  snapshot.connectionState == ConnectionState.waiting;
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -175,7 +183,9 @@ class _AccountSignInDialogState extends State<AccountSignInDialog> {
                     children: [
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: running ? null : () => Navigator.of(context).pop(),
+                          onPressed: running
+                              ? null
+                              : () => Navigator.of(context).pop(),
                           child: Text(t.common.cancel),
                         ),
                       ),

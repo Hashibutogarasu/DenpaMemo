@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
+
+import 'package:data_pack/data_pack.dart';
 
 import '../i18n/gen/strings.g.dart';
 import 'container/indented_header.dart';
@@ -13,6 +14,7 @@ import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute_resistance_entry.dart';
 import 'label/exp_progress.dart';
 import 'label/gauge_label.dart';
+import 'label/gauge_pair_row.dart';
 import 'label/gauge_value.dart';
 import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
@@ -134,30 +136,13 @@ class DenpaMenStatus extends StatelessWidget {
         attributeResistanceRows * entryHeight +
         (attributeResistanceRows - 1) * resistanceGap;
 
-    final gaugesRow = isMobile
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              GaugeLabel(label: t.denpaMenStatus.level, value: level),
-              const SizedBox(height: 4),
-              GaugeLabel(label: t.denpaMenStatus.happiness, value: happiness),
-            ],
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: GaugeLabel(
-                  label: t.denpaMenStatus.happiness,
-                  value: happiness,
-                ),
-              ),
-            ],
-          );
+    final gaugesRow = GaugePairRow(
+      level: GaugeLabel(label: t.denpaMenStatus.level, value: level),
+      happiness: GaugeLabel(
+        label: t.denpaMenStatus.happiness,
+        value: happiness,
+      ),
+    );
     final nameText = OutlinedTitleText(
       text: name,
       outlineColor: theme.accentColor,
@@ -206,7 +191,10 @@ class DenpaMenStatus extends StatelessWidget {
         header,
         Row(
           children: [
-            StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
+            StatusLabel(
+              textColor: theme.accentColor,
+              child: Text(t.denpaMenStatus.untilNextLevel),
+            ),
             Expanded(child: ExpProgress(progress: expProgress)),
           ],
         ),

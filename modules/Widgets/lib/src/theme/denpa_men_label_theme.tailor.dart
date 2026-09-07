@@ -18,6 +18,8 @@ mixin _$DenpaMenLabelThemeDataTailorMixin
   Color get expBarUnfilledColor;
   Color get maxedValueColor;
   Color get inactiveBonusColor;
+  Color get titleFillColor;
+  Color get expBarBorderColor;
 
   @override
   DenpaMenLabelThemeData copyWith({
@@ -28,6 +30,8 @@ mixin _$DenpaMenLabelThemeDataTailorMixin
     Color? expBarUnfilledColor,
     Color? maxedValueColor,
     Color? inactiveBonusColor,
+    Color? titleFillColor,
+    Color? expBarBorderColor,
   }) {
     return DenpaMenLabelThemeData(
       headerTitleOutlineColor:
@@ -38,6 +42,8 @@ mixin _$DenpaMenLabelThemeDataTailorMixin
       expBarUnfilledColor: expBarUnfilledColor ?? this.expBarUnfilledColor,
       maxedValueColor: maxedValueColor ?? this.maxedValueColor,
       inactiveBonusColor: inactiveBonusColor ?? this.inactiveBonusColor,
+      titleFillColor: titleFillColor ?? this.titleFillColor,
+      expBarBorderColor: expBarBorderColor ?? this.expBarBorderColor,
     );
   }
 
@@ -75,6 +81,12 @@ mixin _$DenpaMenLabelThemeDataTailorMixin
         other.inactiveBonusColor,
         t,
       )!,
+      titleFillColor: Color.lerp(titleFillColor, other.titleFillColor, t)!,
+      expBarBorderColor: Color.lerp(
+        expBarBorderColor,
+        other.expBarBorderColor,
+        t,
+      )!,
     );
   }
 
@@ -110,6 +122,14 @@ mixin _$DenpaMenLabelThemeDataTailorMixin
             const DeepCollectionEquality().equals(
               inactiveBonusColor,
               other.inactiveBonusColor,
+            ) &&
+            const DeepCollectionEquality().equals(
+              titleFillColor,
+              other.titleFillColor,
+            ) &&
+            const DeepCollectionEquality().equals(
+              expBarBorderColor,
+              other.expBarBorderColor,
             ));
   }
 
@@ -124,6 +144,8 @@ mixin _$DenpaMenLabelThemeDataTailorMixin
       const DeepCollectionEquality().hash(expBarUnfilledColor),
       const DeepCollectionEquality().hash(maxedValueColor),
       const DeepCollectionEquality().hash(inactiveBonusColor),
+      const DeepCollectionEquality().hash(titleFillColor),
+      const DeepCollectionEquality().hash(expBarBorderColor),
     );
   }
 }

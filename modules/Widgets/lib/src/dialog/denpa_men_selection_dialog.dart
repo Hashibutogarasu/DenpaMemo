@@ -1,11 +1,13 @@
 import 'dart:io';
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
+import 'package:data_pack/data_pack.dart';
+
+import '../../i18n/gen/strings.g.dart';
 import '../denpa_men_list_tile.dart';
 import '../icon/denpa_men_icon_builder.dart';
-import 'bottom_slide_dialog.dart';
+import 'app_dialog.dart';
 import 'denpa_men_preview_dialog.dart';
 
 /// Lets the user pick individuals out of [candidates], returning the
@@ -47,7 +49,7 @@ class DenpaMenSelectionDialog extends StatefulWidget {
     int minSelection = 1,
     Map<String, File?> iconsById = const {},
   }) {
-    return showBottomSlideDialog<List<DenpaMen>>(
+    return AppDialog.show<List<DenpaMen>>(
       context: context,
       builder: (context) => DenpaMenSelectionDialog.internal(
         title: title,
@@ -61,7 +63,8 @@ class DenpaMenSelectionDialog extends StatefulWidget {
   }
 
   @override
-  State<DenpaMenSelectionDialog> createState() => _DenpaMenSelectionDialogState();
+  State<DenpaMenSelectionDialog> createState() =>
+      _DenpaMenSelectionDialogState();
 }
 
 class _DenpaMenSelectionDialogState extends State<DenpaMenSelectionDialog> {
@@ -79,30 +82,45 @@ class _DenpaMenSelectionDialogState extends State<DenpaMenSelectionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomSlideDialog(
-      title: widget.title,
-      confirmEnabled: _selected.length >= widget._minSelection,
-      onConfirm: () => Navigator.of(context).pop(_selected),
-      content: ListView(
-        shrinkWrap: true,
-        children: [
-          for (final denpaMen in widget._candidates)
-            DenpaMenListTile(
-              denpaMen: denpaMen,
-              selected: _selected.any((d) => d.id == denpaMen.id),
-              iconFile: widget._iconsById[denpaMen.id],
-              onTap: () => _toggle(denpaMen),
-              onLongPress: (denpaMen) => DenpaMenPreviewDialog.show(
-                context,
+    final t = context.t;
+
+    return AlertDialog(
+      title: Text(widget.title),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            for (final denpaMen in widget._candidates)
+              DenpaMenListTile(
                 denpaMen: denpaMen,
-                totalAttributeCount: widget._totalAttributeCount,
-                iconBuilder: staticDenpaMenIconBuilder(
-                  widget._iconsById[denpaMen.id],
+                selected: _selected.any((d) => d.id == denpaMen.id),
+                iconFile: widget._iconsById[denpaMen.id],
+                onTap: () => _toggle(denpaMen),
+                onLongPress: (denpaMen) => DenpaMenPreviewDialog.show(
+                  context,
+                  denpaMen: denpaMen,
+                  totalAttributeCount: widget._totalAttributeCount,
+                  iconBuilder: staticDenpaMenIconBuilder(
+                    widget._iconsById[denpaMen.id],
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.common.cancel),
+        ),
+        FilledButton(
+          onPressed: _selected.length >= widget._minSelection
+              ? () => Navigator.of(context).pop(_selected)
+              : null,
+          child: Text(t.common.confirm),
+        ),
+      ],
     );
   }
 }

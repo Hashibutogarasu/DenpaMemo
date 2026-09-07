@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../field/inline_number_field.dart';
+import '../icon/slash_icon.dart';
 import '../theme/denpa_men_label_theme.dart';
 import 'gauge_value.dart';
 import 'status.dart';
@@ -42,7 +43,7 @@ class InlineGaugeLabel extends StatelessWidget {
               onChanged: onCurrentChanged,
             ),
           ),
-          const Text('/'),
+          const SlashIcon(size: 16),
           SizedBox(
             width: 32,
             child: InlineNumberField(value: value.max, onChanged: onMaxChanged),

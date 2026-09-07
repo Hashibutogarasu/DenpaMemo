@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_date_formatter/flutter_date_formatter.dart';
 
 import '../../i18n/gen/strings.g.dart';

@@ -1,6 +1,6 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart'
-    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
+
+import 'package:denpa_memo/widgets.dart';
 
 /// Rounded floating action bar shown above a list while it is in
 /// multi-select mode: a select-all/deselect-all toggle, an arbitrary set

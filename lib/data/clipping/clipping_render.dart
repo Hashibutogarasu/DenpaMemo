@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show compute;
+
 import 'package:crypto/crypto.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:flutter/foundation.dart' show compute;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image/image.dart' as img;
 

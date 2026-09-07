@@ -1,5 +1,6 @@
-import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter/material.dart';
+
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:table_editor/table_editor.dart';
 
 /// One row of a physique table as displayed in [TableEditor]. Kept

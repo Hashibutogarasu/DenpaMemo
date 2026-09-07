@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:go_router/go_router.dart';
 
 import '../header/slanted_app_bar.dart';
 import '../navigation/app_back_button.dart';
+import '../theme/back_button_theme.dart';
 import '../theme/fab_button_theme.dart';
 import '../theme/slanted_header_theme.dart';
 
@@ -24,7 +26,8 @@ class AlwaysPoppableShellScope extends InheritedWidget {
 
 /// Standard page shell: a [SlantedAppBar] header, then [belowHeader] and
 /// [body] in a [Column]. [body] holds the stack-aware [AppBackButton]
-/// (bottom-left, with any [backButtonExtras] stacked above it, gapped by
+/// (anchored to the corner given by [BackButtonThemeData.anchor], with any
+/// [backButtonExtras] stacked next to it, gapped by
 /// [FabButtonThemeData.miniOptionRowBottomPadding] like `MiniFabOption`)
 /// and [floatingActionButton] (bottom-right), both inset by [buttonInset].
 /// Also binds Escape to the same pop as the on-screen back button.
@@ -92,26 +95,7 @@ class AppScaffold extends StatelessWidget {
                           expansion: floatingActionButtonExpansion!,
                         ),
                       ),
-                    if (canPop)
-                      Positioned(
-                        left: buttonInset,
-                        bottom: buttonInset,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            for (final extra in backButtonExtras) ...[
-                              extra,
-                              SizedBox(
-                                height: Theme.of(context)
-                                    .extension<FabButtonThemeData>()!
-                                    .miniOptionRowBottomPadding,
-                              ),
-                            ],
-                            AppBackButton(onPressed: onBackPressed),
-                          ],
-                        ),
-                      ),
+                    if (canPop) _buildBackButtonCluster(context),
                     if (floatingActionButton != null)
                       Positioned(
                         right: buttonInset,
@@ -124,6 +108,40 @@ class AppScaffold extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBackButtonCluster(BuildContext context) {
+    final anchor = Theme.of(context).extension<BackButtonThemeData>()!.anchor;
+    final isTop = anchor.isTop;
+    final isLeft = anchor.isLeft;
+    final gap = SizedBox(
+      height: Theme.of(
+        context,
+      ).extension<FabButtonThemeData>()!.miniOptionRowBottomPadding,
+    );
+    final backButton = AppBackButton(onPressed: onBackPressed);
+
+    return Positioned(
+      left: isLeft ? buttonInset : null,
+      right: isLeft ? null : buttonInset,
+      top: isTop ? buttonInset : null,
+      bottom: isTop ? null : buttonInset,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: isLeft
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.end,
+        children: isTop
+            ? [
+                backButton,
+                for (final extra in backButtonExtras) ...[gap, extra],
+              ]
+            : [
+                for (final extra in backButtonExtras) ...[extra, gap],
+                backButton,
+              ],
       ),
     );
   }

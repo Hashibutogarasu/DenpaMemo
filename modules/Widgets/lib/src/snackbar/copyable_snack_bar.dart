@@ -16,7 +16,8 @@ class CopyableSnackBar {
     Duration duration = const Duration(seconds: 4),
     GlobalKey<ScaffoldMessengerState>? messengerKey,
   }) {
-    final messenger = messengerKey?.currentState ?? ScaffoldMessenger.of(context);
+    final messenger =
+        messengerKey?.currentState ?? ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
@@ -30,7 +31,11 @@ class CopyableSnackBar {
     );
   }
 
-  static void hide(BuildContext context, {GlobalKey<ScaffoldMessengerState>? messengerKey}) {
-    (messengerKey?.currentState ?? ScaffoldMessenger.of(context)).hideCurrentSnackBar();
+  static void hide(
+    BuildContext context, {
+    GlobalKey<ScaffoldMessengerState>? messengerKey,
+  }) {
+    (messengerKey?.currentState ?? ScaffoldMessenger.of(context))
+        .hideCurrentSnackBar();
   }
 }

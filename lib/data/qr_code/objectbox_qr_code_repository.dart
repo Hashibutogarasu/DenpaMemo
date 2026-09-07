@@ -1,9 +1,10 @@
+import 'package:data_pack/data_pack.dart';
+
 import '../../objectbox.g.dart';
 import '../denpa_men/denpa_men_mapper.dart';
 import '../objectbox/objectbox.dart';
 import 'qr_code_entity.dart';
 import 'qr_code_mapper.dart';
-import 'package:data_pack/data_pack.dart';
 
 /// [QrCodeRepository] backed by ObjectBox, saving the [QrCode] and its
 /// linked [DenpaMen] individuals in one write transaction.
