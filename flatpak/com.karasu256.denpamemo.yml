@@ -20,13 +20,11 @@ modules:
         - --share=network
       env:
         TAR_OPTIONS: --no-same-owner
-        CC: gcc
-        CXX: g++
     build-commands:
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter config --no-analytics
-      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter pub get
-      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter build linux --release
+      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" CC=gcc CXX=g++ && flutter config --no-analytics
+      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" CC=gcc CXX=g++ && flutter pub get
+      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" CC=gcc CXX=g++ && flutter build linux --release
       - install -Dm755 build/linux/x64/release/bundle/denpa_memo /app/bin/denpa_memo
       - cp -r build/linux/x64/release/bundle/data /app/bin/data
       - cp -r build/linux/x64/release/bundle/lib /app/bin/lib
