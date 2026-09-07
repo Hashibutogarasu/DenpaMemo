@@ -165,67 +165,76 @@ class AccountSettingsPage extends ConsumerWidget {
             ListTileSection(
               title: Text(t.settings.accountSettings.sectionCloud),
             ),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.cloud_outlined,
-                  label: cloudAccount.isSignedIn
-                      ? (cloudAccount.email ??
-                            t.settings.accountSettings.signIn)
-                      : t.settings.accountSettings.signIn,
-                  onTap: cloudAccount.isSignedIn
-                      ? null
-                      : () => _showSignInDialog(context, ref),
-                ),
-                CopyableListTile(
-                  icon: Icons.badge_outlined,
-                  label: t.settings.accountSettings.cloudUidLabel,
-                  trailingText: cloudAccount.uid,
-                ),
-                ListItemTile(
-                  icon: Icons.logout,
-                  label: t.settings.accountSettings.signOut,
-                  onTap: cloudAccount.isSignedIn
-                      ? () => _signOut(context, ref)
-                      : null,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.cloud_outlined,
+                    label: cloudAccount.isSignedIn
+                        ? (cloudAccount.email ??
+                              t.settings.accountSettings.signIn)
+                        : t.settings.accountSettings.signIn,
+                    onTap: cloudAccount.isSignedIn
+                        ? null
+                        : () => _showSignInDialog(context, ref),
+                  ),
+                  CopyableListTile(
+                    icon: Icons.badge_outlined,
+                    label: t.settings.accountSettings.cloudUidLabel,
+                    trailingText: cloudAccount.uid,
+                  ),
+                  ListItemTile(
+                    icon: Icons.logout,
+                    label: t.settings.accountSettings.signOut,
+                    onTap: cloudAccount.isSignedIn
+                        ? () => _signOut(context, ref)
+                        : null,
+                  ),
+                ],
+              ),
             ),
             ListTileSection(
               title: Text(t.settings.accountSettings.sectionLocal),
             ),
-            ListItemContainer(
-              children: [
-                CopyableListTile(
-                  icon: Icons.badge_outlined,
-                  label: t.settings.accountCuidLabel,
-                  trailingText: account.cuid,
-                ),
-                ListItemTile(
-                  icon: Icons.add_circle_outline,
-                  label: t.settings.accountSettings.addLocalAccount,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  CopyableListTile(
+                    icon: Icons.badge_outlined,
+                    label: t.settings.accountCuidLabel,
+                    trailingText: account.cuid,
+                  ),
+                  ListItemTile(
+                    icon: Icons.add_circle_outline,
+                    label: t.settings.accountSettings.addLocalAccount,
+                  ),
+                ],
+              ),
             ),
             ListTileSection(
               title: Text(t.settings.accountSettings.sectionDangerZone),
             ),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.delete_outline,
-                  label: t.settings.accountSettings.deleteCloudAccount,
-                  color: Theme.of(context).colorScheme.error,
-                  onTap: cloudAccount.isSignedIn
-                      ? () => _deleteCloudAccount(context, ref)
-                      : null,
-                ),
-                ListItemTile(
-                  icon: Icons.delete_outline,
-                  label: t.settings.accountSettings.deleteLocalAccount,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.delete_outline,
+                    label: t.settings.accountSettings.deleteCloudAccount,
+                    color: Theme.of(context).colorScheme.error,
+                    onTap: cloudAccount.isSignedIn
+                        ? () => _deleteCloudAccount(context, ref)
+                        : null,
+                  ),
+                  ListItemTile(
+                    icon: Icons.delete_outline,
+                    label: t.settings.accountSettings.deleteLocalAccount,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -74,44 +74,53 @@ class CloudBackupHistoryPage extends ConsumerWidget {
                             pattern: 'yyyy/MM/dd',
                           ),
                         ),
-                        ListItemContainer(
-                          children: [
-                            for (final file in entry.value)
-                              DisableWhileRunning(
-                                provider: cloudBackupBusyProvider,
-                                onPressed: () =>
-                                    runCloudRestore(context, ref, target: file),
-                                builder: (context, onRestore) => ListItemTile(
-                                  icon: Icons.description_outlined,
-                                  label: file.filename,
-                                  trailing: FormattedDateText(
-                                    dateTime: file.uploadedAt,
-                                    pattern: 'HH:mm',
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: ListItemContainer(
+                            children: [
+                              for (final file in entry.value)
+                                DisableWhileRunning(
+                                  provider: cloudBackupBusyProvider,
+                                  onPressed: () => runCloudRestore(
+                                    context,
+                                    ref,
+                                    target: file,
                                   ),
-                                  selectionMode: selectionMode,
-                                  selected: selectedIds.contains(file.fileId),
-                                  onSelectedChanged: (_) =>
-                                      toggleCloudFileSelected(ref, file.fileId),
-                                  onLongPress: () {
-                                    ref
-                                            .read(
-                                              cloudFileSelectionModeProvider
-                                                  .notifier,
-                                            )
-                                            .state =
-                                        true;
-                                    toggleCloudFileSelected(ref, file.fileId);
-                                  },
-                                  actionMenuItemsBuilder: (context) =>
-                                      cloudFileActionMenuItems(
-                                        context,
-                                        ref,
-                                        cloudFile: file,
-                                        onRestore: onRestore,
-                                      ),
+                                  builder: (context, onRestore) => ListItemTile(
+                                    icon: Icons.description_outlined,
+                                    label: file.filename,
+                                    trailing: FormattedDateText(
+                                      dateTime: file.uploadedAt,
+                                      pattern: 'HH:mm',
+                                    ),
+                                    selectionMode: selectionMode,
+                                    selected: selectedIds.contains(file.fileId),
+                                    onSelectedChanged: (_) =>
+                                        toggleCloudFileSelected(
+                                          ref,
+                                          file.fileId,
+                                        ),
+                                    onLongPress: () {
+                                      ref
+                                              .read(
+                                                cloudFileSelectionModeProvider
+                                                    .notifier,
+                                              )
+                                              .state =
+                                          true;
+                                      toggleCloudFileSelected(ref, file.fileId);
+                                    },
+                                    actionMenuItemsBuilder: (context) =>
+                                        cloudFileActionMenuItems(
+                                          context,
+                                          ref,
+                                          cloudFile: file,
+                                          onRestore: onRestore,
+                                        ),
+                                  ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ],

@@ -48,15 +48,18 @@ class ProfileSwitchPage extends ConsumerWidget {
         error: (error, stackTrace) => Center(child: Text(error.toString())),
         data: (profiles) => ListView(
           children: [
-            ListItemContainer(
-              children: [
-                for (final profile in profiles)
-                  _ProfileTile(
-                    namespace: namespace,
-                    profile: profile,
-                    isCurrent: currentAsync.value?.id == profile.id,
-                  ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  for (final profile in profiles)
+                    _ProfileTile(
+                      namespace: namespace,
+                      profile: profile,
+                      isCurrent: currentAsync.value?.id == profile.id,
+                    ),
+                ],
+              ),
             ),
           ],
         ),

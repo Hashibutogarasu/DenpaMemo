@@ -33,61 +33,70 @@ class Settings extends ConsumerWidget {
         child: ListView(
           children: [
             ListTileSection(title: Text(t.settings.section.general)),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.account_circle_outlined,
-                  label: t.settings.account,
-                  onTap: () => const AccountSettingsRoute().push(context),
-                ),
-                ListItemTile(
-                  icon: Icons.cloud_sync_outlined,
-                  label: t.settings.cloudBackup,
-                  onTap: () => const CloudBackupRoute().push(context),
-                ),
-                ListItemTile(
-                  icon: Icons.crop_outlined,
-                  label: t.settings.clipping,
-                  onTap: () => const ClippingSettingsRoute().push(context),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.account_circle_outlined,
+                    label: t.settings.account,
+                    onTap: () => const AccountSettingsRoute().push(context),
+                  ),
+                  ListItemTile(
+                    icon: Icons.cloud_sync_outlined,
+                    label: t.settings.cloudBackup,
+                    onTap: () => const CloudBackupRoute().push(context),
+                  ),
+                  ListItemTile(
+                    icon: Icons.crop_outlined,
+                    label: t.settings.clipping,
+                    onTap: () => const ClippingSettingsRoute().push(context),
+                  ),
+                ],
+              ),
             ),
             ListTileSection(title: Text(t.settings.section.personal)),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.palette_outlined,
-                  label: t.settings.theme,
-                  onTap: () => const ThemeSettingsRoute().push(context),
-                ),
-                ListItemTile(
-                  icon: Icons.tune_outlined,
-                  label: t.settings.advanced,
-                ),
-                ListItemTile(
-                  icon: Icons.notifications_outlined,
-                  label: t.settings.notifications,
-                ),
-                ListItemTile(
-                  icon: Icons.language_outlined,
-                  label: t.settings.language,
-                  onTap: () => const LanguageSettingsRoute().push(context),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.palette_outlined,
+                    label: t.settings.theme,
+                    onTap: () => const ThemeSettingsRoute().push(context),
+                  ),
+                  ListItemTile(
+                    icon: Icons.tune_outlined,
+                    label: t.settings.advanced,
+                  ),
+                  ListItemTile(
+                    icon: Icons.notifications_outlined,
+                    label: t.settings.notifications,
+                  ),
+                  ListItemTile(
+                    icon: Icons.language_outlined,
+                    label: t.settings.language,
+                    onTap: () => const LanguageSettingsRoute().push(context),
+                  ),
+                ],
+              ),
             ),
             ListTileSection(title: Text(t.settings.section.data)),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.bar_chart_outlined,
-                  label: t.settings.statistics,
-                ),
-                ListItemTile(
-                  icon: Icons.storage_outlined,
-                  label: t.settings.dataManagement,
-                  onTap: () => const DataManagementRoute().push(context),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.bar_chart_outlined,
+                    label: t.settings.statistics,
+                  ),
+                  ListItemTile(
+                    icon: Icons.storage_outlined,
+                    label: t.settings.dataManagement,
+                    onTap: () => const DataManagementRoute().push(context),
+                  ),
+                ],
+              ),
             ),
             if (kDebugMode)
               Container(
@@ -95,47 +104,53 @@ class Settings extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListTileSection(title: Text(t.settings.section.developer)),
-                    ListItemContainer(
-                      children: [
-                        ListItemTile(
-                          icon: Icons.table_chart_outlined,
-                          label: t.settings.editPhysiqueTable,
-                          onTap: () =>
-                              const PhysiqueTableListRoute().push(context),
-                        ),
-                        ListItemTile(
-                          icon: Icons.bug_report_outlined,
-                          label: t.settings.debugLog,
-                          onTap: () => const DebugLogRoute().push(context),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ListItemContainer(
+                        children: [
+                          ListItemTile(
+                            icon: Icons.table_chart_outlined,
+                            label: t.settings.editPhysiqueTable,
+                            onTap: () =>
+                                const PhysiqueTableListRoute().push(context),
+                          ),
+                          ListItemTile(
+                            icon: Icons.bug_report_outlined,
+                            label: t.settings.debugLog,
+                            onTap: () => const DebugLogRoute().push(context),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ListTileSection(title: Text(t.settings.section.other)),
-            ListItemContainer(
-              children: [
-                ListItemTile(
-                  icon: Icons.description_outlined,
-                  label: t.settings.openSourceLicenses,
-                  onTap: () => const OpenSourceLicensesRoute().push(context),
-                ),
-                CopyableListTile(
-                  icon: Icons.numbers_outlined,
-                  label: t.settings.buildNumber,
-                ),
-                CopyableListTile(
-                  icon: Icons.info_outline,
-                  label: t.settings.appVersion,
-                  trailingText: packageInfo.value?.version,
-                ),
-                CopyableListTile(
-                  icon: Icons.rocket_launch_outlined,
-                  label: t.settings.releaseChannel,
-                  trailingText: _releaseChannelLabel(t),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListItemContainer(
+                children: [
+                  ListItemTile(
+                    icon: Icons.description_outlined,
+                    label: t.settings.openSourceLicenses,
+                    onTap: () => const OpenSourceLicensesRoute().push(context),
+                  ),
+                  CopyableListTile(
+                    icon: Icons.numbers_outlined,
+                    label: t.settings.buildNumber,
+                  ),
+                  CopyableListTile(
+                    icon: Icons.info_outline,
+                    label: t.settings.appVersion,
+                    trailingText: packageInfo.value?.version,
+                  ),
+                  CopyableListTile(
+                    icon: Icons.rocket_launch_outlined,
+                    label: t.settings.releaseChannel,
+                    trailingText: _releaseChannelLabel(t),
+                  ),
+                ],
+              ),
             ),
             packageInfo.when(
               data: (info) => AppInfoContainer(

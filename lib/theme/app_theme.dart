@@ -45,6 +45,7 @@ ThemeData _buildTheme(Brightness brightness) {
     blurSigma: 12,
     foregroundColor: Colors.white,
   );
+  final settingsContainerColor = _settingsContainerColor(colorScheme);
 
   return ThemeData(
     colorScheme: colorScheme,
@@ -86,7 +87,7 @@ ThemeData _buildTheme(Brightness brightness) {
       DenpaMenContainerThemeData(
         statusBackgroundColor: const Color(0xFF90E2FF),
         statusBorderRadius: 20,
-        nestedBackgroundColor: const Color(0xFFC8E0E7),
+        nestedBackgroundColor: settingsContainerColor,
         nestedBorderColor: const Color(0xFF90DAFE),
         nestedBorderWidth: 2,
         nestedBorderRadius: 20,
@@ -149,7 +150,7 @@ ThemeData _buildTheme(Brightness brightness) {
         slideCurve: Curves.easeOutCubic,
       ),
       ListItemContainerThemeData(
-        backgroundColor: _settingsContainerColor(colorScheme),
+        backgroundColor: settingsContainerColor,
         borderRadius: 20,
         tileBorderColor: colorScheme.outlineVariant,
         tileBorderWidth: 1,
@@ -181,11 +182,12 @@ ButtonStyle _frostedButtonStyle(AppButtonThemeData theme) {
 }
 
 /// The app's main accent blue (also [SlantedHeaderThemeData.fillColor]),
-/// carried at a lightness 5% below [scheme]'s own surface color, used as
-/// [ListItemContainerThemeData.backgroundColor]. Built from this fixed hue
+/// carried at a lightness 5% below [scheme]'s own surface color. Shared by
+/// [ListItemContainerThemeData.backgroundColor] and
+/// [DenpaMenContainerThemeData.nestedBackgroundColor] so the two box
+/// styles read as the same design language. Built from this fixed hue
 /// rather than [scheme.surface] itself, since `ColorScheme.fromSeed`'s
-/// "neutral" surface colors already carry a tint of the deepPurple seed —
-/// blending onto them would read as pale purple, not the app's blue.
+/// "neutral" surface colors already carry a tint of the deepPurple seed.
 Color _settingsContainerColor(ColorScheme scheme) {
   final backgroundLightness = HSLColor.fromColor(scheme.surface).lightness;
   final mainColorHsl = HSLColor.fromColor(const Color(0xFF52BBE5));

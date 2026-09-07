@@ -227,33 +227,39 @@ class _PhysiqueTableListPageState extends ConsumerState<PhysiqueTableListPage> {
                 children: [
                   for (final entry in byCategory.entries) ...[
                     ListTileSection(title: Text(entry.key)),
-                    ListItemContainer(
-                      children: [
-                        for (final row in entry.value)
-                          ListTile(
-                            leading: const Icon(Icons.table_rows_outlined),
-                            title: Text(row.anntenaCategory),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (categoriesWithData.contains(
-                                  row.anntenaCategory,
-                                ))
-                                  IconButton(
-                                    icon: const Icon(Icons.edit_outlined),
-                                    tooltip: t.physiqueTable.edit,
-                                    onPressed: () => _startEditingExistingTable(
-                                      types,
-                                      row.anntenaCategory,
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ListItemContainer(
+                        children: [
+                          for (final row in entry.value)
+                            ListTile(
+                              leading: const Icon(Icons.table_rows_outlined),
+                              title: Text(row.anntenaCategory),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (categoriesWithData.contains(
+                                    row.anntenaCategory,
+                                  ))
+                                    IconButton(
+                                      icon: const Icon(Icons.edit_outlined),
+                                      tooltip: t.physiqueTable.edit,
+                                      onPressed: () =>
+                                          _startEditingExistingTable(
+                                            types,
+                                            row.anntenaCategory,
+                                          ),
                                     ),
-                                  ),
-                                const Icon(Icons.chevron_right),
-                              ],
+                                  const Icon(Icons.chevron_right),
+                                ],
+                              ),
+                              onTap: () => _viewExistingTable(
+                                types,
+                                row.anntenaCategory,
+                              ),
                             ),
-                            onTap: () =>
-                                _viewExistingTable(types, row.anntenaCategory),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ],

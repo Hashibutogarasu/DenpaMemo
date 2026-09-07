@@ -13,6 +13,7 @@ import 'label/abnormality_resistance_entry.dart';
 import 'label/attribute_resistance_entry.dart';
 import 'label/exp_progress.dart';
 import 'label/gauge_label.dart';
+import 'label/gauge_pair_row.dart';
 import 'label/gauge_value.dart';
 import 'label/outlined_title.dart';
 import 'label/stat_value.dart';
@@ -134,30 +135,13 @@ class DenpaMenStatus extends StatelessWidget {
         attributeResistanceRows * entryHeight +
         (attributeResistanceRows - 1) * resistanceGap;
 
-    final gaugesRow = isMobile
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              GaugeLabel(label: t.denpaMenStatus.level, value: level),
-              const SizedBox(height: 4),
-              GaugeLabel(label: t.denpaMenStatus.happiness, value: happiness),
-            ],
-          )
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: GaugeLabel(label: t.denpaMenStatus.level, value: level),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: GaugeLabel(
-                  label: t.denpaMenStatus.happiness,
-                  value: happiness,
-                ),
-              ),
-            ],
-          );
+    final gaugesRow = GaugePairRow(
+      level: GaugeLabel(label: t.denpaMenStatus.level, value: level),
+      happiness: GaugeLabel(
+        label: t.denpaMenStatus.happiness,
+        value: happiness,
+      ),
+    );
     final nameText = OutlinedTitleText(
       text: name,
       outlineColor: theme.accentColor,
