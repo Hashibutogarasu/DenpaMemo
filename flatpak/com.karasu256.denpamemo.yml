@@ -20,6 +20,8 @@ modules:
         - --share=network
       env:
         TAR_OPTIONS: --no-same-owner
+        CC: gcc
+        CXX: g++
     build-commands:
       - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
       - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter config --no-analytics
