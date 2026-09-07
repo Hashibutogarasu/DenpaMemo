@@ -43,6 +43,7 @@ export 'src/editable_qr_code.dart';
 export 'src/editable_stat_grid.dart';
 export 'src/effect/frosted_blur.dart';
 export 'src/fab/mini_fab_option.dart';
+export 'src/fab/save_button.dart';
 export 'src/field/inline_nullable_number_field.dart';
 export 'src/field/inline_number_field.dart';
 export 'src/field/inline_text_field.dart';

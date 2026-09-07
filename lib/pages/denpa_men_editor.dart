@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/material.dart';
+
 import 'package:api_client/api_client.dart';
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
@@ -6,8 +9,6 @@ import 'package:denpamemo_widgets/denpamemo_widgets.dart'
 import 'package:denpamemo_widgets/i18n/gen/strings.g.dart'
     as wt
     hide BuildContextTranslationsExtension;
-import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -249,7 +250,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     return (physique: physique, columnIndex: columnIndex);
   }
 
-  void _save() {
+  Future<void> _save() async {
     ref
         .read(denpaMenRepositoryProvider)
         .save(_denpaMen, id: widget.initial?.id ?? 0);
@@ -348,10 +349,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
                 ),
               ],
             )
-          : FloatingActionButton.extended(
-              onPressed: _save,
-              label: Text(t.common.save),
-            ),
+          : SaveButton(save: _save),
       body: AddDenpaMen(
         denpaMen: _denpaMen,
         masterData: widget.masterData,

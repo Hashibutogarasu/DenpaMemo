@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_widgets/denpamemo_widgets.dart'
     hide BuildContextTranslationsExtension;
-import 'package:flutter/material.dart';
 
 import '../i18n/gen/strings.g.dart';
 import '../routing/app_router.dart';
@@ -50,7 +51,7 @@ class _MonsterExpPageState extends State<MonsterExpPage> {
     }
   }
 
-  void _save() {
+  Future<void> _save() async {
     final monster = _monster;
     if (monster == null) {
       return;
@@ -74,10 +75,7 @@ class _MonsterExpPageState extends State<MonsterExpPage> {
 
     return AppScaffold(
       title: OutlinedTitleText(text: t.editableStatus.monsterExp),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: monster == null ? null : _save,
-        label: Text(t.common.save),
-      ),
+      floatingActionButton: SaveButton(save: monster == null ? null : _save),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
