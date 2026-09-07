@@ -81,6 +81,7 @@ export 'src/lineage/denpa_men_tree_node.dart';
 export 'src/lineage/qr_code_node.dart';
 export 'src/list/list_item_container.dart';
 export 'src/list/list_item_tile.dart';
+export 'src/list/selectable_list_item_tile.dart';
 export 'src/logo_container.dart';
 export 'src/middle_click_detector.dart';
 export 'src/navigation/app_back_button.dart';

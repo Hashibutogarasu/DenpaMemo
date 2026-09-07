@@ -2,6 +2,8 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../list/list_item_container.dart';
+import '../list/list_item_tile.dart';
 
 /// Shows an [AlertDialog] letting the user pick one [HeadShape] from a
 /// list of tiles, returning the selected shape or null if cancelled.
@@ -43,19 +45,21 @@ class _HeadShapeSelectionDialogState extends State<HeadShapeSelectionDialog> {
       title: Text(t.editableStatus.headShape),
       content: SizedBox(
         width: double.maxFinite,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            for (final headShape in widget.headShapes)
-              ListTile(
-                title: Text(t.headShape[headShape.id] ?? headShape.id),
-                selected: headShape.id == _selected.id,
-                trailing: headShape.id == _selected.id
-                    ? const Icon(Icons.check)
-                    : null,
-                onTap: () => setState(() => _selected = headShape),
-              ),
-          ],
+        child: SingleChildScrollView(
+          child: ListItemContainer(
+            selectedIndex: indexOfOrNull(
+              widget.headShapes,
+              (headShape) => headShape.id == _selected.id,
+            ),
+            children: [
+              for (final headShape in widget.headShapes)
+                ListItemTile(
+                  label: t.headShape[headShape.id] ?? headShape.id,
+                  trailing: const SizedBox.shrink(),
+                  onTap: () => setState(() => _selected = headShape),
+                ),
+            ],
+          ),
         ),
       ),
       actions: [

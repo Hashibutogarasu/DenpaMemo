@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../theme/list_item_container_theme.dart';
+
 /// Domain-agnostic row for any list of items: an optional [leading]
 /// widget (or plain [icon]), a label, and a trailing slot that adapts to
 /// what's passed in — checkbox, action menu, chevron, [trailing]/
-/// [trailingText], or nothing.
+/// [trailingText], or (when [checkable]) a check mark. [selected] tints
+/// the row; for a [checkable] row, that tint and the check mark are one
+/// sliding layer rather than two separately animated properties.
 class ListItemTile extends StatelessWidget {
   const ListItemTile({
     super.key,
@@ -17,6 +21,7 @@ class ListItemTile extends StatelessWidget {
     this.color,
     this.selectionMode = false,
     this.selected = false,
+    this.checkable = false,
     this.onSelectedChanged,
     this.actionMenuItemsBuilder,
     this.onLongPress,
@@ -32,13 +37,18 @@ class ListItemTile extends StatelessWidget {
   final Color? color;
   final bool selectionMode;
   final bool selected;
+  final bool checkable;
   final ValueChanged<bool>? onSelectedChanged;
   final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
   actionMenuItemsBuilder;
   final VoidCallback? onLongPress;
 
+  static const _checkSlotWidth = 24.0;
+  static const _checkSlotPadding = EdgeInsets.symmetric(horizontal: 16);
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<ListItemContainerThemeData>()!;
     final enabled =
         onTap != null ||
         onLongPress != null ||
@@ -48,7 +58,8 @@ class ListItemTile extends StatelessWidget {
     final showActionMenu = !showCheckbox && actionMenuItemsBuilder != null;
     final effectiveLeading =
         leading ?? (icon != null ? Icon(icon, color: effectiveColor) : null);
-    return ListTile(
+
+    final tile = ListTile(
       leading: effectiveLeading,
       title: Text(
         label,
@@ -70,12 +81,52 @@ class ListItemTile extends StatelessWidget {
           : trailing ??
                 (trailingText != null
                     ? Text(trailingText!)
-                    : onTap != null
-                    ? const Icon(Icons.chevron_right)
-                    : null),
+                    : checkable
+                    ? const SizedBox(width: _checkSlotWidth)
+                    : (onTap != null ? const Icon(Icons.chevron_right) : null)),
       enabled: enabled,
       onTap: showCheckbox ? () => onSelectedChanged!(!selected) : onTap,
       onLongPress: onLongPress,
+    );
+
+    if (!checkable) {
+      return AnimatedContainer(
+        duration: theme.checkAnimationDuration,
+        curve: theme.checkAnimationInCurve,
+        color: selected ? theme.selectedBackgroundColor : Colors.transparent,
+        child: tile,
+      );
+    }
+
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: ClipRect(
+            child: AnimatedSlide(
+              duration: theme.checkAnimationDuration,
+              curve: selected
+                  ? theme.checkAnimationInCurve
+                  : theme.checkAnimationOutCurve,
+              offset: selected ? Offset.zero : const Offset(0, 1),
+              child: ColoredBox(
+                color: theme.selectedBackgroundColor,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: _checkSlotPadding,
+                    child: Icon(
+                      Icons.check,
+                      size: _checkSlotWidth,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        tile,
+      ],
     );
   }
 }

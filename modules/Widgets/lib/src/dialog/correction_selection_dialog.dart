@@ -1,7 +1,9 @@
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
+import 'package:data_pack/data_pack.dart';
+
 import '../../i18n/gen/strings.g.dart';
+import '../list/selectable_list_item_tile.dart';
 
 /// Shows an [AlertDialog] letting the user toggle any number of
 /// [Correction]s on/off from a list of tiles, returning the selected
@@ -58,12 +60,9 @@ class _CorrectionSelectionDialogState extends State<CorrectionSelectionDialog> {
           shrinkWrap: true,
           children: [
             for (final correction in widget.corrections)
-              ListTile(
-                title: Text(t.correction[correction.id] ?? correction.id),
+              SelectableListItemTile(
+                label: t.correction[correction.id] ?? correction.id,
                 selected: _selected.any((c) => c.id == correction.id),
-                trailing: _selected.any((c) => c.id == correction.id)
-                    ? const Icon(Icons.check)
-                    : null,
                 onTap: () => _toggle(correction),
               ),
           ],

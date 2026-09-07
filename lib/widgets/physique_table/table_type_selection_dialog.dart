@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:api_client/api_client.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 
 import '../../i18n/gen/strings.g.dart';
 
@@ -52,29 +54,34 @@ class _TableTypeSelectionDialogState extends State<TableTypeSelectionDialog> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final selected = _selected;
+    final selectedIndex = selected == null
+        ? null
+        : indexOfOrNull(widget.types, (row) => row.type == selected.type);
 
     return AlertDialog(
       title: Text(t.physiqueTable.selectStatusCategory),
       content: SizedBox(
         width: double.maxFinite,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            for (final row in widget.types)
-              ListTile(
-                title: Text((t[row.translationKey] as String?) ?? row.type),
-                selected: _selected?.type == row.type,
-                trailing: _selected?.type == row.type
-                    ? const Icon(Icons.check)
-                    : switch (widget.dataAvailability?[row.type]) {
-                        final hasData? => Icon(
-                          hasData ? Icons.circle_outlined : Icons.close,
-                        ),
-                        null => null,
-                      },
-                onTap: () => setState(() => _selected = row),
-              ),
-          ],
+        child: SingleChildScrollView(
+          child: ListItemContainer(
+            selectedIndex: selectedIndex,
+            children: [
+              for (final row in widget.types)
+                ListItemTile(
+                  label: (t[row.translationKey] as String?) ?? row.type,
+                  trailing: _selected?.type == row.type
+                      ? const SizedBox.shrink()
+                      : switch (widget.dataAvailability?[row.type]) {
+                          final hasData? => Icon(
+                            hasData ? Icons.circle_outlined : Icons.close,
+                          ),
+                          null => const SizedBox.shrink(),
+                        },
+                  onTap: () => setState(() => _selected = row),
+                ),
+            ],
+          ),
         ),
       ),
       actions: [

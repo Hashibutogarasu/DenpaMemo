@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:data_pack/data_pack.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 
 import '../../i18n/gen/strings.g.dart';
 
@@ -56,28 +58,39 @@ class _PhysiqueAntennaCategorySelectionDialogState
       title: Text(t.physiqueTable.selectAnntenaCategory),
       content: SizedBox(
         width: double.maxFinite,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            for (final entry in byCategory.entries) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text(
-                  entry.key,
-                  style: Theme.of(context).textTheme.labelSmall,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (final entry in byCategory.entries) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: Text(
+                    entry.key,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
                 ),
-              ),
-              for (final row in entry.value)
-                ListTile(
-                  title: Text(row.anntenaCategory),
-                  selected: _selected?.anntenaCategory == row.anntenaCategory,
-                  trailing: _selected?.anntenaCategory == row.anntenaCategory
-                      ? const Icon(Icons.check)
-                      : null,
-                  onTap: () => setState(() => _selected = row),
+                ListItemContainer(
+                  selectedIndex: indexOfOrNull(
+                    entry.value,
+                    (row) => row.anntenaCategory == _selected?.anntenaCategory,
+                  ),
+                  children: [
+                    for (final row in entry.value)
+                      ListItemTile(
+                        label: row.anntenaCategory,
+                        trailing: const SizedBox.shrink(),
+                        onTap: () => setState(() => _selected = row),
+                      ),
+                  ],
                 ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
       actions: [

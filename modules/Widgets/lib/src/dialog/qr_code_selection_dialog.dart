@@ -2,6 +2,8 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../list/list_item_container.dart';
+import '../list/list_item_tile.dart';
 
 /// Wraps the result of [showQrCodeSelectionDialog]: distinguishes "cancelled"
 /// (the `Future` resolves to null) from "explicitly cleared" ([record] is
@@ -47,30 +49,37 @@ class _QrCodeSelectionDialogState extends State<QrCodeSelectionDialog> {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final selected = _selected;
+    final candidateIndex = selected == null
+        ? null
+        : indexOfOrNull(widget.candidates, (r) => r.id == selected.id);
+    final selectedIndex = selected == null
+        ? 0
+        : candidateIndex == null
+        ? null
+        : 1 + candidateIndex;
 
     return AlertDialog(
       title: Text(t.editableStatus.qrCode),
       content: SizedBox(
         width: double.maxFinite,
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            ListTile(
-              title: Text(t.common.unset),
-              selected: _selected == null,
-              trailing: _selected == null ? const Icon(Icons.check) : null,
-              onTap: () => setState(() => _selected = null),
-            ),
-            for (final record in widget.candidates)
-              ListTile(
-                title: Text(record.qrCode.name ?? record.qrCode.id),
-                selected: _selected?.id == record.id,
-                trailing: _selected?.id == record.id
-                    ? const Icon(Icons.check)
-                    : null,
-                onTap: () => setState(() => _selected = record),
+        child: SingleChildScrollView(
+          child: ListItemContainer(
+            selectedIndex: selectedIndex,
+            children: [
+              ListItemTile(
+                label: t.common.unset,
+                trailing: const SizedBox.shrink(),
+                onTap: () => setState(() => _selected = null),
               ),
-          ],
+              for (final record in widget.candidates)
+                ListItemTile(
+                  label: record.qrCode.name ?? record.qrCode.id,
+                  trailing: const SizedBox.shrink(),
+                  onTap: () => setState(() => _selected = record),
+                ),
+            ],
+          ),
         ),
       ),
       actions: [

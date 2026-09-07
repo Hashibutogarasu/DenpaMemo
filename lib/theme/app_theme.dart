@@ -149,6 +149,13 @@ ThemeData _buildTheme(Brightness brightness) {
         borderRadius: 20,
         tileBorderColor: colorScheme.outlineVariant,
         tileBorderWidth: 1,
+        selectedBackgroundColor: _selectedItemColor(
+          settingsContainerColor,
+          isDark,
+        ),
+        checkAnimationDuration: const Duration(milliseconds: 200),
+        checkAnimationInCurve: Curves.easeOut,
+        checkAnimationOutCurve: Curves.easeIn,
       ),
       NavigationBarBlurThemeData(
         tintColor: isDark
@@ -189,4 +196,13 @@ Color _settingsContainerColor(ColorScheme scheme) {
   return mainColorHsl
       .withLightness((backgroundLightness - 0.05).clamp(0.0, 1.0).toDouble())
       .toColor();
+}
+
+/// A selected [ListItemTile]'s row tint: darker than [base] in a light
+/// theme, lighter than [base] in a dark theme, so the highlight reads
+/// clearly against either background.
+Color _selectedItemColor(Color base, bool isDark) {
+  final hsl = HSLColor.fromColor(base);
+  final delta = isDark ? 0.12 : -0.08;
+  return hsl.withLightness((hsl.lightness + delta).clamp(0.0, 1.0)).toColor();
 }

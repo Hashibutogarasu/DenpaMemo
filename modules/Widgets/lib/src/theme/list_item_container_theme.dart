@@ -7,9 +7,11 @@ import 'tailor_config.dart';
 
 part 'list_item_container_theme.tailor.dart';
 
-/// Styling for [ListItemContainer]'s rounded grouping background and the
-/// thin top/bottom border drawn by each [ListItemTile] inside it. Actual
-/// values are supplied by the app via `ThemeData.extensions`.
+/// Styling for [ListItemContainer]'s rounded grouping background, the
+/// thin top/bottom border drawn by each [ListItemTile] inside it, a
+/// [ListItemTile]'s selected-row tint, and the slide animation for its
+/// checked indicator. Actual values are supplied by the app via
+/// `ThemeData.extensions`.
 @appTailorMixin
 class ListItemContainerThemeData
     extends ThemeExtension<ListItemContainerThemeData>
@@ -19,10 +21,18 @@ class ListItemContainerThemeData
     required this.borderRadius,
     required this.tileBorderColor,
     required this.tileBorderWidth,
+    required this.selectedBackgroundColor,
+    required this.checkAnimationDuration,
+    required this.checkAnimationInCurve,
+    required this.checkAnimationOutCurve,
   });
 
   final Color backgroundColor;
   final double borderRadius;
   final Color tileBorderColor;
   final double tileBorderWidth;
+  final Color selectedBackgroundColor;
+  final Duration checkAnimationDuration;
+  final Curve checkAnimationInCurve;
+  final Curve checkAnimationOutCurve;
 }

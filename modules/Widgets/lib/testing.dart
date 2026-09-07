@@ -122,6 +122,13 @@ final ThemeData testAppTheme = ThemeData(
       borderRadius: 20,
       tileBorderColor: _testColorScheme.outlineVariant,
       tileBorderWidth: 1,
+      selectedBackgroundColor: Color.alphaBlend(
+        const Color(0x33052744),
+        _testColorScheme.surface,
+      ),
+      checkAnimationDuration: const Duration(milliseconds: 200),
+      checkAnimationInCurve: Curves.easeOut,
+      checkAnimationOutCurve: Curves.easeIn,
     ),
     NavigationBarBlurThemeData(
       tintColor: Colors.white.withValues(alpha: 0.5),

@@ -15,6 +15,10 @@ mixin _$ListItemContainerThemeDataTailorMixin
   double get borderRadius;
   Color get tileBorderColor;
   double get tileBorderWidth;
+  Color get selectedBackgroundColor;
+  Duration get checkAnimationDuration;
+  Curve get checkAnimationInCurve;
+  Curve get checkAnimationOutCurve;
 
   @override
   ListItemContainerThemeData copyWith({
@@ -22,12 +26,24 @@ mixin _$ListItemContainerThemeDataTailorMixin
     double? borderRadius,
     Color? tileBorderColor,
     double? tileBorderWidth,
+    Color? selectedBackgroundColor,
+    Duration? checkAnimationDuration,
+    Curve? checkAnimationInCurve,
+    Curve? checkAnimationOutCurve,
   }) {
     return ListItemContainerThemeData(
       backgroundColor: backgroundColor ?? this.backgroundColor,
       borderRadius: borderRadius ?? this.borderRadius,
       tileBorderColor: tileBorderColor ?? this.tileBorderColor,
       tileBorderWidth: tileBorderWidth ?? this.tileBorderWidth,
+      selectedBackgroundColor:
+          selectedBackgroundColor ?? this.selectedBackgroundColor,
+      checkAnimationDuration:
+          checkAnimationDuration ?? this.checkAnimationDuration,
+      checkAnimationInCurve:
+          checkAnimationInCurve ?? this.checkAnimationInCurve,
+      checkAnimationOutCurve:
+          checkAnimationOutCurve ?? this.checkAnimationOutCurve,
     );
   }
 
@@ -43,6 +59,20 @@ mixin _$ListItemContainerThemeDataTailorMixin
       borderRadius: t < 0.5 ? borderRadius : other.borderRadius,
       tileBorderColor: Color.lerp(tileBorderColor, other.tileBorderColor, t)!,
       tileBorderWidth: t < 0.5 ? tileBorderWidth : other.tileBorderWidth,
+      selectedBackgroundColor: Color.lerp(
+        selectedBackgroundColor,
+        other.selectedBackgroundColor,
+        t,
+      )!,
+      checkAnimationDuration: t < 0.5
+          ? checkAnimationDuration
+          : other.checkAnimationDuration,
+      checkAnimationInCurve: t < 0.5
+          ? checkAnimationInCurve
+          : other.checkAnimationInCurve,
+      checkAnimationOutCurve: t < 0.5
+          ? checkAnimationOutCurve
+          : other.checkAnimationOutCurve,
     );
   }
 
@@ -66,6 +96,22 @@ mixin _$ListItemContainerThemeDataTailorMixin
             const DeepCollectionEquality().equals(
               tileBorderWidth,
               other.tileBorderWidth,
+            ) &&
+            const DeepCollectionEquality().equals(
+              selectedBackgroundColor,
+              other.selectedBackgroundColor,
+            ) &&
+            const DeepCollectionEquality().equals(
+              checkAnimationDuration,
+              other.checkAnimationDuration,
+            ) &&
+            const DeepCollectionEquality().equals(
+              checkAnimationInCurve,
+              other.checkAnimationInCurve,
+            ) &&
+            const DeepCollectionEquality().equals(
+              checkAnimationOutCurve,
+              other.checkAnimationOutCurve,
             ));
   }
 
@@ -77,6 +123,10 @@ mixin _$ListItemContainerThemeDataTailorMixin
       const DeepCollectionEquality().hash(borderRadius),
       const DeepCollectionEquality().hash(tileBorderColor),
       const DeepCollectionEquality().hash(tileBorderWidth),
+      const DeepCollectionEquality().hash(selectedBackgroundColor),
+      const DeepCollectionEquality().hash(checkAnimationDuration),
+      const DeepCollectionEquality().hash(checkAnimationInCurve),
+      const DeepCollectionEquality().hash(checkAnimationOutCurve),
     );
   }
 }

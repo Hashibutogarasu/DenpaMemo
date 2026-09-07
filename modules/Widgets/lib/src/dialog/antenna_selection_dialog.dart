@@ -1,9 +1,12 @@
 import 'dart:math' as math;
 
-import 'package:data_pack/data_pack.dart';
 import 'package:flutter/material.dart';
 
+import 'package:data_pack/data_pack.dart';
+
 import '../../i18n/gen/strings.g.dart';
+import '../list/list_item_container.dart';
+import '../list/list_item_tile.dart';
 
 typedef AntennaSelectionResult = ({Anntena anntena, int level});
 
@@ -282,14 +285,33 @@ class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
       _byId,
     );
 
-    return Material(
-      type: MaterialType.transparency,
-      child: ListTile(
-        key: ValueKey(familyId),
-        title: Text(_displayName(t, resolution)),
-        selected: isSelected,
-        trailing: isSelected ? const Icon(Icons.check) : null,
-        onTap: () => _selectFamily(familyId, patternIndex),
+    return ListItemTile(
+      key: ValueKey(familyId),
+      label: _displayName(t, resolution),
+      trailing: const SizedBox.shrink(),
+      onTap: () => _selectFamily(familyId, patternIndex),
+    );
+  }
+
+  List<String> _familyIdsInCategory(AnntenaCategory category) => _familyIds
+      .where(
+        (familyId) =>
+            _patternRootsOf(widget.anntenas, familyId).first.category ==
+            category,
+      )
+      .toList();
+
+  Widget _buildCategoryTab(Translations t, AnntenaCategory category) {
+    final familyIdsInCategory = _familyIdsInCategory(category);
+    return SingleChildScrollView(
+      child: ListItemContainer(
+        selectedIndex: indexOfOrNull(
+          familyIdsInCategory,
+          (familyId) => familyId == _selectedFamilyId,
+        ),
+        children: [
+          for (final familyId in familyIdsInCategory) _buildTile(t, familyId),
+        ],
       ),
     );
   }
@@ -336,20 +358,7 @@ class _AntennaSelectionDialogState extends State<AntennaSelectionDialog>
                 controller: _tabController,
                 children: [
                   for (final category in AnntenaCategory.values)
-                    ListView(
-                      shrinkWrap: true,
-                      children: [
-                        for (final familyId in _familyIds.where(
-                          (familyId) =>
-                              _patternRootsOf(
-                                widget.anntenas,
-                                familyId,
-                              ).first.category ==
-                              category,
-                        ))
-                          _buildTile(t, familyId),
-                      ],
-                    ),
+                    _buildCategoryTab(t, category),
                 ],
               ),
             ),
