@@ -18,6 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Decode Google OAuth client secrets
+        env:
+          GOOGLE_CLIENT_SECRETS_JSON_BASE64: ${{ secrets.GOOGLE_CLIENT_SECRETS_JSON_BASE64 }}
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/assets/config/auth/google"
+          echo "$GOOGLE_CLIENT_SECRETS_JSON_BASE64" | base64 -d > "$GITHUB_WORKSPACE/assets/config/auth/google/google_client_secrets.json"
+
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
           bundle: com.karasu256.denpamemo.flatpak
