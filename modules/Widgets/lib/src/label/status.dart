@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 import '../theme/denpa_men_container_theme.dart';
 
 class StatusLabel extends StatelessWidget {
-  const StatusLabel({super.key, required this.child, this.height = 30});
+  const StatusLabel({
+    super.key,
+    required this.child,
+    this.height = 30,
+    this.textColor,
+  });
 
   final Widget child;
   final double height;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,7 @@ class StatusLabel extends StatelessWidget {
         color: theme.statusBackgroundColor,
         padding: const EdgeInsets.only(right: 20),
         child: DefaultTextStyle.merge(
-          style: TextStyle(color: theme.accentColor),
+          style: TextStyle(color: textColor),
           child: child,
         ),
       ),

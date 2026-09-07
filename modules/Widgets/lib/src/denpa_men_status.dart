@@ -191,7 +191,10 @@ class DenpaMenStatus extends StatelessWidget {
         header,
         Row(
           children: [
-            StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
+            StatusLabel(
+              textColor: theme.accentColor,
+              child: Text(t.denpaMenStatus.untilNextLevel),
+            ),
             Expanded(child: ExpProgress(progress: expProgress)),
           ],
         ),

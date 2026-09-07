@@ -20,16 +20,68 @@ abstract final class AppCommonTheme {
       );
 }
 
+/// Every value [_buildTheme] needs that isn't derivable from
+/// [ColorScheme.fromSeed] alone, and instead differs by hand between light
+/// and dark. [AppLightTheme] and [AppDarkTheme] each supply their own
+/// constant instance, so the shared builder never branches on brightness
+/// itself — it only ever reads `palette.someField`.
+class _AppPalette {
+  const _AppPalette({
+    required this.settingsContainerLightnessDelta,
+    required this.selectedItemLightnessDelta,
+    required this.statusBackgroundColor,
+    required this.nestedBorderColor,
+    required this.expBarBorderColor,
+    required this.splashBackgroundColor,
+    required this.legendGridHighlightBorderColor,
+    required this.legendGridDimmedBackgroundColor,
+    required this.navigationBarTintColor,
+  });
+
+  final double settingsContainerLightnessDelta;
+  final double selectedItemLightnessDelta;
+  final Color statusBackgroundColor;
+  final Color nestedBorderColor;
+  final Color expBarBorderColor;
+  final Color splashBackgroundColor;
+  final Color legendGridHighlightBorderColor;
+  final Color legendGridDimmedBackgroundColor;
+  final Color navigationBarTintColor;
+}
+
 abstract final class AppLightTheme {
-  static final ThemeData theme = _buildTheme(Brightness.light);
+  static const _palette = _AppPalette(
+    settingsContainerLightnessDelta: -0.05,
+    selectedItemLightnessDelta: -0.08,
+    statusBackgroundColor: Color(0xFF90E2FF),
+    nestedBorderColor: Color(0xFF90DAFE),
+    expBarBorderColor: Colors.black,
+    splashBackgroundColor: Color(0xFFF3EDF7),
+    legendGridHighlightBorderColor: Color(0xFFE53935),
+    legendGridDimmedBackgroundColor: Color(0x14000000),
+    navigationBarTintColor: Color(0x80FFFFFF),
+  );
+
+  static final ThemeData theme = _buildTheme(Brightness.light, _palette);
 }
 
 abstract final class AppDarkTheme {
-  static final ThemeData theme = _buildTheme(Brightness.dark);
+  static const _palette = _AppPalette(
+    settingsContainerLightnessDelta: 0.12,
+    selectedItemLightnessDelta: 0.12,
+    statusBackgroundColor: Color(0xFF3E6E86),
+    nestedBorderColor: Color(0xFF3B5F70),
+    expBarBorderColor: Colors.white70,
+    splashBackgroundColor: Color(0xFF1D1B20),
+    legendGridHighlightBorderColor: Color(0xFFEF5350),
+    legendGridDimmedBackgroundColor: Color(0x1FFFFFFF),
+    navigationBarTintColor: Color(0x80000000),
+  );
+
+  static final ThemeData theme = _buildTheme(Brightness.dark, _palette);
 }
 
-ThemeData _buildTheme(Brightness brightness) {
-  final isDark = brightness == Brightness.dark;
+ThemeData _buildTheme(Brightness brightness, _AppPalette palette) {
   final colorScheme = ColorScheme.fromSeed(
     seedColor: Colors.deepPurple,
     brightness: brightness,
@@ -39,10 +91,13 @@ ThemeData _buildTheme(Brightness brightness) {
     blurSigma: 12,
     foregroundColor: Colors.white,
   );
-  final settingsContainerColor = _settingsContainerColor(colorScheme);
-  final listItemSelectedColor = _selectedItemColor(
+  final settingsContainerColor = _settingsContainerColor(
+    colorScheme,
+    palette.settingsContainerLightnessDelta,
+  );
+  final listItemSelectedColor = _lightnessShifted(
     settingsContainerColor,
-    isDark,
+    palette.selectedItemLightnessDelta,
   );
 
   return ThemeData(
@@ -54,7 +109,7 @@ ThemeData _buildTheme(Brightness brightness) {
         side: BorderSide(color: listItemSelectedColor, width: 5),
       ),
       insetPadding: const EdgeInsets.all(20),
-      backgroundColor: _lightenedBy(settingsContainerColor, 0.05),
+      backgroundColor: _lightnessShifted(settingsContainerColor, 0.05),
     ),
     navigationBarTheme: AppCommonTheme.navigationBarTheme,
     filledButtonTheme: FilledButtonThemeData(
@@ -90,10 +145,10 @@ ThemeData _buildTheme(Brightness brightness) {
         miniOptionRowBottomPadding: 12,
       ),
       DenpaMenContainerThemeData(
-        statusBackgroundColor: const Color(0xFF90E2FF),
+        statusBackgroundColor: palette.statusBackgroundColor,
         statusBorderRadius: 20,
         nestedBackgroundColor: settingsContainerColor,
-        nestedBorderColor: const Color(0xFF90DAFE),
+        nestedBorderColor: palette.nestedBorderColor,
         nestedBorderWidth: 2,
         nestedBorderRadius: 20,
         accentColor: const Color(0xFF056193),
@@ -118,23 +173,17 @@ ThemeData _buildTheme(Brightness brightness) {
         maxedValueColor: const Color(0xFF7BEA95),
         inactiveBonusColor: const Color(0xFFE53935),
         titleFillColor: Colors.white,
-        expBarBorderColor: isDark ? Colors.white70 : Colors.black,
+        expBarBorderColor: palette.expBarBorderColor,
       ),
       SplashThemeData(
-        backgroundColor: isDark
-            ? const Color(0xFF1D1B20)
-            : const Color(0xFFF3EDF7),
+        backgroundColor: palette.splashBackgroundColor,
         appNameFontSize: 34,
         displayDuration: const Duration(seconds: 1),
         fadeOutDuration: const Duration(milliseconds: 400),
       ),
       PhysiqueLegendGridThemeData(
-        highlightBorderColor: isDark
-            ? const Color(0xFFEF5350)
-            : const Color(0xFFE53935),
-        dimmedBackgroundColor: isDark
-            ? const Color(0x1FFFFFFF)
-            : const Color(0x14000000),
+        highlightBorderColor: palette.legendGridHighlightBorderColor,
+        dimmedBackgroundColor: palette.legendGridDimmedBackgroundColor,
       ),
       buttonTheme,
       ToggleButtonGroupThemeData(
@@ -159,9 +208,7 @@ ThemeData _buildTheme(Brightness brightness) {
         checkAnimationOutCurve: Curves.easeIn,
       ),
       NavigationBarBlurThemeData(
-        tintColor: isDark
-            ? Colors.black.withValues(alpha: 0.5)
-            : Colors.white.withValues(alpha: 0.5),
+        tintColor: palette.navigationBarTintColor,
         blurSigma: 12,
       ),
       const BackButtonThemeData(anchor: BackButtonAnchor.bottomLeft),
@@ -191,33 +238,27 @@ ButtonStyle _frostedButtonStyle(AppButtonThemeData theme) {
 }
 
 /// The app's main accent blue (also [SlantedHeaderThemeData.fillColor]),
-/// carried at a lightness 5% below [scheme]'s own surface color. Shared by
+/// carried at a lightness [delta] away from [scheme]'s own surface color
+/// (see [_AppPalette.settingsContainerLightnessDelta]). Shared by
 /// [ListItemContainerThemeData.backgroundColor] and
 /// [DenpaMenContainerThemeData.nestedBackgroundColor] so the two box
 /// styles read as the same design language. Built from this fixed hue
 /// rather than [scheme.surface] itself, since `ColorScheme.fromSeed`'s
 /// "neutral" surface colors already carry a tint of the deepPurple seed.
-Color _settingsContainerColor(ColorScheme scheme) {
+Color _settingsContainerColor(ColorScheme scheme, double delta) {
   final backgroundLightness = HSLColor.fromColor(scheme.surface).lightness;
   final mainColorHsl = HSLColor.fromColor(const Color(0xFF52BBE5));
   return mainColorHsl
-      .withLightness((backgroundLightness - 0.05).clamp(0.0, 1.0).toDouble())
+      .withLightness((backgroundLightness + delta).clamp(0.0, 1.0).toDouble())
       .toColor();
 }
 
-/// A selected [ListItemTile]'s row tint: darker than [base] in a light
-/// theme, lighter than [base] in a dark theme, so the highlight reads
-/// clearly against either background.
-Color _selectedItemColor(Color base, bool isDark) {
-  final hsl = HSLColor.fromColor(base);
-  final delta = isDark ? 0.12 : -0.08;
-  return hsl.withLightness((hsl.lightness + delta).clamp(0.0, 1.0)).toColor();
-}
-
-/// [base], with its HSL lightness raised by [amount] (0-1), clamped to a
-/// valid lightness. Used for [DialogThemeData.backgroundColor], which reads
-/// as a paler tint of [ListItemContainerThemeData.backgroundColor].
-Color _lightenedBy(Color base, double amount) {
+/// [base], with its HSL lightness shifted by [amount] (-1 to 1, negative
+/// darkens), clamped to a valid lightness. Used for the selected-row tint
+/// (see [_AppPalette.selectedItemLightnessDelta]) and
+/// [DialogThemeData.backgroundColor] (a paler tint of
+/// [ListItemContainerThemeData.backgroundColor]).
+Color _lightnessShifted(Color base, double amount) {
   final hsl = HSLColor.fromColor(base);
   return hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0)).toColor();
 }

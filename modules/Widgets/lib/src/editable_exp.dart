@@ -6,6 +6,7 @@ import '../i18n/gen/strings.g.dart';
 import 'field/inline_nullable_number_field.dart';
 import 'label/exp_progress.dart';
 import 'label/status.dart';
+import 'theme/denpa_men_container_theme.dart';
 
 /// Editable exp section: the level-up progress bar (30% of the row's
 /// width, right-aligned) stacked above the current/max exp fields. Leaving
@@ -24,6 +25,7 @@ class EditableExp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = context.t;
+    final theme = Theme.of(context).extension<DenpaMenContainerThemeData>()!;
     final isMax = denpaMen.currentExp == null && denpaMen.maxExp == null;
     final progress =
         denpaMen.currentExp != null &&
@@ -37,7 +39,10 @@ class EditableExp extends StatelessWidget {
       children: [
         Row(
           children: [
-            StatusLabel(child: Text(t.denpaMenStatus.untilNextLevel)),
+            StatusLabel(
+              textColor: theme.accentColor,
+              child: Text(t.denpaMenStatus.untilNextLevel),
+            ),
             Expanded(child: ExpProgress(progress: isMax ? null : progress)),
           ],
         ),
