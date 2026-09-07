@@ -1,9 +1,9 @@
 app-id: com.karasu256.denpamemo
 runtime: org.gnome.Platform
-runtime-version: "48"
+runtime-version: "50"
 sdk: org.gnome.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.llvm18
+  - org.freedesktop.Sdk.Extension.llvm20
 command: denpa_memo
 finish-args:
   - --share=ipc
@@ -20,14 +20,14 @@ modules:
     build-options:
       build-args:
         - --share=network
-      append-path: /usr/lib/sdk/llvm18/bin
+      append-path: /usr/lib/sdk/llvm20/bin
       env:
         TAR_OPTIONS: --no-same-owner
     build-commands:
-      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal
-      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter config --no-analytics
-      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter pub get
-      - export PATH="$HOME/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter build linux --release
+      - CARGO_HOME=$PWD/.cargo RUSTUP_HOME=$PWD/.rustup curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | CARGO_HOME=$PWD/.cargo RUSTUP_HOME=$PWD/.rustup sh -s -- -y --profile minimal
+      - export CARGO_HOME="$PWD/.cargo" RUSTUP_HOME="$PWD/.rustup" PATH="$PWD/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter config --no-analytics
+      - export CARGO_HOME="$PWD/.cargo" RUSTUP_HOME="$PWD/.rustup" PATH="$PWD/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter pub get
+      - export CARGO_HOME="$PWD/.cargo" RUSTUP_HOME="$PWD/.rustup" PATH="$PWD/.cargo/bin:$PWD/flutter-sdk/bin:$PATH" && flutter build linux --release
       - install -Dm755 build/linux/x64/release/bundle/denpa_memo /app/bin/denpa_memo
       - cp -r build/linux/x64/release/bundle/data /app/bin/data
       - cp -r build/linux/x64/release/bundle/lib /app/bin/lib
