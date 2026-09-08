@@ -1,16 +1,79 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, kDebugMode, kIsWeb, TargetPlatform;
+
+import 'firebase_connection_settings.dart';
+
+/// Points [web]/[android] at the `denpa-memo-dev` Firebase project's
+/// `Denpamemo (Web Debug)`/`com.karasu256.denpamemo.debug` apps.
+class DebugFirebaseConnectionSettings extends FirebaseConnectionSettings {
+  const DebugFirebaseConnectionSettings();
+
+  @override
+  FirebaseOptions get web => const FirebaseOptions(
+    apiKey: 'AIzaSyDLAfeBBJDMzyt6tT6YGtv4ay6uDEMnVnw',
+    appId: '1:572030684127:web:9e4abde0d36b7a9a09926a',
+    messagingSenderId: '572030684127',
+    projectId: 'denpa-memo-dev',
+    authDomain: 'denpa-memo-dev.firebaseapp.com',
+    storageBucket: 'denpa-memo-dev.firebasestorage.app',
+    measurementId: 'G-E9854886FD',
+  );
+
+  @override
+  FirebaseOptions get android => const FirebaseOptions(
+    apiKey: 'AIzaSyCPU42_M0wczrox_YgczfiXwFvUITAplVA',
+    appId: '1:572030684127:android:7fe0373198c4e86d09926a',
+    messagingSenderId: '572030684127',
+    projectId: 'denpa-memo-dev',
+    storageBucket: 'denpa-memo-dev.firebasestorage.app',
+  );
+
+  @override
+  String get androidGoogleSignInServerClientId =>
+      '572030684127-m2qfnak23sqgirv5vg90idve8cp7fnlj.apps.googleusercontent.com';
+}
+
+/// Points [web]/[android] at the `denpa-memo-29dda` Firebase project's
+/// web/`com.karasu256.denpamemo` apps.
+class ReleaseFirebaseConnectionSettings extends FirebaseConnectionSettings {
+  const ReleaseFirebaseConnectionSettings();
+
+  @override
+  FirebaseOptions get web => const FirebaseOptions(
+    apiKey: 'AIzaSyAbU1MUAo8EHulSCKNtRi7ORoZpJAagTOE',
+    appId: '1:18613508464:web:8b50cdf5bbb20bee2c97b5',
+    messagingSenderId: '18613508464',
+    projectId: 'denpa-memo-29dda',
+    authDomain: 'denpa-memo-29dda.firebaseapp.com',
+    storageBucket: 'denpa-memo-29dda.firebasestorage.app',
+    measurementId: 'G-ZDVZ978FP9',
+  );
+
+  @override
+  FirebaseOptions get android => const FirebaseOptions(
+    apiKey: 'AIzaSyC1frXH4mkYsmnNUQIvCuAkCxSOKxSQwCQ',
+    appId: '1:18613508464:android:887b3c6c41ad24ae2c97b5',
+    messagingSenderId: '18613508464',
+    projectId: 'denpa-memo-29dda',
+    storageBucket: 'denpa-memo-29dda.firebasestorage.app',
+  );
+
+  @override
+  String get androidGoogleSignInServerClientId =>
+      '18613508464-m03ka3ndd8pi7j9kjibkpgqr22r91qkk.apps.googleusercontent.com';
+}
 
 /// Firebase project configuration, in the shape the FlutterFire CLI itself
-/// generates. Only [web] and [android] are populated, from apps actually
-/// registered in the Firebase console — every other platform needs its own
-/// registered app and generated config, since a platform's `appId` (and
-/// often `apiKey`) differs per platform; reusing another platform's values
-/// there would silently fail at runtime. [androidGoogleSignInServerClientId]
-/// is the Web OAuth client ID `google_sign_in` needs as `serverClientId`
-/// on Android (`google-services.json`'s `client_type: 3` entry).
+/// generates. Resolved through [FirebaseConnectionSettings] so the
+/// debug/release split lives in exactly one place ([currentPlatform] and
+/// [web]/[androidGoogleSignInServerClientId] all read from it).
 class DefaultFirebaseOptions {
   const DefaultFirebaseOptions._();
+
+  static FirebaseConnectionSettings get _connectionSettings => kDebugMode
+      ? const DebugFirebaseConnectionSettings()
+      : const ReleaseFirebaseConnectionSettings();
 
   /// Throws [UnsupportedError] for any platform without a registered
   /// Firebase app — callers use this to decide whether native Firebase can
@@ -22,7 +85,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        return _connectionSettings.android;
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
       case TargetPlatform.windows:
@@ -41,24 +104,8 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const web = FirebaseOptions(
-    apiKey: 'AIzaSyAbU1MUAo8EHulSCKNtRi7ORoZpJAagTOE',
-    appId: '1:18613508464:web:8b50cdf5bbb20bee2c97b5',
-    messagingSenderId: '18613508464',
-    projectId: 'denpa-memo-29dda',
-    authDomain: 'denpa-memo-29dda.firebaseapp.com',
-    storageBucket: 'denpa-memo-29dda.firebasestorage.app',
-    measurementId: 'G-ZDVZ978FP9',
-  );
+  static FirebaseOptions get web => _connectionSettings.web;
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC1frXH4mkYsmnNUQIvCuAkCxSOKxSQwCQ',
-    appId: '1:18613508464:android:887b3c6c41ad24ae2c97b5',
-    messagingSenderId: '18613508464',
-    projectId: 'denpa-memo-29dda',
-    storageBucket: 'denpa-memo-29dda.firebasestorage.app',
-  );
-
-  static const androidGoogleSignInServerClientId =
-      '18613508464-m03ka3ndd8pi7j9kjibkpgqr22r91qkk.apps.googleusercontent.com';
+  static String get androidGoogleSignInServerClientId =>
+      _connectionSettings.androidGoogleSignInServerClientId;
 }
