@@ -1,11 +1,13 @@
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../config/auth_config.dart';
 import '../data/cloud/auth_api_client.dart';
+import 'backend_connection_settings_providers.dart';
 
 final authApiClientProvider = Provider<AuthApiClient>(
-  (ref) => AuthApiClient(Uri.parse(authApiConfig.baseUrl)),
+  (ref) => AuthApiClient(
+    ref.watch(backendConnectionSettingsProvider).authServerBaseUrl,
+  ),
 );
 
 /// Thin adapter over [firebaseSignInProvider] that keeps this app's

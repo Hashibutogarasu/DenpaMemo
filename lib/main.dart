@@ -15,6 +15,7 @@ import 'package:flutter_build_tracker/flutter_build_tracker.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
+import 'package:graphql_client/graphql_client.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:step_dialog/step_dialog.dart' as step_dialog;
@@ -27,6 +28,7 @@ import 'logging/build_tracker_bridge.dart';
 import 'logging/log_file_bridge.dart';
 import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
+import 'providers/backend_connection_settings_providers.dart';
 import 'providers/cloud_account_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
@@ -122,6 +124,13 @@ class MyApp extends StatelessWidget {
                 dataCacheProvider.overrideWithValue(cacheIndexRepository),
                 denpamemo_widgets.signInStatusProvider.overrideWith(
                   (ref) => ref.watch(cloudAccountProvider).isSignedIn,
+                ),
+                graphQLClientProvider.overrideWith(
+                  (ref) => GraphQlClientFactory(
+                    endpoint: ref
+                        .watch(backendConnectionSettingsProvider)
+                        .graphQlEndpoint,
+                  ).create(loggingLink: LoggingGraphQLLink()),
                 ),
                 ...overrides,
               ],
