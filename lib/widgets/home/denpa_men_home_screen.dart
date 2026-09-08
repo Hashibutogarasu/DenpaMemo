@@ -14,6 +14,7 @@ import '../../providers/search_providers.dart';
 import '../denpa_men_lineage_tree.dart';
 import '../dialog/denpa_men_action_menu.dart';
 import '../icon/denpa_men_icon.dart';
+import '../icon/denpa_men_list_tile_cell.dart';
 import '../selection_floating_menu.dart';
 
 /// Full home-style screen: view mode toggles and the individual
@@ -183,25 +184,22 @@ const int homeListDefaultPageSize = 10;
 /// active, a [SelectionFloatingMenu] surfaces bulk actions for the current
 /// selection.
 ///
-/// Only [pageSize] records are built at a time; scrolling near the bottom
-/// reveals [pageSize] more (see [_HomeBodyState._loadMore]), so a long
-/// list doesn't force every entry's clipped thumbnail (see
-/// `renderClippedImage`) to render up front.
+/// Only [homeListDefaultPageSize] records are built at a time; scrolling
+/// near the bottom reveals that many more (see
+/// [_HomeBodyState._loadMore]), so a long list doesn't force every
+/// entry's clipped thumbnail (see `renderClippedImage`) to render up
+/// front.
 class _HomeBody extends ConsumerStatefulWidget {
-  const _HomeBody({
-    required this.masterData,
-    this.pageSize = homeListDefaultPageSize,
-  });
+  const _HomeBody({required this.masterData});
 
   final MasterData masterData;
-  final int pageSize;
 
   @override
   ConsumerState<_HomeBody> createState() => _HomeBodyState();
 }
 
 class _HomeBodyState extends ConsumerState<_HomeBody> {
-  late int _visibleCount = widget.pageSize;
+  late int _visibleCount = homeListDefaultPageSize;
 
   /// The in-flight page reveal, if any — its own [FutureBuilder]
   /// connection state is the single source of truth for whether the
@@ -223,7 +221,7 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
 
   void _resetPagination() {
     setState(() {
-      _visibleCount = widget.pageSize;
+      _visibleCount = homeListDefaultPageSize;
       _loadMoreFuture = null;
     });
   }
@@ -235,7 +233,7 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
           .then((_) {
             if (!mounted) return;
             setState(() {
-              final next = _visibleCount + widget.pageSize;
+              final next = _visibleCount + homeListDefaultPageSize;
               _visibleCount = next > totalCount ? totalCount : next;
               _loadMoreFuture = null;
             });
@@ -404,10 +402,11 @@ class _HomeRecordList extends ConsumerWidget {
                 child: isMobile
                     ? Opacity(
                         opacity: cutIds.contains(record.id) ? 0.5 : 1,
-                        child: _DenpaMenListTileCell(
+                        child: DenpaMenListTileCell(
                           denpaMen: denpaMen,
                           selectionMode: selectionMode,
                           selected: selectedIds.contains(record.id),
+                          enableLongPressPreview: false,
                           onSelectedChanged: (selected) =>
                               onSetSelected(record.id, selected),
                           onTap: () => DenpaMenPreviewDialog.show(
@@ -507,42 +506,6 @@ class _DenpaMenGridCell extends ConsumerWidget {
         iconFile: iconFile,
         size: size,
       ),
-    );
-  }
-}
-
-/// One [HomeTileMode.tile] mobile row: resolves [denpaMen]'s icon itself,
-/// for the same reason as [_DenpaMenGridCell].
-class _DenpaMenListTileCell extends ConsumerWidget {
-  const _DenpaMenListTileCell({
-    required this.denpaMen,
-    required this.selectionMode,
-    required this.selected,
-    required this.onSelectedChanged,
-    required this.onTap,
-    required this.actionMenuItemsBuilder,
-  });
-
-  final DenpaMen denpaMen;
-  final bool selectionMode;
-  final bool selected;
-  final ValueChanged<bool> onSelectedChanged;
-  final VoidCallback onTap;
-  final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)
-  actionMenuItemsBuilder;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final iconFile = ref.watch(denpaMenIconProvider(denpaMen.id)).value;
-    return DenpaMenListTile(
-      denpaMen: denpaMen,
-      selectionMode: selectionMode,
-      selected: selected,
-      onSelectedChanged: onSelectedChanged,
-      onTap: onTap,
-      enableLongPressPreview: false,
-      iconFile: iconFile,
-      actionMenuItemsBuilder: actionMenuItemsBuilder,
     );
   }
 }
