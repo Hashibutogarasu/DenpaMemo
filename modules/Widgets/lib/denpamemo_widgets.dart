@@ -98,6 +98,7 @@ export 'src/search/search_form.dart';
 export 'src/search/search_overlay_bar.dart';
 export 'src/search/search_stat_grid.dart';
 export 'src/snackbar/copyable_snack_bar.dart';
+export 'src/state/sign_in_status_provider.dart';
 export 'src/theme/app_button_theme.dart';
 export 'src/theme/app_constants.dart';
 export 'src/theme/app_theme_builder.dart';

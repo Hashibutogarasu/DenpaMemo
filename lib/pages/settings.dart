@@ -45,6 +45,7 @@ class Settings extends ConsumerWidget {
                     icon: Icons.cloud_sync_outlined,
                     label: t.settings.cloudBackup,
                     onTap: () => const CloudBackupRoute().push(context),
+                    requiresSignIn: true,
                   ),
                   ListItemTile(
                     icon: Icons.crop_outlined,
@@ -98,31 +99,29 @@ class Settings extends ConsumerWidget {
               ),
             ),
             if (kDebugMode)
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTileSection(title: Text(t.settings.section.developer)),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: ListItemContainer(
-                        children: [
-                          ListItemTile(
-                            icon: Icons.table_chart_outlined,
-                            label: t.settings.editPhysiqueTable,
-                            onTap: () =>
-                                const PhysiqueTableListRoute().push(context),
-                          ),
-                          ListItemTile(
-                            icon: Icons.bug_report_outlined,
-                            label: t.settings.debugLog,
-                            onTap: () => const DebugLogRoute().push(context),
-                          ),
-                        ],
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTileSection(title: Text(t.settings.section.developer)),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ListItemContainer(
+                      children: [
+                        ListItemTile(
+                          icon: Icons.table_chart_outlined,
+                          label: t.settings.editPhysiqueTable,
+                          onTap: () =>
+                              const PhysiqueTableListRoute().push(context),
+                        ),
+                        ListItemTile(
+                          icon: Icons.bug_report_outlined,
+                          label: t.settings.debugLog,
+                          onTap: () => const DebugLogRoute().push(context),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ListTileSection(title: Text(t.settings.section.other)),
             Padding(

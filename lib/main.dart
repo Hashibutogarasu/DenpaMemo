@@ -27,6 +27,7 @@ import 'logging/build_tracker_bridge.dart';
 import 'logging/log_file_bridge.dart';
 import 'providers/app_initialization_providers.dart';
 import 'providers/app_settings_providers.dart';
+import 'providers/cloud_account_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
@@ -119,6 +120,9 @@ class MyApp extends StatelessWidget {
               overrides: [
                 objectBoxProvider.overrideWithValue(objectBox),
                 dataCacheProvider.overrideWithValue(cacheIndexRepository),
+                denpamemo_widgets.signInStatusProvider.overrideWith(
+                  (ref) => ref.watch(cloudAccountProvider).isSignedIn,
+                ),
                 ...overrides,
               ],
               child: const _ThemedMaterialApp(),
