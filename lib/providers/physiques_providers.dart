@@ -4,16 +4,16 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
 
-import '../config/physique_server_config.dart';
 import '../services/physique_antenna_category_resolver.dart';
 import '../services/physique_identification_service.dart';
 import '../services/physique_legend_grid_service.dart';
 import 'app_initialization_providers.dart';
+import 'backend_connection_settings_providers.dart';
 import 'physique_table_cache_providers.dart';
 
 final physiquesApiClientProvider = Provider<PhysiquesApiClient>(
   (ref) => PhysiquesApiClient(
-    Uri.parse(physiqueServerConfig.baseUrl),
+    ref.watch(backendConnectionSettingsProvider).apiServerBaseUrl,
     client: LoggingHttpClient(),
   ),
 );
