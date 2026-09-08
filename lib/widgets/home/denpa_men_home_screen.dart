@@ -248,6 +248,9 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
     return false;
   }
 
+  Future<void> _onRefresh() =>
+      ref.refresh(denpaMenListProvider(widget.masterData).future);
+
   @override
   Widget build(BuildContext context) {
     final masterData = widget.masterData;
@@ -280,21 +283,24 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
           child: Stack(
             children: [
               Positioned.fill(
-                child: SmoothScrollContainer(
-                  child: _HomeRecordList(
-                    masterData: masterData,
-                    recordsAsync: recordsAsync,
-                    records: records,
-                    visibleRecords: visibleRecords,
-                    tileMode: tileMode,
-                    isMobile: isMobile,
-                    selectionMode: selectionMode,
-                    selectedIds: selectedIds,
-                    cutIds: cutIds,
-                    totalAttributeCount: totalAttributeCount,
-                    footer: footer,
-                    onSetSelected: _setSelected,
-                    onScrollMetricsChanged: _onScrollMetricsChanged,
+                child: RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: SmoothScrollContainer(
+                    child: _HomeRecordList(
+                      masterData: masterData,
+                      recordsAsync: recordsAsync,
+                      records: records,
+                      visibleRecords: visibleRecords,
+                      tileMode: tileMode,
+                      isMobile: isMobile,
+                      selectionMode: selectionMode,
+                      selectedIds: selectedIds,
+                      cutIds: cutIds,
+                      totalAttributeCount: totalAttributeCount,
+                      footer: footer,
+                      onSetSelected: _setSelected,
+                      onScrollMetricsChanged: _onScrollMetricsChanged,
+                    ),
                   ),
                 ),
               ),
