@@ -157,6 +157,6 @@ Future<void> exportSelectedDenpaMen(
       .read(dmExportControllerProvider)
       .exportSelected(masterData, dialogTitle: t.home.exportDialogTitle);
   if (result != null && context.mounted) {
-    await ExportCompleteDialog.show(context, ref, result: result);
+    await ExportCompleteDialog.show(context, result: result);
   }
 }

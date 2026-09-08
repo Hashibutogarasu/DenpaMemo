@@ -1,45 +1,27 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:denpa_memo/widgets.dart';
 import '../../i18n/gen/strings.g.dart';
-import '../../providers/denpa_men_icon_providers.dart';
+import '../icon/denpa_men_list_tile_cell.dart';
 
-/// Summarizes one `.dm` export's outcome as read-only sections. [show] is
-/// the only sanctioned way to display this — it resolves every result
-/// entry's icon via [resolveDenpaMenIcons] itself, so no caller can show
-/// the dialog without that step. Follows the same "public class + static
-/// show()" shape as `ImportCompleteDialog`.
+/// Summarizes one `.dm` export's outcome as read-only sections. Each row
+/// resolves its own icon reactively via [DenpaMenListTileCell] — see
+/// `ImportCompleteDialog`'s doc comment, which this follows the same
+/// "public class + static show()" shape as.
 class ExportCompleteDialog extends StatelessWidget {
-  const ExportCompleteDialog({super.key, required this.result, this.iconsById});
+  const ExportCompleteDialog({super.key, required this.result});
 
   final ExportResult result;
 
-  /// Each exported/orphaned individual's already-resolved icon file, by
-  /// [DenpaMen.id] — see [BackupResultSection.iconsById].
-  final Map<String, File?>? iconsById;
-
   static Future<void> show(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required ExportResult result,
-  }) async {
-    final iconsById = await resolveDenpaMenIcons(
-      (id) => ref.read(denpaMenIconProvider(id).future),
-      [
-        for (final denpaMen in [...result.exported, ...result.orphaned])
-          denpaMen.id,
-      ],
-    );
-    if (!context.mounted) return;
+  }) {
     return AppDialog.show<void>(
       context: context,
-      builder: (context) =>
-          ExportCompleteDialog(result: result, iconsById: iconsById),
+      builder: (context) => ExportCompleteDialog(result: result),
     );
   }
 
@@ -68,12 +50,14 @@ class ExportCompleteDialog extends StatelessWidget {
                     BackupResultSection(
                       title: t.backup.exportExportedSection,
                       denpaMens: result.exported,
-                      iconsById: iconsById,
+                      tileBuilder: (context, denpaMen) =>
+                          DenpaMenListTileCell(denpaMen: denpaMen),
                     ),
                     BackupResultSection(
                       title: t.backup.exportOrphanedSection,
                       denpaMens: result.orphaned,
-                      iconsById: iconsById,
+                      tileBuilder: (context, denpaMen) =>
+                          DenpaMenListTileCell(denpaMen: denpaMen),
                     ),
                   ],
                 ),
