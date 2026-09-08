@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../state/sign_in_status_provider.dart';
 import '../theme/list_item_container_theme.dart';
 
 /// Domain-agnostic row for any list of items: an optional [leading]
@@ -7,8 +10,11 @@ import '../theme/list_item_container_theme.dart';
 /// what's passed in — checkbox, action menu, chevron, [trailing]/
 /// [trailingText], or (when [checkable]) a check mark. [selected] tints
 /// the row; for a [checkable] row, that tint and the check mark are one
-/// sliding layer rather than two separately animated properties.
-class ListItemTile extends StatelessWidget {
+/// sliding layer rather than two separately animated properties. When
+/// [requiresSignIn] is true, [onTap] and [onLongPress] are treated as
+/// unset (making the row non-interactive) unless [signInStatusProvider]
+/// reports the user is signed in.
+class ListItemTile extends ConsumerWidget {
   const ListItemTile({
     super.key,
     this.icon,
@@ -25,6 +31,7 @@ class ListItemTile extends StatelessWidget {
     this.onSelectedChanged,
     this.actionMenuItemsBuilder,
     this.onLongPress,
+    this.requiresSignIn = false,
   });
 
   final IconData? icon;
@@ -42,16 +49,20 @@ class ListItemTile extends StatelessWidget {
   final List<PopupMenuEntry<VoidCallback>> Function(BuildContext)?
   actionMenuItemsBuilder;
   final VoidCallback? onLongPress;
+  final bool requiresSignIn;
 
   static const _checkSlotWidth = 24.0;
   static const _checkSlotPadding = EdgeInsets.symmetric(horizontal: 16);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).extension<ListItemContainerThemeData>()!;
+    final signedIn = requiresSignIn ? ref.watch(signInStatusProvider) : true;
+    final effectiveOnTap = signedIn ? onTap : null;
+    final effectiveOnLongPress = signedIn ? onLongPress : null;
     final enabled =
-        onTap != null ||
-        onLongPress != null ||
+        effectiveOnTap != null ||
+        effectiveOnLongPress != null ||
         (selectionMode && onSelectedChanged != null);
     final effectiveColor = enabled ? color : null;
     final showCheckbox = selectionMode && onSelectedChanged != null;
@@ -83,10 +94,14 @@ class ListItemTile extends StatelessWidget {
                     ? Text(trailingText!)
                     : checkable
                     ? const SizedBox(width: _checkSlotWidth)
-                    : (onTap != null ? const Icon(Icons.chevron_right) : null)),
+                    : (effectiveOnTap != null
+                          ? const Icon(Icons.chevron_right)
+                          : null)),
       enabled: enabled,
-      onTap: showCheckbox ? () => onSelectedChanged!(!selected) : onTap,
-      onLongPress: onLongPress,
+      onTap: showCheckbox
+          ? () => onSelectedChanged!(!selected)
+          : effectiveOnTap,
+      onLongPress: effectiveOnLongPress,
     );
 
     if (!checkable) {
