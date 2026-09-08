@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppSettings {
 
- AppThemeMode get themeMode; bool get buildTrackerEnabled;
+ AppThemeMode get themeMode; AppContrastLevel get contrastLevel; bool get buildTrackerEnabled;
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AppSettingsCopyWith<AppSettings> get copyWith => _$AppSettingsCopyWithImpl<AppS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.buildTrackerEnabled, buildTrackerEnabled) || other.buildTrackerEnabled == buildTrackerEnabled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.contrastLevel, contrastLevel) || other.contrastLevel == contrastLevel)&&(identical(other.buildTrackerEnabled, buildTrackerEnabled) || other.buildTrackerEnabled == buildTrackerEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,themeMode,buildTrackerEnabled);
+int get hashCode => Object.hash(runtimeType,themeMode,contrastLevel,buildTrackerEnabled);
 
 @override
 String toString() {
-  return 'AppSettings(themeMode: $themeMode, buildTrackerEnabled: $buildTrackerEnabled)';
+  return 'AppSettings(themeMode: $themeMode, contrastLevel: $contrastLevel, buildTrackerEnabled: $buildTrackerEnabled)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AppSettingsCopyWith<$Res>  {
   factory $AppSettingsCopyWith(AppSettings value, $Res Function(AppSettings) _then) = _$AppSettingsCopyWithImpl;
 @useResult
 $Res call({
- AppThemeMode themeMode, bool buildTrackerEnabled
+ AppThemeMode themeMode, AppContrastLevel contrastLevel, bool buildTrackerEnabled
 });
 
 
@@ -62,10 +62,11 @@ class _$AppSettingsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? themeMode = null,Object? buildTrackerEnabled = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? themeMode = null,Object? contrastLevel = null,Object? buildTrackerEnabled = null,}) {
   return _then(_self.copyWith(
 themeMode: null == themeMode ? _self.themeMode : themeMode // ignore: cast_nullable_to_non_nullable
-as AppThemeMode,buildTrackerEnabled: null == buildTrackerEnabled ? _self.buildTrackerEnabled : buildTrackerEnabled // ignore: cast_nullable_to_non_nullable
+as AppThemeMode,contrastLevel: null == contrastLevel ? _self.contrastLevel : contrastLevel // ignore: cast_nullable_to_non_nullable
+as AppContrastLevel,buildTrackerEnabled: null == buildTrackerEnabled ? _self.buildTrackerEnabled : buildTrackerEnabled // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -151,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  bool buildTrackerEnabled)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  AppContrastLevel contrastLevel,  bool buildTrackerEnabled)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppSettings() when $default != null:
-return $default(_that.themeMode,_that.buildTrackerEnabled);case _:
+return $default(_that.themeMode,_that.contrastLevel,_that.buildTrackerEnabled);case _:
   return orElse();
 
 }
@@ -172,10 +173,10 @@ return $default(_that.themeMode,_that.buildTrackerEnabled);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  bool buildTrackerEnabled)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AppThemeMode themeMode,  AppContrastLevel contrastLevel,  bool buildTrackerEnabled)  $default,) {final _that = this;
 switch (_that) {
 case _AppSettings():
-return $default(_that.themeMode,_that.buildTrackerEnabled);case _:
+return $default(_that.themeMode,_that.contrastLevel,_that.buildTrackerEnabled);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +193,10 @@ return $default(_that.themeMode,_that.buildTrackerEnabled);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppThemeMode themeMode,  bool buildTrackerEnabled)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AppThemeMode themeMode,  AppContrastLevel contrastLevel,  bool buildTrackerEnabled)?  $default,) {final _that = this;
 switch (_that) {
 case _AppSettings() when $default != null:
-return $default(_that.themeMode,_that.buildTrackerEnabled);case _:
+return $default(_that.themeMode,_that.contrastLevel,_that.buildTrackerEnabled);case _:
   return null;
 
 }
@@ -207,10 +208,11 @@ return $default(_that.themeMode,_that.buildTrackerEnabled);case _:
 
 
 class _AppSettings implements AppSettings {
-  const _AppSettings({this.themeMode = AppThemeMode.system, this.buildTrackerEnabled = false});
+  const _AppSettings({this.themeMode = AppThemeMode.system, this.contrastLevel = AppContrastLevel.standard, this.buildTrackerEnabled = false});
   
 
 @override@JsonKey() final  AppThemeMode themeMode;
+@override@JsonKey() final  AppContrastLevel contrastLevel;
 @override@JsonKey() final  bool buildTrackerEnabled;
 
 /// Create a copy of AppSettings
@@ -223,16 +225,16 @@ _$AppSettingsCopyWith<_AppSettings> get copyWith => __$AppSettingsCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.buildTrackerEnabled, buildTrackerEnabled) || other.buildTrackerEnabled == buildTrackerEnabled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettings&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode)&&(identical(other.contrastLevel, contrastLevel) || other.contrastLevel == contrastLevel)&&(identical(other.buildTrackerEnabled, buildTrackerEnabled) || other.buildTrackerEnabled == buildTrackerEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,themeMode,buildTrackerEnabled);
+int get hashCode => Object.hash(runtimeType,themeMode,contrastLevel,buildTrackerEnabled);
 
 @override
 String toString() {
-  return 'AppSettings(themeMode: $themeMode, buildTrackerEnabled: $buildTrackerEnabled)';
+  return 'AppSettings(themeMode: $themeMode, contrastLevel: $contrastLevel, buildTrackerEnabled: $buildTrackerEnabled)';
 }
 
 
@@ -243,7 +245,7 @@ abstract mixin class _$AppSettingsCopyWith<$Res> implements $AppSettingsCopyWith
   factory _$AppSettingsCopyWith(_AppSettings value, $Res Function(_AppSettings) _then) = __$AppSettingsCopyWithImpl;
 @override @useResult
 $Res call({
- AppThemeMode themeMode, bool buildTrackerEnabled
+ AppThemeMode themeMode, AppContrastLevel contrastLevel, bool buildTrackerEnabled
 });
 
 
@@ -260,10 +262,11 @@ class __$AppSettingsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettings
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? themeMode = null,Object? buildTrackerEnabled = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? themeMode = null,Object? contrastLevel = null,Object? buildTrackerEnabled = null,}) {
   return _then(_AppSettings(
 themeMode: null == themeMode ? _self.themeMode : themeMode // ignore: cast_nullable_to_non_nullable
-as AppThemeMode,buildTrackerEnabled: null == buildTrackerEnabled ? _self.buildTrackerEnabled : buildTrackerEnabled // ignore: cast_nullable_to_non_nullable
+as AppThemeMode,contrastLevel: null == contrastLevel ? _self.contrastLevel : contrastLevel // ignore: cast_nullable_to_non_nullable
+as AppContrastLevel,buildTrackerEnabled: null == buildTrackerEnabled ? _self.buildTrackerEnabled : buildTrackerEnabled // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

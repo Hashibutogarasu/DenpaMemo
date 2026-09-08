@@ -6,17 +6,17 @@ import 'package:denpa_memo/i18n/gen/strings.g.dart';
 import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:denpa_memo/widgets/add_denpa_men_fab.dart';
 
-final _masterData = MasterData(
-  headShapes: const [],
-  anntenas: const [],
-  attributes: const [],
-  abnormalityTypes: const [],
-  bodyColorResistanceRules: const [],
-  bodyColorAbnormalityResistanceRules: const [],
-  physiques: const [],
-  personalities: const [],
-  patterns: const [],
-  corrections: const [],
+const _masterData = MasterData(
+  headShapes: [],
+  anntenas: [],
+  attributes: [],
+  abnormalityTypes: [],
+  bodyColorResistanceRules: [],
+  bodyColorAbnormalityResistanceRules: [],
+  physiques: [],
+  personalities: [],
+  patterns: [],
+  corrections: [],
 );
 
 void main() {
@@ -26,8 +26,8 @@ void main() {
       await tester.pumpWidget(
         TranslationProvider(
           child: MaterialApp(
-            theme: AppLightTheme.theme,
-            home: Scaffold(
+            theme: AppLightTheme.forContrast(AppContrastLevel.standard),
+            home: const Scaffold(
               floatingActionButton: AddDenpaMenFab(masterData: _masterData),
             ),
           ),
@@ -48,8 +48,8 @@ void main() {
       await tester.pumpWidget(
         TranslationProvider(
           child: MaterialApp(
-            theme: AppLightTheme.theme,
-            home: Scaffold(
+            theme: AppLightTheme.forContrast(AppContrastLevel.standard),
+            home: const Scaffold(
               floatingActionButton: AddDenpaMenFab(masterData: _masterData),
             ),
           ),
@@ -72,7 +72,7 @@ void main() {
     await tester.pumpWidget(
       TranslationProvider(
         child: MaterialApp(
-          theme: AppLightTheme.theme,
+          theme: AppLightTheme.forContrast(AppContrastLevel.standard),
           home: Scaffold(
             floatingActionButton: AddDenpaMenFab(
               masterData: _masterData,
@@ -101,7 +101,7 @@ void main() {
     await tester.pumpWidget(
       TranslationProvider(
         child: MaterialApp(
-          theme: AppLightTheme.theme,
+          theme: AppLightTheme.forContrast(AppContrastLevel.standard),
           home: Scaffold(
             floatingActionButton: AddDenpaMenFab(
               masterData: _masterData,

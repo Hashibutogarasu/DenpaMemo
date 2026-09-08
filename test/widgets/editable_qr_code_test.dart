@@ -17,31 +17,28 @@ void main() {
     required String qrCodeId,
     required List<QrCodeRecord> candidates,
   }) async {
-    final headShape = HeadShape(
-      id: 'head-a',
-      abnormalityResistanceBonuses: const {},
-    );
+    const headShape = HeadShape(id: 'head-a', abnormalityResistanceBonuses: {});
     const physique = Physique(id: 'physique-a');
     const personality = Personality(id: 'personality-a');
     const pattern = Pattern(id: 'pattern-a');
     const colorId = 'color-a';
 
-    final masterData = MasterData(
+    final masterData = const MasterData(
       headShapes: [headShape],
-      anntenas: const [_anntena],
-      attributes: const [],
-      abnormalityTypes: const [],
-      physiques: const [physique],
-      personalities: const [personality],
-      patterns: const [pattern],
-      bodyColorResistanceRules: const [
+      anntenas: [_anntena],
+      attributes: [],
+      abnormalityTypes: [],
+      physiques: [physique],
+      personalities: [personality],
+      patterns: [pattern],
+      bodyColorResistanceRules: [
         BodyColorResistanceRule(
           colorId: colorId,
           attributeResistanceBonuses: [],
         ),
       ],
-      bodyColorAbnormalityResistanceRules: const [],
-      corrections: const [],
+      bodyColorAbnormalityResistanceRules: [],
+      corrections: [],
     );
 
     final denpaMen = createDenpaMen(
@@ -62,7 +59,7 @@ void main() {
     await tester.pumpWidget(
       AllTranslationProviders(
         child: MaterialApp(
-          theme: AppLightTheme.theme,
+          theme: AppLightTheme.forContrast(AppContrastLevel.standard),
           home: Scaffold(
             body: EditableQrCode(
               denpaMen: denpaMen,

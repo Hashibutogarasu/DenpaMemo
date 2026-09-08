@@ -46,8 +46,8 @@ void main() {
         ],
         child: TranslationProvider(
           child: MaterialApp(
-            theme: AppLightTheme.theme,
-            home: MonsterSelectionPage(),
+            theme: AppLightTheme.forContrast(AppContrastLevel.standard),
+            home: const MonsterSelectionPage(),
           ),
         ),
       ),

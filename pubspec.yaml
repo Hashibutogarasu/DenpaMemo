@@ -92,6 +92,7 @@ dependencies:
   logger: ^2.5.0
   flutter_build_tracker: ^1.0.0
   flutter_cache_manager: ^3.4.1
+  flutter_pre_commit: ^0.2.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
