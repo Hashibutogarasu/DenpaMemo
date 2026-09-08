@@ -15,11 +15,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-
-  # The official minio image, unlike bitnami/minio, has no
-  # MINIO_DEFAULT_BUCKETS equivalent, so this one-shot service creates the
-  # bucket itself once minio is healthy, then exits. The bucket name must
-  # match BUCKET_NAME in src/r2-credentials.ts.
   minio-init:
     image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     depends_on:
