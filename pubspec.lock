@@ -520,6 +520,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.35"
+  flutter_pre_commit:
+    dependency: "direct main"
+    description:
+      name: flutter_pre_commit
+      sha256: "63767ccddca09626d715a48644be73aea45bbd5f48c69aaf66409681ceb0c8dd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.4"
   flutter_riverpod:
     dependency: "direct main"
     description:
