@@ -1,6 +1,7 @@
 import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:denpamemo_widgets/denpamemo_widgets.dart' hide BuildContextTranslationsExtension;
+import 'package:denpamemo_widgets/denpamemo_widgets.dart'
+    hide BuildContextTranslationsExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,6 +10,7 @@ import 'package:denpa_memo/data/denpa_men/objectbox_denpa_men_repository.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
 import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
 import 'package:denpa_memo/providers/objectbox_providers.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:denpa_memo/widgets/dialog/denpa_men_action_menu.dart';
 import 'package:graphql_client/graphql_client.dart';
 import '../support/all_translation_providers.dart';
@@ -76,6 +78,7 @@ void main() {
           ],
           child: AllTranslationProviders(
             child: MaterialApp(
+              theme: AppLightTheme.forContrast(AppContrastLevel.standard),
               home: Scaffold(
                 body: Consumer(
                   builder: (context, ref, _) => DenpaMenListTile(

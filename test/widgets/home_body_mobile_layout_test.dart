@@ -86,6 +86,7 @@ void main() {
     );
     await tester.pump();
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 250));
   }
 
   testWidgets('uses DenpaMenListTile instead of DenpaMenAccordionTile at '
