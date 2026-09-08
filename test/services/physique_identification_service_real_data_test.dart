@@ -108,11 +108,11 @@ void main() {
         objectBox,
       );
       metadataCacheRepository.saveMetadata(
-        PhysiqueTableMetadata(
-          physiqueAntennaCategories: const [],
-          physiqueStatusCategories: const [],
+        const PhysiqueTableMetadata(
+          physiqueAntennaCategories: [],
+          physiqueStatusCategories: [],
           physiqueAntennaCategoryAntennaLinks: [
-            const PhysiqueAntennaCategoryAntennaLink(
+            PhysiqueAntennaCategoryAntennaLink(
               major: 'その他',
               minor: 'アンテナ無し',
               antennaId: 'none',

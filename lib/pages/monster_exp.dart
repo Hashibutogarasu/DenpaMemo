@@ -44,7 +44,7 @@ class _MonsterExpPageState extends State<MonsterExpPage> {
   }
 
   Future<void> _pickMonster() async {
-    final result = await MonsterSelectionRoute().push<Monster>(context);
+    final result = await const MonsterSelectionRoute().push<Monster>(context);
     if (result != null) {
       setState(() => _monster = result);
     }

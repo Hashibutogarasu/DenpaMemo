@@ -24,7 +24,7 @@ abstract class MasterDataLoadError extends AppError {
     OperationException exception,
   ) {
     if (exception.linkException != null) {
-      return MasterDataConnectionError();
+      return const MasterDataConnectionError();
     }
     return MasterDataServerError(
       exception.graphqlErrors.map((error) => error.message).join('\n'),

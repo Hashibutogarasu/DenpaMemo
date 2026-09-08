@@ -75,7 +75,7 @@ class _PhysiqueTableBodyState extends ConsumerState<PhysiqueTableBody> {
             );
           },
           loading: () =>
-              LoadingOverlay(loading: true, child: const SizedBox.shrink()),
+              const LoadingOverlay(loading: true, child: SizedBox.shrink()),
           error: (_, _) => Center(child: Text(t.physiqueTable.loadError)),
         );
   }

@@ -34,7 +34,6 @@ DenpaMen _denpaMen({
     corrections: const [],
     considerCorrections: false,
     parentIds: parentIds,
-    catchOrder: catchOrder,
     qrCodeId: qrCodeId,
   );
 }
@@ -65,10 +64,7 @@ void main() {
     expect(steps, hasLength(2));
     final catchStep = steps[0] as BirthGuideCatchStep;
     expect(catchStep.qrCode.qrCode.id, 'qr-1');
-    expect(
-      catchStep.individuals.map((r) => r.denpaMen.id),
-      ['a', 'b'],
-    );
+    expect(catchStep.individuals.map((r) => r.denpaMen.id), ['a', 'b']);
 
     final breedStep = steps[1] as BirthGuideBreedStep;
     expect(breedStep.individual.denpaMen.id, 't');
@@ -153,10 +149,10 @@ void main() {
       (step) => step.qrCode.qrCode.id == 'qr-shared',
     );
     expect(sharedCatchSteps, hasLength(1));
-    expect(
-      sharedCatchSteps.single.individuals.map((r) => r.denpaMen.id),
-      ['a', 'f'],
-    );
+    expect(sharedCatchSteps.single.individuals.map((r) => r.denpaMen.id), [
+      'a',
+      'f',
+    ]);
   });
 
   test('throws BirthGuideResolutionException for a missing parent id', () {

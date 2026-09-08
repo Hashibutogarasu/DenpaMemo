@@ -303,7 +303,7 @@ class _PhysiqueTableEditPageState extends ConsumerState<PhysiqueTableEditPage> {
               anntenaCategory: widget.args.anntenaCategory,
               statusName: '',
             ),
-            body: LoadingOverlay(loading: true, child: const SizedBox.shrink()),
+            body: const LoadingOverlay(loading: true, child: SizedBox.shrink()),
           ),
           error: (_, _) => _PhysiqueTableEditScaffold(
             title: t.physiqueTable.tableTitle(

@@ -33,7 +33,6 @@ DenpaMen _denpaMen({
     corrections: const [],
     considerCorrections: false,
     parentIds: parentIds,
-    catchOrder: catchOrder,
   );
 }
 
@@ -44,18 +43,15 @@ void main() {
     expect(caught.newCatchOrder({'a': caught}), 3);
   });
 
-  test(
-    'a bred individual resolves the more recently caught parent\'s '
-    'catchOrder',
-    () {
-      final parentA = _denpaMen(id: 'a', catchOrder: 5);
-      final parentB = _denpaMen(id: 'b', catchOrder: 3);
-      final child = _denpaMen(id: 'c', parentIds: ['a', 'b']);
-      final byId = {'a': parentA, 'b': parentB, 'c': child};
+  test('a bred individual resolves the more recently caught parent\'s '
+      'catchOrder', () {
+    final parentA = _denpaMen(id: 'a', catchOrder: 5);
+    final parentB = _denpaMen(id: 'b', catchOrder: 3);
+    final child = _denpaMen(id: 'c', parentIds: ['a', 'b']);
+    final byId = {'a': parentA, 'b': parentB, 'c': child};
 
-      expect(child.newCatchOrder(byId), 5);
-    },
-  );
+    expect(child.newCatchOrder(byId), 5);
+  });
 
   test('a grandchild resolves the largest value across both lineages', () {
     final otherParent = _denpaMen(id: 'a', catchOrder: 7);
