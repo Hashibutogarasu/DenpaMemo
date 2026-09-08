@@ -72,7 +72,7 @@ class DmImportController {
             loadAllDenpaMenImageSlots(storage, denpaMenId),
         saveIcons: (denpaMenId, icons) async {
           await saveAllDenpaMenImageSlots(storage, denpaMenId, icons);
-          _ref.invalidate(denpaMenIconProvider(denpaMenId));
+          await invalidateDenpaMenIconCache(_ref, denpaMenId);
         },
         resolveDuplicates: (candidates) async {
           final iconsById = await resolveDenpaMenIcons(

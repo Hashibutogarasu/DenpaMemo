@@ -10,6 +10,7 @@ import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_selection_providers.dart';
 import '../providers/search_providers.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
+import '../widgets/icon/denpa_men_list_tile_cell.dart';
 
 /// Search results reached from [DenpaMenSelectionPage]'s search tab. Tapping
 /// a result toggles it in [denpaMenSelectionProvider] instead of opening a
@@ -93,7 +94,7 @@ class _DenpaMenSelectionSearchResultsState
             itemCount: records.length,
             itemBuilder: (context, index) {
               final record = records[index];
-              return DenpaMenListTile(
+              return DenpaMenListTileCell(
                 denpaMen: record.denpaMen,
                 selectionMode: true,
                 selected: selected.any((r) => r.id == record.id),

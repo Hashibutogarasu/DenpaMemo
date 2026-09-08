@@ -12,6 +12,7 @@ import '../providers/denpa_men_selection_providers.dart';
 import '../providers/search_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
+import '../widgets/icon/denpa_men_list_tile_cell.dart';
 
 class DenpaMenSelectionArgs {
   const DenpaMenSelectionArgs({
@@ -177,7 +178,7 @@ class _DenpaMenSelectionPageState extends ConsumerState<DenpaMenSelectionPage>
                           itemCount: candidates.length,
                           itemBuilder: (context, index) {
                             final record = candidates[index];
-                            return DenpaMenListTile(
+                            return DenpaMenListTileCell(
                               denpaMen: record.denpaMen,
                               selectionMode: true,
                               selected: selected.any((r) => r.id == record.id),
