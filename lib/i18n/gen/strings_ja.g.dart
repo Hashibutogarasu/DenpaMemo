@@ -460,15 +460,6 @@ class Translations$settings$ja {
 	/// ja: 'リリースチャンネル'
 	String get releaseChannel => 'リリースチャンネル';
 
-	/// ja: 'リリース'
-	String get releaseChannelStable => 'リリース';
-
-	/// ja: 'プロファイル'
-	String get releaseChannelProfile => 'プロファイル';
-
-	/// ja: 'デバッグ'
-	String get releaseChannelDebug => 'デバッグ';
-
 	/// ja: 'アカウントID'
 	String get accountCuidLabel => 'アカウントID';
 
@@ -1410,9 +1401,6 @@ extension on Translations {
 			'settings.buildNumber' => 'ビルド番号',
 			'settings.appVersion' => 'アプリバージョン',
 			'settings.releaseChannel' => 'リリースチャンネル',
-			'settings.releaseChannelStable' => 'リリース',
-			'settings.releaseChannelProfile' => 'プロファイル',
-			'settings.releaseChannelDebug' => 'デバッグ',
 			'settings.accountCuidLabel' => 'アカウントID',
 			'settings.accountCreatedAtLabel' => '作成日時',
 			'settings.themeSystem' => 'システム設定に合わせる',

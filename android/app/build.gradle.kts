@@ -17,6 +17,14 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
+val keystorePropertiesDebug = Properties()
+val keystorePropertiesDebugFile = rootProject.file("key.debug.properties")
+if (keystorePropertiesDebugFile.exists()) {
+    keystorePropertiesDebug.load(FileInputStream(keystorePropertiesDebugFile))
+}
+
+val releaseChannelEnv = System.getenv("RELEASE_CHANNEL")
+
 android {
     namespace = "com.karasu256.denpamemo"
     compileSdk = flutter.compileSdkVersion
@@ -25,6 +33,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     kotlinOptions {
@@ -49,11 +61,24 @@ android {
             storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
             storePassword = keystoreProperties["storePassword"] as String?
         }
+        if (keystorePropertiesDebugFile.exists()) {
+            getByName("debug") {
+                keyAlias = keystorePropertiesDebug["keyAlias"] as String?
+                keyPassword = keystorePropertiesDebug["keyPassword"] as String?
+                storeFile = keystorePropertiesDebug["storeFile"]?.let { file(it as String) }
+                storePassword = keystorePropertiesDebug["storePassword"] as String?
+            }
+        }
     }
 
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
+            buildConfigField("String", "RELEASE_CHANNEL", "\"${releaseChannelEnv ?: "release"}\"")
+        }
+        debug {
+            applicationIdSuffix = ".debug"
+            buildConfigField("String", "RELEASE_CHANNEL", "\"${releaseChannelEnv ?: "debug"}\"")
         }
     }
 }

@@ -1,5 +1,4 @@
-import 'package:flutter/foundation.dart'
-    show kDebugMode, kProfileMode, kReleaseMode;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,16 +7,11 @@ import 'package:denpa_memo/widgets.dart' hide Translations;
 import '../app_metadata.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_info_providers.dart';
+import '../providers/release_channel_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/app_icon.dart';
 import '../widgets/settings/copyable_list_tile.dart';
-
-String _releaseChannelLabel(Translations t) {
-  if (kReleaseMode) return t.settings.releaseChannelStable;
-  if (kProfileMode) return t.settings.releaseChannelProfile;
-  return t.settings.releaseChannelDebug;
-}
 
 class Settings extends ConsumerWidget {
   const Settings({super.key});
@@ -26,6 +20,7 @@ class Settings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
     final packageInfo = ref.watch(packageInfoProvider);
+    final releaseChannel = ref.watch(releaseChannelProvider);
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.settings),
       body: SmoothScrollContainer(
@@ -136,6 +131,7 @@ class Settings extends ConsumerWidget {
                   CopyableListTile(
                     icon: Icons.numbers_outlined,
                     label: t.settings.buildNumber,
+                    trailingText: packageInfo.value?.buildNumber,
                   ),
                   CopyableListTile(
                     icon: Icons.info_outline,
@@ -145,7 +141,7 @@ class Settings extends ConsumerWidget {
                   CopyableListTile(
                     icon: Icons.rocket_launch_outlined,
                     label: t.settings.releaseChannel,
-                    trailingText: _releaseChannelLabel(t),
+                    trailingText: releaseChannel.value,
                   ),
                 ],
               ),
