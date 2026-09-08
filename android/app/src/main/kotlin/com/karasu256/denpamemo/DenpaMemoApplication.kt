@@ -26,6 +26,14 @@ class DenpaMemoApplication : Application() {
                     result.notImplemented()
                 }
             }
+        MethodChannel(engine.dartExecutor.binaryMessenger, APP_CONFIG_CHANNEL_NAME)
+            .setMethodCallHandler { call, result ->
+                if (call.method == "getReleaseChannel") {
+                    result.success(BuildConfig.RELEASE_CHANNEL)
+                } else {
+                    result.notImplemented()
+                }
+            }
         engine.dartExecutor.executeDartEntrypoint(
             DartExecutor.DartEntrypoint.createDefault()
         )
@@ -35,6 +43,7 @@ class DenpaMemoApplication : Application() {
     companion object {
         const val MAIN_ENGINE_ID = "main_engine"
         private const val CHANNEL_NAME = "com.karasu256.denpamemo/splash"
+        private const val APP_CONFIG_CHANNEL_NAME = "com.karasu256.denpamemo/app_config"
 
         @Volatile
         var isMainScreenReady: Boolean = false

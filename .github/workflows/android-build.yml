@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: android-build-${{ github.ref }}
@@ -16,7 +17,10 @@ env:
   ANDROID_KEYSTORE_JKS_BASE64: ${{ secrets.ANDROID_KEYSTORE_JKS_BASE64 }}
   ANDROID_KEYSTORE_PEM_BASE64: ${{ secrets.ANDROID_KEYSTORE_PEM_BASE64 }}
   ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+  ANDROID_DEBUG_KEYSTORE_JKS_BASE64: ${{ secrets.ANDROID_DEBUG_KEYSTORE_JKS_BASE64 }}
+  ANDROID_DEBUG_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_DEBUG_KEYSTORE_PASSWORD }}
   GOOGLE_SERVICES_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}
+  GOOGLE_SERVICES_DEBUG_JSON_BASE64: ${{ secrets.GOOGLE_SERVICES_DEBUG_JSON_BASE64 }}
   GOOGLE_CLIENT_SECRETS_JSON_BASE64: ${{ secrets.GOOGLE_CLIENT_SECRETS_JSON_BASE64 }}
 
 jobs:
@@ -32,8 +36,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
+        with:
+          build-type: debug
 
       - name: Build debug APK
+        env:
+          RELEASE_CHANNEL: debug
         run: flutter build apk --debug
 
       - uses: actions/upload-artifact@v4
@@ -50,6 +58,8 @@ jobs:
       - uses: ./.github/actions/android-setup
 
       - name: Build release APK
+        env:
+          RELEASE_CHANNEL: release
         run: flutter build apk --release
 
       - uses: actions/upload-artifact@v4
@@ -66,11 +76,70 @@ jobs:
       - uses: ./.github/actions/android-setup
 
       - name: Build release AAB
+        env:
+          RELEASE_CHANNEL: release
         run: flutter build appbundle --release
 
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+  build-playstore-internal-aab:
+    if: github.event_name == 'workflow_dispatch'
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build playstore-internal AAB
+        env:
+          RELEASE_CHANNEL: playstore-internal
+        run: flutter build appbundle --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-playstore-internal.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+  build-playstore-beta-aab:
+    if: github.event_name == 'workflow_dispatch'
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build playstore-beta AAB
+        env:
+          RELEASE_CHANNEL: playstore-beta
+        run: flutter build appbundle --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-playstore-beta.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+  build-playstore-aab:
+    if: github.event_name == 'workflow_dispatch'
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/android-setup
+
+      - name: Build playstore AAB
+        env:
+          RELEASE_CHANNEL: playstore
+        run: flutter build appbundle --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-playstore.aab
           path: build/app/outputs/bundle/release/app-release.aab
           if-no-files-found: error
 

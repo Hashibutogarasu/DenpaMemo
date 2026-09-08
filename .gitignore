@@ -64,6 +64,7 @@ modules/denpamemo_logics/pkg-node/
 
 # Firebase config (contains this project's API keys)
 /android/app/google-services.json
+/android/app/src/debug/google-services.json
 /ios/Runner/GoogleService-Info.plist
 
 # Google OAuth desktop client config (contains this project's client secret)

@@ -1,6 +1,12 @@
 name: android-setup
 description: Shared toolchain setup, caches, and secret decoding for the Android build jobs.
 
+inputs:
+  build-type:
+    description: Which build's signing/Firebase secrets to decode (debug or release).
+    required: false
+    default: release
+
 runs:
   using: composite
   steps:
@@ -55,6 +61,25 @@ runs:
     - name: Decode google-services.json
       shell: bash
       run: echo "$GOOGLE_SERVICES_JSON_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/app/google-services.json"
+
+    - name: Decode Android debug signing secrets
+      if: inputs.build-type == 'debug'
+      shell: bash
+      run: |
+        echo "$ANDROID_DEBUG_KEYSTORE_JKS_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/denpamemo-debug.jks"
+        cat <<EOF > "$GITHUB_WORKSPACE/android/key.debug.properties"
+        storePassword=$ANDROID_DEBUG_KEYSTORE_PASSWORD
+        keyPassword=$ANDROID_DEBUG_KEYSTORE_PASSWORD
+        keyAlias=debug
+        storeFile=$GITHUB_WORKSPACE/android/denpamemo-debug.jks
+        EOF
+
+    - name: Decode debug google-services.json
+      if: inputs.build-type == 'debug'
+      shell: bash
+      run: |
+        mkdir -p "$GITHUB_WORKSPACE/android/app/src/debug"
+        echo "$GOOGLE_SERVICES_DEBUG_JSON_BASE64" | base64 -d > "$GITHUB_WORKSPACE/android/app/src/debug/google-services.json"
 
     - name: Decode Google OAuth client secrets
       shell: bash
