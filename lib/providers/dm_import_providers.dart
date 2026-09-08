@@ -107,6 +107,11 @@ class DmImportController {
             : AppNotificationStatus.completed,
         progress: result == null ? null : 1,
       );
+      if (result != null) {
+        _ref.invalidate(denpaMenListProvider(masterData));
+        _ref.invalidate(qrCodeListProvider);
+        await _ref.read(denpaMenListProvider(masterData).future);
+      }
       return result;
     } on DmHeaderReadError {
       notifications.setStatus(

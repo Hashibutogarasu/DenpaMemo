@@ -1,9 +1,12 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:dm_file/dm_file.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:denpa_memo/i18n/gen/strings.g.dart';
+import 'package:denpa_memo/providers/denpa_men_icon_providers.dart';
+import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:denpa_memo/widgets/dialog/import_complete_dialog.dart';
 
 const _anntena = Anntena(id: 'none', category: AnntenaCategory.other);
@@ -46,8 +49,14 @@ void main() {
 
   Future<void> pump(WidgetTester tester, ImportResult result) {
     return tester.pumpWidget(
-      TranslationProvider(
-        child: MaterialApp(home: ImportCompleteDialog(result: result)),
+      ProviderScope(
+        overrides: [denpaMenIconProvider.overrideWith((ref, id) async => null)],
+        child: TranslationProvider(
+          child: MaterialApp(
+            theme: AppLightTheme.forContrast(AppContrastLevel.standard),
+            home: ImportCompleteDialog(result: result),
+          ),
+        ),
       ),
     );
   }
@@ -59,9 +68,7 @@ void main() {
         added: [denpaMen],
         merged: [denpaMen],
         orphaned: [denpaMen],
-        failed: [
-          DenpaMenEntryParseError(index: 0, rawEntry: 'broken'),
-        ],
+        failed: [const DenpaMenEntryParseError(index: 0, rawEntry: 'broken')],
       ),
     );
     await tester.pumpAndSettle();

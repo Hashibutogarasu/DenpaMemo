@@ -50,7 +50,7 @@ Future<void> runCloudBackup(
         .upload(masterData, cancellation: cancellation);
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ExportCompleteDialog.show(context, ref, result: result);
+    await ExportCompleteDialog.show(context, result: result);
   } on CancelledException {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
@@ -102,7 +102,7 @@ Future<void> runCloudRestore(
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     if (result != null) {
-      await ImportCompleteDialog.show(context, ref, result: result);
+      await ImportCompleteDialog.show(context, result: result);
     }
   } on CancelledException {
     if (!context.mounted) return;
