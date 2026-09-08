@@ -12,7 +12,9 @@ import 'rest_firebase_sign_in_backend.dart';
 /// client config parsed from its own `assets/config/auth/google/` JSON —
 /// required by [RestFirebaseSignInBackend]'s Google sign-in loopback flow.
 final googleOAuthClientConfigProvider = Provider<GoogleOAuthClientConfig>(
-  (ref) => throw UnimplementedError('googleOAuthClientConfigProvider must be overridden by the host app'),
+  (ref) => throw UnimplementedError(
+    'googleOAuthClientConfigProvider must be overridden by the host app',
+  ),
 );
 
 /// Selects a [FirebaseSignInBackend] for the current platform and exposes
@@ -36,7 +38,9 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
 
   Future<FirebaseSignInBackend> _selectBackend() async {
     try {
-      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
       return NativeFirebaseSignInBackend();
     } on UnsupportedError {
       return RestFirebaseSignInBackend(
@@ -66,10 +70,14 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
     }
   }
 
-  Future<void> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) async {
+  Future<void> signInWithGoogle({
+    void Function(Uri? authUrl)? onManualAuthUrl,
+  }) async {
     state = const AsyncLoading();
     try {
-      state = AsyncData(await _backend!.signInWithGoogle(onManualAuthUrl: onManualAuthUrl));
+      state = AsyncData(
+        await _backend!.signInWithGoogle(onManualAuthUrl: onManualAuthUrl),
+      );
     } catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);
       rethrow;
@@ -86,7 +94,19 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
     state = const AsyncData(CloudAccountState());
   }
 
-  Future<String?> getIdToken() => _backend!.getIdToken();
+  /// On failure (e.g. an expired REST-backend session whose refresh token
+  /// itself no longer works), [RestFirebaseSignInBackend.getIdToken] signs
+  /// itself out locally but has no way to update [state] — without this
+  /// catch, [state] (and everything watching it, e.g. `cloudAccountProvider`)
+  /// would keep reporting a stale signed-in [CloudAccountState].
+  Future<String?> getIdToken() async {
+    try {
+      return await _backend!.getIdToken();
+    } catch (_) {
+      state = const AsyncData(CloudAccountState());
+      rethrow;
+    }
+  }
 
   bool get isRestBackend => _backend is RestFirebaseSignInBackend;
 
@@ -107,6 +127,7 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
   }
 }
 
-final firebaseSignInProvider = AsyncNotifierProvider<FirebaseSignInNotifier, CloudAccountState>(
-  FirebaseSignInNotifier.new,
-);
+final firebaseSignInProvider =
+    AsyncNotifierProvider<FirebaseSignInNotifier, CloudAccountState>(
+      FirebaseSignInNotifier.new,
+    );
