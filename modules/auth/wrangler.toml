@@ -9,3 +9,23 @@ port = 8787
 binding = "STORAGE"
 bucket_name = "denpa-memo-storage"
 preview_bucket_name = "denpa-memo-storage-dev"
+
+[env.production]
+name = "denpa-memo-auth"
+
+[env.production.vars]
+FIREBASE_PROJECT_ID = "denpa-memo-29dda"
+
+[[env.production.r2_buckets]]
+binding = "STORAGE"
+bucket_name = "denpa-memo-storage"
+
+[env.development]
+name = "denpa-memo-auth-dev"
+
+[env.development.vars]
+FIREBASE_PROJECT_ID = "denpa-memo-dev"
+
+[[env.development.r2_buckets]]
+binding = "STORAGE"
+bucket_name = "denpa-memo-storage-dev"
