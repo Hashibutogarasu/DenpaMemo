@@ -15,7 +15,8 @@ class _FailingMasterDataRepository implements MasterDataRepository {
 }
 
 class _FakePhysiquesApiClient extends PhysiquesApiClient {
-  _FakePhysiquesApiClient({required this.categories}) : super(Uri.parse('http://unused.invalid'));
+  _FakePhysiquesApiClient({required this.categories})
+    : super(Uri.parse('http://unused.invalid'));
 
   final List<PhysiqueEvasionRateCategoryRow> categories;
 
@@ -23,7 +24,8 @@ class _FakePhysiquesApiClient extends PhysiquesApiClient {
   Future<List<TableDefinition>> fetchTypes() async => const [];
 
   @override
-  Future<List<PhysiqueEvasionRateCategoryRow>> fetchEvasionRateCategories() async => categories;
+  Future<List<PhysiqueEvasionRateCategoryRow>>
+  fetchEvasionRateCategories() async => categories;
 }
 
 void main() {
@@ -32,12 +34,17 @@ void main() {
     () async {
       final container = ProviderContainer(
         overrides: [
-          masterDataRepositoryProvider.overrideWithValue(_FailingMasterDataRepository()),
+          masterDataRepositoryProvider.overrideWithValue(
+            _FailingMasterDataRepository(),
+          ),
         ],
       );
       addTearDown(container.dispose);
 
-      await expectLater(container.read(masterDataProvider.future), throwsException);
+      await expectLater(
+        container.read(masterDataProvider.future),
+        throwsException,
+      );
     },
   );
 
@@ -50,7 +57,9 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           objectBoxProvider.overrideWithValue(objectBox),
-          masterDataRepositoryProvider.overrideWithValue(_FailingMasterDataRepository()),
+          masterDataRepositoryProvider.overrideWithValue(
+            _FailingMasterDataRepository(),
+          ),
         ],
       );
       addTearDown(container.dispose);
@@ -65,10 +74,10 @@ void main() {
       final objectBox = ObjectBox.createInMemory();
       addTearDown(objectBox.store.close);
 
-      final metadata = PhysiqueTableMetadata(
-        physiqueAntennaCategories: const [],
-        physiqueStatusCategories: const [],
-        physiqueAntennaCategoryAntennaLinks: const [],
+      final metadata = const PhysiqueTableMetadata(
+        physiqueAntennaCategories: [],
+        physiqueStatusCategories: [],
+        physiqueAntennaCategoryAntennaLinks: [],
       );
       const categories = [
         PhysiqueEvasionRateCategoryRow(
@@ -83,8 +92,12 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           objectBoxProvider.overrideWithValue(objectBox),
-          masterDataRepositoryProvider.overrideWithValue(_FailingMasterDataRepository()),
-          physiquesApiClientProvider.overrideWithValue(_FakePhysiquesApiClient(categories: categories)),
+          masterDataRepositoryProvider.overrideWithValue(
+            _FailingMasterDataRepository(),
+          ),
+          physiquesApiClientProvider.overrideWithValue(
+            _FakePhysiquesApiClient(categories: categories),
+          ),
           physiqueTableMetadataProvider.overrideWith((ref) async => metadata),
         ],
       );
@@ -92,9 +105,24 @@ void main() {
 
       await container.read(appInitializationProvider.future);
 
-      expect(container.read(physiqueTableMetadataCacheRepositoryProvider).cachedMetadata(), metadata);
-      expect(container.read(physiqueTableMetadataCacheRepositoryProvider).cachedTableTypes(), const []);
-      expect(container.read(evasionRateCategoryCacheRepositoryProvider).cachedCategories(), categories);
+      expect(
+        container
+            .read(physiqueTableMetadataCacheRepositoryProvider)
+            .cachedMetadata(),
+        metadata,
+      );
+      expect(
+        container
+            .read(physiqueTableMetadataCacheRepositoryProvider)
+            .cachedTableTypes(),
+        const [],
+      );
+      expect(
+        container
+            .read(evasionRateCategoryCacheRepositoryProvider)
+            .cachedCategories(),
+        categories,
+      );
     },
   );
 }
