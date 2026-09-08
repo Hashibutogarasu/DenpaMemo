@@ -45,6 +45,22 @@ final denpaMenIconProvider = FutureProvider.family<File?, String>((
   return null;
 });
 
+/// Invalidates [denpaMenIconProvider] and, for every [DenpaMenImageSlotType],
+/// the [entityImageProvider] instances it watches — invalidating only the
+/// outer provider leaves those stale (e.g. cached `null` from an earlier
+/// preview read), since `ref.watch` doesn't recompute what it's watching.
+Future<void> invalidateDenpaMenIconCache(Ref ref, String denpaMenId) async {
+  final profileId = await ref.read(
+    denpaMenClippingProfileIdProvider(denpaMenId).future,
+  );
+  for (final type in DenpaMenImageSlotType.values) {
+    ref.invalidate(
+      entityImageProvider((denpaMenIconCategory, denpaMenId, type, profileId)),
+    );
+  }
+  ref.invalidate(denpaMenIconProvider(denpaMenId));
+}
+
 /// Resolves every id in [denpaMenIds] to its icon file via [loadIcon], for
 /// callers (e.g. `ExportCompleteDialog.show`, `ImportCompleteDialog.show`,
 /// `resolveDuplicates` callbacks) that need a `Map<String, File?>` up
