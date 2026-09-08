@@ -358,7 +358,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(4, 6878201578847630111),
     name: 'AppSettingsEntity',
-    lastPropertyId: const obx_int.IdUid(3, 1858039301307882444),
+    lastPropertyId: const obx_int.IdUid(4, 8404818860298868480),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -377,6 +377,12 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(3, 1858039301307882444),
         name: 'buildTrackerEnabled',
         type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 8404818860298868480),
+        name: 'contrastLevel',
+        type: 9,
         flags: 0,
       ),
     ],
@@ -1092,10 +1098,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
       },
       objectToFB: (AppSettingsEntity object, fb.Builder fbb) {
         final themeModeOffset = fbb.writeString(object.themeMode);
-        fbb.startTable(4);
+        final contrastLevelOffset = fbb.writeString(object.contrastLevel);
+        fbb.startTable(5);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, themeModeOffset);
         fbb.addBool(2, object.buildTrackerEnabled);
+        fbb.addOffset(3, contrastLevelOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -1111,6 +1119,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final themeModeParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 6, '');
+        final contrastLevelParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 10, '');
         final buildTrackerEnabledParam = const fb.BoolReader().vTableGet(
           buffer,
           rootOffset,
@@ -1120,6 +1131,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final object = AppSettingsEntity(
           id: idParam,
           themeMode: themeModeParam,
+          contrastLevel: contrastLevelParam,
           buildTrackerEnabled: buildTrackerEnabledParam,
         );
 
@@ -1714,6 +1726,11 @@ class AppSettingsEntity_ {
   /// See [AppSettingsEntity.buildTrackerEnabled].
   static final buildTrackerEnabled =
       obx.QueryBooleanProperty<AppSettingsEntity>(_entities[3].properties[2]);
+
+  /// See [AppSettingsEntity.contrastLevel].
+  static final contrastLevel = obx.QueryStringProperty<AppSettingsEntity>(
+    _entities[3].properties[3],
+  );
 }
 
 /// [CloudFileEntity] entity fields to define ObjectBox queries.

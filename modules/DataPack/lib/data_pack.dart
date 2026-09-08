@@ -66,4 +66,5 @@ export 'src/qr_code/qr_code_repository.dart';
 export 'src/search/denpa_men_search_query.dart';
 export 'src/settings/app_settings.dart';
 export 'src/settings/app_settings_repository.dart';
+export 'src/settings/app_contrast_level.dart';
 export 'src/settings/app_theme_mode.dart';

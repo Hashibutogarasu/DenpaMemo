@@ -10,17 +10,17 @@ import 'package:denpa_memo/pages/denpa_men_qr.dart';
 import 'package:denpa_memo/providers/denpa_men_session_providers.dart';
 import 'package:denpa_memo/theme/app_theme.dart';
 
-final _masterData = MasterData(
-  headShapes: const [],
-  anntenas: const [],
-  attributes: const [],
-  abnormalityTypes: const [],
-  bodyColorResistanceRules: const [],
-  bodyColorAbnormalityResistanceRules: const [],
-  physiques: const [],
-  personalities: const [],
-  patterns: const [],
-  corrections: const [],
+const _masterData = MasterData(
+  headShapes: [],
+  anntenas: [],
+  attributes: [],
+  abnormalityTypes: [],
+  bodyColorResistanceRules: [],
+  bodyColorAbnormalityResistanceRules: [],
+  physiques: [],
+  personalities: [],
+  patterns: [],
+  corrections: [],
 );
 
 void main() {
@@ -36,7 +36,7 @@ void main() {
         routes: [
           GoRoute(
             path: '/',
-            builder: (context, state) => DenpaMenQrPage(
+            builder: (context, state) => const DenpaMenQrPage(
               masterData: _masterData,
               initialRawValue: 'imported-raw-value',
             ),
@@ -49,7 +49,7 @@ void main() {
           container: container,
           child: TranslationProvider(
             child: MaterialApp.router(
-              theme: AppLightTheme.theme,
+              theme: AppLightTheme.forContrast(AppContrastLevel.standard),
               routerConfig: router,
             ),
           ),

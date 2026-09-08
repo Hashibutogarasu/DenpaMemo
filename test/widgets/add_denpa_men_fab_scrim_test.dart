@@ -9,17 +9,17 @@ import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:denpa_memo/widgets/add_denpa_men_fab.dart';
 import '../support/all_translation_providers.dart';
 
-final _masterData = MasterData(
-  headShapes: const [],
-  anntenas: const [],
-  attributes: const [],
-  abnormalityTypes: const [],
-  bodyColorResistanceRules: const [],
-  bodyColorAbnormalityResistanceRules: const [],
-  physiques: const [],
-  personalities: const [],
-  patterns: const [],
-  corrections: const [],
+const _masterData = MasterData(
+  headShapes: [],
+  anntenas: [],
+  attributes: [],
+  abnormalityTypes: [],
+  bodyColorResistanceRules: [],
+  bodyColorAbnormalityResistanceRules: [],
+  physiques: [],
+  personalities: [],
+  patterns: [],
+  corrections: [],
 );
 
 /// Reproduces how `home.dart` wires [AddDenpaMenFab] and [AppScaffold]
@@ -49,7 +49,7 @@ class _HarnessState extends State<_Harness> {
     return ProviderScope(
       child: AllTranslationProviders(
         child: MaterialApp(
-          theme: AppLightTheme.theme,
+          theme: AppLightTheme.forContrast(AppContrastLevel.standard),
           home: AppScaffold(
             title: const Text('home'),
             floatingActionButtonExpansion: _expansion,

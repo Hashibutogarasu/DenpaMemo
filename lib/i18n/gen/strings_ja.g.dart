@@ -484,6 +484,18 @@ class Translations$settings$ja {
 	/// ja: 'ダーク'
 	String get themeDark => 'ダーク';
 
+	/// ja: 'コントラスト'
+	String get contrastSectionTitle => 'コントラスト';
+
+	/// ja: '標準'
+	String get contrastStandard => '標準';
+
+	/// ja: '中コントラスト'
+	String get contrastMedium => '中コントラスト';
+
+	/// ja: '高コントラスト'
+	String get contrastHigh => '高コントラスト';
+
 	/// ja: 'アプリのデータを全て削除'
 	String get dataManagementDeleteAllData => 'アプリのデータを全て削除';
 
@@ -1406,6 +1418,10 @@ extension on Translations {
 			'settings.themeSystem' => 'システム設定に合わせる',
 			'settings.themeLight' => 'ライト',
 			'settings.themeDark' => 'ダーク',
+			'settings.contrastSectionTitle' => 'コントラスト',
+			'settings.contrastStandard' => '標準',
+			'settings.contrastMedium' => '中コントラスト',
+			'settings.contrastHigh' => '高コントラスト',
 			'settings.dataManagementDeleteAllData' => 'アプリのデータを全て削除',
 			'settings.dataManagementDeleteAllDataConfirmTitle' => 'アプリのデータを全て削除',
 			'settings.dataManagementDeleteAllDataConfirmMessage' => '電波人間やQRコードなど、このアプリに保存されているすべてのデータを削除します。この操作は取り消せません。よろしいですか?',

@@ -9,10 +9,16 @@
 - The root app package (`denpa_memo` itself) is outside the Melos workspace member list and is not covered by Melos scripts. Analyze and test it on its own, directly with `flutter analyze` / `flutter test` from the repo root.
 - The pure-Dart `data_pack` package (`modules/DataPack`) is filtered out of the `flutter: true` Melos script filters. Analyze and test it on its own with `dart analyze` / `dart test`.
 
+# Code Generation
+
+- Running `dart run build_runner build` for the root `denpa_memo` app package fails with `'dart compile' does not support build hooks, use 'dart build' instead.` on this project's pinned Flutter 3.38.3 / Dart 3.10.1 toolchain. The cause is `sqlite3` (pulled in via `objectbox_flutter_libs`), which ships a `hook/build.dart` native-assets hook; build_runner's default AOT compilation step (`dart compile kernel`) refuses to run when such a hook is present in the dependency graph.
+- Workaround: pass `--force-jit` to force build_runner to run the build script in JIT mode instead of compiling it to AOT, e.g. `dart run build_runner build --force-jit --delete-conflicting-outputs`. This is required for the root app package (and any other package whose dependency graph pulls in `sqlite3`/`objectbox_flutter_libs`); packages without that dependency (e.g. `modules/Widgets`, `modules/DataPack`) are unaffected and don't need the flag.
+- Do not "fix" this by loosening the workspace-wide `build_runner: ">=2.15.1 <2.16.0"` pin in the various `pubspec.yaml` files — that pin is intentional (see the "Pin workspace dependencies to versions compatible with Flutter 3.38.3 / Dart 3.10.1" commit) and unrelated to this hook issue.
+
 # Code Formatting
 
 - Never hand-edit code purely to reformat it, and never use a script (e.g. a Python one-off) to force a particular formatting.
-- Formatting is the compiler/toolchain's job: run `dart format` (or the equivalent `flutter format`) and let it decide the formatting.
+- Do not run `dart format`/`flutter format` yourself as a manual step. This repo's `.git/hooks/pre-commit` (installed via the `flutter_pre_commit` dev dependency) already runs `dart format` on staged `.dart` files at commit time and auto-restages any files it reformats — let that hook do it. Running it manually mid-task is redundant work and risks reformatting files the hook would have left untouched.
 - Never hand-sort or reorder `import` directives by editing them one by one. Use the `tidy_imports` tool instead, so import order is decided by the tool rather than by hand:
   - It is declared as a `dev_dependency` in the root `pubspec.yaml`.
   - Run it from the repo root as `dart run tidy_imports --no-comments <files...>` — not a globally activated `tidy_imports` binary.

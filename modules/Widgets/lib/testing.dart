@@ -7,145 +7,32 @@ import 'package:data_pack/data_pack.dart';
 
 import 'i18n/gen/strings.g.dart';
 import 'src/responsive/responsive_scope.dart';
-import 'src/theme/app_button_theme.dart';
-import 'src/theme/back_button_theme.dart';
-import 'src/theme/denpa_men_container_theme.dart';
-import 'src/theme/denpa_men_label_theme.dart';
-import 'src/theme/dialog_transition_theme.dart';
-import 'src/theme/fab_button_theme.dart';
-import 'src/theme/fab_label_theme.dart';
-import 'src/theme/list_item_container_theme.dart';
-import 'src/theme/navigation_bar_blur_theme.dart';
-import 'src/theme/slanted_header_theme.dart';
-import 'src/theme/toggle_button_group_theme.dart';
+import 'src/theme/app_theme_builder.dart';
+
+/// [AppPalette] mirroring `AppLightTheme`'s palette in the `denpa_memo`
+/// app's `lib/theme/app_theme.dart` — duplicated as literals because this
+/// package cannot depend on the root app package. Keep these values in sync
+/// by hand whenever `AppLightTheme`'s palette changes.
+const _testPalette = AppPalette(
+  settingsContainerLightnessDelta: -0.05,
+  selectedItemLightnessDelta: -0.08,
+  statusBackgroundColor: Color(0xFF90E2FF),
+  nestedBorderColor: Color(0xFF90DAFE),
+  expBarBorderColor: Colors.black,
+  splashBackgroundColor: Color(0xFFF3EDF7),
+  legendGridHighlightBorderColor: Color(0xFFE53935),
+  legendGridDimmedBackgroundColor: Color(0x14000000),
+  navigationBarTintColor: Color(0x80FFFFFF),
+);
 
 /// The theme every widget/Widgetbook test in this package should render
 /// under, so individual tests don't each assemble their own ad hoc
 /// `ThemeData`/`extensions` — they all share one theme, matching how the
 /// real app's own theme is one `ThemeData(...)` shared by the whole app.
-/// Kept in sync with `lib/main.dart`'s theme in the `denpa_memo` app.
-final ColorScheme _testColorScheme = ColorScheme.fromSeed(
-  seedColor: Colors.deepPurple,
-);
-
-final ThemeData testAppTheme = ThemeData(
-  colorScheme: _testColorScheme,
-  listTileTheme: const ListTileThemeData(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(12)),
-    ),
-    contentPadding: EdgeInsets.symmetric(horizontal: 16),
-  ),
-  dialogTheme: const DialogThemeData(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(24)),
-    ),
-  ),
-  navigationBarTheme: const NavigationBarThemeData(
-    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-    indicatorColor: Colors.transparent,
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    surfaceTintColor: Colors.transparent,
-  ),
-  extensions: [
-    const SlantedHeaderThemeData(
-      fillColor: Color(0xFF52BBE5),
-      borderColor: Color(0xFF0865C2),
-      borderWidth: 6,
-      angleDegrees: 10,
-      contentPadding: EdgeInsets.only(left: 20, top: 8, right: 8),
-    ),
-    FabButtonThemeData(
-      barrierColor: Colors.black54,
-      scrimAnimationDuration: Duration(milliseconds: 200),
-      scrimAnimationCurve: Curves.easeOutCubic,
-      mainButtonAnimationDuration: Duration(milliseconds: 200),
-      miniOptionSlideCurve: Curves.easeOutCubic,
-      miniOptionSlideOffset: Offset(0, 0.3),
-      labelBubbleElevation: 4,
-      labelBubbleBorderRadius: 8,
-      labelBubblePadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      miniOptionGap: 12,
-      miniOptionRowBottomPadding: 12,
-    ),
-    DenpaMenContainerThemeData(
-      statusBackgroundColor: Color(0xFF90E2FF),
-      statusBorderRadius: 20,
-      nestedBackgroundColor: Color(0xFFC8E0E7),
-      nestedBorderColor: Color(0xFF90DAFE),
-      nestedBorderWidth: 2,
-      nestedBorderRadius: 20,
-      accentColor: Color(0xFF056193),
-      memoBackgroundColor: Colors.white,
-      memoBorderRadius: 4,
-      headerDividerHeight: 2,
-      pencilIconSize: 28,
-      previewIconSize: 56,
-      accordionIconSize: 32,
-      accordionTitleFontSize: 20,
-      accordionCheckboxSlotSize: 40,
-      accordionAnimationDuration: Duration(milliseconds: 200),
-      resistanceGap: 5,
-      nameFieldFillColor: Colors.white,
-    ),
-    const DenpaMenLabelThemeData(
-      headerTitleOutlineColor: Color(0xFF238BCB),
-      pillBackgroundColor: Color(0xFF7FC9FF),
-      pillTextColor: Color(0xFF2B2031),
-      expBarFilledColor: Color(0xFFFFEB3B),
-      expBarUnfilledColor: Color(0xFF056193),
-      maxedValueColor: Color(0xFF7BEA95),
-      inactiveBonusColor: Color(0xFFE53935),
-      titleFillColor: Colors.white,
-      expBarBorderColor: Colors.black,
-    ),
-    const AppButtonThemeData(
-      backgroundTintColor: Color(0x995B7FA6),
-      blurSigma: 12,
-      foregroundColor: Colors.white,
-    ),
-    ToggleButtonGroupThemeData(
-      containerColor: _testColorScheme.surface,
-      containerElevation: 4,
-      containerBorderRadius: 22,
-      highlightColor: const Color(0xFF7FC9FF),
-      highlightBorderRadius: 20,
-      selectedIconColor: const Color(0xFF056193),
-      unselectedIconColor: _testColorScheme.onSurfaceVariant,
-      slideDuration: const Duration(milliseconds: 220),
-      slideCurve: Curves.easeOutBack,
-    ),
-    ListItemContainerThemeData(
-      backgroundColor: Color.alphaBlend(
-        const Color(0x1452BBE5),
-        _testColorScheme.surface,
-      ),
-      borderRadius: 20,
-      tileBorderColor: _testColorScheme.outlineVariant,
-      tileBorderWidth: 1,
-      selectedBackgroundColor: Color.alphaBlend(
-        const Color(0x33052744),
-        _testColorScheme.surface,
-      ),
-      checkAnimationDuration: const Duration(milliseconds: 200),
-      checkAnimationInCurve: Curves.easeOut,
-      checkAnimationOutCurve: Curves.easeIn,
-    ),
-    NavigationBarBlurThemeData(
-      tintColor: Colors.white.withValues(alpha: 0.5),
-      blurSigma: 12,
-    ),
-    const BackButtonThemeData(anchor: BackButtonAnchor.bottomLeft),
-    const FabLabelThemeData(showLabel: false, showTooltip: true),
-    const DialogTransitionThemeData(
-      duration: Duration(milliseconds: 220),
-      curve: Curves.easeOut,
-      reverseCurve: Curves.easeIn,
-      beginOffset: Offset(0, 0.15),
-    ),
-  ],
-);
+/// Built from the same [buildAppTheme] the real app calls, so this is
+/// byte-for-byte the app's standard-contrast light theme rather than a
+/// hand-copied stand-in.
+final ThemeData testAppTheme = buildAppTheme(Brightness.light, _testPalette);
 
 /// Wraps [home] with this package's [TranslationProvider], a
 /// [ResponsiveScope], and a [MaterialApp] using [testAppTheme], for widget

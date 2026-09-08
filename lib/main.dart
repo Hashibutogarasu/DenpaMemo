@@ -144,8 +144,8 @@ class _ThemedMaterialApp extends ConsumerWidget {
     return MaterialApp.router(
       title: t.app.name,
       scrollBehavior: const _DragAnywhereScrollBehavior(),
-      theme: AppLightTheme.theme,
-      darkTheme: AppDarkTheme.theme,
+      theme: AppLightTheme.forContrast(settings.contrastLevel),
+      darkTheme: AppDarkTheme.forContrast(settings.contrastLevel),
       themeMode: themeMode.toFlutterThemeMode(),
       routerConfig: appRouter,
       builder: (context, child) {

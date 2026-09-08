@@ -282,7 +282,7 @@
     },
     {
       "id": "4:6878201578847630111",
-      "lastPropertyId": "3:1858039301307882444",
+      "lastPropertyId": "4:8404818860298868480",
       "name": "AppSettingsEntity",
       "properties": [
         {
@@ -300,6 +300,11 @@
           "id": "3:1858039301307882444",
           "name": "buildTrackerEnabled",
           "type": 1
+        },
+        {
+          "id": "4:8404818860298868480",
+          "name": "contrastLevel",
+          "type": 9
         }
       ],
       "relations": []

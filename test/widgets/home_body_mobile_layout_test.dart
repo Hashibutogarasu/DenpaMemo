@@ -78,7 +78,7 @@ void main() {
         ],
         child: AllTranslationProviders(
           child: MaterialApp.router(
-            theme: AppLightTheme.theme,
+            theme: AppLightTheme.forContrast(AppContrastLevel.standard),
             routerConfig: router,
           ),
         ),

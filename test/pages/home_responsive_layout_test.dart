@@ -12,17 +12,17 @@ import 'package:denpa_memo/theme/app_theme.dart';
 import 'package:graphql_client/graphql_client.dart';
 import '../support/all_translation_providers.dart';
 
-final _masterData = MasterData(
-  headShapes: const [],
-  anntenas: const [],
-  attributes: const [],
-  abnormalityTypes: const [],
-  bodyColorResistanceRules: const [],
-  bodyColorAbnormalityResistanceRules: const [],
-  physiques: const [],
-  personalities: const [],
-  patterns: const [],
-  corrections: const [],
+const _masterData = MasterData(
+  headShapes: [],
+  anntenas: [],
+  attributes: [],
+  abnormalityTypes: [],
+  bodyColorResistanceRules: [],
+  bodyColorAbnormalityResistanceRules: [],
+  physiques: [],
+  personalities: [],
+  patterns: [],
+  corrections: [],
 );
 
 void main() {
@@ -46,14 +46,14 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          masterDataProvider.overrideWithValue(AsyncData(_masterData)),
+          masterDataProvider.overrideWithValue(const AsyncData(_masterData)),
           denpaMenListProvider.overrideWith(
             (ref, masterData) => Stream.value(const <DenpaMenRecord>[]),
           ),
         ],
         child: AllTranslationProviders(
           child: MaterialApp.router(
-            theme: AppLightTheme.theme,
+            theme: AppLightTheme.forContrast(AppContrastLevel.standard),
             routerConfig: router,
           ),
         ),
