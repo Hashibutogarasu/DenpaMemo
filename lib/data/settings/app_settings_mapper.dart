@@ -8,6 +8,7 @@ extension AppSettingsEntityMapper on AppSettings {
     return AppSettingsEntity(
       id: id,
       themeMode: themeMode.name,
+      contrastLevel: contrastLevel.name,
       buildTrackerEnabled: buildTrackerEnabled,
     );
   }
@@ -18,6 +19,9 @@ extension AppSettingsEntityToDomain on AppSettingsEntity {
   AppSettings toDomain() {
     return AppSettings(
       themeMode: AppThemeMode.values.byName(themeMode),
+      contrastLevel:
+          AppContrastLevel.values.asNameMap()[contrastLevel] ??
+          AppContrastLevel.standard,
       buildTrackerEnabled: buildTrackerEnabled,
     );
   }
