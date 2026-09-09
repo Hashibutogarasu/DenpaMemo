@@ -3,17 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:silky_scroll/silky_scroll.dart';
 
 /// Wraps `silky_scroll`'s [SilkyScroll] with this app's default feel.
-/// [child]'s descendant scrollables pick up the managed
-/// [ScrollController]/[ScrollPhysics] automatically (via
-/// [PrimaryScrollController]/[ScrollConfiguration]) as long as they don't
-/// set their own `controller`; [SmoothScrollContainer.builder] bypasses
-/// that and exposes [SilkyScroll]'s raw builder for callers that need to
-/// wire a scrollable themselves.
+/// Descendant scrollables pick up the managed [ScrollController]
+/// automatically unless [controller] is given, in which case the caller
+/// owns its lifecycle instead of [SilkyScroll].
 class SmoothScrollContainer extends StatelessWidget {
   const SmoothScrollContainer({
     super.key,
     required Widget child,
     this.scrollDirection = Axis.vertical,
+    this.controller,
   }) : _child = child,
        builder = null;
 
@@ -21,11 +19,13 @@ class SmoothScrollContainer extends StatelessWidget {
     super.key,
     required SilkyScrollWidgetBuilder this.builder,
     this.scrollDirection = Axis.vertical,
-  }) : _child = null;
+  }) : _child = null,
+       controller = null;
 
   final Widget? _child;
   final SilkyScrollWidgetBuilder? builder;
   final Axis scrollDirection;
+  final ScrollController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class SmoothScrollContainer extends StatelessWidget {
       silkyScrollDuration: const Duration(milliseconds: 1000),
       scrollSpeed: 1.5,
       animationCurve: Curves.easeOutQuart,
+      controller: controller,
       builder: builder ?? _wrapChild,
     );
   }

@@ -8,22 +8,53 @@ import '../app_metadata.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/app_info_providers.dart';
 import '../providers/release_channel_providers.dart';
+import '../providers/scroll_position_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/app_icon.dart';
 import '../widgets/settings/copyable_list_tile.dart';
 
-class Settings extends ConsumerWidget {
+class Settings extends ConsumerStatefulWidget {
   const Settings({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends ConsumerState<Settings> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController(
+      initialScrollOffset: ref.read(settingsScrollOffsetProvider),
+    )..addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    ref
+        .read(settingsScrollOffsetProvider.notifier)
+        .set(_scrollController.offset);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final t = context.t;
     final packageInfo = ref.watch(packageInfoProvider);
     final releaseChannel = ref.watch(releaseChannelProvider);
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.settings),
       body: SmoothScrollContainer(
+        controller: _scrollController,
         child: ListView(
           children: [
             ListTileSection(title: Text(t.settings.section.general)),

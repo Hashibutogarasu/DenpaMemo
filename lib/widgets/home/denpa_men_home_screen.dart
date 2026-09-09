@@ -9,7 +9,9 @@ import 'package:denpa_memo/widgets.dart' hide Translations;
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/denpa_men_icon_providers.dart';
 import '../../providers/denpa_men_providers.dart';
+import '../../providers/home_list_paging_providers.dart';
 import '../../providers/home_view_providers.dart';
+import '../../providers/scroll_position_providers.dart';
 import '../../providers/search_providers.dart';
 import '../denpa_men_lineage_tree.dart';
 import '../dialog/denpa_men_action_menu.dart';
@@ -199,12 +201,29 @@ class _HomeBody extends ConsumerStatefulWidget {
 }
 
 class _HomeBodyState extends ConsumerState<_HomeBody> {
-  late int _visibleCount = homeListDefaultPageSize;
+  late final ScrollController _scrollController;
 
-  /// The in-flight page reveal, if any — its own [FutureBuilder]
-  /// connection state is the single source of truth for whether the
-  /// "loading more" footer shows, instead of a separately maintained flag.
   Future<void>? _loadMoreFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController(
+      initialScrollOffset: ref.read(homeScrollOffsetProvider),
+    )..addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    ref.read(homeScrollOffsetProvider.notifier).set(_scrollController.offset);
+  }
 
   void _setSelected(int id, bool selected) {
     final ids = Set<int>.from(ref.read(selectedDenpaMenIdsProvider));
@@ -220,21 +239,23 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
   }
 
   void _resetPagination() {
+    ref.read(homeListVisibleCountProvider.notifier).reset();
     setState(() {
-      _visibleCount = homeListDefaultPageSize;
       _loadMoreFuture = null;
     });
   }
 
   void _loadMore(int totalCount) {
-    if (_loadMoreFuture != null || _visibleCount >= totalCount) return;
+    final visibleCount = ref.read(homeListVisibleCountProvider);
+    if (_loadMoreFuture != null || visibleCount >= totalCount) return;
     setState(() {
       _loadMoreFuture = Future<void>.delayed(const Duration(milliseconds: 200))
           .then((_) {
             if (!mounted) return;
+            ref
+                .read(homeListVisibleCountProvider.notifier)
+                .loadMore(totalCount);
             setState(() {
-              final next = _visibleCount + homeListDefaultPageSize;
-              _visibleCount = next > totalCount ? totalCount : next;
               _loadMoreFuture = null;
             });
           });
@@ -264,9 +285,10 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
     final isMobile = ResponsiveScope.isMobileOf(context);
     final tileMode = ref.watch(homeTileModeProvider);
     final totalAttributeCount = masterData.attributes.length;
+    final visibleCount = ref.watch(homeListVisibleCountProvider);
 
-    final visibleRecords = records.take(_visibleCount).toList();
-    final footer = _visibleCount < records.length
+    final visibleRecords = records.take(visibleCount).toList();
+    final footer = visibleCount < records.length
         ? FutureBuilder<void>(
             future: _loadMoreFuture,
             builder: (context, snapshot) => Visibility(
@@ -286,6 +308,7 @@ class _HomeBodyState extends ConsumerState<_HomeBody> {
                 child: RefreshIndicator(
                   onRefresh: _onRefresh,
                   child: SmoothScrollContainer(
+                    controller: _scrollController,
                     child: _HomeRecordList(
                       masterData: masterData,
                       recordsAsync: recordsAsync,
