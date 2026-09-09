@@ -60,7 +60,7 @@ jobs:
       - name: Build release APK
         env:
           RELEASE_CHANNEL: release
-        run: flutter build apk --release
+        run: flutter build apk --release --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -78,7 +78,7 @@ jobs:
       - name: Build release AAB
         env:
           RELEASE_CHANNEL: release
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -97,7 +97,7 @@ jobs:
       - name: Build playstore-internal AAB
         env:
           RELEASE_CHANNEL: playstore-internal
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -116,7 +116,7 @@ jobs:
       - name: Build playstore-beta AAB
         env:
           RELEASE_CHANNEL: playstore-beta
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -135,7 +135,7 @@ jobs:
       - name: Build playstore AAB
         env:
           RELEASE_CHANNEL: playstore
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --build-number=${{ github.run_number }}
 
       - uses: actions/upload-artifact@v4
         with:

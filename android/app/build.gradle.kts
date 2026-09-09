@@ -7,6 +7,7 @@ plugins {
     id("com.google.gms.google-services")
     // END: FlutterFire Configuration
     id("kotlin-android")
+    id("com.palantir.git-version")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -24,6 +25,9 @@ if (keystorePropertiesDebugFile.exists()) {
 }
 
 val releaseChannelEnv = System.getenv("RELEASE_CHANNEL")
+
+val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails> by extra
+val gitHash = versionDetails().gitHash
 
 android {
     namespace = "com.karasu256.denpamemo"
@@ -74,11 +78,13 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
-            buildConfigField("String", "RELEASE_CHANNEL", "\"${releaseChannelEnv ?: "release"}\"")
+            versionNameSuffix = "-$gitHash-$releaseChannelEnv"
+            buildConfigField("String", "RELEASE_CHANNEL", "\"$releaseChannelEnv\"")
         }
         debug {
             applicationIdSuffix = ".debug"
-            buildConfigField("String", "RELEASE_CHANNEL", "\"${releaseChannelEnv ?: "debug"}\"")
+            versionNameSuffix = "-$gitHash-$releaseChannelEnv"
+            buildConfigField("String", "RELEASE_CHANNEL", "\"$releaseChannelEnv\"")
         }
     }
 }
