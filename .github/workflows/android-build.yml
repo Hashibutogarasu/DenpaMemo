@@ -124,6 +124,58 @@ jobs:
           path: build/app/outputs/bundle/release/app-release.aab
           if-no-files-found: error
 
+  publish-playstore-internal:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build-playstore-internal-aab
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-playstore-internal.aab
+          path: artifacts
+
+      - name: Prepare release notes
+        run: |
+          mkdir -p whatsnew
+          sed '/<!--/,/-->/d' RELEASE-DETAILS.md > whatsnew/whatsnew-ja-JP
+
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
+          packageName: com.karasu256.denpamemo
+          releaseFiles: artifacts/app-release.aab
+          track: internal
+          whatsNewDirectory: whatsnew/
+          status: completed
+
+  publish-playstore-beta:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build-playstore-beta-aab
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-playstore-beta.aab
+          path: artifacts
+
+      - name: Prepare release notes
+        run: |
+          mkdir -p whatsnew
+          sed '/<!--/,/-->/d' RELEASE-DETAILS.md > whatsnew/whatsnew-ja-JP
+
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
+          packageName: com.karasu256.denpamemo
+          releaseFiles: artifacts/app-release.aab
+          track: beta
+          whatsNewDirectory: whatsnew/
+          status: completed
+
   build-playstore-aab:
     if: github.event_name == 'workflow_dispatch'
     needs: prepare
