@@ -2,24 +2,16 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../state/header_content_link.dart';
 import '../theme/slanted_header_theme.dart';
 
-/// App-wide header whose bottom edge slants at [angleDegrees]: higher on
-/// the left, lower on the right. The top edge stays flush with the top of
-/// the bar's own box, so nothing behind the bar shows through — only the
-/// bottom edge grows taller as it moves right, which is why the bar's own
-/// height (its "top part") is taller than a plain [AppBar].
-///
-/// The slant offset is derived from [height] rather than the bar's width —
-/// deriving it from width would make the offset (and therefore the bar's
-/// required height) scale with window width, which blows up well past a
-/// usable header height on a wide desktop window.
-///
-/// Fill/border colors and content padding come from [SlantedHeaderThemeData].
-/// [angleDegrees] is required rather than theme-resolved because
-/// [preferredSize] is read by [Scaffold] before [build] runs, with no
-/// [BuildContext] available — [AppScaffold] resolves it and passes it down.
-class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
+/// App-wide header whose bottom edge slants at [angleDegrees] — shorter on
+/// the left, taller on the right — leaving a transparent corner there.
+/// [AppScaffold] overlays it above the body in a [Stack] rather than as
+/// `Scaffold.appBar`, reading scroll offset and body size via [headerContentLinkProvider].
+class SlantedAppBar extends ConsumerWidget {
   const SlantedAppBar({
     super.key,
     this.title,
@@ -38,40 +30,70 @@ class SlantedAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final double topSafeAreaInset;
 
-  double get _contentHeight => height + topSafeAreaInset;
+  /// The header's opaque content height (excluding the slanted overhang),
+  /// computable without a [SlantedAppBar] instance. [AppScaffold] uses this
+  /// to size the top padding it gives the scrollable body.
+  static double contentHeightFor({
+    required double height,
+    required double topSafeAreaInset,
+  }) {
+    return height + topSafeAreaInset;
+  }
+
+  double get _contentHeight =>
+      contentHeightFor(height: height, topSafeAreaInset: topSafeAreaInset);
 
   double get _slant => height * math.tan(angleDegrees * math.pi / 180);
 
   @override
-  Size get preferredSize => Size.fromHeight(_contentHeight + _slant);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).extension<SlantedHeaderThemeData>()!;
     final slant = _slant;
-    return SizedBox(
-      height: _contentHeight + slant,
-      child: CustomPaint(
-        painter: _SlantedHeaderPainter(
-          slant: slant,
-          fillColor: theme.fillColor,
-          borderColor: theme.borderColor,
-          borderWidth: borderWidth ?? theme.borderWidth,
-        ),
-        child: title == null && actions == null
-            ? null
-            : SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: theme.contentPadding,
-                  child: Row(
-                    children: [
-                      if (title != null) Expanded(child: title!),
-                      ...?actions,
-                    ],
+    final link = ref.watch(headerContentLinkProvider);
+    final scrolled = link.scrollOffset > 0;
+    final bodyRenderBox =
+        link.bodyKey.currentContext?.findRenderObject() as RenderBox?;
+    final bodyWidth = bodyRenderBox != null && bodyRenderBox.hasSize
+        ? bodyRenderBox.size.width
+        : null;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        boxShadow: scrolled
+            ? [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : const [],
+      ),
+      child: SizedBox(
+        width: bodyWidth,
+        height: _contentHeight + slant,
+        child: CustomPaint(
+          painter: _SlantedHeaderPainter(
+            slant: slant,
+            fillColor: theme.fillColor,
+            borderColor: theme.borderColor,
+            borderWidth: borderWidth ?? theme.borderWidth,
+          ),
+          child: title == null && actions == null
+              ? null
+              : SafeArea(
+                  bottom: false,
+                  child: Padding(
+                    padding: theme.contentPadding,
+                    child: Row(
+                      children: [
+                        if (title != null) Expanded(child: title!),
+                        ...?actions,
+                      ],
+                    ),
                   ),
                 ),
-              ),
+        ),
       ),
     );
   }

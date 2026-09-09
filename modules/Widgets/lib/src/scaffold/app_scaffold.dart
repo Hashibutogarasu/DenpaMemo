@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../header/slanted_app_bar.dart';
 import '../navigation/app_back_button.dart';
+import '../state/header_content_link.dart';
 import '../theme/back_button_theme.dart';
 import '../theme/fab_button_theme.dart';
 import '../theme/slanted_header_theme.dart';
@@ -24,13 +26,10 @@ class AlwaysPoppableShellScope extends InheritedWidget {
   bool updateShouldNotify(AlwaysPoppableShellScope oldWidget) => false;
 }
 
-/// Standard page shell: a [SlantedAppBar] header, then [belowHeader] and
-/// [body] in a [Column]. [body] holds the stack-aware [AppBackButton]
-/// (anchored to the corner given by [BackButtonThemeData.anchor], with any
-/// [backButtonExtras] stacked next to it, gapped by
-/// [FabButtonThemeData.miniOptionRowBottomPadding] like `MiniFabOption`)
-/// and [floatingActionButton] (bottom-right), both inset by [buttonInset].
-/// Also binds Escape to the same pop as the on-screen back button.
+/// Standard page shell: a single [Stack] with the scrollable [body] at the
+/// bottom and [SlantedAppBar] overlaid above it, so [body] shows through
+/// the header's transparent slanted corner. Header and body share scroll
+/// offset/size via [headerContentLinkProvider]. Also binds Escape to pop.
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
     super.key,
@@ -59,10 +58,16 @@ class AppScaffold extends StatelessWidget {
 
   final Map<ShortcutActivator, VoidCallback> additionalShortcuts;
 
+  static const double _headerHeight = 56;
+
   @override
   Widget build(BuildContext context) {
     final canPop =
         Navigator.canPop(context) || AlwaysPoppableShellScope.of(context);
+    final contentHeight = SlantedAppBar.contentHeightFor(
+      height: _headerHeight,
+      topSafeAreaInset: MediaQuery.paddingOf(context).top,
+    );
 
     return CallbackShortcuts(
       bindings: {
@@ -74,21 +79,46 @@ class AppScaffold extends StatelessWidget {
       child: Focus(
         autofocus: true,
         child: Scaffold(
-          appBar: SlantedAppBar(
-            title: title,
-            actions: actions,
-            angleDegrees: Theme.of(
-              context,
-            ).extension<SlantedHeaderThemeData>()!.angleDegrees,
-            topSafeAreaInset: MediaQuery.paddingOf(context).top,
-          ),
-          body: Column(
-            children: [
-              ?belowHeader,
-              Expanded(
-                child: Stack(
+          body: ProviderScope(
+            overrides: [
+              headerContentLinkProvider.overrideWith(
+                (ref) => HeaderContentLink(),
+              ),
+            ],
+            child: Consumer(
+              builder: (context, ref, child) {
+                return Stack(
                   children: [
-                    Positioned.fill(child: body),
+                    Positioned.fill(
+                      child: NotificationListener<ScrollMetricsNotification>(
+                        onNotification: (notification) {
+                          ref
+                              .read(headerContentLinkProvider)
+                              .setScrollOffset(notification.metrics.pixels);
+                          return false;
+                        },
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (notification) {
+                            ref
+                                .read(headerContentLinkProvider)
+                                .setScrollOffset(notification.metrics.pixels);
+                            return false;
+                          },
+                          child: Padding(
+                            key: ref.read(headerContentLinkProvider).bodyKey,
+                            padding: EdgeInsets.only(top: contentHeight),
+                            child: body,
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (belowHeader != null)
+                      Positioned(
+                        top: contentHeight,
+                        left: 0,
+                        right: 0,
+                        child: belowHeader!,
+                      ),
                     if (floatingActionButtonExpansion != null)
                       Positioned.fill(
                         child: _FabScrim(
@@ -102,10 +132,24 @@ class AppScaffold extends StatelessWidget {
                         bottom: buttonInset,
                         child: floatingActionButton!,
                       ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: SlantedAppBar(
+                        title: title,
+                        actions: actions,
+                        angleDegrees: Theme.of(
+                          context,
+                        ).extension<SlantedHeaderThemeData>()!.angleDegrees,
+                        height: _headerHeight,
+                        topSafeAreaInset: MediaQuery.paddingOf(context).top,
+                      ),
+                    ),
                   ],
-                ),
-              ),
-            ],
+                );
+              },
+            ),
           ),
         ),
       ),
