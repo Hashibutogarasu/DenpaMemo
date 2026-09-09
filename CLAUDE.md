@@ -3,6 +3,11 @@
 - Always respond in whatever language the user requests.
 - Re-check the requested language at the moment each new request arrives, regardless of the current state (mid-task, mid-plan, background work in progress, etc.). Never assume the language from earlier in the conversation still applies without re-confirming it against the latest request.
 
+# Git Commits and Pushing
+
+- A request to commit is only a request to commit. Do not push, update a PR, or take any other follow-up remote action afterward unless separately, explicitly asked.
+- Do not ask a clarifying question that assumes the unrequested next action should happen anyway (e.g. asking which branch/PR to push a just-made commit to) — if it wasn't asked for, the answer is not to do it, not to ask how to do it.
+
 # Workspace Tooling
 
 - When analyzing or building across multiple packages in this workspace (the `modules/` and `apps/` members listed under `workspace:` in the root `pubspec.yaml`), use Melos (`melos run analyze`, `melos run test`, etc.) instead of invoking `flutter analyze` / `flutter test` separately per package.
@@ -39,6 +44,13 @@
 - Never run `flutter devices`, `flutter run`, `flutter install`, `adb install`, `adb shell am start`/`monkey`, or any other command that installs, launches, or otherwise interacts with a real device or emulator — this includes screenshots, logcat capture, and UI automation against a running app — unless the user has explicitly asked for it in that turn. A prior build (`flutter build ...`) is not permission to install or run it.
 - If diagnosing a bug seems to require an actual run, say so and ask before doing it. Do not treat "let's figure out the root cause" as implicit permission to touch a connected device.
 - When wrapping up a task, do not mention device/emulator verification at all — not to solicit permission to run it, and not to state that it wasn't performed. Say nothing about it either way; let the user bring it up themselves if they want it done.
+
+# Pull Requests
+
+- Do not prefix pull request titles with a conventional-commit-style tag (`fix:`, `refactor:`, `ci:`, etc.). Write a plain descriptive title.
+- Write both the pull request title and body in English, regardless of the language used elsewhere in the conversation.
+- Before creating a pull request, check existing pull requests (e.g. `gh pr list`, `gh pr view <number>`) to match this repo's current title/body conventions.
+- Use `gh api repos/<owner>/<repo>/pulls/<number> -X PATCH -f title=... -F body=@<file>` (or the equivalent `POST` for creation) rather than `gh pr edit`/`gh pr create` — those consistently fail against this repo with an unrelated `Projects (classic)` GraphQL error.
 
 # Unrequested Bug Fixes
 
