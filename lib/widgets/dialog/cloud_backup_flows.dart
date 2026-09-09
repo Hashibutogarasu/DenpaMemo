@@ -4,35 +4,23 @@ import 'package:data_pack/data_pack.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../i18n/gen/strings.g.dart';
+import '../../providers/active_cancellation_providers.dart';
 import '../../providers/cancellation.dart';
 import '../../providers/cloud_backup_restore_providers.dart';
 import '../../providers/cloud_backup_upload_providers.dart';
 import '../../providers/notification_service_providers.dart';
 import '../../services/live_progress_forwarding.dart';
 
-void showCancellableSnackBar(
-  BuildContext context,
-  String message,
-  VoidCallback onCancel,
-) {
-  final t = context.t;
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      duration: const Duration(minutes: 10),
-      action: SnackBarAction(label: t.common.cancel, onPressed: onCancel),
-    ),
-  );
-}
-
-/// Runs [CloudBackupUploadController.upload] with a cancellable snackbar.
-/// The outcome (success, cancellation, or any specific failure) is recorded
-/// by the controller itself into [appNotificationsProvider]
+/// Runs [CloudBackupUploadController.upload]. The outcome (success,
+/// cancellation, or any specific failure) is recorded by the controller
+/// itself into [appNotificationsProvider]
 /// (../../providers/app_notification_providers.dart), and displayed by the
 /// global result listener in `main.dart` — not here — so it survives the
-/// caller navigating away before the upload finishes. The only sanctioned
-/// way to start a backup upload, so every entry point shows the same
-/// snackbar/progress handling.
+/// caller navigating away before the upload finishes. Cancellation is
+/// exposed via [activeCancellationProvider] for the calling page's own
+/// button to trigger directly, rather than through a dismissible snackbar.
+/// The only sanctioned way to start a backup upload, so every entry point
+/// shows the same handling.
 Future<void> runCloudBackup(
   BuildContext context,
   WidgetRef ref,
@@ -40,11 +28,7 @@ Future<void> runCloudBackup(
 ) async {
   final t = context.t;
   final cancellation = Cancellation();
-  showCancellableSnackBar(
-    context,
-    t.cloudBackup.backupRunning,
-    cancellation.request,
-  );
+  ref.read(activeCancellationProvider.notifier).state = cancellation;
   try {
     await ref
         .read(foregroundServiceProvider)
@@ -72,18 +56,19 @@ Future<void> runCloudBackup(
     // Already recorded into appNotificationsProvider by the controller;
     // the global result listener shows the appropriate dialog/snackbar.
   } finally {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    if (ref.read(activeCancellationProvider) == cancellation) {
+      ref.read(activeCancellationProvider.notifier).state = null;
     }
   }
 }
 
 /// Runs [CloudBackupRestoreController.restore] (restoring [target] if
-/// given, otherwise the latest cloud backup) with a cancellable snackbar.
-/// See [runCloudBackup]'s doc comment for why the outcome is displayed by
-/// the global result listener rather than here. Shared by `CloudBackupPage`'s
-/// "restore latest" endpoint and the backup history page's per-item
-/// "restore" action, so both go through the exact same flow.
+/// given, otherwise the latest cloud backup). See [runCloudBackup]'s doc
+/// comment for why the outcome is displayed by the global result listener
+/// rather than here, and for how cancellation is exposed. Shared by
+/// `CloudBackupPage`'s "restore latest" endpoint and the backup history
+/// page's per-item "restore" action, so both go through the exact same
+/// flow.
 Future<void> runCloudRestore(
   BuildContext context,
   WidgetRef ref, {
@@ -91,11 +76,7 @@ Future<void> runCloudRestore(
 }) async {
   final t = context.t;
   final cancellation = Cancellation();
-  showCancellableSnackBar(
-    context,
-    t.cloudBackup.restoreRunning,
-    cancellation.request,
-  );
+  ref.read(activeCancellationProvider.notifier).state = cancellation;
   try {
     await ref
         .read(foregroundServiceProvider)
@@ -123,8 +104,8 @@ Future<void> runCloudRestore(
     // Already recorded into appNotificationsProvider by the controller;
     // the global result listener shows the appropriate dialog/snackbar.
   } finally {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    if (ref.read(activeCancellationProvider) == cancellation) {
+      ref.read(activeCancellationProvider.notifier).state = null;
     }
   }
 }

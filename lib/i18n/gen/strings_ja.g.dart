@@ -955,6 +955,12 @@ class Translations$cloudBackup$ja {
 	/// ja: 'キャンセルしました'
 	String get cancelled => 'キャンセルしました';
 
+	/// ja: 'アップロード'
+	String get uploadAction => 'アップロード';
+
+	/// ja: 'ダウンロード'
+	String get downloadAction => 'ダウンロード';
+
 	/// ja: 'バックアップ履歴を見る'
 	String get historyAction => 'バックアップ履歴を見る';
 
@@ -1568,6 +1574,8 @@ extension on Translations {
 			'cloudBackup.backupRunning' => 'クラウドにバックアップしています',
 			'cloudBackup.restoreRunning' => 'クラウドから復元しています',
 			'cloudBackup.cancelled' => 'キャンセルしました',
+			'cloudBackup.uploadAction' => 'アップロード',
+			'cloudBackup.downloadAction' => 'ダウンロード',
 			'cloudBackup.historyAction' => 'バックアップ履歴を見る',
 			'cloudBackup.historyEmptyDescription' => 'バックアップ履歴がありません。',
 			'cloudBackup.restoreAction' => '復元',

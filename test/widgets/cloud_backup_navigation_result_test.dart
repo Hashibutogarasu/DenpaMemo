@@ -161,7 +161,7 @@ void main() {
     const CloudBackupRoute().push(context);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(t.cloudBackup.latestBackupLabel));
+    await tester.tap(find.text(t.cloudBackup.uploadAction));
     await tester.pump();
 
     container

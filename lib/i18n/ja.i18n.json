@@ -263,6 +263,8 @@
     "backupRunning": "クラウドにバックアップしています",
     "restoreRunning": "クラウドから復元しています",
     "cancelled": "キャンセルしました",
+    "uploadAction": "アップロード",
+    "downloadAction": "ダウンロード",
     "historyAction": "バックアップ履歴を見る",
     "historyEmptyDescription": "バックアップ履歴がありません。",
     "restoreAction": "復元",
