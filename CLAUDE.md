@@ -40,6 +40,13 @@
 - If diagnosing a bug seems to require an actual run, say so and ask before doing it. Do not treat "let's figure out the root cause" as implicit permission to touch a connected device.
 - When wrapping up a task, do not mention device/emulator verification at all — not to solicit permission to run it, and not to state that it wasn't performed. Say nothing about it either way; let the user bring it up themselves if they want it done.
 
+# Pull Requests
+
+- Do not prefix pull request titles with a conventional-commit-style tag (`fix:`, `refactor:`, `ci:`, etc.). Write a plain descriptive title.
+- Write both the pull request title and body in English, regardless of the language used elsewhere in the conversation.
+- Before creating a pull request, check existing pull requests (e.g. `gh pr list`, `gh pr view <number>`) to match this repo's current title/body conventions.
+- Use `gh api repos/<owner>/<repo>/pulls/<number> -X PATCH -f title=... -F body=@<file>` (or the equivalent `POST` for creation) rather than `gh pr edit`/`gh pr create` — those consistently fail against this repo with an unrelated `Projects (classic)` GraphQL error.
+
 # Unrequested Bug Fixes
 
 - While writing code for a requested task, a bug noticed in unrelated, unrequested code must not be fixed unilaterally on the spot.
