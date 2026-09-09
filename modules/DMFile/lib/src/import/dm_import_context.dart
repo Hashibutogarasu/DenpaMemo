@@ -21,6 +21,7 @@ class DmImportContext {
     required this.loadIcons,
     required this.saveIcons,
     required this.resolveDuplicates,
+    this.onIndividualStarted,
     required this.onProgress,
   });
 
@@ -39,6 +40,11 @@ class DmImportContext {
   final Future<List<DenpaMen>?> Function(List<DenpaMen> candidates)
   resolveDuplicates;
 
+  /// Called just before a step begins processing [individual], for steps
+  /// that iterate per-individual — lets a caller show "currently
+  /// processing X" without needing per-individual granularity from
+  /// [onProgress]'s fractional value alone.
+  final void Function(DenpaMen individual)? onIndividualStarted;
   final void Function(double? progress) onProgress;
 
   Directory? tempRoot;

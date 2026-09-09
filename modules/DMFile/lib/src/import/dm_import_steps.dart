@@ -96,6 +96,7 @@ class ResolveIconsStep extends DmImportStep {
     final entries = context.entries!;
     final iconsByDenpaMenId = <String, Map<String, File>>{};
     for (var i = 0; i < entries.length; i++) {
+      context.onIndividualStarted?.call(entries[i].denpaMen);
       final denpaMenId = entries[i].denpaMen.id;
       final individualDirectory = Directory(
         path.join(
@@ -195,6 +196,7 @@ class MergeEntriesStep extends DmImportStep {
 
     final mergeResults = <DenpaMenMergeResult>[];
     for (var i = 0; i < selectedEntries.length; i++) {
+      context.onIndividualStarted?.call(selectedEntries[i].denpaMen);
       mergeResults.addAll(
         mergeDenpaMenBackupEntries(
           [selectedEntries[i]],
@@ -216,6 +218,7 @@ class SaveIconsStep extends DmImportStep {
     final entries = context.selectedEntries!;
     final iconsByDenpaMenId = context.iconsByDenpaMenId!;
     for (var i = 0; i < entries.length; i++) {
+      context.onIndividualStarted?.call(entries[i].denpaMen);
       final icons = iconsByDenpaMenId[entries[i].denpaMen.id];
       if (icons != null && icons.isNotEmpty) {
         await context.saveIcons(entries[i].denpaMen.id, icons);
@@ -233,6 +236,7 @@ class WarmIconCacheStep extends DmImportStep {
     final entries = context.selectedEntries!;
     final iconsByDenpaMenId = context.iconsByDenpaMenId!;
     for (var i = 0; i < entries.length; i++) {
+      context.onIndividualStarted?.call(entries[i].denpaMen);
       final denpaMenId = entries[i].denpaMen.id;
       final record = context.denpaMenRepository.findByCuid(
         denpaMenId,

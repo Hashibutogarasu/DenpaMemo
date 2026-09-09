@@ -38,17 +38,52 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   }
 
   /// Requests an upload link via GET /dmfile/link, PUTs [bytes] to the
-  /// returned uploadUrl, then registers the resulting [CloudFile] locally.
-  /// Throws [CloudUploadFailedException] if R2 rejects the PUT, so a failed
+  /// returned uploadUrl as a streamed request (reporting [onProgress] with
+  /// the bytes sent so far and the total byte count as each chunk is
+  /// written), then registers the resulting [CloudFile] locally. Throws
+  /// [CloudUploadFailedException] if R2 rejects the PUT, so a failed
   /// upload is never mistaken for a completed one.
-  Future<CloudFile> uploadDmFile(String filename, Uint8List bytes) async {
+  Future<CloudFile> uploadDmFile(
+    String filename,
+    Uint8List bytes, {
+    void Function(int sent, int total)? onProgress,
+  }) async {
     final idToken = await _requireIdToken();
     final link = await ref
         .read(authApiClientProvider)
         .requestUploadLink(idToken, filename);
-    final response = await http.put(Uri.parse(link.uploadUrl), body: bytes);
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw CloudUploadFailedException(response.statusCode);
+
+    const chunkSize = 64 * 1024;
+    final request = http.StreamedRequest('PUT', Uri.parse(link.uploadUrl));
+    request.contentLength = bytes.length;
+
+    final client = http.Client();
+    final responseFuture = client.send(request);
+
+    var sent = 0;
+    while (sent < bytes.length) {
+      final end = (sent + chunkSize).clamp(0, bytes.length);
+      request.sink.add(bytes.sublist(sent, end));
+      sent = end;
+      onProgress?.call(sent, bytes.length);
+      // Yields to the event loop so the client actually pushes each chunk
+      // to the socket as it's added, rather than buffering the whole
+      // upload into the sink synchronously before any of it is sent —
+      // otherwise `onProgress` calls (and any speed measured from them)
+      // would have no correlation with real network transfer time.
+      await Future<void>.delayed(Duration.zero);
+    }
+    await request.sink.close();
+
+    final int statusCode;
+    try {
+      final streamedResponse = await responseFuture;
+      statusCode = streamedResponse.statusCode;
+    } finally {
+      client.close();
+    }
+    if (statusCode < 200 || statusCode >= 300) {
+      throw CloudUploadFailedException(statusCode);
     }
     final cloudFile = CloudFile(
       fileId: link.fileId,

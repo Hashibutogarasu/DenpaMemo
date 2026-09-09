@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:data_pack/data_pack.dart';
-import 'package:dm_file/dm_file.dart';
-import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:step_dialog/step_dialog.dart' show ErrorDialog;
 
 import '../../i18n/gen/strings.g.dart';
 import '../../providers/cancellation.dart';
 import '../../providers/cloud_backup_restore_providers.dart';
 import '../../providers/cloud_backup_upload_providers.dart';
-import 'export_complete_dialog.dart';
-import 'import_complete_dialog.dart';
+import '../../providers/notification_service_providers.dart';
+import '../../services/live_progress_forwarding.dart';
 
 void showCancellableSnackBar(
   BuildContext context,
@@ -28,10 +25,14 @@ void showCancellableSnackBar(
   );
 }
 
-/// Runs [CloudBackupUploadController.upload] with a cancellable snackbar,
-/// then shows [ExportCompleteDialog] on success or an error dialog/snackbar
-/// per exception type. The only sanctioned way to start a backup upload,
-/// so every entry point shows the same snackbar/progress/error handling.
+/// Runs [CloudBackupUploadController.upload] with a cancellable snackbar.
+/// The outcome (success, cancellation, or any specific failure) is recorded
+/// by the controller itself into [appNotificationsProvider]
+/// (../../providers/app_notification_providers.dart), and displayed by the
+/// global result listener in `main.dart` — not here — so it survives the
+/// caller navigating away before the upload finishes. The only sanctioned
+/// way to start a backup upload, so every entry point shows the same
+/// snackbar/progress handling.
 Future<void> runCloudBackup(
   BuildContext context,
   WidgetRef ref,
@@ -45,44 +46,44 @@ Future<void> runCloudBackup(
     cancellation.request,
   );
   try {
-    final result = await ref
-        .read(cloudBackupUploadControllerProvider)
-        .upload(masterData, cancellation: cancellation);
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ExportCompleteDialog.show(context, result: result);
-  } on CancelledException {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(t.cloudBackup.cancelled)));
-  } on NotSignedInException {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ErrorDialog.show(
-      context,
-      title: t.common.errorTitle,
-      description: t.cloudBackup.notSignedInDescription,
-    );
-  } catch (error, stackTrace) {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ErrorDialog.show(
-      context,
-      title: t.common.errorTitle,
-      description: t.cloudBackup.networkErrorDescription(message: '$error'),
-      stackTrace: stackTrace,
-    );
+    await ref
+        .read(foregroundServiceProvider)
+        .runAsync(
+          notificationId: 'cloud_backup_upload',
+          notificationTitle: t.cloudBackup.backupRunning,
+          task: (taskContext) async {
+            final subscriptions = forwardLiveProgressToNotification(
+              ref,
+              'cloud_backup_upload',
+              taskContext,
+            );
+            try {
+              return await ref
+                  .read(cloudBackupUploadControllerProvider)
+                  .upload(masterData, cancellation: cancellation);
+            } finally {
+              for (final subscription in subscriptions) {
+                subscription.close();
+              }
+            }
+          },
+        );
+  } catch (_) {
+    // Already recorded into appNotificationsProvider by the controller;
+    // the global result listener shows the appropriate dialog/snackbar.
+  } finally {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    }
   }
 }
 
 /// Runs [CloudBackupRestoreController.restore] (restoring [target] if
-/// given, otherwise the latest cloud backup) with a cancellable snackbar,
-/// then shows [ImportCompleteDialog] on success or an error dialog/snackbar
-/// per exception type. Shared by `CloudBackupPage`'s "restore latest"
-/// endpoint and the backup history page's per-item "restore" action, so
-/// both go through the exact same flow.
+/// given, otherwise the latest cloud backup) with a cancellable snackbar.
+/// See [runCloudBackup]'s doc comment for why the outcome is displayed by
+/// the global result listener rather than here. Shared by `CloudBackupPage`'s
+/// "restore latest" endpoint and the backup history page's per-item
+/// "restore" action, so both go through the exact same flow.
 Future<void> runCloudRestore(
   BuildContext context,
   WidgetRef ref, {
@@ -96,58 +97,34 @@ Future<void> runCloudRestore(
     cancellation.request,
   );
   try {
-    final result = await ref
-        .read(cloudBackupRestoreControllerProvider)
-        .restore(context, cancellation: cancellation, target: target);
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    if (result != null) {
-      await ImportCompleteDialog.show(context, result: result);
+    await ref
+        .read(foregroundServiceProvider)
+        .runAsync(
+          notificationId: 'cloud_backup_restore',
+          notificationTitle: t.cloudBackup.restoreRunning,
+          task: (taskContext) async {
+            final subscriptions = forwardLiveProgressToNotification(
+              ref,
+              'cloud_backup_restore',
+              taskContext,
+            );
+            try {
+              return await ref
+                  .read(cloudBackupRestoreControllerProvider)
+                  .restore(context, cancellation: cancellation, target: target);
+            } finally {
+              for (final subscription in subscriptions) {
+                subscription.close();
+              }
+            }
+          },
+        );
+  } catch (_) {
+    // Already recorded into appNotificationsProvider by the controller;
+    // the global result listener shows the appropriate dialog/snackbar.
+  } finally {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
     }
-  } on CancelledException {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(t.cloudBackup.cancelled)));
-  } on NotSignedInException {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ErrorDialog.show(
-      context,
-      title: t.common.errorTitle,
-      description: t.cloudBackup.notSignedInDescription,
-    );
-  } on CloudBackupNotFoundException {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ErrorDialog.show(
-      context,
-      title: t.common.errorTitle,
-      description: t.cloudBackup.noBackupFoundDescription,
-    );
-  } on DmHeaderReadError {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ErrorDialog.show(
-      context,
-      title: t.backup.importHeaderErrorTitle,
-      description: t.backup.importHeaderErrorDescription,
-    );
-  } on DmInvalidImportFileException {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
-  } catch (error, stackTrace) {
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    await ErrorDialog.show(
-      context,
-      title: t.common.errorTitle,
-      description: t.cloudBackup.networkErrorDescription(message: '$error'),
-      stackTrace: stackTrace,
-    );
   }
 }

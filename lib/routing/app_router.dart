@@ -37,7 +37,17 @@ import '../widgets/scaffold/cloud_backup_shell.dart';
 
 part 'app_router.g.dart';
 
-final GoRouter appRouter = GoRouter(routes: $appRoutes);
+/// The app's single, always-mounted root [Navigator], independent of
+/// whichever page/shell is currently on screen. Lets code outside the
+/// routed page tree (e.g. `_ThemedMaterialApp`'s global result listener in
+/// `main.dart`) obtain a valid [BuildContext] to show a dialog on top of
+/// whatever the user is currently looking at.
+final rootNavigatorKey = GlobalKey<NavigatorState>();
+
+final GoRouter appRouter = GoRouter(
+  navigatorKey: rootNavigatorKey,
+  routes: $appRoutes,
+);
 
 /// Wraps the four root-tab routes (home, search, analysis, settings) in
 /// [AppShell], which owns the persistent bottom navigation bar. Routes

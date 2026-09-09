@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppNotification {
 
- String get kind; AppNotificationStatus get status; double? get progress; String? get message; DateTime get updatedAt;
+ String get kind; AppNotificationStatus get status; double? get progress; String? get message; String? get errorKind; DateTime get updatedAt;
 /// Create a copy of AppNotification
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AppNotificationCopyWith<AppNotification> get copyWith => _$AppNotificationCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppNotification&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.status, status) || other.status == status)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.message, message) || other.message == message)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppNotification&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.status, status) || other.status == status)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorKind, errorKind) || other.errorKind == errorKind)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,kind,status,progress,message,updatedAt);
+int get hashCode => Object.hash(runtimeType,kind,status,progress,message,errorKind,updatedAt);
 
 @override
 String toString() {
-  return 'AppNotification(kind: $kind, status: $status, progress: $progress, message: $message, updatedAt: $updatedAt)';
+  return 'AppNotification(kind: $kind, status: $status, progress: $progress, message: $message, errorKind: $errorKind, updatedAt: $updatedAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AppNotificationCopyWith<$Res>  {
   factory $AppNotificationCopyWith(AppNotification value, $Res Function(AppNotification) _then) = _$AppNotificationCopyWithImpl;
 @useResult
 $Res call({
- String kind, AppNotificationStatus status, double? progress, String? message, DateTime updatedAt
+ String kind, AppNotificationStatus status, double? progress, String? message, String? errorKind, DateTime updatedAt
 });
 
 
@@ -62,12 +62,13 @@ class _$AppNotificationCopyWithImpl<$Res>
 
 /// Create a copy of AppNotification
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? kind = null,Object? status = null,Object? progress = freezed,Object? message = freezed,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? kind = null,Object? status = null,Object? progress = freezed,Object? message = freezed,Object? errorKind = freezed,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AppNotificationStatus,progress: freezed == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
 as double?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,errorKind: freezed == errorKind ? _self.errorKind : errorKind // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String kind,  AppNotificationStatus status,  double? progress,  String? message,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String kind,  AppNotificationStatus status,  double? progress,  String? message,  String? errorKind,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppNotification() when $default != null:
-return $default(_that.kind,_that.status,_that.progress,_that.message,_that.updatedAt);case _:
+return $default(_that.kind,_that.status,_that.progress,_that.message,_that.errorKind,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.kind,_that.status,_that.progress,_that.message,_that.updat
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String kind,  AppNotificationStatus status,  double? progress,  String? message,  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String kind,  AppNotificationStatus status,  double? progress,  String? message,  String? errorKind,  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _AppNotification():
-return $default(_that.kind,_that.status,_that.progress,_that.message,_that.updatedAt);case _:
+return $default(_that.kind,_that.status,_that.progress,_that.message,_that.errorKind,_that.updatedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.kind,_that.status,_that.progress,_that.message,_that.updat
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String kind,  AppNotificationStatus status,  double? progress,  String? message,  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String kind,  AppNotificationStatus status,  double? progress,  String? message,  String? errorKind,  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AppNotification() when $default != null:
-return $default(_that.kind,_that.status,_that.progress,_that.message,_that.updatedAt);case _:
+return $default(_that.kind,_that.status,_that.progress,_that.message,_that.errorKind,_that.updatedAt);case _:
   return null;
 
 }
@@ -210,13 +211,14 @@ return $default(_that.kind,_that.status,_that.progress,_that.message,_that.updat
 
 
 class _AppNotification implements AppNotification {
-  const _AppNotification({required this.kind, required this.status, this.progress, this.message, required this.updatedAt});
+  const _AppNotification({required this.kind, required this.status, this.progress, this.message, this.errorKind, required this.updatedAt});
   
 
 @override final  String kind;
 @override final  AppNotificationStatus status;
 @override final  double? progress;
 @override final  String? message;
+@override final  String? errorKind;
 @override final  DateTime updatedAt;
 
 /// Create a copy of AppNotification
@@ -229,16 +231,16 @@ _$AppNotificationCopyWith<_AppNotification> get copyWith => __$AppNotificationCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppNotification&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.status, status) || other.status == status)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.message, message) || other.message == message)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppNotification&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.status, status) || other.status == status)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorKind, errorKind) || other.errorKind == errorKind)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,kind,status,progress,message,updatedAt);
+int get hashCode => Object.hash(runtimeType,kind,status,progress,message,errorKind,updatedAt);
 
 @override
 String toString() {
-  return 'AppNotification(kind: $kind, status: $status, progress: $progress, message: $message, updatedAt: $updatedAt)';
+  return 'AppNotification(kind: $kind, status: $status, progress: $progress, message: $message, errorKind: $errorKind, updatedAt: $updatedAt)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$AppNotificationCopyWith<$Res> implements $AppNotification
   factory _$AppNotificationCopyWith(_AppNotification value, $Res Function(_AppNotification) _then) = __$AppNotificationCopyWithImpl;
 @override @useResult
 $Res call({
- String kind, AppNotificationStatus status, double? progress, String? message, DateTime updatedAt
+ String kind, AppNotificationStatus status, double? progress, String? message, String? errorKind, DateTime updatedAt
 });
 
 
@@ -266,12 +268,13 @@ class __$AppNotificationCopyWithImpl<$Res>
 
 /// Create a copy of AppNotification
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? kind = null,Object? status = null,Object? progress = freezed,Object? message = freezed,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? kind = null,Object? status = null,Object? progress = freezed,Object? message = freezed,Object? errorKind = freezed,Object? updatedAt = null,}) {
   return _then(_AppNotification(
 kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AppNotificationStatus,progress: freezed == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
 as double?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,errorKind: freezed == errorKind ? _self.errorKind : errorKind // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));

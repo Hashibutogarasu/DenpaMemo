@@ -8,6 +8,7 @@ import 'package:denpa_memo/widgets.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/account_providers.dart';
 import '../providers/cloud_account_providers.dart';
+import '../providers/notification_service_providers.dart';
 import '../widgets/dialog/confirm_dialog.dart';
 import '../widgets/list/list_tile_section.dart';
 import '../widgets/settings/copyable_list_tile.dart';
@@ -25,19 +26,26 @@ void _showSignInDialog(BuildContext context, WidgetRef ref) {
   final notifier = ref.read(cloudAccountProvider.notifier);
   final messengerKey = GlobalKey<ScaffoldMessengerState>();
   final restBackend = notifier.firebaseSignIn.restBackendOrNull;
+  final backgroundService = ref.read(backgroundServiceProvider);
   AccountSignInDialog.show(
     context,
     messengerKey: messengerKey,
-    onSignInWithEmail: notifier.signInWithEmail,
+    onSignInWithEmail: (email, password) => backgroundService.runAsync(
+      task: (_) => notifier.signInWithEmail(email, password),
+    ),
     onSignInWithGoogle: restBackend != null
         ? () async {
             Navigator.of(context).pop();
             await _showGoogleSignInFlow(context, ref, restBackend);
           }
-        : notifier.signInWithGoogle,
+        : () => backgroundService.runAsync(
+            task: (_) => notifier.signInWithGoogle(),
+          ),
     onCreateAccount: () => AccountSignUpDialog.show(
       context,
-      onSignUpWithEmail: notifier.signUpWithEmail,
+      onSignUpWithEmail: (email, password) => backgroundService.runAsync(
+        task: (_) => notifier.signUpWithEmail(email, password),
+      ),
     ),
   );
 }

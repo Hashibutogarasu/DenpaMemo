@@ -87,6 +87,7 @@ abstract class DMFile with _$DMFile {
     required List<QrCode> qrCodes,
     required Future<Map<String, File>> Function(String denpaMenId) loadIcons,
     required String dataVersion,
+    void Function(DenpaMen individual)? onIndividualStarted,
     required void Function(double? progress) onProgress,
     String? copyToPath,
   }) async {
@@ -96,6 +97,7 @@ abstract class DMFile with _$DMFile {
       qrCodes: qrCodes,
       loadIcons: loadIcons,
       dataVersion: dataVersion,
+      onIndividualStarted: onIndividualStarted,
       onProgress: onProgress,
       copyToPath: copyToPath,
     );
@@ -133,6 +135,7 @@ abstract class DMFile with _$DMFile {
     saveIcons,
     required Future<List<DenpaMen>?> Function(List<DenpaMen> candidates)
     resolveDuplicates,
+    void Function(DenpaMen individual)? onIndividualStarted,
     required void Function(double? progress) onProgress,
   }) async {
     final context = DmImportContext(
@@ -143,6 +146,7 @@ abstract class DMFile with _$DMFile {
       loadIcons: loadIcons,
       saveIcons: saveIcons,
       resolveDuplicates: resolveDuplicates,
+      onIndividualStarted: onIndividualStarted,
       onProgress: onProgress,
     );
     final steps = <DmImportStep>[

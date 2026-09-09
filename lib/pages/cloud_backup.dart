@@ -10,6 +10,7 @@ import '../providers/app_notification_providers.dart';
 import '../providers/cloud_backup_restore_providers.dart';
 import '../routing/app_router.dart';
 import '../widgets/dialog/cloud_backup_flows.dart';
+import '../widgets/dialog/cloud_backup_progress_dialog.dart';
 import '../widgets/scaffold/cloud_backup_shell.dart';
 
 /// One tappable endpoint of the backup/restore flow: an icon over a label,
@@ -66,6 +67,13 @@ class CloudBackupPage extends ConsumerWidget {
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackup),
       belowHeader: const CloudBackupProgressBar(),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.info_outline),
+          tooltip: t.cloudBackup.progressDialogTooltip,
+          onPressed: () => OperationProgressDialog.show(context),
+        ),
+      ],
       floatingActionButton: FloatingActionButton(
         heroTag: 'cloudBackupHistoryFab',
         tooltip: t.cloudBackup.historyAction,
