@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../effect/frosted_blur.dart';
+import 'analysis_menu_theme.dart';
 import 'app_button_theme.dart';
 import 'app_constants.dart';
 import 'back_button_theme.dart';
@@ -339,6 +340,15 @@ ThemeData buildAppTheme(
         checkAnimationDuration: const Duration(milliseconds: 200),
         checkAnimationInCurve: Curves.easeOut,
         checkAnimationOutCurve: Curves.easeIn,
+      ),
+      AnalysisMenuThemeData(
+        backgroundColor: settingsContainerColor,
+        foregroundColor: colorScheme.onSurface,
+        borderRadius: 20,
+        columns: 3,
+        spacing: 12,
+        padding: const EdgeInsets.all(12),
+        iconSize: 40,
       ),
       NavigationBarBlurThemeData(
         tintColor: palette.navigationBarTintColor,

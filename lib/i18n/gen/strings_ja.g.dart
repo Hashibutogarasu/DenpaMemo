@@ -46,6 +46,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$profile$ja profile = Translations$profile$ja.internal(_root);
 	late final Translations$step$ja step = Translations$step$ja.internal(_root);
 	late final Translations$page$ja page = Translations$page$ja.internal(_root);
+	late final Translations$analysis$ja analysis = Translations$analysis$ja.internal(_root);
 	late final Translations$settings$ja settings = Translations$settings$ja.internal(_root);
 	late final Translations$physiqueTable$ja physiqueTable = Translations$physiqueTable$ja.internal(_root);
 	late final Translations$debugLog$ja debugLog = Translations$debugLog$ja.internal(_root);
@@ -390,6 +391,30 @@ class Translations$page$ja {
 
 	/// ja: '画像切り抜き - ${profileName}'
 	String clippingSettingsTitle({required Object profileName}) => '画像切り抜き - ${profileName}';
+}
+
+// Path: analysis
+class Translations$analysis$ja {
+	Translations$analysis$ja.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// ja: 'AI分析'
+	String get aiAnalysis => 'AI分析';
+
+	/// ja: 'コミュニティ分析'
+	String get communityAnalysis => 'コミュニティ分析';
+
+	/// ja: '体格表自動埋め'
+	String get physiqueTableAutoFill => '体格表自動埋め';
+
+	/// ja: '成長曲線特定'
+	String get growthCurveIdentification => '成長曲線特定';
+
+	/// ja: '未知の補正データ分析'
+	String get unknownCorrectionAnalysis => '未知の補正データ分析';
 }
 
 // Path: settings
@@ -1387,6 +1412,11 @@ extension on Translations {
 			'page.cloudBackupHistory' => 'バックアップ履歴',
 			'page.clippingSettings' => '画像切り抜き',
 			'page.clippingSettingsTitle' => ({required Object profileName}) => '画像切り抜き - ${profileName}',
+			'analysis.aiAnalysis' => 'AI分析',
+			'analysis.communityAnalysis' => 'コミュニティ分析',
+			'analysis.physiqueTableAutoFill' => '体格表自動埋め',
+			'analysis.growthCurveIdentification' => '成長曲線特定',
+			'analysis.unknownCorrectionAnalysis' => '未知の補正データ分析',
 			'settings.section.general' => '全般',
 			'settings.section.personal' => '個人設定',
 			'settings.section.data' => 'データ',
