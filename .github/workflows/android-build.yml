@@ -25,14 +25,14 @@ env:
 
 jobs:
   prepare:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
 
   build-debug-apk:
     needs: prepare
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
@@ -52,7 +52,7 @@ jobs:
 
   build-release-apk:
     needs: prepare
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
@@ -70,7 +70,7 @@ jobs:
 
   build-release-aab:
     needs: prepare
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
@@ -89,7 +89,7 @@ jobs:
   build-playstore-internal-aab:
     if: github.event_name == 'workflow_dispatch'
     needs: prepare
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
@@ -108,7 +108,7 @@ jobs:
   build-playstore-beta-aab:
     if: github.event_name == 'workflow_dispatch'
     needs: prepare
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
@@ -127,7 +127,7 @@ jobs:
   build-playstore-aab:
     if: github.event_name == 'workflow_dispatch'
     needs: prepare
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/android-setup
@@ -149,7 +149,7 @@ jobs:
       - build-debug-apk
       - build-release-apk
       - build-release-aab
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Report build results
         run: |
