@@ -87,7 +87,7 @@ jobs:
           if-no-files-found: error
 
   build-playstore-internal-aab:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'pull_request'
     needs: prepare
     runs-on: ubuntu-latest
     steps:
@@ -106,7 +106,7 @@ jobs:
           if-no-files-found: error
 
   build-playstore-beta-aab:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push'
     needs: prepare
     runs-on: ubuntu-latest
     steps:
@@ -125,7 +125,7 @@ jobs:
           if-no-files-found: error
 
   publish-playstore-internal:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'pull_request'
     needs: build-playstore-internal-aab
     runs-on: ubuntu-latest
     steps:
@@ -151,7 +151,7 @@ jobs:
           status: completed
 
   publish-playstore-beta:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push'
     needs: build-playstore-beta-aab
     runs-on: ubuntu-latest
     steps:
