@@ -3,6 +3,11 @@
 - Always respond in whatever language the user requests.
 - Re-check the requested language at the moment each new request arrives, regardless of the current state (mid-task, mid-plan, background work in progress, etc.). Never assume the language from earlier in the conversation still applies without re-confirming it against the latest request.
 
+# Git Commits and Pushing
+
+- A request to commit is only a request to commit. Do not push, update a PR, or take any other follow-up remote action afterward unless separately, explicitly asked.
+- Do not ask a clarifying question that assumes the unrequested next action should happen anyway (e.g. asking which branch/PR to push a just-made commit to) — if it wasn't asked for, the answer is not to do it, not to ask how to do it.
+
 # Workspace Tooling
 
 - When analyzing or building across multiple packages in this workspace (the `modules/` and `apps/` members listed under `workspace:` in the root `pubspec.yaml`), use Melos (`melos run analyze`, `melos run test`, etc.) instead of invoking `flutter analyze` / `flutter test` separately per package.
