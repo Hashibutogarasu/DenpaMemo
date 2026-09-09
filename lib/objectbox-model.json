@@ -342,7 +342,7 @@
     },
     {
       "id": "6:1041034640303658806",
-      "lastPropertyId": "6:1668822914098962830",
+      "lastPropertyId": "7:7745817340011050417",
       "name": "AppNotificationEntity",
       "properties": [
         {
@@ -377,6 +377,11 @@
           "id": "6:1668822914098962830",
           "name": "updatedAt",
           "type": 10
+        },
+        {
+          "id": "7:7745817340011050417",
+          "name": "errorKind",
+          "type": 9
         }
       ],
       "relations": []

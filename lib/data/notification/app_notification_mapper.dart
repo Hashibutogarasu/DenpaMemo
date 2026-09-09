@@ -12,6 +12,7 @@ extension AppNotificationEntityMapper on AppNotification {
       status: status.name,
       progress: progress,
       message: message,
+      errorKind: errorKind,
       updatedAt: updatedAt,
     );
   }
@@ -26,6 +27,7 @@ extension AppNotificationEntityToDomain on AppNotificationEntity {
       status: AppNotificationStatus.values.byName(status),
       progress: progress,
       message: message,
+      errorKind: errorKind,
       updatedAt: updatedAt,
     );
   }

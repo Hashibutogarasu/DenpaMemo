@@ -20,6 +20,7 @@ class DmExportContext {
     required this.qrCodes,
     required this.loadIcons,
     required this.dataVersion,
+    this.onIndividualStarted,
     required this.onProgress,
     this.copyToPath,
   });
@@ -29,6 +30,12 @@ class DmExportContext {
   final List<QrCode> qrCodes;
   final Future<Map<String, File>> Function(String denpaMenId) loadIcons;
   final String dataVersion;
+
+  /// Called just before a step begins processing [individual], for steps
+  /// that iterate per-individual — lets a caller show "currently
+  /// processing X" without needing per-individual granularity from
+  /// [onProgress]'s fractional value alone.
+  final void Function(DenpaMen individual)? onIndividualStarted;
   final void Function(double? progress) onProgress;
 
   final String? copyToPath;

@@ -427,7 +427,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(6, 1041034640303658806),
     name: 'AppNotificationEntity',
-    lastPropertyId: const obx_int.IdUid(6, 1668822914098962830),
+    lastPropertyId: const obx_int.IdUid(7, 7745817340011050417),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -465,6 +465,12 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(6, 1668822914098962830),
         name: 'updatedAt',
         type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 7745817340011050417),
+        name: 'errorKind',
+        type: 9,
         flags: 0,
       ),
     ],
@@ -1199,13 +1205,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final messageOffset = object.message == null
             ? null
             : fbb.writeString(object.message!);
-        fbb.startTable(7);
+        final errorKindOffset = object.errorKind == null
+            ? null
+            : fbb.writeString(object.errorKind!);
+        fbb.startTable(8);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, kindOffset);
         fbb.addOffset(2, statusOffset);
         fbb.addFloat64(3, object.progress);
         fbb.addOffset(4, messageOffset);
         fbb.addInt64(5, object.updatedAt.millisecondsSinceEpoch);
+        fbb.addOffset(6, errorKindOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -1232,6 +1242,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final messageParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 12);
+        final errorKindParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 16);
         final updatedAtParam = DateTime.fromMillisecondsSinceEpoch(
           const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
         );
@@ -1241,6 +1254,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           status: statusParam,
           progress: progressParam,
           message: messageParam,
+          errorKind: errorKindParam,
           updatedAt: updatedAtParam,
         );
 
@@ -1786,6 +1800,11 @@ class AppNotificationEntity_ {
   /// See [AppNotificationEntity.updatedAt].
   static final updatedAt = obx.QueryDateProperty<AppNotificationEntity>(
     _entities[5].properties[5],
+  );
+
+  /// See [AppNotificationEntity.errorKind].
+  static final errorKind = obx.QueryStringProperty<AppNotificationEntity>(
+    _entities[5].properties[6],
   );
 }
 

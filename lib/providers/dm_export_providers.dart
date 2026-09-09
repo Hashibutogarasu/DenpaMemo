@@ -10,11 +10,13 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
 
 import '../i18n/gen/strings.g.dart';
-import '../widgets/dialog/export_complete_dialog.dart';
+import '../services/live_progress_forwarding.dart';
 import 'app_notification_providers.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
 import 'import_export_progress_providers.dart';
+import 'notification_service_providers.dart';
+import 'pending_operation_result_providers.dart';
 import 'qr_code_providers.dart';
 
 const _notificationKind = 'dm_export';
@@ -97,6 +99,9 @@ class DmExportController {
       );
 
       if (copyToPath != null) {
+        _ref
+            .read(pendingOperationResultProvider.notifier)
+            .set(_notificationKind, result);
         notifications.setStatus(
           _notificationKind,
           status: AppNotificationStatus.completed,
@@ -119,6 +124,9 @@ class DmExportController {
         );
         return null;
       }
+      _ref
+          .read(pendingOperationResultProvider.notifier)
+          .set(_notificationKind, result);
       notifications.setStatus(
         _notificationKind,
         status: AppNotificationStatus.completed,
@@ -129,6 +137,7 @@ class DmExportController {
       notifications.setStatus(
         _notificationKind,
         status: AppNotificationStatus.failed,
+        errorKind: 'network_error',
         message: '$error',
       );
       rethrow;
@@ -142,21 +151,41 @@ final dmExportControllerProvider = Provider<DmExportController>(
   (ref) => DmExportController(ref),
 );
 
-/// Runs [DmExportController.exportSelected] and, once it resolves, shows
-/// the result via [ExportCompleteDialog.show]. Shared by every place that
-/// offers an "export selected individuals" action (the home page's
-/// overflow menu/FAB and the lineage tree's context menu) so they all go
-/// through the exact same flow.
+/// Runs [DmExportController.exportSelected]. The result (success,
+/// cancellation, or failure) is displayed by the global result listener in
+/// `main.dart`, not here, so it survives the caller navigating away before
+/// the export finishes. Shared by every place that offers an "export
+/// selected individuals" action (the home page's overflow menu/FAB and the
+/// lineage tree's context menu) so they all go through the exact same flow.
 Future<void> exportSelectedDenpaMen(
   BuildContext context,
   WidgetRef ref,
   MasterData masterData,
 ) async {
   final t = context.t;
-  final result = await ref
-      .read(dmExportControllerProvider)
-      .exportSelected(masterData, dialogTitle: t.home.exportDialogTitle);
-  if (result != null && context.mounted) {
-    await ExportCompleteDialog.show(context, result: result);
-  }
+  await ref
+      .read(foregroundServiceProvider)
+      .runAsync(
+        notificationId: _notificationKind,
+        notificationTitle: t.home.exportDialogTitle,
+        task: (taskContext) async {
+          final subscriptions = forwardLiveProgressToNotification(
+            ref,
+            _notificationKind,
+            taskContext,
+          );
+          try {
+            return await ref
+                .read(dmExportControllerProvider)
+                .exportSelected(
+                  masterData,
+                  dialogTitle: t.home.exportDialogTitle,
+                );
+          } finally {
+            for (final subscription in subscriptions) {
+              subscription.close();
+            }
+          }
+        },
+      );
 }

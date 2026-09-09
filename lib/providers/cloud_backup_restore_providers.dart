@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
 import 'package:dm_file/dm_file.dart';
+import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +20,10 @@ import 'cancellation.dart';
 import 'cloud_files_providers.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
+import 'operation_progress_providers.dart';
+import 'pending_operation_result_providers.dart';
 import 'qr_code_providers.dart';
+import 'rolling_transfer_rate.dart';
 
 const _notificationKind = 'cloud_backup_restore';
 
@@ -57,12 +61,6 @@ class CloudBackupRestoreController {
     CloudFile? target,
   }) async {
     final t = context.t;
-    await _ref.read(cloudFilesProvider.notifier).refreshFromServer();
-    final latest = target ?? _latestCloudFile();
-    if (latest == null) {
-      throw const CloudBackupNotFoundException();
-    }
-
     final notifications = _ref.read(appNotificationsProvider.notifier);
     notifications.setStatus(
       _notificationKind,
@@ -70,8 +68,17 @@ class CloudBackupRestoreController {
       progress: 0,
     );
 
+    final progressDetail = _ref.read(operationProgressProvider.notifier);
+    final downloadRate = RollingTransferRate();
+    final itemRate = CumulativeItemRate();
     File? tempFile;
     try {
+      await _ref.read(cloudFilesProvider.notifier).refreshFromServer();
+      final latest = target ?? _latestCloudFile();
+      if (latest == null) {
+        throw const CloudBackupNotFoundException();
+      }
+
       final downloadUrl = await _ref
           .read(cloudFilesProvider.notifier)
           .getDownloadLink(latest.fileId);
@@ -79,6 +86,13 @@ class CloudBackupRestoreController {
         Uri.parse(downloadUrl),
         cancellation: cancellation,
         onProgress: (received, total) {
+          final bytesPerSecond = downloadRate.sample(received);
+          if (bytesPerSecond != null) {
+            progressDetail.report(
+              _notificationKind,
+              bytesPerSecond: bytesPerSecond,
+            );
+          }
           if (total == null) return;
           notifications.setStatus(
             _notificationKind,
@@ -123,6 +137,14 @@ class CloudBackupRestoreController {
             iconsById: iconsById,
           );
         },
+        onIndividualStarted: (individual) {
+          progressDetail.report(
+            _notificationKind,
+            currentIndividualId: individual.id,
+            currentIndividualName: individual.name,
+            itemsPerSecond: itemRate.started(),
+          );
+        },
         onProgress: (value) {
           if (value == null) return;
           notifications.setStatus(
@@ -133,6 +155,11 @@ class CloudBackupRestoreController {
         },
       );
 
+      if (result != null) {
+        _ref
+            .read(pendingOperationResultProvider.notifier)
+            .set(_notificationKind, result);
+      }
       notifications.setStatus(
         _notificationKind,
         status: result == null
@@ -152,14 +179,44 @@ class CloudBackupRestoreController {
         status: AppNotificationStatus.cancelled,
       );
       rethrow;
+    } on NotSignedInException {
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        errorKind: 'not_signed_in',
+      );
+      rethrow;
+    } on CloudBackupNotFoundException {
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        errorKind: 'no_backup_found',
+      );
+      rethrow;
+    } on DmHeaderReadError {
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        errorKind: 'dm_header_read_error',
+      );
+      rethrow;
+    } on DmInvalidImportFileException {
+      notifications.setStatus(
+        _notificationKind,
+        status: AppNotificationStatus.failed,
+        errorKind: 'invalid_file',
+      );
+      rethrow;
     } catch (error) {
       notifications.setStatus(
         _notificationKind,
         status: AppNotificationStatus.failed,
+        errorKind: 'network_error',
         message: '$error',
       );
       rethrow;
     } finally {
+      progressDetail.clear(_notificationKind);
       await tempFile?.delete();
     }
   }

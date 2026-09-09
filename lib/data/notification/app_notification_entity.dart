@@ -18,6 +18,8 @@ class AppNotificationEntity {
 
   String? message;
 
+  String? errorKind;
+
   @Property(type: PropertyType.date)
   DateTime updatedAt;
 
@@ -27,6 +29,7 @@ class AppNotificationEntity {
     required this.status,
     this.progress,
     this.message,
+    this.errorKind,
     required this.updatedAt,
   });
 }

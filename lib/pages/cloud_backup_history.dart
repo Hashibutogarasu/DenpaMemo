@@ -11,6 +11,7 @@ import '../providers/cloud_backup_history_providers.dart';
 import '../providers/cloud_files_providers.dart';
 import '../widgets/date/formatted_date_text.dart';
 import '../widgets/dialog/cloud_backup_flows.dart';
+import '../widgets/dialog/cloud_backup_progress_dialog.dart';
 import '../widgets/dialog/cloud_file_action_menu.dart';
 import '../widgets/dialog/confirm_dialog.dart';
 import '../widgets/generic_selection_floating_menu.dart';
@@ -59,6 +60,13 @@ class CloudBackupHistoryPage extends ConsumerWidget {
     return AppScaffold(
       title: OutlinedTitleText(text: t.page.cloudBackupHistory),
       belowHeader: const CloudBackupProgressBar(),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.info_outline),
+          tooltip: t.cloudBackup.progressDialogTooltip,
+          onPressed: () => OperationProgressDialog.show(context),
+        ),
+      ],
       body: Stack(
         children: [
           SmoothScrollContainer(
@@ -79,6 +87,7 @@ class CloudBackupHistoryPage extends ConsumerWidget {
                             children: [
                               for (final file in entry.value)
                                 DisableWhileRunning(
+                                  key: ValueKey(file.fileId),
                                   provider: cloudBackupBusyProvider,
                                   onPressed: () => runCloudRestore(
                                     context,

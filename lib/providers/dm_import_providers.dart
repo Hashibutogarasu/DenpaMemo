@@ -8,8 +8,6 @@ import 'package:dm_file/dm_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
-import 'package:step_dialog/step_dialog.dart'
-    hide Translations, BuildContextTranslationsExtension;
 
 import 'package:denpa_memo/widgets.dart' hide Translations;
 import '../i18n/gen/strings.g.dart';
@@ -17,6 +15,7 @@ import 'app_notification_providers.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
 import 'import_export_progress_providers.dart';
+import 'pending_operation_result_providers.dart';
 import 'qr_code_providers.dart';
 
 const _notificationKind = 'dm_import';
@@ -100,6 +99,11 @@ class DmImportController {
           }
         },
       );
+      if (result != null) {
+        _ref
+            .read(pendingOperationResultProvider.notifier)
+            .set(_notificationKind, result);
+      }
       notifications.setStatus(
         _notificationKind,
         status: result == null
@@ -117,27 +121,15 @@ class DmImportController {
       notifications.setStatus(
         _notificationKind,
         status: AppNotificationStatus.failed,
-        message: t.backup.importHeaderErrorDescription,
+        errorKind: 'dm_header_read_error',
       );
-      if (context.mounted) {
-        await ErrorDialog.show(
-          context,
-          title: t.backup.importHeaderErrorTitle,
-          description: t.backup.importHeaderErrorDescription,
-        );
-      }
       return null;
     } on DmInvalidImportFileException {
       notifications.setStatus(
         _notificationKind,
         status: AppNotificationStatus.failed,
-        message: t.home.importInvalidFile,
+        errorKind: 'invalid_file',
       );
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(t.home.importInvalidFile)));
-      }
       return null;
     } finally {
       progress.state = null;

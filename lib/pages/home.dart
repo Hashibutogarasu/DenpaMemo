@@ -10,21 +10,45 @@ import '../providers/denpa_men_providers.dart';
 import '../providers/dm_export_providers.dart';
 import '../providers/dm_import_providers.dart';
 import '../providers/home_view_providers.dart';
+import '../providers/notification_service_providers.dart';
 import '../providers/search_providers.dart';
+import '../services/live_progress_forwarding.dart';
 import '../widgets/add_denpa_men_fab.dart';
-import '../widgets/dialog/import_complete_dialog.dart';
 import '../widgets/dialog/master_data_error_listener.dart';
 import '../widgets/home/denpa_men_home_screen.dart';
 
 final _addFabLayerLink = LayerLink();
 
+const _dmImportNotificationKind = 'dm_import';
+
+/// Kicks off the "import individuals from a `.dm` file" flow. The result
+/// (success, cancellation, or a specific failure) is displayed by the
+/// global result listener in `main.dart`, not here, so it survives the
+/// caller navigating away before the import finishes.
 Future<void> _importFromFile(BuildContext context, WidgetRef ref) async {
-  final result = await ref
-      .read(dmImportControllerProvider)
-      .importFromFile(context);
-  if (result != null && context.mounted) {
-    await ImportCompleteDialog.show(context, result: result);
-  }
+  final t = context.t;
+  await ref
+      .read(foregroundServiceProvider)
+      .runAsync(
+        notificationId: _dmImportNotificationKind,
+        notificationTitle: t.home.importFromFile,
+        task: (taskContext) async {
+          final subscriptions = forwardLiveProgressToNotification(
+            ref,
+            _dmImportNotificationKind,
+            taskContext,
+          );
+          try {
+            return await ref
+                .read(dmImportControllerProvider)
+                .importFromFile(context);
+          } finally {
+            for (final subscription in subscriptions) {
+              subscription.close();
+            }
+          }
+        },
+      );
 }
 
 class Home extends ConsumerStatefulWidget {

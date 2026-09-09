@@ -955,6 +955,12 @@ class Translations$cloudBackup$ja {
 	/// ja: 'キャンセルしました'
 	String get cancelled => 'キャンセルしました';
 
+	/// ja: 'アップロード'
+	String get uploadAction => 'アップロード';
+
+	/// ja: 'ダウンロード'
+	String get downloadAction => 'ダウンロード';
+
 	/// ja: 'バックアップ履歴を見る'
 	String get historyAction => 'バックアップ履歴を見る';
 
@@ -972,6 +978,30 @@ class Translations$cloudBackup$ja {
 
 	/// ja: '選択したバックアップファイルを削除します。この操作は取り消せません。'
 	String get deleteSelectedConfirmMessage => '選択したバックアップファイルを削除します。この操作は取り消せません。';
+
+	/// ja: '操作進捗を見る'
+	String get progressDialogTooltip => '操作進捗を見る';
+
+	/// ja: '操作進捗'
+	String get progressDialogTitle => '操作進捗';
+
+	/// ja: '実行中の操作はありません。'
+	String get progressDialogIdle => '実行中の操作はありません。';
+
+	/// ja: '処理中: ${name}'
+	String progressDialogCurrentIndividual({required Object name}) => '処理中: ${name}';
+
+	/// ja: '個体を処理中ではありません'
+	String get progressDialogNoIndividual => '個体を処理中ではありません';
+
+	/// ja: '${rate} 体/秒'
+	String progressDialogItemsPerSecond({required Object rate}) => '${rate} 体/秒';
+
+	/// ja: '${rate}/秒'
+	String progressDialogBytesPerSecond({required Object rate}) => '${rate}/秒';
+
+	/// ja: '速度を計測中…'
+	String get progressDialogMeasuring => '速度を計測中…';
 }
 
 // Path: birthGuide
@@ -1544,12 +1574,22 @@ extension on Translations {
 			'cloudBackup.backupRunning' => 'クラウドにバックアップしています',
 			'cloudBackup.restoreRunning' => 'クラウドから復元しています',
 			'cloudBackup.cancelled' => 'キャンセルしました',
+			'cloudBackup.uploadAction' => 'アップロード',
+			'cloudBackup.downloadAction' => 'ダウンロード',
 			'cloudBackup.historyAction' => 'バックアップ履歴を見る',
 			'cloudBackup.historyEmptyDescription' => 'バックアップ履歴がありません。',
 			'cloudBackup.restoreAction' => '復元',
 			'cloudBackup.deleteConfirmTitle' => 'バックアップを削除しますか?',
 			'cloudBackup.deleteConfirmMessage' => 'このバックアップファイルを削除します。この操作は取り消せません。',
 			'cloudBackup.deleteSelectedConfirmMessage' => '選択したバックアップファイルを削除します。この操作は取り消せません。',
+			'cloudBackup.progressDialogTooltip' => '操作進捗を見る',
+			'cloudBackup.progressDialogTitle' => '操作進捗',
+			'cloudBackup.progressDialogIdle' => '実行中の操作はありません。',
+			'cloudBackup.progressDialogCurrentIndividual' => ({required Object name}) => '処理中: ${name}',
+			'cloudBackup.progressDialogNoIndividual' => '個体を処理中ではありません',
+			'cloudBackup.progressDialogItemsPerSecond' => ({required Object rate}) => '${rate} 体/秒',
+			'cloudBackup.progressDialogBytesPerSecond' => ({required Object rate}) => '${rate}/秒',
+			'cloudBackup.progressDialogMeasuring' => '速度を計測中…',
 			'birthGuide.catchQrInstruction' => 'このQRコードから個体をキャッチしてください',
 			'birthGuide.catchIndividualInstruction' => 'この個体をキャッチしてください',
 			'birthGuide.breedParentInstruction' => 'この個体を用意してください',

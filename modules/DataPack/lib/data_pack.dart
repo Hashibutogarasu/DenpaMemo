@@ -58,6 +58,7 @@ export 'src/monster/monster_exp.dart';
 export 'src/monster/monster_repository.dart';
 export 'src/notification/app_notification.dart';
 export 'src/notification/app_notification_repository.dart';
+export 'src/notification/operation_progress_detail.dart';
 export 'src/qr_code/qr_code.dart';
 export 'src/qr_code/qr_code_factory.dart';
 export 'src/qr_code/qr_code_image_decoder.dart';

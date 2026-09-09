@@ -15,6 +15,7 @@ abstract class AppNotification with _$AppNotification {
     required AppNotificationStatus status,
     double? progress,
     String? message,
+    String? errorKind,
     required DateTime updatedAt,
   }) = _AppNotification;
 }

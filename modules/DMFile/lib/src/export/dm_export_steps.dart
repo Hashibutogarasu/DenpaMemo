@@ -17,6 +17,7 @@ class FilterConsistentIndividualsStep extends DmExportStep {
     final consistent = <DenpaMen>[];
     final candidates = context.candidates;
     for (var i = 0; i < candidates.length; i++) {
+      context.onIndividualStarted?.call(candidates[i]);
       if (isDenpaMenConsistentWithMasterData(
         candidates[i],
         context.masterData,
@@ -93,6 +94,7 @@ class CopyIconsStep extends DmExportStep {
   Future<void> run(DmExportContext context) async {
     final entries = context.entries!;
     for (var i = 0; i < entries.length; i++) {
+      context.onIndividualStarted?.call(entries[i].denpaMen);
       final denpaMenId = entries[i].denpaMen.id;
       final icons = await context.loadIcons(denpaMenId);
       for (final entry in icons.entries) {

@@ -30,6 +30,7 @@ class AppNotificationsNotifier extends Notifier<List<AppNotification>> {
     required AppNotificationStatus status,
     double? progress,
     String? message,
+    String? errorKind,
   }) {
     upsert(
       AppNotification(
@@ -37,6 +38,7 @@ class AppNotificationsNotifier extends Notifier<List<AppNotification>> {
         status: status,
         progress: progress,
         message: message,
+        errorKind: errorKind,
         updatedAt: DateTime.now(),
       ),
     );

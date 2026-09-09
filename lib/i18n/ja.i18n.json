@@ -263,12 +263,22 @@
     "backupRunning": "クラウドにバックアップしています",
     "restoreRunning": "クラウドから復元しています",
     "cancelled": "キャンセルしました",
+    "uploadAction": "アップロード",
+    "downloadAction": "ダウンロード",
     "historyAction": "バックアップ履歴を見る",
     "historyEmptyDescription": "バックアップ履歴がありません。",
     "restoreAction": "復元",
     "deleteConfirmTitle": "バックアップを削除しますか?",
     "deleteConfirmMessage": "このバックアップファイルを削除します。この操作は取り消せません。",
-    "deleteSelectedConfirmMessage": "選択したバックアップファイルを削除します。この操作は取り消せません。"
+    "deleteSelectedConfirmMessage": "選択したバックアップファイルを削除します。この操作は取り消せません。",
+    "progressDialogTooltip": "操作進捗を見る",
+    "progressDialogTitle": "操作進捗",
+    "progressDialogIdle": "実行中の操作はありません。",
+    "progressDialogCurrentIndividual": "処理中: ${name}",
+    "progressDialogNoIndividual": "個体を処理中ではありません",
+    "progressDialogItemsPerSecond": "${rate} 体/秒",
+    "progressDialogBytesPerSecond": "${rate}/秒",
+    "progressDialogMeasuring": "速度を計測中…"
   },
   "birthGuide": {
     "catchQrInstruction": "このQRコードから個体をキャッチしてください",
