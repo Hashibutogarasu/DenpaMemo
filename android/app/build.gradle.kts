@@ -24,7 +24,7 @@ if (keystorePropertiesDebugFile.exists()) {
     keystorePropertiesDebug.load(FileInputStream(keystorePropertiesDebugFile))
 }
 
-val releaseChannelEnv = System.getenv("RELEASE_CHANNEL")
+val releaseChannelEnv = System.getenv("RELEASE_CHANNEL") ?: "debug"
 
 val versionDetails: groovy.lang.Closure<com.palantir.gradle.gitversion.VersionDetails> by extra
 val gitHash = versionDetails().gitHash
