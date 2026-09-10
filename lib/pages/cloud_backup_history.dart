@@ -71,7 +71,11 @@ class CloudBackupHistoryPage extends ConsumerWidget {
         children: [
           SmoothScrollContainer(
             child: files.isEmpty
-                ? Center(child: Text(t.cloudBackup.historyEmptyDescription))
+                ? ScrollableFiller(
+                    child: Center(
+                      child: Text(t.cloudBackup.historyEmptyDescription),
+                    ),
+                  )
                 : ListView(
                     children: [
                       for (final entry in groups.entries) ...[

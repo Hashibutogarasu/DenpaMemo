@@ -68,7 +68,9 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
   }
 
   void _handlePointerSignal(PointerSignalEvent event) {
-    if (event is! PointerScrollEvent || _isChangingPage) {
+    if (event is! PointerScrollEvent ||
+        _isChangingPage ||
+        !_pageController.hasClients) {
       return;
     }
     final delta = event.scrollDelta.dx.abs() > event.scrollDelta.dy.abs()
