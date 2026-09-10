@@ -66,13 +66,16 @@ class _DebugLogPageState extends ConsumerState<DebugLogPage>
     final t = context.t;
     return AppScaffold(
       title: OutlinedTitleText(text: t.debugLog.title),
-      belowHeader: TabBar(
-        controller: _tabController,
-        tabs: [
-          Tab(text: t.debugLog.tabNormal),
-          Tab(text: t.debugLog.tabWidgetRebuild),
-          Tab(text: t.debugLog.tabNetwork),
-        ],
+      belowHeader: ColoredBox(
+        color: Theme.of(context).colorScheme.surface,
+        child: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(text: t.debugLog.tabNormal),
+            Tab(text: t.debugLog.tabWidgetRebuild),
+            Tab(text: t.debugLog.tabNetwork),
+          ],
+        ),
       ),
       actions: [DebugLogMenu(category: _selectedCategory)],
       body: TabBarView(
