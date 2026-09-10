@@ -2,11 +2,13 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../icon/entity_icon.dart';
 import '../theme/analysis_menu_theme.dart';
 
-/// A single, non-interactive [AnalysisMenu] cell: [id] names the icon asset
-/// (`assets/data/icons/menu/<id>.png`) and doubles as the key a future
-/// feature would hook into, while [label] is the text shown under it.
+/// A single, non-interactive [AnalysisMenu] cell: [id] doubles as the key a
+/// future feature would hook into, while [label] is the text shown under
+/// it. No icon asset is wired up yet, so every cell shows
+/// [EntityIconPlaceholder] in its place.
 class AnalysisMenuItem {
   const AnalysisMenuItem({required this.id, required this.label});
 
@@ -54,10 +56,9 @@ class AnalysisMenu extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/data/icons/menu/${item.id}.png',
-                          width: theme.iconSize,
-                          height: theme.iconSize,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: EntityIconPlaceholder(size: theme.iconSize),
                         ),
                         SizedBox(height: theme.spacing),
                         Text(

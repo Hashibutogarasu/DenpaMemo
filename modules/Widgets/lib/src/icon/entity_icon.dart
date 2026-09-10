@@ -26,7 +26,7 @@ class ResolvedEntityIcon extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: file == null
-          ? _placeholder(context)
+          ? EntityIconPlaceholder(size: size)
           : Image.file(
               file,
               key: ValueKey(file.path),
@@ -39,8 +39,19 @@ class ResolvedEntityIcon extends StatelessWidget {
             ),
     );
   }
+}
 
-  Widget _placeholder(BuildContext context) {
+/// The app-wide empty-icon placeholder: a tinted square with a centered
+/// image glyph, sized to [size]. Used by [ResolvedEntityIcon] whenever its
+/// `file` is null, and by any other icon-shaped slot with nothing to show
+/// yet (e.g. `AnalysisMenu`'s not-yet-supplied menu icons).
+class EntityIconPlaceholder extends StatelessWidget {
+  const EntityIconPlaceholder({super.key, required this.size});
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: size,
