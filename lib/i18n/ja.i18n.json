@@ -166,7 +166,13 @@
     "clear": "クリア",
     "debugPaintSize": "デバッグペイントを表示",
     "widgetRebuildTracking": "ウィジットリビルドのログを記録",
-    "empty": "ログはまだありません。"
+    "empty": "ログはまだありません。",
+    "statusCodeLabel": "ステータスコード",
+    "durationLabel": "所要時間",
+    "errorLabel": "エラー",
+    "requestBodyLabel": "送信内容",
+    "responseBodyLabel": "受信内容",
+    "destinationLabel": "送信先"
   },
   "physiqueIdentification": {
     "identifying": "体格を特定しています",

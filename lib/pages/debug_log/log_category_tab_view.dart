@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:app_logging/app_logging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'network_log_tile.dart';
+
 /// Renders one [LogEntry] as a single row, using the same
 /// `[datetime][thread][level] text` line the debug log screen's copy and
 /// log-file output use.
@@ -40,7 +42,10 @@ class LogCategoryTabView extends ConsumerWidget {
     }
     return ListView.builder(
       itemCount: entries.length,
-      itemBuilder: (context, index) => LogEntryTile(entry: entries[index]),
+      itemBuilder: (context, index) => switch (entries[index]) {
+        NetworkLogEntry entry => NetworkLogTile(entry: entry),
+        final entry => LogEntryTile(entry: entry),
+      },
     );
   }
 }

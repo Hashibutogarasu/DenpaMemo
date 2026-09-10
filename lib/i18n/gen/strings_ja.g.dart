@@ -669,6 +669,24 @@ class Translations$debugLog$ja {
 
 	/// ja: 'ログはまだありません。'
 	String get empty => 'ログはまだありません。';
+
+	/// ja: 'ステータスコード'
+	String get statusCodeLabel => 'ステータスコード';
+
+	/// ja: '所要時間'
+	String get durationLabel => '所要時間';
+
+	/// ja: 'エラー'
+	String get errorLabel => 'エラー';
+
+	/// ja: '送信内容'
+	String get requestBodyLabel => '送信内容';
+
+	/// ja: '受信内容'
+	String get responseBodyLabel => '受信内容';
+
+	/// ja: '送信先'
+	String get destinationLabel => '送信先';
 }
 
 // Path: physiqueIdentification
@@ -1516,6 +1534,12 @@ extension on Translations {
 			'debugLog.debugPaintSize' => 'デバッグペイントを表示',
 			'debugLog.widgetRebuildTracking' => 'ウィジットリビルドのログを記録',
 			'debugLog.empty' => 'ログはまだありません。',
+			'debugLog.statusCodeLabel' => 'ステータスコード',
+			'debugLog.durationLabel' => '所要時間',
+			'debugLog.errorLabel' => 'エラー',
+			'debugLog.requestBodyLabel' => '送信内容',
+			'debugLog.responseBodyLabel' => '受信内容',
+			'debugLog.destinationLabel' => '送信先',
 			'physiqueIdentification.identifying' => '体格を特定しています',
 			'physiqueIdentification.identified' => '体格を特定しました！',
 			'physiqueIdentification.notFound' => '体格を特定できませんでした',

@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'log_bus.dart';
 import 'log_entry.dart';
 
-/// Entries older than the newest [maxEntries] are dropped so a long-lived
-/// debug session never grows [LogEntry] storage without bound.
-const int maxEntries = 500;
+export 'log_bus.dart' show maxEntries;
 
 /// How often buffered entries are flushed into Riverpod state, coalescing
 /// a burst of log lines into at most one state update per interval instead
@@ -63,12 +61,17 @@ abstract class _LogBusNotifier extends Notifier<List<LogEntry>> {
 
   void _flush() {
     if (_liveUpdatesPaused || _pending.isEmpty) return;
-    state = [
-      for (final entry in _pending.reversed) entry,
-      ...state,
-    ].take(maxEntries).toList(growable: false);
+    state = _merge(_pending, state).take(maxEntries).toList(growable: false);
     _pending.clear();
   }
+
+  /// Combines newly-arrived [pendingEntries] with the [current] state.
+  /// Overridden by [NetworkLogNotifier] to replace an existing entry with
+  /// the same id in place instead of always prepending a new row.
+  List<LogEntry> _merge(
+    List<LogEntry> pendingEntries,
+    List<LogEntry> current,
+  ) => [for (final entry in pendingEntries.reversed) entry, ...current];
 
   void clear() {
     _pending.clear();
@@ -90,11 +93,26 @@ class WidgetRebuildLogNotifier extends _LogBusNotifier {
   Stream<LogEntry> get logBusStream => LogBus.instance.widgetRebuild;
 }
 
-/// Backs the network-log tab: both REST and GraphQL requests, captured by
-/// the single [DioLoggingInterceptor] attached to the app's shared [Dio].
+/// Backs the network-log tab. Unlike the other two stores, an incoming
+/// entry whose id matches one already shown replaces it in place — this is
+/// how a pending request's row turns into its resolved row in place.
 class NetworkLogNotifier extends _LogBusNotifier {
   @override
   Stream<LogEntry> get logBusStream => LogBus.instance.network;
+
+  @override
+  List<LogEntry> _merge(List<LogEntry> pendingEntries, List<LogEntry> current) {
+    final merged = [...current];
+    for (final entry in pendingEntries) {
+      final index = merged.indexWhere((existing) => existing.id == entry.id);
+      if (index == -1) {
+        merged.insert(0, entry);
+      } else {
+        merged[index] = entry;
+      }
+    }
+    return merged;
+  }
 }
 
 final normalLogProvider = NotifierProvider<NormalLogNotifier, List<LogEntry>>(
