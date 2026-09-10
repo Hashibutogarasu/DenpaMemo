@@ -15,6 +15,7 @@ import 'data/objectbox/objectbox.dart';
 import 'data/settings/objectbox_app_settings_repository.dart';
 import 'logging/build_tracker_bridge.dart';
 import 'logging/log_file_bridge.dart';
+import 'providers/network_providers.dart';
 import 'providers/objectbox_providers.dart';
 
 void main() {
@@ -47,6 +48,7 @@ Future<void> _main() async {
     packageInfo.packageName,
   );
   final googleOAuthClientConfig = await loadGoogleOAuthClientConfig();
+  final sharedDio = createSharedDio();
   final container = ProviderContainer(
     overrides: [
       objectBoxProvider.overrideWithValue(objectBox),
@@ -54,6 +56,7 @@ Future<void> _main() async {
       googleOAuthClientConfigProvider.overrideWithValue(
         googleOAuthClientConfig,
       ),
+      firebaseSignInSharedDioProvider.overrideWithValue(sharedDio),
     ],
   );
   await container.read(firebaseSignInProvider.future);
@@ -65,6 +68,8 @@ Future<void> _main() async {
         googleOAuthClientConfigProvider.overrideWithValue(
           googleOAuthClientConfig,
         ),
+        firebaseSignInSharedDioProvider.overrideWithValue(sharedDio),
+        sharedDioProvider.overrideWithValue(sharedDio),
       ],
     ),
   );

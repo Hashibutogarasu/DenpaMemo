@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 /// Result of requesting an upload link from `modules/auth`.
 class UploadLink {
@@ -51,17 +51,18 @@ class AuthApiException implements Exception {
 /// Thin REST client for `modules/auth`'s endpoints. Every method requires
 /// an already-obtained Firebase ID token as its Bearer credential.
 class AuthApiClient {
-  const AuthApiClient(this._baseUrl);
+  const AuthApiClient(this._baseUrl, {required Dio dio}) : _dio = dio;
 
   final Uri _baseUrl;
+  final Dio _dio;
 
   Future<UploadLink> requestUploadLink(String idToken, String filename) async {
-    final response = await http.get(
+    final response = await _dio.getUri<String>(
       _baseUrl.replace(
         path: '/dmfile/link',
         queryParameters: {'filename': filename},
       ),
-      headers: _authHeaders(idToken),
+      options: _optionsWith(idToken),
     );
     final body = _decodeOrThrow(response);
     return UploadLink(
@@ -72,18 +73,18 @@ class AuthApiClient {
   }
 
   Future<String> requestDownloadLink(String idToken, String fileId) async {
-    final response = await http.get(
+    final response = await _dio.getUri<String>(
       _baseUrl.replace(path: '/dmfile/download/$fileId'),
-      headers: _authHeaders(idToken),
+      options: _optionsWith(idToken),
     );
     final body = _decodeOrThrow(response);
     return body['downloadUrl'] as String;
   }
 
   Future<void> deleteCloudFile(String idToken, String fileId) async {
-    final response = await http.delete(
+    final response = await _dio.deleteUri<String>(
       _baseUrl.replace(path: '/dmfile', queryParameters: {'fileId': fileId}),
-      headers: _authHeaders(idToken),
+      options: _optionsWith(idToken),
     );
     _requireSuccess(response);
   }
@@ -91,9 +92,9 @@ class AuthApiClient {
   /// Lists every cloud file the account has uploaded from any device, via
   /// GET /dmfiles.
   Future<List<CloudFileDto>> listDmFiles(String idToken) async {
-    final response = await http.get(
+    final response = await _dio.getUri<String>(
       _baseUrl.replace(path: '/dmfiles'),
-      headers: _authHeaders(idToken),
+      options: _optionsWith(idToken),
     );
     final body = _decodeOrThrow(response);
     final files = body['files'] as List<dynamic>;
@@ -108,34 +109,37 @@ class AuthApiClient {
   }
 
   Future<void> deleteAccount(String idToken) async {
-    final response = await http.delete(
+    final response = await _dio.deleteUri<String>(
       _baseUrl.replace(path: '/account'),
-      headers: _authHeaders(idToken),
+      options: _optionsWith(idToken),
     );
     _requireSuccess(response);
   }
 
-  Map<String, String> _authHeaders(String idToken) => {
-    'Authorization': 'Bearer $idToken',
-  };
+  Options _optionsWith(String idToken) => Options(
+    headers: {'Authorization': 'Bearer $idToken'},
+    responseType: ResponseType.plain,
+    validateStatus: (_) => true,
+  );
 
-  Map<String, dynamic> _decodeOrThrow(http.Response response) {
+  Map<String, dynamic> _decodeOrThrow(Response<String> response) {
     _requireSuccess(response);
-    return jsonDecode(response.body) as Map<String, dynamic>;
+    return jsonDecode(response.data!) as Map<String, dynamic>;
   }
 
-  void _requireSuccess(http.Response response) {
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+  void _requireSuccess(Response<String> response) {
+    final statusCode = response.statusCode ?? 0;
+    if (statusCode >= 200 && statusCode < 300) {
       return;
     }
     Map<String, dynamic>? body;
     try {
-      body = jsonDecode(response.body) as Map<String, dynamic>;
+      body = jsonDecode(response.data!) as Map<String, dynamic>;
     } catch (_) {
       body = null;
     }
     throw AuthApiException(
-      statusCode: response.statusCode,
+      statusCode: statusCode,
       code: body?['code'] as String? ?? 'unknown_error',
       message: body?['error'] as String?,
     );

@@ -54,6 +54,7 @@ dependencies:
   archive: ^4.1.0
   package_info_plus: ^9.0.1
   graphql_flutter: ^5.2.1
+  dio: ^5.9.0
   data_pack:
     path: modules/DataPack
   step_dialog:
@@ -86,7 +87,6 @@ dependencies:
   app_logging:
     path: modules/Logging
   icons_launcher: ^3.1.0
-  http: ^1.6.0
   flutter_date_formatter: ^0.0.9
   intl: ^0.20.2
   logger: ^2.5.0

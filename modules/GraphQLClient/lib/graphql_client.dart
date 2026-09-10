@@ -1,5 +1,6 @@
 library;
 
+export 'src/dio_graphql_link.dart';
 export 'src/graphql_client_provider.dart';
 export 'src/master_data/caching_master_data_repository.dart';
 export 'src/master_data/graphql_master_data_repository.dart';

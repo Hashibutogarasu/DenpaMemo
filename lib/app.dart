@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 
-import 'package:app_logging/app_logging.dart';
 import 'package:croppy/croppy.dart';
 import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
@@ -24,6 +23,7 @@ import 'providers/app_notification_providers.dart';
 import 'providers/app_settings_providers.dart';
 import 'providers/backend_connection_settings_providers.dart';
 import 'providers/cloud_account_providers.dart';
+import 'providers/network_providers.dart';
 import 'providers/objectbox_providers.dart';
 import 'routing/app_router.dart';
 import 'theme/app_theme.dart';
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
                     endpoint: ref
                         .watch(backendConnectionSettingsProvider)
                         .graphQlEndpoint,
-                  ).create(loggingLink: LoggingGraphQLLink()),
+                  ).create(dio: ref.watch(sharedDioProvider)),
                 ),
                 ...overrides,
               ],
@@ -87,11 +87,6 @@ class _ThemedMaterialApp extends ConsumerStatefulWidget {
 }
 
 class _ThemedMaterialAppState extends ConsumerState<_ThemedMaterialApp> {
-  /// Built once per mount rather than as a top-level singleton, so every
-  /// `RestartWidget` restart (see `widgets/restart_widget.dart`) gets a
-  /// router with its own fresh root navigator [GlobalKey] instead of
-  /// reusing one that outlives the restarted subtree — see
-  /// [createAppRouter]'s doc comment for why that matters.
   late final GoRouter _router = createAppRouter();
 
   @override
@@ -146,11 +141,10 @@ class _ThemedMaterialAppState extends ConsumerState<_ThemedMaterialApp> {
   }
 }
 
-/// [MaterialScrollBehavior] additionally treats the mouse as a drag
-/// device. Without this, pointer-drag gestures — including the overscroll
-/// `RefreshIndicator` needs for pull-to-refresh — never fire from a mouse
-/// on desktop/web, since Flutter's default excludes it (to leave mouse
-/// drags free for text selection).
+/// Makes [MaterialScrollBehavior] treat the mouse as a drag device, so
+/// pointer-drag gestures — including the overscroll `RefreshIndicator`
+/// needs for pull-to-refresh — fire from a mouse on desktop/web, where
+/// Flutter's default excludes it.
 class _DragAnywhereScrollBehavior extends MaterialScrollBehavior {
   const _DragAnywhereScrollBehavior();
 

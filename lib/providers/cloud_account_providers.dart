@@ -3,23 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/cloud/auth_api_client.dart';
 import 'backend_connection_settings_providers.dart';
+import 'network_providers.dart';
 
 final authApiClientProvider = Provider<AuthApiClient>(
   (ref) => AuthApiClient(
     ref.watch(backendConnectionSettingsProvider).authServerBaseUrl,
+    dio: ref.watch(sharedDioProvider),
   ),
 );
 
 /// Thin adapter over [firebaseSignInProvider] that keeps this app's
-/// existing synchronous `CloudAccountState`-shaped surface (`isSignedIn`/
-/// `email`/`uid`, plain `Notifier` rather than `AsyncNotifier`) so
-/// `account_settings.dart` doesn't need to handle `AsyncValue` directly.
-/// Whether the underlying sign-in is still loading is available straight
-/// from [firebaseSignInProvider]'s own `AsyncValue` for callers that need
-/// it; this adapter only flattens the signed-in shape.
-/// [deleteCloudAccount] is app-specific orchestration (it also has to call
-/// `modules/auth`'s Worker, unrelated to Firebase) and stays here rather
-/// than in `firebase_sign_in`.
+/// existing synchronous `CloudAccountState`-shaped surface (plain
+/// `Notifier` rather than `AsyncNotifier`). [deleteCloudAccount] is
+/// app-specific orchestration and stays here rather than in `firebase_sign_in`.
 class CloudAccountNotifier extends Notifier<CloudAccountState> {
   @override
   CloudAccountState build() {

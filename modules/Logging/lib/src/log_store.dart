@@ -9,26 +9,15 @@ import 'log_entry.dart';
 /// debug session never grows [LogEntry] storage without bound.
 const int maxEntries = 500;
 
-/// How often buffered entries are flushed into Riverpod state. A burst of
-/// log lines (e.g. `debugPrintRebuildDirtyWidgets` spam during a heavy
-/// rebuild) is coalesced into at most one state update per interval,
-/// instead of one widget rebuild per line, which otherwise tanks the
-/// frame rate while the debug log screen is open.
+/// How often buffered entries are flushed into Riverpod state, coalescing
+/// a burst of log lines into at most one state update per interval instead
+/// of one widget rebuild per line.
 const Duration flushInterval = Duration(milliseconds: 200);
 
-/// Base for the three debug log screen stores: each subscribes to one
-/// [LogBus] stream via [logBusStream], buffers incoming entries, and
-/// flushes them into state at most once per [flushInterval], keeping the
-/// newest [maxEntries] entries newest first.
-///
-/// [pauseLiveUpdates] lets a screen that is *itself* watching this state
-/// (and would therefore rebuild in response to its own new entries) stop
-/// new entries from reaching [state] while it's the one on screen —
-/// see [WidgetRebuildLogNotifier], where displaying a rebuild also
-/// produces a rebuild, which would otherwise feed right back into the
-/// same stream forever. Entries keep accumulating in [_pending] while
-/// paused (capped at [maxEntries] so a long pause can't grow it without
-/// bound) and are flushed once resumed.
+/// Base for the three debug log screen stores: subscribes to one [LogBus]
+/// stream via [logBusStream] and flushes buffered entries into state at
+/// most once per [flushInterval]. [pauseLiveUpdates] stops a screen from
+/// feeding its own new entries back into a rebuild loop while it's shown.
 abstract class _LogBusNotifier extends Notifier<List<LogEntry>> {
   Stream<LogEntry> get logBusStream;
 
@@ -63,9 +52,8 @@ abstract class _LogBusNotifier extends Notifier<List<LogEntry>> {
 
   /// Applies whatever has accumulated in [_pending] right now as a one-off
   /// snapshot, even while paused, without lifting the pause for entries
-  /// that arrive afterward — for a screen that wants to catch up exactly
-  /// once as it becomes visible (e.g. a tab being selected) and then go
-  /// back to not live-updating.
+  /// that arrive afterward — for a screen catching up once as it becomes
+  /// visible, then going back to not live-updating.
   void flushPendingOnce() {
     final wasPaused = _liveUpdatesPaused;
     _liveUpdatesPaused = false;
@@ -102,8 +90,8 @@ class WidgetRebuildLogNotifier extends _LogBusNotifier {
   Stream<LogEntry> get logBusStream => LogBus.instance.widgetRebuild;
 }
 
-/// Backs the network-log tab: REST ([LoggingHttpClient]) and GraphQL
-/// ([LoggingGraphQLLink]) requests.
+/// Backs the network-log tab: both REST and GraphQL requests, captured by
+/// the single [DioLoggingInterceptor] attached to the app's shared [Dio].
 class NetworkLogNotifier extends _LogBusNotifier {
   @override
   Stream<LogEntry> get logBusStream => LogBus.instance.network;

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,14 +18,20 @@ final googleOAuthClientConfigProvider = Provider<GoogleOAuthClientConfig>(
   ),
 );
 
+/// Must be overridden by the host app with its single app-wide shared
+/// [Dio] instance — required by [RestFirebaseSignInBackend] so its
+/// Identity Toolkit / Google OAuth calls flow through the same client (and
+/// the same debug-log interceptor) as the rest of the app's network I/O.
+final firebaseSignInSharedDioProvider = Provider<Dio>(
+  (ref) => throw UnimplementedError(
+    'firebaseSignInSharedDioProvider must be overridden by the host app',
+  ),
+);
+
 /// Selects a [FirebaseSignInBackend] for the current platform and exposes
 /// sign-in/account actions through a single Riverpod entry point.
-///
 /// [UnsupportedError] from [DefaultFirebaseOptions.currentPlatform] is the
-/// only expected, documented fallback signal — it selects the REST
-/// backend, itself a complete implementation rather than a no-op. Any
-/// other exception during backend selection propagates and surfaces as an
-/// [AsyncError] instead of being swallowed.
+/// only expected fallback signal — it selects the REST backend.
 class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
   FirebaseSignInBackend? _backend;
 
@@ -46,6 +53,7 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
       return RestFirebaseSignInBackend(
         apiKey: DefaultFirebaseOptions.web.apiKey,
         googleOAuthClientConfig: ref.read(googleOAuthClientConfigProvider),
+        dio: ref.read(firebaseSignInSharedDioProvider),
       );
     }
   }
@@ -94,11 +102,9 @@ class FirebaseSignInNotifier extends AsyncNotifier<CloudAccountState> {
     state = const AsyncData(CloudAccountState());
   }
 
-  /// On failure (e.g. an expired REST-backend session whose refresh token
-  /// itself no longer works), [RestFirebaseSignInBackend.getIdToken] signs
-  /// itself out locally but has no way to update [state] — without this
-  /// catch, [state] (and everything watching it, e.g. `cloudAccountProvider`)
-  /// would keep reporting a stale signed-in [CloudAccountState].
+  /// On failure, [RestFirebaseSignInBackend.getIdToken] signs out locally
+  /// but can't update [state] itself, so this catch does — otherwise
+  /// [state] would keep reporting a stale signed-in [CloudAccountState].
   Future<String?> getIdToken() async {
     try {
       return await _backend!.getIdToken();
