@@ -51,6 +51,13 @@
     "clippingSettings": "画像切り抜き",
     "clippingSettingsTitle": "画像切り抜き - ${profileName}"
   },
+  "analysis": {
+    "aiAnalysis": "AI分析",
+    "communityAnalysis": "コミュニティ分析",
+    "physiqueTableAutoFill": "体格表自動埋め",
+    "growthCurveIdentification": "成長曲線特定",
+    "unknownCorrectionAnalysis": "未知の補正データ分析"
+  },
   "settings": {
     "section": {
       "general": "全般",
