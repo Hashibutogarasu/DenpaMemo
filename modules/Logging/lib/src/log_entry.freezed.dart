@@ -155,12 +155,12 @@ return network(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String id,  DateTime timestamp,  LogLevel level,  String message)?  message,TResult Function( String id,  DateTime timestamp,  LogLevel level,  WidgetRebuildLogSource source,  String description)?  widgetRebuild,TResult Function( String id,  DateTime timestamp,  LogLevel level,  NetworkProtocol protocol,  NetworkLogStatus status,  String? operation,  String? uri,  String? requestBody,  String? responseBody,  int? requestBytes,  int? responseBytes,  int? statusCode,  String? errorMessage,  Duration? duration)?  network,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String id,  DateTime timestamp,  LogLevel level,  String message)?  message,TResult Function( String id,  DateTime timestamp,  LogLevel level,  WidgetRebuildLogSource source,  String description)?  widgetRebuild,TResult Function( String id,  DateTime timestamp,  LogLevel level,  NetworkProtocol protocol,  NetworkLogStatus status,  String? operation,  String? uri,  String? requestBody,  String? responseBody,  int? requestBytes,  int? responseBytes,  int? statusCode,  String? errorMessage,  Duration? duration,  bool isTimeout)?  network,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case MessageLogEntry() when message != null:
 return message(_that.id,_that.timestamp,_that.level,_that.message);case WidgetRebuildLogEntry() when widgetRebuild != null:
 return widgetRebuild(_that.id,_that.timestamp,_that.level,_that.source,_that.description);case NetworkLogEntry() when network != null:
-return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,_that.operation,_that.uri,_that.requestBody,_that.responseBody,_that.requestBytes,_that.responseBytes,_that.statusCode,_that.errorMessage,_that.duration);case _:
+return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,_that.operation,_that.uri,_that.requestBody,_that.responseBody,_that.requestBytes,_that.responseBytes,_that.statusCode,_that.errorMessage,_that.duration,_that.isTimeout);case _:
   return orElse();
 
 }
@@ -178,12 +178,12 @@ return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String id,  DateTime timestamp,  LogLevel level,  String message)  message,required TResult Function( String id,  DateTime timestamp,  LogLevel level,  WidgetRebuildLogSource source,  String description)  widgetRebuild,required TResult Function( String id,  DateTime timestamp,  LogLevel level,  NetworkProtocol protocol,  NetworkLogStatus status,  String? operation,  String? uri,  String? requestBody,  String? responseBody,  int? requestBytes,  int? responseBytes,  int? statusCode,  String? errorMessage,  Duration? duration)  network,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String id,  DateTime timestamp,  LogLevel level,  String message)  message,required TResult Function( String id,  DateTime timestamp,  LogLevel level,  WidgetRebuildLogSource source,  String description)  widgetRebuild,required TResult Function( String id,  DateTime timestamp,  LogLevel level,  NetworkProtocol protocol,  NetworkLogStatus status,  String? operation,  String? uri,  String? requestBody,  String? responseBody,  int? requestBytes,  int? responseBytes,  int? statusCode,  String? errorMessage,  Duration? duration,  bool isTimeout)  network,}) {final _that = this;
 switch (_that) {
 case MessageLogEntry():
 return message(_that.id,_that.timestamp,_that.level,_that.message);case WidgetRebuildLogEntry():
 return widgetRebuild(_that.id,_that.timestamp,_that.level,_that.source,_that.description);case NetworkLogEntry():
-return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,_that.operation,_that.uri,_that.requestBody,_that.responseBody,_that.requestBytes,_that.responseBytes,_that.statusCode,_that.errorMessage,_that.duration);}
+return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,_that.operation,_that.uri,_that.requestBody,_that.responseBody,_that.requestBytes,_that.responseBytes,_that.statusCode,_that.errorMessage,_that.duration,_that.isTimeout);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -197,12 +197,12 @@ return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String id,  DateTime timestamp,  LogLevel level,  String message)?  message,TResult? Function( String id,  DateTime timestamp,  LogLevel level,  WidgetRebuildLogSource source,  String description)?  widgetRebuild,TResult? Function( String id,  DateTime timestamp,  LogLevel level,  NetworkProtocol protocol,  NetworkLogStatus status,  String? operation,  String? uri,  String? requestBody,  String? responseBody,  int? requestBytes,  int? responseBytes,  int? statusCode,  String? errorMessage,  Duration? duration)?  network,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String id,  DateTime timestamp,  LogLevel level,  String message)?  message,TResult? Function( String id,  DateTime timestamp,  LogLevel level,  WidgetRebuildLogSource source,  String description)?  widgetRebuild,TResult? Function( String id,  DateTime timestamp,  LogLevel level,  NetworkProtocol protocol,  NetworkLogStatus status,  String? operation,  String? uri,  String? requestBody,  String? responseBody,  int? requestBytes,  int? responseBytes,  int? statusCode,  String? errorMessage,  Duration? duration,  bool isTimeout)?  network,}) {final _that = this;
 switch (_that) {
 case MessageLogEntry() when message != null:
 return message(_that.id,_that.timestamp,_that.level,_that.message);case WidgetRebuildLogEntry() when widgetRebuild != null:
 return widgetRebuild(_that.id,_that.timestamp,_that.level,_that.source,_that.description);case NetworkLogEntry() when network != null:
-return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,_that.operation,_that.uri,_that.requestBody,_that.responseBody,_that.requestBytes,_that.responseBytes,_that.statusCode,_that.errorMessage,_that.duration);case _:
+return network(_that.id,_that.timestamp,_that.level,_that.protocol,_that.status,_that.operation,_that.uri,_that.requestBody,_that.responseBody,_that.requestBytes,_that.responseBytes,_that.statusCode,_that.errorMessage,_that.duration,_that.isTimeout);case _:
   return null;
 
 }
@@ -360,7 +360,7 @@ as String,
 
 
 class NetworkLogEntry implements LogEntry {
-  const NetworkLogEntry({required this.id, required this.timestamp, required this.level, required this.protocol, required this.status, this.operation, this.uri, this.requestBody, this.responseBody, this.requestBytes, this.responseBytes, this.statusCode, this.errorMessage, this.duration});
+  const NetworkLogEntry({required this.id, required this.timestamp, required this.level, required this.protocol, required this.status, this.operation, this.uri, this.requestBody, this.responseBody, this.requestBytes, this.responseBytes, this.statusCode, this.errorMessage, this.duration, this.isTimeout = false});
   
 
 @override final  String id;
@@ -377,6 +377,7 @@ class NetworkLogEntry implements LogEntry {
  final  int? statusCode;
  final  String? errorMessage;
  final  Duration? duration;
+@JsonKey() final  bool isTimeout;
 
 /// Create a copy of LogEntry
 /// with the given fields replaced by the non-null parameter values.
@@ -388,16 +389,16 @@ $NetworkLogEntryCopyWith<NetworkLogEntry> get copyWith => _$NetworkLogEntryCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NetworkLogEntry&&(identical(other.id, id) || other.id == id)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.level, level) || other.level == level)&&(identical(other.protocol, protocol) || other.protocol == protocol)&&(identical(other.status, status) || other.status == status)&&(identical(other.operation, operation) || other.operation == operation)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.requestBody, requestBody) || other.requestBody == requestBody)&&(identical(other.responseBody, responseBody) || other.responseBody == responseBody)&&(identical(other.requestBytes, requestBytes) || other.requestBytes == requestBytes)&&(identical(other.responseBytes, responseBytes) || other.responseBytes == responseBytes)&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.duration, duration) || other.duration == duration));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NetworkLogEntry&&(identical(other.id, id) || other.id == id)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.level, level) || other.level == level)&&(identical(other.protocol, protocol) || other.protocol == protocol)&&(identical(other.status, status) || other.status == status)&&(identical(other.operation, operation) || other.operation == operation)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.requestBody, requestBody) || other.requestBody == requestBody)&&(identical(other.responseBody, responseBody) || other.responseBody == responseBody)&&(identical(other.requestBytes, requestBytes) || other.requestBytes == requestBytes)&&(identical(other.responseBytes, responseBytes) || other.responseBytes == responseBytes)&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.isTimeout, isTimeout) || other.isTimeout == isTimeout));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,timestamp,level,protocol,status,operation,uri,requestBody,responseBody,requestBytes,responseBytes,statusCode,errorMessage,duration);
+int get hashCode => Object.hash(runtimeType,id,timestamp,level,protocol,status,operation,uri,requestBody,responseBody,requestBytes,responseBytes,statusCode,errorMessage,duration,isTimeout);
 
 @override
 String toString() {
-  return 'LogEntry.network(id: $id, timestamp: $timestamp, level: $level, protocol: $protocol, status: $status, operation: $operation, uri: $uri, requestBody: $requestBody, responseBody: $responseBody, requestBytes: $requestBytes, responseBytes: $responseBytes, statusCode: $statusCode, errorMessage: $errorMessage, duration: $duration)';
+  return 'LogEntry.network(id: $id, timestamp: $timestamp, level: $level, protocol: $protocol, status: $status, operation: $operation, uri: $uri, requestBody: $requestBody, responseBody: $responseBody, requestBytes: $requestBytes, responseBytes: $responseBytes, statusCode: $statusCode, errorMessage: $errorMessage, duration: $duration, isTimeout: $isTimeout)';
 }
 
 
@@ -408,7 +409,7 @@ abstract mixin class $NetworkLogEntryCopyWith<$Res> implements $LogEntryCopyWith
   factory $NetworkLogEntryCopyWith(NetworkLogEntry value, $Res Function(NetworkLogEntry) _then) = _$NetworkLogEntryCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime timestamp, LogLevel level, NetworkProtocol protocol, NetworkLogStatus status, String? operation, String? uri, String? requestBody, String? responseBody, int? requestBytes, int? responseBytes, int? statusCode, String? errorMessage, Duration? duration
+ String id, DateTime timestamp, LogLevel level, NetworkProtocol protocol, NetworkLogStatus status, String? operation, String? uri, String? requestBody, String? responseBody, int? requestBytes, int? responseBytes, int? statusCode, String? errorMessage, Duration? duration, bool isTimeout
 });
 
 
@@ -425,7 +426,7 @@ class _$NetworkLogEntryCopyWithImpl<$Res>
 
 /// Create a copy of LogEntry
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? timestamp = null,Object? level = null,Object? protocol = null,Object? status = null,Object? operation = freezed,Object? uri = freezed,Object? requestBody = freezed,Object? responseBody = freezed,Object? requestBytes = freezed,Object? responseBytes = freezed,Object? statusCode = freezed,Object? errorMessage = freezed,Object? duration = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? timestamp = null,Object? level = null,Object? protocol = null,Object? status = null,Object? operation = freezed,Object? uri = freezed,Object? requestBody = freezed,Object? responseBody = freezed,Object? requestBytes = freezed,Object? responseBytes = freezed,Object? statusCode = freezed,Object? errorMessage = freezed,Object? duration = freezed,Object? isTimeout = null,}) {
   return _then(NetworkLogEntry(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
@@ -441,7 +442,8 @@ as int?,responseBytes: freezed == responseBytes ? _self.responseBytes : response
 as int?,statusCode: freezed == statusCode ? _self.statusCode : statusCode // ignore: cast_nullable_to_non_nullable
 as int?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,duration: freezed == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
-as Duration?,
+as Duration?,isTimeout: null == isTimeout ? _self.isTimeout : isTimeout // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
