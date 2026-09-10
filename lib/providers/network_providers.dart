@@ -23,7 +23,9 @@ Dio createSharedDio(NetworkConnectivityMonitor connectivityMonitor) =>
           receiveTimeout: const Duration(seconds: 10),
         ),
       )
-      ..interceptors.add(DioLoggingInterceptor())
+      ..interceptors.add(
+        DioLoggingInterceptor(isOffline: () => !connectivityMonitor.isOnline),
+      )
       ..interceptors.add(
         NetworkConnectivityGateInterceptor(connectivityMonitor),
       );

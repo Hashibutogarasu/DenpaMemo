@@ -20,7 +20,10 @@ class NetworkLogTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = context.t;
     return ExpansionTile(
-      leading: NetworkStatusIndicator(status: entry.status),
+      leading: NetworkStatusIndicator(
+        status: entry.status,
+        isTimeout: entry.isTimeout,
+      ),
       title: Text(
         entry.operation ?? entry.id,
         maxLines: 1,
