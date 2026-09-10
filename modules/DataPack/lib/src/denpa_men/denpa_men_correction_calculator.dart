@@ -1,4 +1,6 @@
+import '../master_data/attribute.dart';
 import 'abnormality_resistance.dart';
+import 'attribute_resistance.dart';
 import 'denpa_men.dart';
 import 'denpa_men_head_shape_stat_calculator.dart';
 import 'denpa_men_stat_bonus.dart';
@@ -54,6 +56,12 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
       });
     }
 
+    for (final resistance in userAddedAbnormalityResistances) {
+      abnormalityBonuses[resistance.abnormalityId] =
+          (abnormalityBonuses[resistance.abnormalityId] ?? 0) +
+          resistance.value;
+    }
+
     final abnormalityTotals = <String, int>{
       for (final resistance in abnormalityResistances)
         resistance.abnormalityId: resistance.value,
@@ -62,6 +70,21 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
       abnormalityTotals[abnormalityId] =
           (abnormalityTotals[abnormalityId] ?? 0) + bonus;
     });
+
+    final attributeTotals = <String, ({Attribute attribute, int value})>{
+      for (final resistance in attributeResistance)
+        resistance.attribute.id: (
+          attribute: resistance.attribute,
+          value: resistance.value,
+        ),
+    };
+    for (final resistance in userAddedAttributeResistances) {
+      final existing = attributeTotals[resistance.attribute.id];
+      attributeTotals[resistance.attribute.id] = (
+        attribute: resistance.attribute,
+        value: (existing?.value ?? 0) + resistance.value,
+      );
+    }
 
     return copyWith(
       hp: hp + statBonus.hp,
@@ -74,6 +97,11 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
         for (final entry in abnormalityTotals.entries)
           if (entry.value != 0)
             AbnormalityResistance(abnormalityId: entry.key, value: entry.value),
+      ],
+      attributeResistance: [
+        for (final entry in attributeTotals.values)
+          if (entry.value != 0)
+            AttributeResistance(attribute: entry.attribute, value: entry.value),
       ],
     );
   }

@@ -9,6 +9,8 @@ import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
 import '../monster/monster_exp.dart';
+import 'abnormality_resistance.dart';
+import 'attribute_resistance.dart';
 import 'denpa_men.dart';
 import 'denpa_men_hash.dart';
 import 'denpa_men_resistance_calculator.dart';
@@ -49,6 +51,10 @@ DenpaMen createDenpaMen({
   int evasionRate = 0,
   List<Correction> corrections = const [],
   bool considerCorrections = true,
+  List<AttributeResistance> userAddedAttributeResistances = const [],
+  String userAddedAttributeResistanceName = '',
+  List<AbnormalityResistance> userAddedAbnormalityResistances = const [],
+  String userAddedAbnormalityResistanceName = '',
   List<String> parentIds = const [],
   int? catchOrder,
   String? qrCodeId,
@@ -86,11 +92,15 @@ DenpaMen createDenpaMen({
     id: id == null || id.isEmpty ? cuid() : id,
     name: name,
     abnormalityResistances: const [],
+    userAddedAbnormalityResistances: userAddedAbnormalityResistances,
+    userAddedAbnormalityResistanceName: userAddedAbnormalityResistanceName,
     bodyColors: bodyColors,
     bodyColorShades: bodyColorShades.isEmpty
         ? List.filled(bodyColors.length, 0)
         : bodyColorShades,
     attributeResistance: const [],
+    userAddedAttributeResistances: userAddedAttributeResistances,
+    userAddedAttributeResistanceName: userAddedAttributeResistanceName,
     physique: physique,
     physiqueColumnIndex: physiqueColumnIndex,
     personality: personality,

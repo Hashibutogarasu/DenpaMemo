@@ -18,6 +18,7 @@ import 'package:flutter_build_tracker/flutter_build_tracker.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
+import 'package:go_router/go_router.dart';
 import 'package:graphql_client/graphql_client.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -58,7 +59,7 @@ const _resultNotificationKinds = {..._importResultKinds, ..._exportResultKinds};
 /// Reacts to every [AppNotification] kind reported by the four long-running
 /// operations (cloud backup upload/restore, `.dm` export/import)
 /// transitioning from `running` to a terminal status, and shows the
-/// matching result/error dialog via [rootNavigatorKey] — independent of
+/// matching result/error dialog via [navigatorKey] — independent of
 /// whichever page (if any) originally started the operation, so the result
 /// still surfaces even if the user has since navigated elsewhere. Skips the
 /// very first diff (app startup, [previous] is null) so a stale terminal
@@ -67,6 +68,7 @@ const _resultNotificationKinds = {..._importResultKinds, ..._exportResultKinds};
 /// is long gone by then anyway, since that provider isn't persisted).
 void _handleAppNotificationTransitions(
   WidgetRef ref,
+  GlobalKey<NavigatorState> navigatorKey,
   List<AppNotification>? previous,
   List<AppNotification> next,
 ) {
@@ -85,17 +87,18 @@ void _handleAppNotificationTransitions(
     if (previousEntry?.status != AppNotificationStatus.running) continue;
     if (nextEntry.status == AppNotificationStatus.running) continue;
 
-    _showResultForTransition(ref, kind, nextEntry);
+    _showResultForTransition(ref, navigatorKey, kind, nextEntry);
     ref.read(appNotificationsProvider.notifier).remove(kind);
   }
 }
 
 void _showResultForTransition(
   WidgetRef ref,
+  GlobalKey<NavigatorState> navigatorKey,
   String kind,
   AppNotification entry,
 ) {
-  final context = rootNavigatorKey.currentContext;
+  final context = navigatorKey.currentContext;
   switch (entry.status) {
     case AppNotificationStatus.completed:
       final result = ref
@@ -256,11 +259,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class _ThemedMaterialApp extends ConsumerWidget {
+class _ThemedMaterialApp extends ConsumerStatefulWidget {
   const _ThemedMaterialApp();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_ThemedMaterialApp> createState() => _ThemedMaterialAppState();
+}
+
+class _ThemedMaterialAppState extends ConsumerState<_ThemedMaterialApp> {
+  /// Built once per mount rather than as a top-level singleton, so every
+  /// `RestartWidget` restart (see `widgets/restart_widget.dart`) gets a
+  /// router with its own fresh root navigator [GlobalKey] instead of
+  /// reusing one that outlives the restarted subtree — see
+  /// [createAppRouter]'s doc comment for why that matters.
+  late final GoRouter _router = createAppRouter();
+
+  @override
+  Widget build(BuildContext context) {
     final mainScreenReady = !ref.watch(appInitializationProvider).isLoading;
     ref.listen(appInitializationProvider, (previous, next) {
       if (!next.isLoading) signalNativeSplashReady();
@@ -269,7 +284,12 @@ class _ThemedMaterialApp extends ConsumerWidget {
       previous,
       next,
     ) {
-      _handleAppNotificationTransitions(ref, previous, next);
+      _handleAppNotificationTransitions(
+        ref,
+        _router.routerDelegate.navigatorKey,
+        previous,
+        next,
+      );
     });
     final settings = ref.watch(appSettingsProvider);
     final themeMode = settings.themeMode;
@@ -279,7 +299,7 @@ class _ThemedMaterialApp extends ConsumerWidget {
       theme: AppLightTheme.forContrast(settings.contrastLevel),
       darkTheme: AppDarkTheme.forContrast(settings.contrastLevel),
       themeMode: themeMode.toFlutterThemeMode(),
-      routerConfig: appRouter,
+      routerConfig: _router,
       builder: (context, child) {
         final splashGate = denpamemo_widgets.ResponsiveScope(
           child: SplashGate(ready: mainScreenReady, child: child!),

@@ -7,7 +7,9 @@ import 'color/color_dot.dart';
 import 'container/nested.dart';
 import 'container/selection_tile.dart';
 import 'container/status.dart';
+import 'dialog/abnormality_resistance_selection_dialog.dart';
 import 'dialog/antenna_selection_dialog.dart';
+import 'dialog/attribute_resistance_selection_dialog.dart';
 import 'dialog/body_color_selection_dialog.dart';
 import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
@@ -39,6 +41,8 @@ class EditableDenpaMenStatus extends StatelessWidget {
     required this.headShapes,
     required this.anntenas,
     required this.corrections,
+    required this.attributes,
+    required this.abnormalityTypes,
     required this.qrCodeCandidates,
     required this.onChanged,
     required this.considerCorrections,
@@ -55,6 +59,8 @@ class EditableDenpaMenStatus extends StatelessWidget {
   final List<HeadShape> headShapes;
   final List<Anntena> anntenas;
   final List<Correction> corrections;
+  final List<Attribute> attributes;
+  final List<AbnormalityType> abnormalityTypes;
   final List<QrCodeRecord> qrCodeCandidates;
   final ValueChanged<DenpaMen> onChanged;
   final bool considerCorrections;
@@ -307,6 +313,65 @@ class EditableDenpaMenStatus extends StatelessWidget {
                 candidates: qrCodeCandidates,
                 onChanged: onChanged,
                 enabled: qrCodeEditable,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            t.editableStatus.additionalCorrections,
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+          ListItemContainer(
+            children: [
+              SelectionTile(
+                label: t.editableStatus.additionalAttributeResistance,
+                onTap: () async {
+                  final result = await showAttributeResistanceSelectionDialog(
+                    context,
+                    attributes: attributes,
+                    selected: denpaMen.userAddedAttributeResistances,
+                    name: denpaMen.userAddedAttributeResistanceName,
+                  );
+                  if (result != null) {
+                    onChanged(
+                      denpaMen.copyWith(
+                        userAddedAttributeResistances: result.resistances,
+                        userAddedAttributeResistanceName: result.name,
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  denpaMen.userAddedAttributeResistanceName.isEmpty
+                      ? t.common.unset
+                      : denpaMen.userAddedAttributeResistanceName,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SelectionTile(
+                label: t.editableStatus.additionalAbnormalityResistance,
+                onTap: () async {
+                  final result = await showAbnormalityResistanceSelectionDialog(
+                    context,
+                    abnormalityTypes: abnormalityTypes,
+                    selected: denpaMen.userAddedAbnormalityResistances,
+                    name: denpaMen.userAddedAbnormalityResistanceName,
+                  );
+                  if (result != null) {
+                    onChanged(
+                      denpaMen.copyWith(
+                        userAddedAbnormalityResistances: result.resistances,
+                        userAddedAbnormalityResistanceName: result.name,
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  denpaMen.userAddedAbnormalityResistanceName.isEmpty
+                      ? t.common.unset
+                      : denpaMen.userAddedAbnormalityResistanceName,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

@@ -22,9 +22,15 @@ abstract class DenpaMen with _$DenpaMen {
     required String id,
     required String name,
     required List<AbnormalityResistance> abnormalityResistances,
+    @Default(<AbnormalityResistance>[])
+    List<AbnormalityResistance> userAddedAbnormalityResistances,
+    @Default('') String userAddedAbnormalityResistanceName,
     required List<String> bodyColors,
     @Default(<int>[]) List<int> bodyColorShades,
     required List<AttributeResistance> attributeResistance,
+    @Default(<AttributeResistance>[])
+    List<AttributeResistance> userAddedAttributeResistances,
+    @Default('') String userAddedAttributeResistanceName,
     required Physique physique,
     int? physiqueColumnIndex,
     required Personality personality,

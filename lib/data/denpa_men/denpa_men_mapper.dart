@@ -37,6 +37,20 @@ extension DenpaMenEntityMapper on DenpaMen {
       evasionRate: evasionRate,
       correctionIds: corrections.map((correction) => correction.id).toList(),
       considerCorrections: considerCorrections,
+      userAddedAttributeResistanceIds: userAddedAttributeResistances
+          .map((resistance) => resistance.attribute.id)
+          .toList(),
+      userAddedAttributeResistanceValues: userAddedAttributeResistances
+          .map((resistance) => resistance.value)
+          .toList(),
+      userAddedAttributeResistanceName: userAddedAttributeResistanceName,
+      userAddedAbnormalityResistanceIds: userAddedAbnormalityResistances
+          .map((resistance) => resistance.abnormalityId)
+          .toList(),
+      userAddedAbnormalityResistanceValues: userAddedAbnormalityResistances
+          .map((resistance) => resistance.value)
+          .toList(),
+      userAddedAbnormalityResistanceName: userAddedAbnormalityResistanceName,
       catchOrder: catchOrder,
       memo: memo,
       hash: hash,
@@ -108,6 +122,24 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
           )
           .toList(),
       considerCorrections: considerCorrections,
+      userAddedAttributeResistances: [
+        for (var i = 0; i < userAddedAttributeResistanceIds.length; i++)
+          AttributeResistance(
+            attribute: masterData.attributes.firstWhere(
+              (attribute) => attribute.id == userAddedAttributeResistanceIds[i],
+            ),
+            value: userAddedAttributeResistanceValues[i],
+          ),
+      ],
+      userAddedAttributeResistanceName: userAddedAttributeResistanceName,
+      userAddedAbnormalityResistances: [
+        for (var i = 0; i < userAddedAbnormalityResistanceIds.length; i++)
+          AbnormalityResistance(
+            abnormalityId: userAddedAbnormalityResistanceIds[i],
+            value: userAddedAbnormalityResistanceValues[i],
+          ),
+      ],
+      userAddedAbnormalityResistanceName: userAddedAbnormalityResistanceName,
       parentIds: parentIds,
       catchOrder: catchOrder,
       qrCodeId: qrCode.target?.cuid,
@@ -127,7 +159,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
   }
 }
 
-DenpaMenResistances _resistancesFromCache(
+DenpaMenResistances? _resistancesFromCache(
   CacheIndexRepository cacheIndexRepository,
   String cuid,
 ) {
@@ -137,12 +169,7 @@ DenpaMenResistances _resistancesFromCache(
         inputFromJson: DenpaMenResistanceCacheInput.fromJson,
         outputFromJson: DenpaMenResistanceCacheOutput.fromJson,
       );
-  return cached == null
-      ? (
-          abnormalityResistances: const <AbnormalityResistance>[],
-          attributeResistance: const <AttributeResistance>[],
-        )
-      : cached.output.resistances;
+  return cached?.output.resistances;
 }
 
 MonsterExp? _monsterExpFromColumns({

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "40:8221875653235792941",
+      "lastPropertyId": "46:2396889674091045768",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -211,6 +211,36 @@
           "id": "40:8221875653235792941",
           "name": "physiqueColumnIndex",
           "type": 6
+        },
+        {
+          "id": "41:8405514973803304635",
+          "name": "userAddedAttributeResistanceIds",
+          "type": 30
+        },
+        {
+          "id": "42:6598278414757542288",
+          "name": "userAddedAttributeResistanceValues",
+          "type": 27
+        },
+        {
+          "id": "43:4598375108034309499",
+          "name": "userAddedAttributeResistanceName",
+          "type": 9
+        },
+        {
+          "id": "44:6110992789406095010",
+          "name": "userAddedAbnormalityResistanceIds",
+          "type": 30
+        },
+        {
+          "id": "45:3586700084806556602",
+          "name": "userAddedAbnormalityResistanceValues",
+          "type": 27
+        },
+        {
+          "id": "46:2396889674091045768",
+          "name": "userAddedAbnormalityResistanceName",
+          "type": 9
         }
       ],
       "relations": []

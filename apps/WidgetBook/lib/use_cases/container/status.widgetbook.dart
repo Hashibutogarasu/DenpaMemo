@@ -25,6 +25,8 @@ Widget statusContainerUseCase(BuildContext context) {
       headShapes: masterData.headShapes,
       anntenas: masterData.anntenas,
       corrections: masterData.corrections,
+      attributes: masterData.attributes,
+      abnormalityTypes: masterData.abnormalityTypes,
       qrCodeCandidates: const [],
       onChanged: (_) {},
       considerCorrections: denpaMen.considerCorrections,

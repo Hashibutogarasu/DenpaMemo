@@ -30,7 +30,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(40, 8221875653235792941),
+    lastPropertyId: const obx_int.IdUid(46, 2396889674091045768),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -274,6 +274,42 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(40, 8221875653235792941),
         name: 'physiqueColumnIndex',
         type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(41, 8405514973803304635),
+        name: 'userAddedAttributeResistanceIds',
+        type: 30,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(42, 6598278414757542288),
+        name: 'userAddedAttributeResistanceValues',
+        type: 27,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(43, 4598375108034309499),
+        name: 'userAddedAttributeResistanceName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(44, 6110992789406095010),
+        name: 'userAddedAbnormalityResistanceIds',
+        type: 30,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(45, 3586700084806556602),
+        name: 'userAddedAbnormalityResistanceValues',
+        type: 27,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(46, 2396889674091045768),
+        name: 'userAddedAbnormalityResistanceName',
+        type: 9,
         flags: 0,
       ),
     ],
@@ -717,7 +753,29 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final monsterExpMonsterIdOffset = object.monsterExpMonsterId == null
             ? null
             : fbb.writeString(object.monsterExpMonsterId!);
-        fbb.startTable(41);
+        final userAddedAttributeResistanceIdsOffset = fbb.writeList(
+          object.userAddedAttributeResistanceIds
+              .map(fbb.writeString)
+              .toList(growable: false),
+        );
+        final userAddedAttributeResistanceValuesOffset = fbb.writeListInt64(
+          object.userAddedAttributeResistanceValues,
+        );
+        final userAddedAttributeResistanceNameOffset = fbb.writeString(
+          object.userAddedAttributeResistanceName,
+        );
+        final userAddedAbnormalityResistanceIdsOffset = fbb.writeList(
+          object.userAddedAbnormalityResistanceIds
+              .map(fbb.writeString)
+              .toList(growable: false),
+        );
+        final userAddedAbnormalityResistanceValuesOffset = fbb.writeListInt64(
+          object.userAddedAbnormalityResistanceValues,
+        );
+        final userAddedAbnormalityResistanceNameOffset = fbb.writeString(
+          object.userAddedAbnormalityResistanceName,
+        );
+        fbb.startTable(47);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -758,6 +816,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(37, object.monsterExpMaxLevelTeammateCount);
         fbb.addInt64(38, object.monsterExpRecipientCount);
         fbb.addInt64(39, object.physiqueColumnIndex);
+        fbb.addOffset(40, userAddedAttributeResistanceIdsOffset);
+        fbb.addOffset(41, userAddedAttributeResistanceValuesOffset);
+        fbb.addOffset(42, userAddedAttributeResistanceNameOffset);
+        fbb.addOffset(43, userAddedAbnormalityResistanceIdsOffset);
+        fbb.addOffset(44, userAddedAbnormalityResistanceValuesOffset);
+        fbb.addOffset(45, userAddedAbnormalityResistanceNameOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -902,6 +966,32 @@ obx_int.ModelDefinition getObjectBoxModel() {
           62,
           false,
         );
+        final userAddedAttributeResistanceIdsParam =
+            const fb.ListReader<String>(
+              fb.StringReader(asciiOptimization: true),
+              lazy: false,
+            ).vTableGet(buffer, rootOffset, 84, []);
+        final userAddedAttributeResistanceValuesParam =
+            const fb.ListReader<int>(
+              fb.Int64Reader(),
+              lazy: false,
+            ).vTableGet(buffer, rootOffset, 86, []);
+        final userAddedAttributeResistanceNameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 88, '');
+        final userAddedAbnormalityResistanceIdsParam =
+            const fb.ListReader<String>(
+              fb.StringReader(asciiOptimization: true),
+              lazy: false,
+            ).vTableGet(buffer, rootOffset, 90, []);
+        final userAddedAbnormalityResistanceValuesParam =
+            const fb.ListReader<int>(
+              fb.Int64Reader(),
+              lazy: false,
+            ).vTableGet(buffer, rootOffset, 92, []);
+        final userAddedAbnormalityResistanceNameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 94, '');
         final catchOrderParam = const fb.Int64Reader().vTableGetNullable(
           buffer,
           rootOffset,
@@ -970,6 +1060,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
           evasionRate: evasionRateParam,
           correctionIds: correctionIdsParam,
           considerCorrections: considerCorrectionsParam,
+          userAddedAttributeResistanceIds: userAddedAttributeResistanceIdsParam,
+          userAddedAttributeResistanceValues:
+              userAddedAttributeResistanceValuesParam,
+          userAddedAttributeResistanceName:
+              userAddedAttributeResistanceNameParam,
+          userAddedAbnormalityResistanceIds:
+              userAddedAbnormalityResistanceIdsParam,
+          userAddedAbnormalityResistanceValues:
+              userAddedAbnormalityResistanceValuesParam,
+          userAddedAbnormalityResistanceName:
+              userAddedAbnormalityResistanceNameParam,
           catchOrder: catchOrderParam,
           memo: memoParam,
           hash: hashParam,
@@ -1672,6 +1773,38 @@ class DenpaMenEntity_ {
   static final physiqueColumnIndex = obx.QueryIntegerProperty<DenpaMenEntity>(
     _entities[0].properties[39],
   );
+
+  /// See [DenpaMenEntity.userAddedAttributeResistanceIds].
+  static final userAddedAttributeResistanceIds =
+      obx.QueryStringVectorProperty<DenpaMenEntity>(
+        _entities[0].properties[40],
+      );
+
+  /// See [DenpaMenEntity.userAddedAttributeResistanceValues].
+  static final userAddedAttributeResistanceValues =
+      obx.QueryIntegerVectorProperty<DenpaMenEntity>(
+        _entities[0].properties[41],
+      );
+
+  /// See [DenpaMenEntity.userAddedAttributeResistanceName].
+  static final userAddedAttributeResistanceName =
+      obx.QueryStringProperty<DenpaMenEntity>(_entities[0].properties[42]);
+
+  /// See [DenpaMenEntity.userAddedAbnormalityResistanceIds].
+  static final userAddedAbnormalityResistanceIds =
+      obx.QueryStringVectorProperty<DenpaMenEntity>(
+        _entities[0].properties[43],
+      );
+
+  /// See [DenpaMenEntity.userAddedAbnormalityResistanceValues].
+  static final userAddedAbnormalityResistanceValues =
+      obx.QueryIntegerVectorProperty<DenpaMenEntity>(
+        _entities[0].properties[44],
+      );
+
+  /// See [DenpaMenEntity.userAddedAbnormalityResistanceName].
+  static final userAddedAbnormalityResistanceName =
+      obx.QueryStringProperty<DenpaMenEntity>(_entities[0].properties[45]);
 }
 
 /// [QrCodeEntity] entity fields to define ObjectBox queries.

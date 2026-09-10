@@ -479,8 +479,7 @@
     "wind": "風",
     "light": "光",
     "dark": "闇",
-    "physical": "物理",
-    "suddenDeath": "突然死"
+    "physical": "物理"
   },
   "abnormality": {
     "poison": "どく",
