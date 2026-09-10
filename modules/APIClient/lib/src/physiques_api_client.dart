@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show compute;
-import 'package:http/http.dart' as http;
 
 import 'legend_grid_request.dart';
 import 'legend_grid_result.dart';
@@ -27,21 +27,22 @@ class PhysiqueApiException implements Exception {
 }
 
 /// REST client for `modules/server`'s generic `/tables` endpoints. Every
-/// method maps directly onto one of the CRUD endpoints described in
-/// `tables.route.ts` — this client does not assemble rows into a table
-/// shape, that is left to the caller. `type` selects which registered
-/// table (see `TableDefinition`/`GET /tables/types`) a call operates on.
+/// method maps onto one CRUD endpoint from `tables.route.ts` — it does not
+/// assemble rows into a table shape, that is left to the caller. `type`
+/// selects which registered table a call operates on.
 class PhysiquesApiClient {
-  PhysiquesApiClient(this._baseUrl, {http.Client? client})
-    : _client = client ?? http.Client();
+  PhysiquesApiClient(this._baseUrl, {Dio? dio}) : _dio = dio ?? Dio();
 
   final Uri _baseUrl;
-  final http.Client _client;
+  final Dio _dio;
 
   /// Every registered table type (see `TableDefinitionEntity` on the
   /// server), so callers never hardcode which types exist.
   Future<List<TableDefinition>> fetchTypes() async {
-    final response = await _client.get(_baseUrl.replace(path: '/tables/types'));
+    final response = await _dio.getUri<String>(
+      _baseUrl.replace(path: '/tables/types'),
+      options: _plainOptions,
+    );
     final body = await _decodeListOrThrow(response);
     return [
       for (final row in body.cast<Map<String, dynamic>>())
@@ -55,7 +56,7 @@ class PhysiquesApiClient {
     String? anntenaCategory,
     String? category,
   }) async {
-    final response = await _client.get(
+    final response = await _dio.getUri<String>(
       _baseUrl.replace(
         path: '/tables',
         queryParameters: {
@@ -65,6 +66,7 @@ class PhysiquesApiClient {
           'category': ?category,
         },
       ),
+      options: _plainOptions,
     );
     final body = await _decodeListOrThrow(response);
     return [
@@ -76,10 +78,10 @@ class PhysiquesApiClient {
   Future<List<PhysiqueTableRecord>> create(
     List<PhysiqueTableRecord> records,
   ) async {
-    final response = await _client.post(
+    final response = await _dio.postUri<String>(
       _baseUrl.replace(path: '/tables'),
-      headers: _jsonHeaders,
-      body: jsonEncode([for (final record in records) record.toJson()]),
+      data: jsonEncode([for (final record in records) record.toJson()]),
+      options: _jsonOptions,
     );
     final body = await _decodeListOrThrow(response);
     return [
@@ -95,10 +97,9 @@ class PhysiquesApiClient {
     required String anntenaCategory,
     required List<List<int?>> rowValues,
   }) async {
-    final response = await _client.put(
+    final response = await _dio.putUri<String>(
       _baseUrl.replace(path: '/tables'),
-      headers: _jsonHeaders,
-      body: jsonEncode({
+      data: jsonEncode({
         'lineOffset': lineOffset,
         'type': type,
         'level': level,
@@ -107,6 +108,7 @@ class PhysiquesApiClient {
           for (final values in rowValues) {'values': values},
         ],
       }),
+      options: _jsonOptions,
     );
     final body = await _decodeListOrThrow(response);
     return [
@@ -120,7 +122,7 @@ class PhysiquesApiClient {
     String? level,
     String? anntenaCategory,
   }) async {
-    final response = await _client.delete(
+    final response = await _dio.deleteUri<String>(
       _baseUrl.replace(
         path: '/tables',
         queryParameters: {
@@ -129,6 +131,7 @@ class PhysiquesApiClient {
           'anntenaCategory': ?anntenaCategory,
         },
       ),
+      options: _plainOptions,
     );
     _requireSuccess(response);
   }
@@ -143,7 +146,7 @@ class PhysiquesApiClient {
     required String anntenaCategory,
     required List<int> lineOffsets,
   }) async {
-    final response = await _client.delete(
+    final response = await _dio.deleteUri<String>(
       _baseUrl.replace(
         path: '/tables',
         queryParameters: {
@@ -153,15 +156,15 @@ class PhysiquesApiClient {
           'lineOffsets': lineOffsets.join(','),
         },
       ),
+      options: _plainOptions,
     );
     _requireSuccess(response);
   }
 
-  /// Finds every column where a `type` (default `evasionRate`) row and an
-  /// `against` (default `hp`) row at the same `level`/`anntenaCategory`/
-  /// `lineOffset` both equal [evasionRate]/[hp] at that column — see
-  /// `findEvasionRateMatches` on the server. [antenna] is an antenna id,
-  /// resolved server-side to its `anntenaCategory`.
+  /// Finds every column where a `type`/`against` row pair both equal
+  /// [evasionRate]/[hp] at that column — see `findEvasionRateMatches` on
+  /// the server. [antenna] is an antenna id, resolved server-side to its
+  /// `anntenaCategory`.
   Future<PhysiqueSearchResult> search({
     String type = 'evasionRate',
     String against = 'hp',
@@ -180,7 +183,7 @@ class PhysiquesApiClient {
       anntenaCategory: anntenaCategory,
       antenna: antenna,
     );
-    final response = await _client.get(
+    final response = await _dio.getUri<String>(
       _baseUrl.replace(
         path: '/tables/search',
         queryParameters: {
@@ -188,18 +191,17 @@ class PhysiquesApiClient {
             if (entry.value != null) entry.key: '${entry.value}',
         },
       ),
+      options: _plainOptions,
     );
     final body = await _decodeMapOrThrow(response);
     return PhysiqueSearchResult.fromJson(body);
   }
 
   /// Fetches the "matching location" grid for one `level`/`anntenaCategory`
-  /// pair: the physique-category legend merged with the level/antenna's
-  /// real evasion-rate and HP values, with the cell identified by
-  /// [request]'s `matchColumnIndex`/`matchLineOffset`/`matchEvasionRate`
-  /// flagged — see `GET /tables/legend-grid` on the server.
+  /// pair, with the cell identified by [request]'s match fields flagged —
+  /// see `GET /tables/legend-grid` on the server.
   Future<LegendGridResult> legendGrid(LegendGridRequest request) async {
-    final response = await _client.get(
+    final response = await _dio.getUri<String>(
       _baseUrl.replace(
         path: '/tables/legend-grid',
         queryParameters: {
@@ -207,6 +209,7 @@ class PhysiquesApiClient {
             entry.key: '${entry.value}',
         },
       ),
+      options: _plainOptions,
     );
     final body = await _decodeMapOrThrow(response);
     return LegendGridResult.fromJson(body);
@@ -217,8 +220,9 @@ class PhysiquesApiClient {
   /// offline instead of only through `search`/`legendGrid`.
   Future<List<PhysiqueEvasionRateCategoryRow>>
   fetchEvasionRateCategories() async {
-    final response = await _client.get(
+    final response = await _dio.getUri<String>(
       _baseUrl.replace(path: '/tables/evasion-rate-categories'),
+      options: _plainOptions,
     );
     final body = await _decodeListOrThrow(response);
     return [
@@ -227,9 +231,16 @@ class PhysiquesApiClient {
     ];
   }
 
-  static const Map<String, String> _jsonHeaders = {
-    'Content-Type': 'application/json',
-  };
+  static final Options _plainOptions = Options(
+    responseType: ResponseType.plain,
+    validateStatus: (_) => true,
+  );
+
+  static final Options _jsonOptions = Options(
+    contentType: 'application/json',
+    responseType: ResponseType.plain,
+    validateStatus: (_) => true,
+  );
 
   static List<dynamic> _decodeJsonList(String body) =>
       jsonDecode(body) as List<dynamic>;
@@ -237,30 +248,30 @@ class PhysiquesApiClient {
   static Map<String, dynamic> _decodeJsonMap(String body) =>
       jsonDecode(body) as Map<String, dynamic>;
 
-  Future<List<dynamic>> _decodeListOrThrow(http.Response response) async {
+  Future<List<dynamic>> _decodeListOrThrow(Response<String> response) async {
     _requireSuccess(response);
-    return compute(_decodeJsonList, response.body);
+    return compute(_decodeJsonList, response.data!);
   }
 
-  Future<Map<String, dynamic>> _decodeMapOrThrow(http.Response response) async {
+  Future<Map<String, dynamic>> _decodeMapOrThrow(
+    Response<String> response,
+  ) async {
     _requireSuccess(response);
-    return compute(_decodeJsonMap, response.body);
+    return compute(_decodeJsonMap, response.data!);
   }
 
-  void _requireSuccess(http.Response response) {
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+  void _requireSuccess(Response<String> response) {
+    final statusCode = response.statusCode ?? 0;
+    if (statusCode >= 200 && statusCode < 300) {
       return;
     }
     String? message;
     try {
-      final body = jsonDecode(response.body) as Map<String, dynamic>;
+      final body = jsonDecode(response.data!) as Map<String, dynamic>;
       message = body['error'] as String?;
     } catch (_) {
       message = null;
     }
-    throw PhysiqueApiException(
-      statusCode: response.statusCode,
-      message: message,
-    );
+    throw PhysiqueApiException(statusCode: statusCode, message: message);
   }
 }

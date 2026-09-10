@@ -12,6 +12,11 @@ enum WidgetRebuildLogSource { debugPrintRebuildDirtyWidgets, buildTracker }
 /// Which transport a [LogEntry.network] entry was recorded for.
 enum NetworkProtocol { rest, graphql }
 
+/// Lifecycle state of a [LogEntry.network] entry: [pending] while the
+/// request is still in flight, then replaced in place by [success] or
+/// [error] once it resolves.
+enum NetworkLogStatus { pending, success, error }
+
 /// Single entry recorded into one of the debug log screen's three stores
 /// (normal, widget-rebuild, network). Every variant shares [id] and
 /// [timestamp]; the remaining fields are specific to what produced it.
@@ -37,9 +42,13 @@ sealed class LogEntry with _$LogEntry {
     required DateTime timestamp,
     required LogLevel level,
     required NetworkProtocol protocol,
+    required NetworkLogStatus status,
     String? operation,
+    String? uri,
     String? requestBody,
     String? responseBody,
+    int? requestBytes,
+    int? responseBytes,
     int? statusCode,
     String? errorMessage,
     Duration? duration,

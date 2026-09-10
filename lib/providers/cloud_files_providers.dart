@@ -1,12 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:data_pack/data_pack.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 
 import '../data/cloud_file/objectbox_cloud_file_repository.dart';
 import 'cloud_account_providers.dart';
+import 'network_providers.dart';
 import 'objectbox_providers.dart';
 
 final cloudFileRepositoryProvider = Provider<CloudFileRepository>(
@@ -15,9 +16,8 @@ final cloudFileRepositoryProvider = Provider<CloudFileRepository>(
 
 /// Drives `GET /dmfile/link`, `GET /dmfile/download/:fileId`, and
 /// `DELETE /dmfile`. The list this exposes is read from
-/// [cloudFileRepositoryProvider]'s local cache, not fetched fresh from
-/// `GET /dmfiles` on every read — a cloud file only appears here once its
-/// upload has completed and been registered locally.
+/// [cloudFileRepositoryProvider]'s local cache — a cloud file only appears
+/// here once its upload has completed and been registered locally.
 class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   @override
   List<CloudFile> build() => ref.watch(cloudFileRepositoryProvider).getAll();
@@ -38,11 +38,9 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
   }
 
   /// Requests an upload link via GET /dmfile/link, PUTs [bytes] to the
-  /// returned uploadUrl as a streamed request (reporting [onProgress] with
-  /// the bytes sent so far and the total byte count as each chunk is
-  /// written), then registers the resulting [CloudFile] locally. Throws
-  /// [CloudUploadFailedException] if R2 rejects the PUT, so a failed
-  /// upload is never mistaken for a completed one.
+  /// returned uploadUrl (reporting [onProgress]), then registers the
+  /// resulting [CloudFile] locally. Throws [CloudUploadFailedException] if
+  /// R2 rejects the PUT.
   Future<CloudFile> uploadDmFile(
     String filename,
     Uint8List bytes, {
@@ -53,37 +51,15 @@ class CloudFilesNotifier extends Notifier<List<CloudFile>> {
         .read(authApiClientProvider)
         .requestUploadLink(idToken, filename);
 
-    const chunkSize = 64 * 1024;
-    final request = http.StreamedRequest('PUT', Uri.parse(link.uploadUrl));
-    request.contentLength = bytes.length;
-
-    final client = http.Client();
-    final responseFuture = client.send(request);
-
-    var sent = 0;
-    while (sent < bytes.length) {
-      final end = (sent + chunkSize).clamp(0, bytes.length);
-      request.sink.add(bytes.sublist(sent, end));
-      sent = end;
-      onProgress?.call(sent, bytes.length);
-      // Yields to the event loop so the client actually pushes each chunk
-      // to the socket as it's added, rather than buffering the whole
-      // upload into the sink synchronously before any of it is sent —
-      // otherwise `onProgress` calls (and any speed measured from them)
-      // would have no correlation with real network transfer time.
-      await Future<void>.delayed(Duration.zero);
-    }
-    await request.sink.close();
-
-    final int statusCode;
+    final dio = ref.read(sharedDioProvider);
     try {
-      final streamedResponse = await responseFuture;
-      statusCode = streamedResponse.statusCode;
-    } finally {
-      client.close();
-    }
-    if (statusCode < 200 || statusCode >= 300) {
-      throw CloudUploadFailedException(statusCode);
+      await dio.putUri<void>(
+        Uri.parse(link.uploadUrl),
+        data: bytes,
+        onSendProgress: (sent, total) => onProgress?.call(sent, bytes.length),
+      );
+    } on DioException catch (e) {
+      throw CloudUploadFailedException(e.response?.statusCode ?? -1);
     }
     final cloudFile = CloudFile(
       fileId: link.fileId,

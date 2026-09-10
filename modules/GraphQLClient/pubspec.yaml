@@ -12,6 +12,7 @@ dependencies:
     path: ../DataCache
   data_pack:
     path: ../DataPack
+  dio: ^5.9.0
   flutter:
     sdk: flutter
   flutter_riverpod: ">=3.3.0 <3.4.0"

@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+
+import 'dio_graphql_link.dart';
 
 /// Builds [GraphQLClient]s pointed at [endpoint], the `modules/server`
 /// GraphQL endpoint chosen by the host app — this package has no way to
@@ -9,10 +12,13 @@ class GraphQlClientFactory {
 
   final Uri endpoint;
 
-  GraphQLClient create({Link? loggingLink}) {
-    final httpLink = HttpLink(endpoint.toString());
+  /// [dio] is the app's single shared [Dio] instance, so GraphQL traffic
+  /// flows through — and is captured by the same debug-log interceptor
+  /// as — every other network call in the app, rather than through
+  /// `graphql_flutter`'s own `HttpLink`/`http.Client`.
+  GraphQLClient create({required Dio dio}) {
     return GraphQLClient(
-      link: loggingLink != null ? loggingLink.concat(httpLink) : httpLink,
+      link: DioGraphQlLink(dio, endpoint),
       cache: GraphQLCache(),
     );
   }

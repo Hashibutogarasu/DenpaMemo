@@ -5,11 +5,11 @@ import 'package:flutter/widgets.dart';
 
 import 'package:collection/collection.dart';
 import 'package:data_pack/data_pack.dart';
+import 'package:dio/dio.dart';
 import 'package:dm_file/dm_file.dart';
 import 'package:firebase_sign_in/firebase_sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_client/graphql_client.dart';
-import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
 import 'package:denpa_memo/widgets.dart' hide Translations;
@@ -20,6 +20,7 @@ import 'cancellation.dart';
 import 'cloud_files_providers.dart';
 import 'denpa_men_icon_providers.dart';
 import 'denpa_men_providers.dart';
+import 'network_providers.dart';
 import 'operation_progress_providers.dart';
 import 'pending_operation_result_providers.dart';
 import 'qr_code_providers.dart';
@@ -49,12 +50,9 @@ class CloudBackupRestoreController {
   final Ref _ref;
 
   /// Returns the [ImportResult] once the download and merge complete, or
-  /// null if the user declined to resolve duplicate individuals partway
-  /// through. Restores [target] if given, otherwise the most recently
-  /// uploaded cloud file across every device on the account. Throws
-  /// [CloudBackupNotFoundException] if no cloud backup exists yet, or
-  /// [CancelledException] if [cancellation] is requested during the
-  /// download.
+  /// null if the user declined to resolve duplicate individuals. Restores
+  /// [target] if given, otherwise the most recent cloud file. Throws
+  /// [CloudBackupNotFoundException] or [CancelledException] as needed.
   Future<ImportResult?> restore(
     BuildContext context, {
     required Cancellation cancellation,
@@ -238,23 +236,27 @@ class CloudBackupRestoreController {
     required Cancellation cancellation,
     required void Function(int received, int? total) onProgress,
   }) async {
-    final client = http.Client();
+    final dio = _ref.read(sharedDioProvider);
+    final cancelToken = CancelToken();
     try {
-      final response = await client.send(http.Request('GET', uri));
-      final total = response.contentLength;
-      final builder = BytesBuilder(copy: false);
-      var received = 0;
-      await for (final chunk in response.stream) {
-        if (cancellation.isRequested) {
-          throw const CancelledException();
-        }
-        builder.add(chunk);
-        received += chunk.length;
-        onProgress(received, total);
+      final response = await dio.getUri<List<int>>(
+        uri,
+        options: Options(responseType: ResponseType.bytes),
+        cancelToken: cancelToken,
+        onReceiveProgress: (received, total) {
+          if (cancellation.isRequested) {
+            cancelToken.cancel();
+            return;
+          }
+          onProgress(received, total == -1 ? null : total);
+        },
+      );
+      return Uint8List.fromList(response.data!);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.cancel) {
+        throw const CancelledException();
       }
-      return builder.takeBytes();
-    } finally {
-      client.close();
+      rethrow;
     }
   }
 

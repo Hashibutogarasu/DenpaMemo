@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:step_dialog/step_dialog.dart';
 
@@ -11,23 +12,25 @@ import 'google_oauth_loopback.dart';
 import 'google_sign_in_steps.dart';
 import 'identity_toolkit_client.dart';
 
-/// Backend implementation for platforms without a registered native
-/// Firebase app (e.g. Linux desktop, where `firebase_core` has no native
-/// plugin) — drives the Firebase Identity Toolkit REST API directly, and
-/// implements Google sign-in via a desktop OAuth loopback flow (RFC 8252):
-/// the system browser is opened to Google's consent screen, and a
-/// short-lived local HTTP server receives the redirect.
+/// Backend for platforms without a registered native Firebase app — drives
+/// the Firebase Identity Toolkit REST API directly, and implements Google
+/// sign-in via a desktop OAuth loopback flow (RFC 8252): the system browser
+/// opens to Google's consent screen, and a local HTTP server gets the redirect.
 class RestFirebaseSignInBackend implements FirebaseSignInBackend {
   RestFirebaseSignInBackend({
     required this.apiKey,
     required this.googleOAuthClientConfig,
+    Dio? dio,
     FlutterSecureStorage? storage,
     IdentityToolkitClient? identityToolkitClient,
     GoogleOAuthTokenClient? googleOAuthTokenClient,
     GoogleLoopbackAuthorizer? loopbackAuthorizer,
   }) : _storage = storage ?? const FlutterSecureStorage(),
-       _identityToolkitClient = identityToolkitClient ?? IdentityToolkitClient(apiKey: apiKey),
-       _googleOAuthTokenClient = googleOAuthTokenClient ?? GoogleOAuthTokenClient(),
+       _identityToolkitClient =
+           identityToolkitClient ??
+           IdentityToolkitClient(apiKey: apiKey, dio: dio),
+       _googleOAuthTokenClient =
+           googleOAuthTokenClient ?? GoogleOAuthTokenClient(dio: dio),
        _loopbackAuthorizer = loopbackAuthorizer ?? GoogleLoopbackAuthorizer();
 
   static const _sessionStorageKey = 'firebase_sign_in.session';
@@ -42,7 +45,8 @@ class RestFirebaseSignInBackend implements FirebaseSignInBackend {
   IdentityToolkitSession? _session;
 
   @override
-  CloudAccountState currentState() => _session?.toState() ?? const CloudAccountState();
+  CloudAccountState currentState() =>
+      _session?.toState() ?? const CloudAccountState();
 
   @override
   Future<void> ready() async {
@@ -50,26 +54,41 @@ class RestFirebaseSignInBackend implements FirebaseSignInBackend {
     if (stored == null) {
       return;
     }
-    _session = IdentityToolkitSession.fromJson(jsonDecode(stored) as Map<String, dynamic>);
+    _session = IdentityToolkitSession.fromJson(
+      jsonDecode(stored) as Map<String, dynamic>,
+    );
   }
 
   @override
-  Future<CloudAccountState> signInWithEmail(String email, String password) async {
-    final session = await _identityToolkitClient.signInWithPassword(email, password);
+  Future<CloudAccountState> signInWithEmail(
+    String email,
+    String password,
+  ) async {
+    final session = await _identityToolkitClient.signInWithPassword(
+      email,
+      password,
+    );
     await _persist(session);
     return session.toState();
   }
 
   @override
-  Future<CloudAccountState> signUpWithEmail(String email, String password) async {
+  Future<CloudAccountState> signUpWithEmail(
+    String email,
+    String password,
+  ) async {
     final session = await _identityToolkitClient.signUp(email, password);
     await _persist(session);
     return session.toState();
   }
 
   @override
-  Future<CloudAccountState> signInWithGoogle({void Function(Uri? authUrl)? onManualAuthUrl}) async {
-    final context = createGoogleSignInStepContext(onManualAuthUrl: onManualAuthUrl);
+  Future<CloudAccountState> signInWithGoogle({
+    void Function(Uri? authUrl)? onManualAuthUrl,
+  }) async {
+    final context = createGoogleSignInStepContext(
+      onManualAuthUrl: onManualAuthUrl,
+    );
     await buildGoogleSignInSteps().runAll(context);
     return context.refreshedSession!.toState();
   }
@@ -77,15 +96,16 @@ class RestFirebaseSignInBackend implements FirebaseSignInBackend {
   /// Builds a fresh [GoogleSignInStepContext] for driving the 5-step
   /// Google sign-in flow directly (e.g. from [SignInFlowDialog]), wired to
   /// this backend's dependencies and persistence.
-  GoogleSignInStepContext createGoogleSignInStepContext({void Function(Uri? authUrl)? onManualAuthUrl}) =>
-      GoogleSignInStepContext(
-        googleOAuthClientConfig: googleOAuthClientConfig,
-        identityToolkitClient: _identityToolkitClient,
-        googleOAuthTokenClient: _googleOAuthTokenClient,
-        loopbackAuthorizer: _loopbackAuthorizer,
-        persist: _persist,
-        onManualAuthUrl: onManualAuthUrl,
-      );
+  GoogleSignInStepContext createGoogleSignInStepContext({
+    void Function(Uri? authUrl)? onManualAuthUrl,
+  }) => GoogleSignInStepContext(
+    googleOAuthClientConfig: googleOAuthClientConfig,
+    identityToolkitClient: _identityToolkitClient,
+    googleOAuthTokenClient: _googleOAuthTokenClient,
+    loopbackAuthorizer: _loopbackAuthorizer,
+    persist: _persist,
+    onManualAuthUrl: onManualAuthUrl,
+  );
 
   @override
   Future<void> signOut() async {
@@ -127,6 +147,9 @@ class RestFirebaseSignInBackend implements FirebaseSignInBackend {
 
   Future<void> _persist(IdentityToolkitSession session) async {
     _session = session;
-    await _storage.write(key: _sessionStorageKey, value: jsonEncode(session.toJson()));
+    await _storage.write(
+      key: _sessionStorageKey,
+      value: jsonEncode(session.toJson()),
+    );
   }
 }
