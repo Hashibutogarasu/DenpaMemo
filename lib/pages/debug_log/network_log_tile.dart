@@ -26,9 +26,10 @@ class NetworkLogTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: entry.status == NetworkLogStatus.pending
-          ? null
-          : NetworkTransferBadge(entry: entry),
+      trailing: switch (entry.status) {
+        NetworkLogStatus.pending || NetworkLogStatus.skipped => null,
+        _ => NetworkTransferBadge(entry: entry),
+      },
       expandedAlignment: Alignment.centerLeft,
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
       children: [

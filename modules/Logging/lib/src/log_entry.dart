@@ -13,9 +13,10 @@ enum WidgetRebuildLogSource { debugPrintRebuildDirtyWidgets, buildTracker }
 enum NetworkProtocol { rest, graphql }
 
 /// Lifecycle state of a [LogEntry.network] entry: [pending] while the
-/// request is still in flight, then replaced in place by [success] or
-/// [error] once it resolves.
-enum NetworkLogStatus { pending, success, error }
+/// request is still in flight, then replaced in place by [success],
+/// [unchanged] (fetched, but identical to what was already cached),
+/// [error], or [skipped] (never sent — the device was offline).
+enum NetworkLogStatus { pending, success, unchanged, error, skipped }
 
 /// Single entry recorded into one of the debug log screen's three stores
 /// (normal, widget-rebuild, network). Every variant shares [id] and
