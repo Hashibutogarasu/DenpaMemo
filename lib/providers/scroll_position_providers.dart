@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:denpamemo_widgets/denpamemo_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Holds a single scrollable's offset, surviving its owning widget tree
@@ -13,14 +13,10 @@ class ScrollOffsetNotifier extends Notifier<double> {
   }
 }
 
-/// A [ScrollController] that mirrors its offset into a [ScrollOffsetNotifier]
-/// as it scrolls, and seeds its initial offset from that notifier's current
-/// state. Guards every read of [offset] behind [hasClients] itself, so
-/// callers don't each need to remember that a controller can go temporarily
-/// unattached (e.g. its scrollable is swapped out for an empty-state widget,
-/// or briefly detaches mid-transition between two scrollables) and crash
-/// reading [offset] while detached.
-class PersistedScrollController extends ScrollController {
+/// A [SafeScrollController] that mirrors its offset into a
+/// [ScrollOffsetNotifier] as it scrolls, and seeds its initial offset from
+/// that notifier's current state.
+class PersistedScrollController extends SafeScrollController {
   PersistedScrollController({
     required this.notifier,
     required double initialOffset,
@@ -31,7 +27,6 @@ class PersistedScrollController extends ScrollController {
   final ScrollOffsetNotifier notifier;
 
   void _onScroll() {
-    if (!hasClients) return;
     notifier.set(offset);
   }
 
