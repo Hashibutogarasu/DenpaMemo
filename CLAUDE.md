@@ -6,6 +6,7 @@
 # Git Commits and Pushing
 
 - Write commit messages entirely in English, regardless of the language used elsewhere in the conversation. Never mix in Japanese.
+- Write commit message subject lines in Conventional Commits format (`feat:`, `fix:`, `docs:`, `chore:`, etc.), matching this repo's existing commit history. This applies only to commit messages — pull request titles must stay plain and unprefixed (see "Pull Requests" below).
 - A request to commit is only a request to commit. Do not push, update a PR, or take any other follow-up remote action afterward unless separately, explicitly asked.
 - Do not ask a clarifying question that assumes the unrequested next action should happen anyway (e.g. asking which branch/PR to push a just-made commit to) — if it wasn't asked for, the answer is not to do it, not to ask how to do it.
 
