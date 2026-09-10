@@ -12,15 +12,6 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   abnormalityResistances: (json['abnormalityResistances'] as List<dynamic>)
       .map((e) => AbnormalityResistance.fromJson(e as Map<String, dynamic>))
       .toList(),
-  userAddedAbnormalityResistances:
-      (json['userAddedAbnormalityResistances'] as List<dynamic>?)
-          ?.map(
-            (e) => AbnormalityResistance.fromJson(e as Map<String, dynamic>),
-          )
-          .toList() ??
-      const <AbnormalityResistance>[],
-  userAddedAbnormalityResistanceName:
-      json['userAddedAbnormalityResistanceName'] as String? ?? '',
   bodyColors: (json['bodyColors'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
@@ -32,13 +23,6 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
   attributeResistance: (json['attributeResistance'] as List<dynamic>)
       .map((e) => AttributeResistance.fromJson(e as Map<String, dynamic>))
       .toList(),
-  userAddedAttributeResistances:
-      (json['userAddedAttributeResistances'] as List<dynamic>?)
-          ?.map((e) => AttributeResistance.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const <AttributeResistance>[],
-  userAddedAttributeResistanceName:
-      json['userAddedAttributeResistanceName'] as String? ?? '',
   physique: Physique.fromJson(json['physique'] as Map<String, dynamic>),
   physiqueColumnIndex: (json['physiqueColumnIndex'] as num?)?.toInt(),
   personality: Personality.fromJson(
@@ -65,6 +49,11 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
       .map((e) => Correction.fromJson(e as Map<String, dynamic>))
       .toList(),
   considerCorrections: json['considerCorrections'] as bool,
+  additionalCorrection: json['additionalCorrection'] == null
+      ? const AdditionalCorrection()
+      : AdditionalCorrection.fromJson(
+          json['additionalCorrection'] as Map<String, dynamic>,
+        ),
   parentIds: (json['parentIds'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
@@ -84,14 +73,9 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
   'abnormalityResistances': instance.abnormalityResistances,
-  'userAddedAbnormalityResistances': instance.userAddedAbnormalityResistances,
-  'userAddedAbnormalityResistanceName':
-      instance.userAddedAbnormalityResistanceName,
   'bodyColors': instance.bodyColors,
   'bodyColorShades': instance.bodyColorShades,
   'attributeResistance': instance.attributeResistance,
-  'userAddedAttributeResistances': instance.userAddedAttributeResistances,
-  'userAddedAttributeResistanceName': instance.userAddedAttributeResistanceName,
   'physique': instance.physique,
   'physiqueColumnIndex': instance.physiqueColumnIndex,
   'personality': instance.personality,
@@ -114,6 +98,7 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'evasionRate': instance.evasionRate,
   'corrections': instance.corrections,
   'considerCorrections': instance.considerCorrections,
+  'additionalCorrection': instance.additionalCorrection,
   'parentIds': instance.parentIds,
   'catchOrder': instance.catchOrder,
   'qrCodeId': instance.qrCodeId,

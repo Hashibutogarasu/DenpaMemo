@@ -15,6 +15,7 @@ export 'src/cloud_file/cloud_file_repository.dart';
 export 'src/clipping/clipping_slot.dart';
 export 'src/clipping/denpa_men_image_slot_type.dart';
 export 'src/denpa_men/abnormality_resistance.dart';
+export 'src/denpa_men/additional_correction.dart';
 export 'src/denpa_men/attribute_resistance_calculator.dart';
 export 'src/denpa_men/attribute_resistance.dart';
 export 'src/denpa_men/attribute_resistance_reverse_calculator.dart';

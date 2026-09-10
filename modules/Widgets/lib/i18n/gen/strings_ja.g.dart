@@ -360,6 +360,9 @@ class Translations$editableStatus$ja {
 	/// ja: '追加の補正データ'
 	String get additionalCorrections => '追加の補正データ';
 
+	/// ja: 'ステータス補正'
+	String get additionalStatBonus => 'ステータス補正';
+
 	/// ja: 'アンテナ'
 	String get antenna => 'アンテナ';
 
@@ -546,6 +549,7 @@ extension on Translations {
 			'editableStatus.additionalAbnormalityResistance' => '異常耐性',
 			'editableStatus.additionalAttributeResistance' => '属性耐性',
 			'editableStatus.additionalCorrections' => '追加の補正データ',
+			'editableStatus.additionalStatBonus' => 'ステータス補正',
 			'editableStatus.antenna' => 'アンテナ',
 			'editableStatus.antennaCategoryAttack' => '攻撃',
 			'editableStatus.antennaCategoryOther' => 'その他',

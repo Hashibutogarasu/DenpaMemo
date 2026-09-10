@@ -37,20 +37,32 @@ extension DenpaMenEntityMapper on DenpaMen {
       evasionRate: evasionRate,
       correctionIds: corrections.map((correction) => correction.id).toList(),
       considerCorrections: considerCorrections,
-      userAddedAttributeResistanceIds: userAddedAttributeResistances
+      userAddedHpBonus: additionalCorrection.hpBonus,
+      userAddedApBonus: additionalCorrection.apBonus,
+      userAddedAttackBonus: additionalCorrection.attackBonus,
+      userAddedDefenseBonus: additionalCorrection.defenseBonus,
+      userAddedSpeedBonus: additionalCorrection.speedBonus,
+      userAddedEvasionRateBonus: additionalCorrection.evasionRateBonus,
+      userAddedStatBonusName: additionalCorrection.statBonusName,
+      userAddedAttributeResistanceIds: additionalCorrection.attributeResistances
           .map((resistance) => resistance.attribute.id)
           .toList(),
-      userAddedAttributeResistanceValues: userAddedAttributeResistances
+      userAddedAttributeResistanceValues: additionalCorrection
+          .attributeResistances
           .map((resistance) => resistance.value)
           .toList(),
-      userAddedAttributeResistanceName: userAddedAttributeResistanceName,
-      userAddedAbnormalityResistanceIds: userAddedAbnormalityResistances
+      userAddedAttributeResistanceName:
+          additionalCorrection.attributeResistanceName,
+      userAddedAbnormalityResistanceIds: additionalCorrection
+          .abnormalityResistances
           .map((resistance) => resistance.abnormalityId)
           .toList(),
-      userAddedAbnormalityResistanceValues: userAddedAbnormalityResistances
+      userAddedAbnormalityResistanceValues: additionalCorrection
+          .abnormalityResistances
           .map((resistance) => resistance.value)
           .toList(),
-      userAddedAbnormalityResistanceName: userAddedAbnormalityResistanceName,
+      userAddedAbnormalityResistanceName:
+          additionalCorrection.abnormalityResistanceName,
       catchOrder: catchOrder,
       memo: memo,
       hash: hash,
@@ -122,24 +134,34 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
           )
           .toList(),
       considerCorrections: considerCorrections,
-      userAddedAttributeResistances: [
-        for (var i = 0; i < userAddedAttributeResistanceIds.length; i++)
-          AttributeResistance(
-            attribute: masterData.attributes.firstWhere(
-              (attribute) => attribute.id == userAddedAttributeResistanceIds[i],
+      additionalCorrection: AdditionalCorrection(
+        hpBonus: userAddedHpBonus,
+        apBonus: userAddedApBonus,
+        attackBonus: userAddedAttackBonus,
+        defenseBonus: userAddedDefenseBonus,
+        speedBonus: userAddedSpeedBonus,
+        evasionRateBonus: userAddedEvasionRateBonus,
+        statBonusName: userAddedStatBonusName,
+        attributeResistances: [
+          for (var i = 0; i < userAddedAttributeResistanceIds.length; i++)
+            AttributeResistance(
+              attribute: masterData.attributes.firstWhere(
+                (attribute) =>
+                    attribute.id == userAddedAttributeResistanceIds[i],
+              ),
+              value: userAddedAttributeResistanceValues[i],
             ),
-            value: userAddedAttributeResistanceValues[i],
-          ),
-      ],
-      userAddedAttributeResistanceName: userAddedAttributeResistanceName,
-      userAddedAbnormalityResistances: [
-        for (var i = 0; i < userAddedAbnormalityResistanceIds.length; i++)
-          AbnormalityResistance(
-            abnormalityId: userAddedAbnormalityResistanceIds[i],
-            value: userAddedAbnormalityResistanceValues[i],
-          ),
-      ],
-      userAddedAbnormalityResistanceName: userAddedAbnormalityResistanceName,
+        ],
+        attributeResistanceName: userAddedAttributeResistanceName,
+        abnormalityResistances: [
+          for (var i = 0; i < userAddedAbnormalityResistanceIds.length; i++)
+            AbnormalityResistance(
+              abnormalityId: userAddedAbnormalityResistanceIds[i],
+              value: userAddedAbnormalityResistanceValues[i],
+            ),
+        ],
+        abnormalityResistanceName: userAddedAbnormalityResistanceName,
+      ),
       parentIds: parentIds,
       catchOrder: catchOrder,
       qrCodeId: qrCode.target?.cuid,

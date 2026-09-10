@@ -13,6 +13,7 @@ import 'dialog/attribute_resistance_selection_dialog.dart';
 import 'dialog/body_color_selection_dialog.dart';
 import 'dialog/correction_selection_dialog.dart';
 import 'dialog/head_shape_selection_dialog.dart';
+import 'dialog/stat_bonus_selection_dialog.dart';
 import 'domain/antenna_display_name.dart';
 import 'editable_exp.dart';
 import 'editable_parents.dart';
@@ -324,27 +325,39 @@ class EditableDenpaMenStatus extends StatelessWidget {
           ListItemContainer(
             children: [
               SelectionTile(
+                label: t.editableStatus.additionalStatBonus,
+                onTap: () async {
+                  final result = await showStatBonusSelectionDialog(
+                    context,
+                    initial: denpaMen.additionalCorrection,
+                  );
+                  if (result != null) {
+                    onChanged(denpaMen.copyWith(additionalCorrection: result));
+                  }
+                },
+                child: Text(
+                  denpaMen.additionalCorrection.statBonusName.isEmpty
+                      ? t.common.unset
+                      : denpaMen.additionalCorrection.statBonusName,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SelectionTile(
                 label: t.editableStatus.additionalAttributeResistance,
                 onTap: () async {
                   final result = await showAttributeResistanceSelectionDialog(
                     context,
                     attributes: attributes,
-                    selected: denpaMen.userAddedAttributeResistances,
-                    name: denpaMen.userAddedAttributeResistanceName,
+                    initial: denpaMen.additionalCorrection,
                   );
                   if (result != null) {
-                    onChanged(
-                      denpaMen.copyWith(
-                        userAddedAttributeResistances: result.resistances,
-                        userAddedAttributeResistanceName: result.name,
-                      ),
-                    );
+                    onChanged(denpaMen.copyWith(additionalCorrection: result));
                   }
                 },
                 child: Text(
-                  denpaMen.userAddedAttributeResistanceName.isEmpty
+                  denpaMen.additionalCorrection.attributeResistanceName.isEmpty
                       ? t.common.unset
-                      : denpaMen.userAddedAttributeResistanceName,
+                      : denpaMen.additionalCorrection.attributeResistanceName,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -354,22 +367,19 @@ class EditableDenpaMenStatus extends StatelessWidget {
                   final result = await showAbnormalityResistanceSelectionDialog(
                     context,
                     abnormalityTypes: abnormalityTypes,
-                    selected: denpaMen.userAddedAbnormalityResistances,
-                    name: denpaMen.userAddedAbnormalityResistanceName,
+                    initial: denpaMen.additionalCorrection,
                   );
                   if (result != null) {
-                    onChanged(
-                      denpaMen.copyWith(
-                        userAddedAbnormalityResistances: result.resistances,
-                        userAddedAbnormalityResistanceName: result.name,
-                      ),
-                    );
+                    onChanged(denpaMen.copyWith(additionalCorrection: result));
                   }
                 },
                 child: Text(
-                  denpaMen.userAddedAbnormalityResistanceName.isEmpty
+                  denpaMen
+                          .additionalCorrection
+                          .abnormalityResistanceName
+                          .isEmpty
                       ? t.common.unset
-                      : denpaMen.userAddedAbnormalityResistanceName,
+                      : denpaMen.additionalCorrection.abnormalityResistanceName,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

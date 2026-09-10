@@ -8,6 +8,7 @@ import '../master_data/personality.dart';
 import '../master_data/physique.dart';
 import '../monster/monster_exp.dart';
 import 'abnormality_resistance.dart';
+import 'additional_correction.dart';
 import 'attribute_resistance.dart';
 
 part 'denpa_men.freezed.dart';
@@ -22,15 +23,9 @@ abstract class DenpaMen with _$DenpaMen {
     required String id,
     required String name,
     required List<AbnormalityResistance> abnormalityResistances,
-    @Default(<AbnormalityResistance>[])
-    List<AbnormalityResistance> userAddedAbnormalityResistances,
-    @Default('') String userAddedAbnormalityResistanceName,
     required List<String> bodyColors,
     @Default(<int>[]) List<int> bodyColorShades,
     required List<AttributeResistance> attributeResistance,
-    @Default(<AttributeResistance>[])
-    List<AttributeResistance> userAddedAttributeResistances,
-    @Default('') String userAddedAttributeResistanceName,
     required Physique physique,
     int? physiqueColumnIndex,
     required Personality personality,
@@ -53,6 +48,7 @@ abstract class DenpaMen with _$DenpaMen {
     required int evasionRate,
     required List<Correction> corrections,
     required bool considerCorrections,
+    @Default(AdditionalCorrection()) AdditionalCorrection additionalCorrection,
     required List<String> parentIds,
     @Deprecated('Use DenpaMenCatchOrderResolution.newCatchOrder instead.')
     int? catchOrder,

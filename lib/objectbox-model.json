@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:1562260616338364164",
-      "lastPropertyId": "46:2396889674091045768",
+      "lastPropertyId": "53:3621364909525509925",
       "name": "DenpaMenEntity",
       "properties": [
         {
@@ -240,6 +240,41 @@
         {
           "id": "46:2396889674091045768",
           "name": "userAddedAbnormalityResistanceName",
+          "type": 9
+        },
+        {
+          "id": "47:4596020404883166064",
+          "name": "userAddedHpBonus",
+          "type": 6
+        },
+        {
+          "id": "48:6125983260173687932",
+          "name": "userAddedApBonus",
+          "type": 6
+        },
+        {
+          "id": "49:967593864564852168",
+          "name": "userAddedAttackBonus",
+          "type": 6
+        },
+        {
+          "id": "50:1593265840276380737",
+          "name": "userAddedDefenseBonus",
+          "type": 6
+        },
+        {
+          "id": "51:5851735012309425793",
+          "name": "userAddedSpeedBonus",
+          "type": 6
+        },
+        {
+          "id": "52:4244293923656316699",
+          "name": "userAddedEvasionRateBonus",
+          "type": 6
+        },
+        {
+          "id": "53:3621364909525509925",
+          "name": "userAddedStatBonusName",
           "type": 9
         }
       ],

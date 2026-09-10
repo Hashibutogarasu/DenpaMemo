@@ -29,6 +29,13 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
       evasionRateBonus += correction.evasionRateBonus;
     }
 
+    hpBonus += additionalCorrection.hpBonus;
+    apBonus += additionalCorrection.apBonus;
+    attackBonus += additionalCorrection.attackBonus;
+    defenseBonus += additionalCorrection.defenseBonus;
+    speedBonus += additionalCorrection.speedBonus;
+    evasionRateBonus += additionalCorrection.evasionRateBonus;
+
     return (
       hp: hpBonus,
       ap: apBonus,
@@ -56,7 +63,7 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
       });
     }
 
-    for (final resistance in userAddedAbnormalityResistances) {
+    for (final resistance in additionalCorrection.abnormalityResistances) {
       abnormalityBonuses[resistance.abnormalityId] =
           (abnormalityBonuses[resistance.abnormalityId] ?? 0) +
           resistance.value;
@@ -78,7 +85,7 @@ extension DenpaMenCorrectionCalculation on DenpaMen {
           value: resistance.value,
         ),
     };
-    for (final resistance in userAddedAttributeResistances) {
+    for (final resistance in additionalCorrection.attributeResistances) {
       final existing = attributeTotals[resistance.attribute.id];
       attributeTotals[resistance.attribute.id] = (
         attribute: resistance.attribute,

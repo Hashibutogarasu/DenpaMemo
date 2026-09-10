@@ -6,16 +6,16 @@ import '../../i18n/gen/strings.g.dart';
 import 'resistance_bonus_selection_dialog.dart';
 
 /// Shows [ResistanceBonusSelectionDialog] over [abnormalityTypes],
-/// translating its generic id/value result to and from
-/// [AbnormalityResistance]s for the "additional corrections"
-/// abnormality-resistance bundle a [DenpaMen] may carry directly (as
-/// opposed to a shared [Correction]).
-Future<({String name, List<AbnormalityResistance> resistances})?>
-showAbnormalityResistanceSelectionDialog(
+/// translating its generic id/value result to and from [initial]'s
+/// [AdditionalCorrection.abnormalityResistances] /
+/// [AdditionalCorrection.abnormalityResistanceName] — the
+/// abnormality-resistance half of a [DenpaMen]'s "additional corrections"
+/// bundle (as opposed to a shared [Correction]). Returns [initial] with just
+/// that half replaced, or null if cancelled.
+Future<AdditionalCorrection?> showAbnormalityResistanceSelectionDialog(
   BuildContext context, {
   required List<AbnormalityType> abnormalityTypes,
-  required List<AbnormalityResistance> selected,
-  required String name,
+  required AdditionalCorrection initial,
 }) async {
   final t = context.t;
   final result = await showResistanceBonusSelectionDialog(
@@ -26,17 +26,17 @@ showAbnormalityResistanceSelectionDialog(
         (id: type.id, label: t.abnormality[type.id] ?? type.id),
     ],
     initialValues: {
-      for (final resistance in selected)
+      for (final resistance in initial.abnormalityResistances)
         resistance.abnormalityId: resistance.value,
     },
-    initialName: name,
+    initialName: initial.abnormalityResistanceName,
   );
   if (result == null) {
     return null;
   }
-  return (
-    name: result.name,
-    resistances: [
+  return initial.copyWith(
+    abnormalityResistanceName: result.name,
+    abnormalityResistances: [
       for (final entry in result.values.entries)
         AbnormalityResistance(abnormalityId: entry.key, value: entry.value),
     ],

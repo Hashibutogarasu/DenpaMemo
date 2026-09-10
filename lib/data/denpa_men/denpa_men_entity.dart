@@ -69,6 +69,20 @@ class DenpaMenEntity {
 
   bool considerCorrections;
 
+  int userAddedHpBonus;
+
+  int userAddedApBonus;
+
+  int userAddedAttackBonus;
+
+  int userAddedDefenseBonus;
+
+  int userAddedSpeedBonus;
+
+  int userAddedEvasionRateBonus;
+
+  String userAddedStatBonusName;
+
   List<String> userAddedAttributeResistanceIds;
 
   List<int> userAddedAttributeResistanceValues;
@@ -136,6 +150,13 @@ class DenpaMenEntity {
     required this.evasionRate,
     required this.correctionIds,
     this.considerCorrections = true,
+    this.userAddedHpBonus = 0,
+    this.userAddedApBonus = 0,
+    this.userAddedAttackBonus = 0,
+    this.userAddedDefenseBonus = 0,
+    this.userAddedSpeedBonus = 0,
+    this.userAddedEvasionRateBonus = 0,
+    this.userAddedStatBonusName = '',
     this.userAddedAttributeResistanceIds = const [],
     this.userAddedAttributeResistanceValues = const [],
     this.userAddedAttributeResistanceName = '',

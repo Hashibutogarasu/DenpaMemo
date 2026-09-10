@@ -30,7 +30,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 1562260616338364164),
     name: 'DenpaMenEntity',
-    lastPropertyId: const obx_int.IdUid(46, 2396889674091045768),
+    lastPropertyId: const obx_int.IdUid(53, 3621364909525509925),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -309,6 +309,48 @@ final _entities = <obx_int.ModelEntity>[
       obx_int.ModelProperty(
         id: const obx_int.IdUid(46, 2396889674091045768),
         name: 'userAddedAbnormalityResistanceName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(47, 4596020404883166064),
+        name: 'userAddedHpBonus',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(48, 6125983260173687932),
+        name: 'userAddedApBonus',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(49, 967593864564852168),
+        name: 'userAddedAttackBonus',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(50, 1593265840276380737),
+        name: 'userAddedDefenseBonus',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(51, 5851735012309425793),
+        name: 'userAddedSpeedBonus',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(52, 4244293923656316699),
+        name: 'userAddedEvasionRateBonus',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(53, 3621364909525509925),
+        name: 'userAddedStatBonusName',
         type: 9,
         flags: 0,
       ),
@@ -775,7 +817,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final userAddedAbnormalityResistanceNameOffset = fbb.writeString(
           object.userAddedAbnormalityResistanceName,
         );
-        fbb.startTable(47);
+        final userAddedStatBonusNameOffset = fbb.writeString(
+          object.userAddedStatBonusName,
+        );
+        fbb.startTable(54);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, bodyColorsOffset);
@@ -822,6 +867,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(43, userAddedAbnormalityResistanceIdsOffset);
         fbb.addOffset(44, userAddedAbnormalityResistanceValuesOffset);
         fbb.addOffset(45, userAddedAbnormalityResistanceNameOffset);
+        fbb.addInt64(46, object.userAddedHpBonus);
+        fbb.addInt64(47, object.userAddedApBonus);
+        fbb.addInt64(48, object.userAddedAttackBonus);
+        fbb.addInt64(49, object.userAddedDefenseBonus);
+        fbb.addInt64(50, object.userAddedSpeedBonus);
+        fbb.addInt64(51, object.userAddedEvasionRateBonus);
+        fbb.addOffset(52, userAddedStatBonusNameOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -966,6 +1018,45 @@ obx_int.ModelDefinition getObjectBoxModel() {
           62,
           false,
         );
+        final userAddedHpBonusParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          96,
+          0,
+        );
+        final userAddedApBonusParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          98,
+          0,
+        );
+        final userAddedAttackBonusParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          100,
+          0,
+        );
+        final userAddedDefenseBonusParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          102,
+          0,
+        );
+        final userAddedSpeedBonusParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          104,
+          0,
+        );
+        final userAddedEvasionRateBonusParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          106,
+          0,
+        );
+        final userAddedStatBonusNameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 108, '');
         final userAddedAttributeResistanceIdsParam =
             const fb.ListReader<String>(
               fb.StringReader(asciiOptimization: true),
@@ -1060,6 +1151,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
           evasionRate: evasionRateParam,
           correctionIds: correctionIdsParam,
           considerCorrections: considerCorrectionsParam,
+          userAddedHpBonus: userAddedHpBonusParam,
+          userAddedApBonus: userAddedApBonusParam,
+          userAddedAttackBonus: userAddedAttackBonusParam,
+          userAddedDefenseBonus: userAddedDefenseBonusParam,
+          userAddedSpeedBonus: userAddedSpeedBonusParam,
+          userAddedEvasionRateBonus: userAddedEvasionRateBonusParam,
+          userAddedStatBonusName: userAddedStatBonusNameParam,
           userAddedAttributeResistanceIds: userAddedAttributeResistanceIdsParam,
           userAddedAttributeResistanceValues:
               userAddedAttributeResistanceValuesParam,
@@ -1805,6 +1903,40 @@ class DenpaMenEntity_ {
   /// See [DenpaMenEntity.userAddedAbnormalityResistanceName].
   static final userAddedAbnormalityResistanceName =
       obx.QueryStringProperty<DenpaMenEntity>(_entities[0].properties[45]);
+
+  /// See [DenpaMenEntity.userAddedHpBonus].
+  static final userAddedHpBonus = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[46],
+  );
+
+  /// See [DenpaMenEntity.userAddedApBonus].
+  static final userAddedApBonus = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[47],
+  );
+
+  /// See [DenpaMenEntity.userAddedAttackBonus].
+  static final userAddedAttackBonus = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[48],
+  );
+
+  /// See [DenpaMenEntity.userAddedDefenseBonus].
+  static final userAddedDefenseBonus = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[49],
+  );
+
+  /// See [DenpaMenEntity.userAddedSpeedBonus].
+  static final userAddedSpeedBonus = obx.QueryIntegerProperty<DenpaMenEntity>(
+    _entities[0].properties[50],
+  );
+
+  /// See [DenpaMenEntity.userAddedEvasionRateBonus].
+  static final userAddedEvasionRateBonus =
+      obx.QueryIntegerProperty<DenpaMenEntity>(_entities[0].properties[51]);
+
+  /// See [DenpaMenEntity.userAddedStatBonusName].
+  static final userAddedStatBonusName = obx.QueryStringProperty<DenpaMenEntity>(
+    _entities[0].properties[52],
+  );
 }
 
 /// [QrCodeEntity] entity fields to define ObjectBox queries.
