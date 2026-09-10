@@ -13,10 +13,17 @@ final sharedDioProvider = Provider<Dio>((ref) {
 });
 
 /// Builds the app's single [Dio] instance, with [DioLoggingInterceptor]
-/// and [NetworkConnectivityGateInterceptor] attached in that order (so an
-/// offline rejection is still recorded via the logging interceptor's
-/// `onError`) — call this once in `main`, passing the result to every
-/// override of [sharedDioProvider] or `firebase_sign_in`'s own copy.
-Dio createSharedDio(NetworkConnectivityMonitor connectivityMonitor) => Dio()
-  ..interceptors.add(DioLoggingInterceptor())
-  ..interceptors.add(NetworkConnectivityGateInterceptor(connectivityMonitor));
+/// and [NetworkConnectivityGateInterceptor] attached in that order — call
+/// this once in `main`, passing the result to every override of
+/// [sharedDioProvider] or `firebase_sign_in`'s own copy.
+Dio createSharedDio(NetworkConnectivityMonitor connectivityMonitor) =>
+    Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+        ),
+      )
+      ..interceptors.add(DioLoggingInterceptor())
+      ..interceptors.add(
+        NetworkConnectivityGateInterceptor(connectivityMonitor),
+      );

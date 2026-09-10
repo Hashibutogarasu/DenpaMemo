@@ -49,7 +49,7 @@ Future<void> _main() async {
     packageInfo.packageName,
   );
   final googleOAuthClientConfig = await loadGoogleOAuthClientConfig();
-  final connectivityMonitor = NetworkConnectivityMonitor();
+  final connectivityMonitor = await NetworkConnectivityMonitor.create();
   final sharedDio = createSharedDio(connectivityMonitor);
   final container = ProviderContainer(
     overrides: [
