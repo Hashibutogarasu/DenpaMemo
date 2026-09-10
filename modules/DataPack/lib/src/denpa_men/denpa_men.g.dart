@@ -49,6 +49,11 @@ _DenpaMen _$DenpaMenFromJson(Map<String, dynamic> json) => _DenpaMen(
       .map((e) => Correction.fromJson(e as Map<String, dynamic>))
       .toList(),
   considerCorrections: json['considerCorrections'] as bool,
+  additionalCorrection: json['additionalCorrection'] == null
+      ? const AdditionalCorrection()
+      : AdditionalCorrection.fromJson(
+          json['additionalCorrection'] as Map<String, dynamic>,
+        ),
   parentIds: (json['parentIds'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
@@ -93,6 +98,7 @@ Map<String, dynamic> _$DenpaMenToJson(_DenpaMen instance) => <String, dynamic>{
   'evasionRate': instance.evasionRate,
   'corrections': instance.corrections,
   'considerCorrections': instance.considerCorrections,
+  'additionalCorrection': instance.additionalCorrection,
   'parentIds': instance.parentIds,
   'catchOrder': instance.catchOrder,
   'qrCodeId': instance.qrCodeId,

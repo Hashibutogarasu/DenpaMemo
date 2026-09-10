@@ -4,20 +4,18 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 208
+/// Strings: 212
 ///
-/// Built on 2026-09-06 at 11:14 UTC
+/// Built on 2026-09-10 at 15:43 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
 // dart format off
 
 import 'package:flutter/widgets.dart';
-
 import 'package:intl/intl.dart';
 import 'package:slang/generated.dart';
 import 'package:slang_flutter/slang_flutter.dart';
-
 export 'package:slang_flutter/slang_flutter.dart';
 
 part 'strings_ja.g.dart';

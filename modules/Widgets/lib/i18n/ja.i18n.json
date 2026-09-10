@@ -37,6 +37,10 @@
     "speed": "すばやさ"
   },
   "editableStatus": {
+    "additionalAbnormalityResistance": "異常耐性",
+    "additionalAttributeResistance": "属性耐性",
+    "additionalCorrections": "追加の補正データ",
+    "additionalStatBonus": "ステータス補正",
     "antenna": "アンテナ",
     "antennaCategoryAttack": "攻撃",
     "antennaCategoryOther": "その他",
@@ -52,6 +56,7 @@
     "bodyColorShadeThin": "薄い",
     "considerCorrections": "補正を考慮する",
     "correction": "補正",
+    "correctionName": "補正の名前",
     "headShape": "頭の形",
     "memo": "メモ",
     "monsterExp": "モンスターから獲得した経験値を記録",
@@ -225,8 +230,7 @@
     "wind": "風",
     "light": "光",
     "dark": "闇",
-    "physical": "物理",
-    "suddenDeath": "突然死"
+    "physical": "物理"
   },
   "abnormality": {
     "poison": "どく",

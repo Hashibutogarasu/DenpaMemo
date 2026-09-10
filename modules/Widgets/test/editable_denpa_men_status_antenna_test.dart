@@ -34,6 +34,8 @@ Widget _buildApp(
             headShapes: masterData.headShapes,
             anntenas: masterData.anntenas,
             corrections: masterData.corrections,
+            attributes: masterData.attributes,
+            abnormalityTypes: masterData.abnormalityTypes,
             qrCodeCandidates: const [],
             onChanged: onChanged,
             considerCorrections: true,

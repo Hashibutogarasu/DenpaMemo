@@ -200,7 +200,6 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'light': '光',
 		'dark': '闇',
 		'physical': '物理',
-		'suddenDeath': '突然死',
 	};
 	Map<String, String> get abnormality => {
 		'poison': 'どく',
@@ -1796,7 +1795,6 @@ extension on Translations {
 			'attribute.light' => '光',
 			'attribute.dark' => '闇',
 			'attribute.physical' => '物理',
-			'attribute.suddenDeath' => '突然死',
 			'abnormality.poison' => 'どく',
 			'abnormality.burn' => 'やけど',
 			'abnormality.frostbite' => 'しもやけ',

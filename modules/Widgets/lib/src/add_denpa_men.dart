@@ -113,6 +113,8 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
       headShapes: widget.masterData.headShapes,
       anntenas: widget.masterData.anntenas,
       corrections: widget.masterData.corrections,
+      attributes: widget.masterData.attributes,
+      abnormalityTypes: widget.masterData.abnormalityTypes,
       qrCodeCandidates: widget.qrCodeCandidates,
       onChanged: widget.onChanged,
       qrCodeEditable: widget.qrCodeEditable,

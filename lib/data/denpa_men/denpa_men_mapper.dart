@@ -37,6 +37,32 @@ extension DenpaMenEntityMapper on DenpaMen {
       evasionRate: evasionRate,
       correctionIds: corrections.map((correction) => correction.id).toList(),
       considerCorrections: considerCorrections,
+      userAddedHpBonus: additionalCorrection.hpBonus,
+      userAddedApBonus: additionalCorrection.apBonus,
+      userAddedAttackBonus: additionalCorrection.attackBonus,
+      userAddedDefenseBonus: additionalCorrection.defenseBonus,
+      userAddedSpeedBonus: additionalCorrection.speedBonus,
+      userAddedEvasionRateBonus: additionalCorrection.evasionRateBonus,
+      userAddedStatBonusName: additionalCorrection.statBonusName,
+      userAddedAttributeResistanceIds: additionalCorrection.attributeResistances
+          .map((resistance) => resistance.attribute.id)
+          .toList(),
+      userAddedAttributeResistanceValues: additionalCorrection
+          .attributeResistances
+          .map((resistance) => resistance.value)
+          .toList(),
+      userAddedAttributeResistanceName:
+          additionalCorrection.attributeResistanceName,
+      userAddedAbnormalityResistanceIds: additionalCorrection
+          .abnormalityResistances
+          .map((resistance) => resistance.abnormalityId)
+          .toList(),
+      userAddedAbnormalityResistanceValues: additionalCorrection
+          .abnormalityResistances
+          .map((resistance) => resistance.value)
+          .toList(),
+      userAddedAbnormalityResistanceName:
+          additionalCorrection.abnormalityResistanceName,
       catchOrder: catchOrder,
       memo: memo,
       hash: hash,
@@ -108,6 +134,34 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
           )
           .toList(),
       considerCorrections: considerCorrections,
+      additionalCorrection: AdditionalCorrection(
+        hpBonus: userAddedHpBonus,
+        apBonus: userAddedApBonus,
+        attackBonus: userAddedAttackBonus,
+        defenseBonus: userAddedDefenseBonus,
+        speedBonus: userAddedSpeedBonus,
+        evasionRateBonus: userAddedEvasionRateBonus,
+        statBonusName: userAddedStatBonusName,
+        attributeResistances: [
+          for (var i = 0; i < userAddedAttributeResistanceIds.length; i++)
+            AttributeResistance(
+              attribute: masterData.attributes.firstWhere(
+                (attribute) =>
+                    attribute.id == userAddedAttributeResistanceIds[i],
+              ),
+              value: userAddedAttributeResistanceValues[i],
+            ),
+        ],
+        attributeResistanceName: userAddedAttributeResistanceName,
+        abnormalityResistances: [
+          for (var i = 0; i < userAddedAbnormalityResistanceIds.length; i++)
+            AbnormalityResistance(
+              abnormalityId: userAddedAbnormalityResistanceIds[i],
+              value: userAddedAbnormalityResistanceValues[i],
+            ),
+        ],
+        abnormalityResistanceName: userAddedAbnormalityResistanceName,
+      ),
       parentIds: parentIds,
       catchOrder: catchOrder,
       qrCodeId: qrCode.target?.cuid,
@@ -127,7 +181,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
   }
 }
 
-DenpaMenResistances _resistancesFromCache(
+DenpaMenResistances? _resistancesFromCache(
   CacheIndexRepository cacheIndexRepository,
   String cuid,
 ) {
@@ -137,12 +191,7 @@ DenpaMenResistances _resistancesFromCache(
         inputFromJson: DenpaMenResistanceCacheInput.fromJson,
         outputFromJson: DenpaMenResistanceCacheOutput.fromJson,
       );
-  return cached == null
-      ? (
-          abnormalityResistances: const <AbnormalityResistance>[],
-          attributeResistance: const <AttributeResistance>[],
-        )
-      : cached.output.resistances;
+  return cached?.output.resistances;
 }
 
 MonsterExp? _monsterExpFromColumns({

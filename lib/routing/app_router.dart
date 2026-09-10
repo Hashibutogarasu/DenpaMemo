@@ -37,17 +37,15 @@ import '../widgets/scaffold/cloud_backup_shell.dart';
 
 part 'app_router.g.dart';
 
-/// The app's single, always-mounted root [Navigator], independent of
-/// whichever page/shell is currently on screen. Lets code outside the
-/// routed page tree (e.g. `_ThemedMaterialApp`'s global result listener in
-/// `main.dart`) obtain a valid [BuildContext] to show a dialog on top of
-/// whatever the user is currently looking at.
-final rootNavigatorKey = GlobalKey<NavigatorState>();
-
-final GoRouter appRouter = GoRouter(
-  navigatorKey: rootNavigatorKey,
-  routes: $appRoutes,
-);
+/// Builds a fresh [GoRouter] — including its own root navigator
+/// [GlobalKey], since it's left for [GoRouter] to generate one rather than
+/// passed in. `main.dart` calls this again on every `RestartWidget`
+/// restart instead of reusing a single top-level instance: a [GlobalKey]
+/// that outlives the restarted subtree would make Flutter reparent the
+/// old routed pages (and the stale `ProviderScope`s inside them) under
+/// the freshly created one instead of tearing them down and rebuilding
+/// from scratch, the way `RestartWidget` otherwise guarantees.
+GoRouter createAppRouter() => GoRouter(routes: $appRoutes);
 
 /// Wraps the four root-tab routes (home, search, analysis, settings) in
 /// [AppShell], which owns the persistent bottom navigation bar. Routes

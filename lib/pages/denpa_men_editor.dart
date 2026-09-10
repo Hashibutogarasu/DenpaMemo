@@ -134,6 +134,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         evasionRate: draft.evasionRate,
         corrections: draft.corrections,
         considerCorrections: draft.considerCorrections,
+        additionalCorrection: draft.additionalCorrection,
         parentIds: draft.parentIds,
         catchOrder: draft.catchOrder,
         qrCodeId: draft.qrCodeId,

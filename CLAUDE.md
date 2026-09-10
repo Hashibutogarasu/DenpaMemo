@@ -5,7 +5,8 @@
 
 # Git Commits and Pushing
 
-- Write commit messages entirely in English, regardless of the language used elsewhere in the conversation. Never mix in Japanese.
+- Write commit messages entirely in English, regardless of the language used elsewhere in the conversation. Never mix in Japanese — not even a single Japanese word or a quoted Japanese string/translation value from the codebase (e.g. an i18n entry's display text); paraphrase or describe it in English instead of quoting it verbatim.
+- Write commit message subject lines in Conventional Commits format (`feat:`, `fix:`, `docs:`, `chore:`, etc.), matching this repo's existing commit history. This applies only to commit messages — pull request titles must stay plain and unprefixed (see "Pull Requests" below).
 - A request to commit is only a request to commit. Do not push, update a PR, or take any other follow-up remote action afterward unless separately, explicitly asked.
 - Do not ask a clarifying question that assumes the unrequested next action should happen anyway (e.g. asking which branch/PR to push a just-made commit to) — if it wasn't asked for, the answer is not to do it, not to ask how to do it.
 
@@ -50,6 +51,7 @@
 
 - Do not prefix pull request titles with a conventional-commit-style tag (`fix:`, `refactor:`, `ci:`, etc.). Write a plain descriptive title.
 - Write the pull request title, body, and any comments posted to it entirely in English, regardless of the language used elsewhere in the conversation. Keep this consistent across all of them — never leave the title in one language and the body in another, or post a comment in a different language than the title/body.
+- Never mix in Japanese anywhere in the title/body/comments — not even a single Japanese word or a quoted Japanese string/translation value from the codebase (e.g. an i18n entry's display text); paraphrase or describe it in English instead of quoting it verbatim. Re-read the rendered body before publishing to catch a stray Japanese term.
 - Before creating a pull request, check existing pull requests (e.g. `gh pr list`, `gh pr view <number>`) to match this repo's current title/body conventions.
 - Use `gh api repos/<owner>/<repo>/pulls/<number> -X PATCH -f title=... -F body=@<file>` (or the equivalent `POST` for creation) rather than `gh pr edit`/`gh pr create` — those consistently fail against this repo with an unrelated `Projects (classic)` GraphQL error.
 

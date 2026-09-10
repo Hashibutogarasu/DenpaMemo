@@ -19,7 +19,6 @@ export const masterData: ResistanceMasterData = {
     { id: 'light', index: 6, category: 'elemental' },
     { id: 'dark', index: 7, category: 'elemental' },
     { id: 'physical', index: 8, category: 'special' },
-    { id: 'suddenDeath', index: 9, category: 'special' },
   ],
   bodyColorResistanceRules: [
     { colorId: 'red', attributeResistanceBonuses: [{ attributeId: 'fire', bonus: 2 }, { attributeId: 'water', bonus: -2 }] },

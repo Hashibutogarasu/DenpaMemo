@@ -9,6 +9,7 @@ import '../master_data/pattern.dart';
 import '../master_data/personality.dart';
 import '../master_data/physique.dart';
 import '../monster/monster_exp.dart';
+import 'additional_correction.dart';
 import 'denpa_men.dart';
 import 'denpa_men_hash.dart';
 import 'denpa_men_resistance_calculator.dart';
@@ -49,6 +50,7 @@ DenpaMen createDenpaMen({
   int evasionRate = 0,
   List<Correction> corrections = const [],
   bool considerCorrections = true,
+  AdditionalCorrection additionalCorrection = const AdditionalCorrection(),
   List<String> parentIds = const [],
   int? catchOrder,
   String? qrCodeId,
@@ -113,6 +115,7 @@ DenpaMen createDenpaMen({
     evasionRate: evasionRate,
     corrections: corrections,
     considerCorrections: considerCorrections,
+    additionalCorrection: additionalCorrection,
     parentIds: parentIds,
     catchOrder: catchOrder,
     qrCodeId: qrCodeId,

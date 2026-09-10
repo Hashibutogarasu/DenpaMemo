@@ -20,20 +20,21 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// Constructing via the enum [AppLocale.build] is preferred.
 	Translations({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<AppLocale, Translations>? meta})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
-		  $meta = meta ?? TranslationMetadata(
+		  _meta = meta ?? TranslationMetadata(
 		    locale: AppLocale.ja,
 		    overrides: overrides ?? {},
 		    cardinalResolver: cardinalResolver,
 		    ordinalResolver: ordinalResolver,
 		  ) {
-		$meta.setFlatMapFunction(_flatMapFunction);
+		_meta.setFlatMapFunction(_flatMapFunction);
 	}
 
 	/// Metadata for the translations of <ja>.
-	@override final TranslationMetadata<AppLocale, Translations> $meta;
+	final TranslationMetadata<AppLocale, Translations> _meta;
+	@override TranslationMetadata<AppLocale, Translations> get $meta => _meta;
 
 	/// Access flat map
-	dynamic operator[](String key) => $meta.getTranslation(key);
+	dynamic operator[](String key) => _meta.getTranslation(key);
 
 	late final Translations _root = this; // ignore: unused_field
 
@@ -193,7 +194,6 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 		'light': '光',
 		'dark': '闇',
 		'physical': '物理',
-		'suddenDeath': '突然死',
 	};
 	Map<String, String> get abnormality => {
 		'poison': 'どく',
@@ -351,6 +351,18 @@ class Translations$editableStatus$ja {
 
 	// Translations
 
+	/// ja: '異常耐性'
+	String get additionalAbnormalityResistance => '異常耐性';
+
+	/// ja: '属性耐性'
+	String get additionalAttributeResistance => '属性耐性';
+
+	/// ja: '追加の補正データ'
+	String get additionalCorrections => '追加の補正データ';
+
+	/// ja: 'ステータス補正'
+	String get additionalStatBonus => 'ステータス補正';
+
 	/// ja: 'アンテナ'
 	String get antenna => 'アンテナ';
 
@@ -395,6 +407,9 @@ class Translations$editableStatus$ja {
 
 	/// ja: '補正'
 	String get correction => '補正';
+
+	/// ja: '補正の名前'
+	String get correctionName => '補正の名前';
 
 	/// ja: '頭の形'
 	String get headShape => '頭の形';
@@ -531,6 +546,10 @@ extension on Translations {
 			'stat.hp' => 'HP',
 			'stat.maxExp' => '必要経験値',
 			'stat.speed' => 'すばやさ',
+			'editableStatus.additionalAbnormalityResistance' => '異常耐性',
+			'editableStatus.additionalAttributeResistance' => '属性耐性',
+			'editableStatus.additionalCorrections' => '追加の補正データ',
+			'editableStatus.additionalStatBonus' => 'ステータス補正',
 			'editableStatus.antenna' => 'アンテナ',
 			'editableStatus.antennaCategoryAttack' => '攻撃',
 			'editableStatus.antennaCategoryOther' => 'その他',
@@ -546,6 +565,7 @@ extension on Translations {
 			'editableStatus.bodyColorShadeThin' => '薄い',
 			'editableStatus.considerCorrections' => '補正を考慮する',
 			'editableStatus.correction' => '補正',
+			'editableStatus.correctionName' => '補正の名前',
 			'editableStatus.headShape' => '頭の形',
 			'editableStatus.memo' => 'メモ',
 			'editableStatus.monsterExp' => 'モンスターから獲得した経験値を記録',
@@ -698,7 +718,6 @@ extension on Translations {
 			'attribute.light' => '光',
 			'attribute.dark' => '闇',
 			'attribute.physical' => '物理',
-			'attribute.suddenDeath' => '突然死',
 			'abnormality.poison' => 'どく',
 			'abnormality.burn' => 'やけど',
 			'abnormality.frostbite' => 'しもやけ',
