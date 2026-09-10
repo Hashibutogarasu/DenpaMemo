@@ -10,6 +10,12 @@
 - A request to commit is only a request to commit. Do not push, update a PR, or take any other follow-up remote action afterward unless separately, explicitly asked.
 - Do not ask a clarifying question that assumes the unrequested next action should happen anyway (e.g. asking which branch/PR to push a just-made commit to) — if it wasn't asked for, the answer is not to do it, not to ask how to do it.
 
+# Temporary Files and Logs
+
+- Do not create files or directories directly under `/tmp` unless there is a specific reason `/tmp` itself is required. Use the session's scratchpad directory instead.
+- Prefer the scratchpad directory for intermediate results, scripts, and command output that doesn't belong in the project.
+- When a command's output is large, redirect it to a log file in the scratchpad directory rather than truncating it with `tail`/`head`; read the log file (in full or by offset) instead of relying on a truncated terminal view.
+
 # Workspace Tooling
 
 - When analyzing or building across multiple packages in this workspace (the `modules/` and `apps/` members listed under `workspace:` in the root `pubspec.yaml`), use Melos (`melos run analyze`, `melos run test`, etc.) instead of invoking `flutter analyze` / `flutter test` separately per package.
