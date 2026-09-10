@@ -15,6 +15,7 @@
 - Do not create files or directories directly under `/tmp` unless there is a specific reason `/tmp` itself is required. Use the session's scratchpad directory instead.
 - Prefer the scratchpad directory for intermediate results, scripts, and command output that doesn't belong in the project.
 - When a command's output is large, redirect it to a log file in the scratchpad directory rather than truncating it with `tail`/`head`; read the log file (in full or by offset) instead of relying on a truncated terminal view.
+- Do not capture a command's exit code (or other status) into a shell variable just to `echo` it back out afterward (e.g. `cmd; ec=$?; echo "EXITCODE:$ec"`). Check `$?` directly, or report the result in a normal reply, instead of echoing it as a labeled line.
 
 # Workspace Tooling
 
