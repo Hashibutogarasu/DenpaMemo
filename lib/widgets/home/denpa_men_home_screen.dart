@@ -201,28 +201,23 @@ class _HomeBody extends ConsumerStatefulWidget {
 }
 
 class _HomeBodyState extends ConsumerState<_HomeBody> {
-  late final ScrollController _scrollController;
+  late final PersistedScrollController _scrollController;
 
   Future<void>? _loadMoreFuture;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController(
-      initialScrollOffset: ref.read(homeScrollOffsetProvider),
-    )..addListener(_onScroll);
+    _scrollController = PersistedScrollController(
+      notifier: ref.read(homeScrollOffsetProvider.notifier),
+      initialOffset: ref.read(homeScrollOffsetProvider),
+    );
   }
 
   @override
   void dispose() {
-    _scrollController
-      ..removeListener(_onScroll)
-      ..dispose();
+    _scrollController.dispose();
     super.dispose();
-  }
-
-  void _onScroll() {
-    ref.read(homeScrollOffsetProvider.notifier).set(_scrollController.offset);
   }
 
   void _setSelected(int id, bool selected) {
@@ -393,7 +388,9 @@ class _HomeRecordList extends ConsumerWidget {
     return recordsAsync.when(
       data: (_) {
         if (records.isEmpty) {
-          return Center(child: Text(context.t.home.empty));
+          return ScrollableFiller(
+            child: Center(child: Text(context.t.home.empty)),
+          );
         }
         final content = switch (tileMode) {
           HomeTileMode.grid => DenpaMenBox(
@@ -488,8 +485,9 @@ class _HomeRecordList extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const SizedBox.shrink(),
-      error: (error, stackTrace) => Center(child: Text('$error')),
+      loading: () => const ScrollableFiller(child: SizedBox.shrink()),
+      error: (error, stackTrace) =>
+          ScrollableFiller(child: Center(child: Text('$error'))),
     );
   }
 }

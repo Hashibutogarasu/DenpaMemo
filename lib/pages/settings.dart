@@ -22,28 +22,21 @@ class Settings extends ConsumerStatefulWidget {
 }
 
 class _SettingsState extends ConsumerState<Settings> {
-  late final ScrollController _scrollController;
+  late final PersistedScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController(
-      initialScrollOffset: ref.read(settingsScrollOffsetProvider),
-    )..addListener(_onScroll);
+    _scrollController = PersistedScrollController(
+      notifier: ref.read(settingsScrollOffsetProvider.notifier),
+      initialOffset: ref.read(settingsScrollOffsetProvider),
+    );
   }
 
   @override
   void dispose() {
-    _scrollController
-      ..removeListener(_onScroll)
-      ..dispose();
+    _scrollController.dispose();
     super.dispose();
-  }
-
-  void _onScroll() {
-    ref
-        .read(settingsScrollOffsetProvider.notifier)
-        .set(_scrollController.offset);
   }
 
   @override
