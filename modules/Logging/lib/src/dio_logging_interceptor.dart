@@ -22,8 +22,12 @@ abstract final class DioLoggingExtraKeys {
 /// replaced (same id) by a success/error entry once it resolves — the
 /// single capture point for both REST and GraphQL traffic on that [Dio].
 class DioLoggingInterceptor extends Interceptor {
+  DioLoggingInterceptor({bool Function()? isOffline}) : _isOffline = isOffline;
+
   static const _startedAtKey = 'app_logging.startedAt';
   static const _stopwatchKey = 'app_logging.stopwatch';
+
+  final bool Function()? _isOffline;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -81,7 +85,12 @@ class DioLoggingInterceptor extends Interceptor {
     final isGraphQl = options.extra[DioLoggingExtraKeys.graphQl] == true;
     final isCancellation = err.type == DioExceptionType.cancel;
     final isSkippedOffline =
-        options.extra[DioLoggingExtraKeys.skippedOffline] == true;
+        options.extra[DioLoggingExtraKeys.skippedOffline] == true ||
+        (_isOffline?.call() ?? false);
+    final isTimeout =
+        err.type == DioExceptionType.connectionTimeout ||
+        err.type == DioExceptionType.sendTimeout ||
+        err.type == DioExceptionType.receiveTimeout;
     LogBus.instance.addNetwork(
       LogEntry.network(
         id: _id(options),
@@ -104,6 +113,7 @@ class DioLoggingInterceptor extends Interceptor {
             ? 'offline'
             : (isCancellation ? 'cancelled' : (err.message ?? err.toString())),
         duration: _elapsed(options),
+        isTimeout: isTimeout,
       ),
     );
     handler.next(err);

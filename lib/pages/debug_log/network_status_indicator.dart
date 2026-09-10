@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:app_logging/app_logging.dart';
 
 /// Dedicated leading-icon widget for [NetworkLogTile]: a color/fill per
-/// [NetworkLogStatus] — orange with a spinner for [NetworkLogStatus.pending],
-/// filled green/red for success/error, a green outline ring for
-/// [NetworkLogStatus.unchanged], and filled grey for [NetworkLogStatus.skipped].
+/// [NetworkLogStatus], or (when [isTimeout] is true) a clock icon in that
+/// same color instead of the plain dot.
 class NetworkStatusIndicator extends StatelessWidget {
   const NetworkStatusIndicator({
     super.key,
     required this.status,
+    this.isTimeout = false,
     this.size = 24,
   });
 
   final NetworkLogStatus status;
+  final bool isTimeout;
   final double size;
 
   @override
@@ -43,11 +44,15 @@ class NetworkStatusIndicator extends StatelessWidget {
         ),
       ),
       NetworkLogStatus.success => _dot(Colors.green),
-      NetworkLogStatus.error => _dot(Colors.red),
-      NetworkLogStatus.skipped => _dot(Colors.grey),
+      NetworkLogStatus.error => _clockOr(Colors.red),
+      NetworkLogStatus.skipped => _clockOr(Colors.grey),
       NetworkLogStatus.unchanged => _ring(Colors.green),
     };
   }
+
+  Widget _clockOr(Color color) => isTimeout
+      ? Icon(Icons.access_time, color: color, size: size)
+      : _dot(color);
 
   Widget _dot(Color color) => Container(
     width: size,
