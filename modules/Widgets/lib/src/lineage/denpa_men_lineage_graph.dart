@@ -121,9 +121,8 @@ class _DenpaMenLineageGraphState extends State<DenpaMenLineageGraph> {
     TreeNodeSpec<DenpaMenNodeData> a,
     TreeNodeSpec<DenpaMenNodeData> b,
   ) {
-    final byId = _denpaMenById;
-    final orderA = a.data.record.denpaMen.newCatchOrder(byId) ?? 0;
-    final orderB = b.data.record.denpaMen.newCatchOrder(byId) ?? 0;
+    final orderA = a.data.record.denpaMen.catchOrder ?? 0;
+    final orderB = b.data.record.denpaMen.catchOrder ?? 0;
     return orderA.compareTo(orderB);
   }
 

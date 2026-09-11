@@ -13,8 +13,10 @@ const _tsunenoriId = 'kpelvifntq7ju4tz8bll8xjc';
 const _takamitsuId = 'cug5bs8ofxmrwi7i31jkzqb2';
 const _sanagiId = 'n19girll1iju0wg2ni6w8cs4';
 
-DenpaMenNodeData _data(DenpaMen denpaMen) =>
-    DenpaMenNodeData(record: DenpaMenRecord(id: 0, denpaMen: denpaMen), isBred: false);
+DenpaMenNodeData _data(DenpaMen denpaMen) => DenpaMenNodeData(
+  record: DenpaMenRecord(id: 0, denpaMen: denpaMen),
+  isBred: false,
+);
 
 Widget _harness({
   required List<QrCodeRecord> qrCodes,
@@ -38,80 +40,79 @@ Widget _harness({
 }
 
 void main() {
-  testWidgets(
-    'hovering さなぎ (per $_fixturePath) shows catch-order badge 1 on '
-    'つねのり and 2 on たかみつ',
-    (WidgetTester tester) async {
-      await FileMasterDataRepository().load();
-      final byId = loadLineageTreeFixtureById(_fixturePath);
-      final denpaMenRecords = [
-        for (final (index, denpaMen) in byId.values.indexed)
-          DenpaMenRecord(id: index + 1, denpaMen: denpaMen),
-      ];
-      final qrCodeIds = {
-        for (final denpaMen in byId.values)
-          if (denpaMen.qrCodeId != null) denpaMen.qrCodeId!,
-      };
-      final qrCodes = [
-        for (final (index, qrCodeId) in qrCodeIds.indexed)
-          QrCodeRecord(
-            id: index + 1,
-            qrCode: createQrCode(qrCodeId, id: qrCodeId, name: null),
-          ),
-      ];
+  testWidgets('hovering さなぎ (per $_fixturePath) shows catch-order badge 1 on '
+      'つねのり and 2 on たかみつ', (WidgetTester tester) async {
+    await FileMasterDataRepository().load();
+    final byId = loadLineageTreeFixtureById(_fixturePath);
+    final denpaMenRecords = [
+      for (final (index, denpaMen) in byId.values.indexed)
+        DenpaMenRecord(id: index + 1, denpaMen: denpaMen),
+    ];
+    final qrCodeIds = {
+      for (final denpaMen in byId.values)
+        if (denpaMen.qrCodeId != null) denpaMen.qrCodeId!,
+    };
+    final qrCodes = [
+      for (final (index, qrCodeId) in qrCodeIds.indexed)
+        QrCodeRecord(
+          id: index + 1,
+          qrCode: createQrCode(qrCodeId, id: qrCodeId, name: null),
+        ),
+    ];
 
-      expect(byId[_tsunenoriId]!.newCatchOrder(byId), 19);
-      expect(byId[_takamitsuId]!.newCatchOrder(byId), 22);
+    expect(byId[_tsunenoriId]!.catchOrder, 19);
+    expect(byId[_takamitsuId]!.catchOrder, 22);
 
-      await tester.pumpWidget(
-        _harness(qrCodes: qrCodes, denpaMenRecords: denpaMenRecords),
-      );
-      await tester.pumpAndSettle();
+    await tester.pumpWidget(
+      _harness(qrCodes: qrCodes, denpaMenRecords: denpaMenRecords),
+    );
+    await tester.pumpAndSettle();
 
-      final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
-      addTearDown(gesture.removePointer);
-      await gesture.addPointer(location: Offset.zero);
-      await tester.pump();
+    final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
+    addTearDown(gesture.removePointer);
+    await gesture.addPointer(location: Offset.zero);
+    await tester.pump();
 
-      final bredFinder = find.ancestor(
-        of: find.text(byId[_sanagiId]!.name),
-        matching: find.byType(MouseRegion),
-      );
-      await gesture.moveTo(tester.getCenter(bredFinder.first));
-      await tester.pump();
+    final bredFinder = find.ancestor(
+      of: find.text(byId[_sanagiId]!.name),
+      matching: find.byType(MouseRegion),
+    );
+    await gesture.moveTo(tester.getCenter(bredFinder.first));
+    await tester.pump();
 
-      final nodeBySpecKey = {
-        for (final node in tester.widgetList<DenpaMenNode>(
-          find.byType(DenpaMenNode),
-        ))
-          (node.hoverHighlightPainter! as TreeNodeHighlightPainter<DenpaMenNodeData>)
-              .specKey: node,
-      };
+    final nodeBySpecKey = {
+      for (final node in tester.widgetList<DenpaMenNode>(
+        find.byType(DenpaMenNode),
+      ))
+        (node.hoverHighlightPainter!
+                    as TreeNodeHighlightPainter<DenpaMenNodeData>)
+                .specKey:
+            node,
+    };
 
-      expect(
-        (nodeBySpecKey[_tsunenoriId]!.hoverHighlightPainter!
-                as TreeNodeHighlightPainter<DenpaMenNodeData>)
-            .hoveredKey
-            .value,
-        _sanagiId,
-      );
-      expect(
-        (nodeBySpecKey[_takamitsuId]!.hoverHighlightPainter!
-                as TreeNodeHighlightPainter<DenpaMenNodeData>)
-            .hoveredKey
-            .value,
-        _sanagiId,
-      );
+    expect(
+      (nodeBySpecKey[_tsunenoriId]!.hoverHighlightPainter!
+              as TreeNodeHighlightPainter<DenpaMenNodeData>)
+          .hoveredKey
+          .value,
+      _sanagiId,
+    );
+    expect(
+      (nodeBySpecKey[_takamitsuId]!.hoverHighlightPainter!
+              as TreeNodeHighlightPainter<DenpaMenNodeData>)
+          .hoveredKey
+          .value,
+      _sanagiId,
+    );
 
-      final strategy = DenpaMenHighlightStrategy(denpaMenById: byId);
-      expect(
-        strategy.badgeText(_data(byId[_tsunenoriId]!), _data(byId[_sanagiId]!)),
-        '1',
-      );
-      expect(
-        strategy.badgeText(_data(byId[_takamitsuId]!), _data(byId[_sanagiId]!)),
-        '2',
-      );
-    },
-  );
+    final strategy = DenpaMenHighlightStrategy(denpaMenById: byId);
+    expect(
+      strategy.badgeText(_data(byId[_tsunenoriId]!), _data(byId[_sanagiId]!)),
+      '1',
+    );
+    expect(
+      strategy.badgeText(_data(byId[_takamitsuId]!), _data(byId[_sanagiId]!)),
+      '2',
+    );
+  });
 }

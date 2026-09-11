@@ -160,7 +160,7 @@
   "moveInDate": null,
   "hash": "e32a9e6fc06d2324c64a1b1fe689aa026fc79dafdeadc1b117e13069adb6c39c",
   "monsterExp": null,
-  "newCatchOrder": 1,
+  "resolvedCatchOrder": 1,
   "parents": [
     {
       "id": "ptt7qd39mge7gs6espd8uteb",
@@ -257,7 +257,7 @@
       "moveInDate": null,
       "hash": "04db06ad79ca5c1a6a2ac29db04a919d716846a77bfaf0208707263ab0ed84cf",
       "monsterExp": null,
-      "newCatchOrder": 0,
+      "resolvedCatchOrder": 0,
       "parents": [
         {
           "id": "xfmc8gf8cwtfw2z6hzerte0t",
@@ -354,7 +354,7 @@
           "moveInDate": null,
           "hash": "724e7af901110f9454ba78b870ac6ce884a5f0340ad6d6f4273b9b4bcdc63e0d",
           "monsterExp": null,
-          "newCatchOrder": 0,
+          "resolvedCatchOrder": 0,
           "parents": [
             {
               "id": "n19girll1iju0wg2ni6w8cs4",
@@ -453,7 +453,7 @@
               "moveInDate": null,
               "hash": "f6991f6d00a026bd8bbd00c9ae16f300fd211bf80b29eadd9e7c0e4e108e8487",
               "monsterExp": null,
-              "newCatchOrder": 0,
+              "resolvedCatchOrder": 0,
               "parents": [
                 {
                   "id": "kpelvifntq7ju4tz8bll8xjc",
@@ -547,7 +547,7 @@
                   "moveInDate": null,
                   "hash": "b727ab957d15353de5f124eba8b8142a6b5c419c0f2fbc67c9c89d28bfb06f2b",
                   "monsterExp": null,
-                  "newCatchOrder": 0,
+                  "resolvedCatchOrder": 0,
                   "parents": []
                 },
                 {
@@ -642,7 +642,7 @@
                   "moveInDate": null,
                   "hash": "3c72d048f89d39f734ccba9769110118ed17570ad65fd39cabb1c143a7a5e92c",
                   "monsterExp": null,
-                  "newCatchOrder": 0,
+                  "resolvedCatchOrder": 0,
                   "parents": []
                 }
               ]
@@ -718,7 +718,7 @@
               "moveInDate": null,
               "hash": "39a4fb7ddcfddddd385f0ddb1579becd3053a90a70d37dfe09f751d0125ad057",
               "monsterExp": null,
-              "newCatchOrder": 0,
+              "resolvedCatchOrder": 0,
               "parents": []
             }
           ]
@@ -844,7 +844,7 @@
           "moveInDate": null,
           "hash": "a7e6282f097d4957a1be8dafdf60d92a0565d266b0bf5b63b15d92e719697b72",
           "monsterExp": null,
-          "newCatchOrder": 0,
+          "resolvedCatchOrder": 0,
           "parents": [
             {
               "id": "spujjwhnrg4txafzmq557zip",
@@ -941,7 +941,7 @@
               "moveInDate": null,
               "hash": "51f482412e690fc6d9700ee8f2a716de4ba8899c099f2f31bc411d6a2a212a36",
               "monsterExp": null,
-              "newCatchOrder": 0,
+              "resolvedCatchOrder": 0,
               "parents": [
                 {
                   "id": "ue7wtxyox8aqbgib22vhffop",
@@ -1035,7 +1035,7 @@
                   "moveInDate": null,
                   "hash": "2314b0947e424178f6e03b8d62c987c202e1097411fd81ada83ffce261b4e6f8",
                   "monsterExp": null,
-                  "newCatchOrder": 0,
+                  "resolvedCatchOrder": 0,
                   "parents": []
                 },
                 {
@@ -1167,7 +1167,7 @@
                   "moveInDate": null,
                   "hash": "e3003534849ad64637e7ed3b4bcd6260b96fc3db7e670a5a617beec8469584e0",
                   "monsterExp": null,
-                  "newCatchOrder": 0,
+                  "resolvedCatchOrder": 0,
                   "parents": [
                     {
                       "id": "oj3frdmzb1i0q1nd53hn6cwf",
@@ -1298,7 +1298,7 @@
                       "moveInDate": null,
                       "hash": "f29b7d027a50a73cdc0605b77e7545af41d6f6a3237fa88c042921ea896702e3",
                       "monsterExp": null,
-                      "newCatchOrder": 0,
+                      "resolvedCatchOrder": 0,
                       "parents": [
                         {
                           "id": "ez4cwliubywxpjqsdprl9zwd",
@@ -1400,7 +1400,7 @@
                           "moveInDate": null,
                           "hash": "68d517ab4195a3b250f7d2eca1cb93c2c1e806d9cc930a651539499da3762b2f",
                           "monsterExp": null,
-                          "newCatchOrder": 0,
+                          "resolvedCatchOrder": 0,
                           "parents": []
                         },
                         {
@@ -1503,7 +1503,7 @@
                           "moveInDate": null,
                           "hash": "3407c227590dba22b6ea1a57ce13a82512d499a01aa4066ccd35d312980bed66",
                           "monsterExp": null,
-                          "newCatchOrder": 0,
+                          "resolvedCatchOrder": 0,
                           "parents": []
                         }
                       ]
@@ -1608,7 +1608,7 @@
                       "moveInDate": null,
                       "hash": "68d517ab4195a3b250f7d2eca1cb93c2c1e806d9cc930a651539499da3762b2f",
                       "monsterExp": null,
-                      "newCatchOrder": 0,
+                      "resolvedCatchOrder": 0,
                       "parents": []
                     }
                   ]
@@ -1707,7 +1707,7 @@
               "moveInDate": null,
               "hash": "1925a0ff646253c5a2840d47686e5b4c883f7872bb2c6d63ef6ac9606155591f",
               "monsterExp": null,
-              "newCatchOrder": 0,
+              "resolvedCatchOrder": 0,
               "parents": []
             }
           ]
@@ -1821,7 +1821,7 @@
       "moveInDate": null,
       "hash": "6dbd520d644be6f25ffd72a09c6e9e6bfd3116989fb2ec625b7f49a471c21a60",
       "monsterExp": null,
-      "newCatchOrder": 1,
+      "resolvedCatchOrder": 1,
       "parents": [
         {
           "id": "lqhh96xawxatu2iyhl8se5f9",
@@ -1897,7 +1897,7 @@
           "moveInDate": null,
           "hash": "054afdb89b2966664b071a945de8097e1bc135b9ea5513853a571f555f519627",
           "monsterExp": null,
-          "newCatchOrder": 0,
+          "resolvedCatchOrder": 0,
           "parents": [
             {
               "id": "eintuciph8u4dx7lhrejqx8s",
@@ -1970,7 +1970,7 @@
               "moveInDate": null,
               "hash": "80168a94c7c3a02351aba3159081c0ef59be59f663fe5d78da238f955117a2cc",
               "monsterExp": null,
-              "newCatchOrder": 0,
+              "resolvedCatchOrder": 0,
               "parents": []
             },
             {
@@ -2044,7 +2044,7 @@
               "moveInDate": null,
               "hash": "36e2da0a6fdb274bc5bb7b52a4d1217974f426de6d8e42a56c5214f5d23b77f1",
               "monsterExp": null,
-              "newCatchOrder": 0,
+              "resolvedCatchOrder": 0,
               "parents": []
             }
           ]
@@ -2144,7 +2144,7 @@
           "moveInDate": null,
           "hash": "90056c47126d616b42bedf7a6e7f7e72426293cb85e300a3a08949597b607961",
           "monsterExp": null,
-          "newCatchOrder": 1,
+          "resolvedCatchOrder": 1,
           "parents": [
             {
               "id": "waaccj4v2c79ujfgg7v6t7va",
@@ -2246,7 +2246,7 @@
               "moveInDate": null,
               "hash": "5b5806f43926344796d6310c3894bacda625890eec76813a841eeebe58b8c163",
               "monsterExp": null,
-              "newCatchOrder": 1,
+              "resolvedCatchOrder": 1,
               "parents": []
             },
             {
@@ -2341,7 +2341,7 @@
               "moveInDate": null,
               "hash": "d8cf50967990c31548dcc88bff1980c27d44ab62f1124a67ea627c8b961eb56a",
               "monsterExp": null,
-              "newCatchOrder": 0,
+              "resolvedCatchOrder": 0,
               "parents": []
             }
           ]

@@ -2,15 +2,14 @@ import 'dart:math';
 
 import 'denpa_men.dart';
 
-/// Replaces the deprecated [DenpaMen.catchOrder] as the source of truth
-/// for display and sorting.
+/// Derives the [DenpaMen.catchOrder] value for a bred individual from its
+/// lineage. Callers persist the result instead of resolving it on every read.
 extension DenpaMenCatchOrderResolution on DenpaMen {
-  /// Resolves the most recently caught ancestor's catch order, walking
-  /// every [DenpaMen.parentIds] entry via [byId] and taking the largest
-  /// resolved value. Null if unresolvable through any parent.
-  int? newCatchOrder(Map<String, DenpaMen> byId, [Set<String>? visited]) {
+  /// Resolves the most recently caught ancestor's catch order, walking every
+  /// [DenpaMen.parentIds] entry via [byId] and taking the largest resolved
+  /// value. Null if unresolvable through any parent.
+  int? resolveCatchOrder(Map<String, DenpaMen> byId, [Set<String>? visited]) {
     if (parentIds.isEmpty) {
-      // ignore: deprecated_member_use_from_same_package
       return catchOrder;
     }
     final seen = visited ?? <String>{};
@@ -18,7 +17,7 @@ extension DenpaMenCatchOrderResolution on DenpaMen {
       return null;
     }
     final resolvedOrders = parentIds
-        .map((parentId) => byId[parentId]?.newCatchOrder(byId, seen))
+        .map((parentId) => byId[parentId]?.resolveCatchOrder(byId, seen))
         .whereType<int>();
     return resolvedOrders.isEmpty ? null : resolvedOrders.reduce(max);
   }

@@ -10,7 +10,9 @@ abstract class DenpaMenValidationException implements Exception {
 
 class InvalidBodyColorCountException extends DenpaMenValidationException {
   const InvalidBodyColorCountException(this.bodyColorCount)
-    : super('bodyColors must contain exactly 1 or 2 colors, got $bodyColorCount');
+    : super(
+        'bodyColors must contain exactly 1 or 2 colors, got $bodyColorCount',
+      );
 
   final int bodyColorCount;
 }
@@ -43,9 +45,4 @@ class InvalidParentCountException extends DenpaMenValidationException {
     : super('parentIds must contain exactly 0 or 2 entries, got $parentCount');
 
   final int parentCount;
-}
-
-class CatchOrderRequiresNoParentsException extends DenpaMenValidationException {
-  const CatchOrderRequiresNoParentsException()
-    : super('catchOrder can only be set when parentIds is empty');
 }

@@ -33,6 +33,7 @@ DenpaMen _denpaMen({
     corrections: const [],
     considerCorrections: false,
     parentIds: parentIds,
+    catchOrder: catchOrder,
   );
 }
 
@@ -40,7 +41,7 @@ void main() {
   test('a caught individual returns its own catchOrder', () {
     final caught = _denpaMen(id: 'a', catchOrder: 3);
 
-    expect(caught.newCatchOrder({'a': caught}), 3);
+    expect(caught.resolveCatchOrder({'a': caught}), 3);
   });
 
   test('a bred individual resolves the more recently caught parent\'s '
@@ -50,7 +51,7 @@ void main() {
     final child = _denpaMen(id: 'c', parentIds: ['a', 'b']);
     final byId = {'a': parentA, 'b': parentB, 'c': child};
 
-    expect(child.newCatchOrder(byId), 5);
+    expect(child.resolveCatchOrder(byId), 5);
   });
 
   test('a grandchild resolves the largest value across both lineages', () {
@@ -67,7 +68,7 @@ void main() {
       'e': grandchild,
     };
 
-    expect(grandchild.newCatchOrder(byId), 11);
+    expect(grandchild.resolveCatchOrder(byId), 11);
   });
 
   test('resolves through the remaining parent when one is missing', () {
@@ -75,13 +76,13 @@ void main() {
     final child = _denpaMen(id: 'c', parentIds: ['a', 'b']);
     final byId = {'b': parentB, 'c': child};
 
-    expect(child.newCatchOrder(byId), 5);
+    expect(child.resolveCatchOrder(byId), 5);
   });
 
   test('returns null when every parent is unresolvable', () {
     final child = _denpaMen(id: 'c', parentIds: ['a', 'missing']);
 
-    expect(child.newCatchOrder({'c': child}), isNull);
+    expect(child.resolveCatchOrder({'c': child}), isNull);
   });
 
   test('returns null instead of looping on a cycle', () {
@@ -89,6 +90,6 @@ void main() {
     final b = _denpaMen(id: 'b', parentIds: ['y', 'a']);
     final byId = {'a': a, 'b': b};
 
-    expect(a.newCatchOrder(byId), isNull);
+    expect(a.resolveCatchOrder(byId), isNull);
   });
 }

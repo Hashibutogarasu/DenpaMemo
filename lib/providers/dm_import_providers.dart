@@ -114,7 +114,9 @@ class DmImportController {
       if (result != null) {
         _ref.invalidate(denpaMenListProvider(masterData));
         _ref.invalidate(qrCodeListProvider);
+        _ref.invalidate(denpaMenCatchOrderMigrationProvider(masterData));
         await _ref.read(denpaMenListProvider(masterData).future);
+        await _ref.read(denpaMenCatchOrderMigrationProvider(masterData).future);
       }
       return result;
     } on DmHeaderReadError {

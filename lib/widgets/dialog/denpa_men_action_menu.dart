@@ -58,10 +58,8 @@ Future<void> _showQrCode(
 
 /// Builds a debug-oriented JSON tree of [denpaMen]'s lineage, walking
 /// [DenpaMen.parentIds] recursively via [byId]. Every node is [denpaMen]'s
-/// full [DenpaMen.toJson] (every stat and feature, not just catch-order
-/// fields) plus the resolved
-/// [DenpaMenCatchOrderResolution.newCatchOrder], so catch-order bugs can be
-/// inspected without a debugger.
+/// full [DenpaMen.toJson] plus the order recomputed from its lineage, so
+/// stored-catch-order drift is inspectable without a debugger.
 Map<String, dynamic> _lineageTreeJson(
   DenpaMen denpaMen,
   Map<String, DenpaMen> byId, [
@@ -70,7 +68,7 @@ Map<String, dynamic> _lineageTreeJson(
   final seen = visited ?? <String>{};
   final node = <String, dynamic>{
     ...denpaMen.toJson(),
-    'newCatchOrder': denpaMen.newCatchOrder(byId),
+    'resolvedCatchOrder': denpaMen.resolveCatchOrder(byId),
   };
   if (!seen.add(denpaMen.id)) {
     node['parents'] = const <dynamic>[];

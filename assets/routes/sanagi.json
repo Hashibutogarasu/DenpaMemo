@@ -95,7 +95,7 @@
   "moveInDate": null,
   "hash": "f6991f6d00a026bd8bbd00c9ae16f300fd211bf80b29eadd9e7c0e4e108e8487",
   "monsterExp": null,
-  "newCatchOrder": 22,
+  "resolvedCatchOrder": 22,
   "parents": [
     {
       "id": "kpelvifntq7ju4tz8bll8xjc",
@@ -189,7 +189,7 @@
       "moveInDate": null,
       "hash": "b727ab957d15353de5f124eba8b8142a6b5c419c0f2fbc67c9c89d28bfb06f2b",
       "monsterExp": null,
-      "newCatchOrder": 19,
+      "resolvedCatchOrder": 19,
       "parents": []
     },
     {
@@ -284,7 +284,7 @@
       "moveInDate": null,
       "hash": "3c72d048f89d39f734ccba9769110118ed17570ad65fd39cabb1c143a7a5e92c",
       "monsterExp": null,
-      "newCatchOrder": 22,
+      "resolvedCatchOrder": 22,
       "parents": []
     }
   ]

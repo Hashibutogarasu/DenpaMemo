@@ -275,18 +275,39 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
   Future<void> _save() async {
     ref
         .read(denpaMenRepositoryProvider)
-        .save(_denpaMen, id: widget.initial?.id ?? 0);
+        .save(_withCatchOrder(_denpaMen), id: widget.initial?.id ?? 0);
     context.pop();
   }
 
-  DenpaMen _withCatchOrder(DenpaMen denpaMen, DenpaMenSession session) {
+  /// Assigns [DenpaMen.catchOrder] before persistence: a bred individual
+  /// inherits the resolved order of its parents, while a directly caught one
+  /// takes the next free capture sequence number unless it already has one.
+  DenpaMen _withCatchOrder(DenpaMen denpaMen, [DenpaMenSession? session]) {
     if (denpaMen.parentIds.isNotEmpty) {
+      return denpaMen.copyWith(
+        catchOrder: denpaMen.resolveCatchOrder(_savedDenpaMenById()),
+      );
+    }
+    if (denpaMen.catchOrder != null) {
       return denpaMen;
     }
-    return denpaMen.copyWith(
-      catchOrder:
-          session.existingDenpaMenCount + session.completedDenpaMens.length,
-    );
+    return denpaMen.copyWith(catchOrder: _nextCatchOrder(session));
+  }
+
+  Map<String, DenpaMen> _savedDenpaMenById() {
+    final records = ref
+        .read(denpaMenRepositoryProvider)
+        .getAll(widget.masterData);
+    return {for (final record in records) record.denpaMen.id: record.denpaMen};
+  }
+
+  int _nextCatchOrder(DenpaMenSession? session) {
+    if (session != null) {
+      return session.existingDenpaMenCount + session.completedDenpaMens.length;
+    }
+    return _savedDenpaMenById().values
+        .where((denpaMen) => denpaMen.parentIds.isEmpty)
+        .length;
   }
 
   void _next() {

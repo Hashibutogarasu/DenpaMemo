@@ -72,9 +72,6 @@ DenpaMen createDenpaMen({
   if (parentIds.isNotEmpty && parentIds.length != 2) {
     throw InvalidParentCountException(parentIds.length);
   }
-  if (catchOrder != null && parentIds.isNotEmpty) {
-    throw const CatchOrderRequiresNoParentsException();
-  }
 
   final rulesByColorId = {
     for (final rule in masterData.bodyColorResistanceRules) rule.colorId: rule,

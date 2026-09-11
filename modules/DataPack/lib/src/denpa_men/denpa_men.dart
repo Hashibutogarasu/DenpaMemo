@@ -17,6 +17,11 @@ part 'denpa_men.g.dart';
 /// Instances must be created through `createDenpaMen` in
 /// `denpa_men_factory.dart`, which validates [bodyColors] and derives
 /// [abnormalityResistances] / [attributeResistance] from master data.
+///
+/// [catchOrder] is the resolved order for every individual: its own capture
+/// sequence when directly caught, otherwise the largest resolved order among
+/// its ancestors. That denormalized copy is recomputed by
+/// `migrateDenpaMenCatchOrders` whenever lineage or numbering changes.
 @freezed
 abstract class DenpaMen with _$DenpaMen {
   const factory DenpaMen({
@@ -50,7 +55,6 @@ abstract class DenpaMen with _$DenpaMen {
     required bool considerCorrections,
     @Default(AdditionalCorrection()) AdditionalCorrection additionalCorrection,
     required List<String> parentIds,
-    @Deprecated('Use DenpaMenCatchOrderResolution.newCatchOrder instead.')
     int? catchOrder,
     String? qrCodeId,
     String? memo,
