@@ -67,11 +67,12 @@ class LogBus {
   /// Marks every in-flight network request as an offline timeout immediately.
   void markPendingNetworkRequestsOffline() {
     final now = DateTime.now();
+    final latestById = <String, NetworkLogEntry>{};
     for (final entry in _network.history) {
-      if (entry is! NetworkLogEntry ||
-          entry.status != NetworkLogStatus.pending) {
-        continue;
-      }
+      if (entry is NetworkLogEntry) latestById[entry.id] = entry;
+    }
+    for (final entry in latestById.values) {
+      if (entry.status != NetworkLogStatus.pending) continue;
       _network.add(
         entry.copyWith(
           level: LogLevel.warning,
