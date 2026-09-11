@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 
 import 'log_bus.dart';
 import 'log_entry.dart';
+import 'network_failure.dart';
 
 /// Keys a request handler (e.g. `graphql_client`'s `DioGraphQlLink`) sets
 /// under [RequestOptions.extra] to pass GraphQL metadata through to
@@ -13,6 +14,8 @@ abstract final class DioLoggingExtraKeys {
   static const graphQl = 'app_logging.graphql';
   static const operationName = 'app_logging.operationName';
   static const variables = 'app_logging.variables';
+  static const requestId = 'app_logging.id';
+  static const skippedOffline = 'app_logging.skippedOffline';
 }
 
 /// Records every request sent through the [Dio] this is attached to into
@@ -20,13 +23,16 @@ abstract final class DioLoggingExtraKeys {
 /// replaced (same id) by a success/error entry once it resolves — the
 /// single capture point for both REST and GraphQL traffic on that [Dio].
 class DioLoggingInterceptor extends Interceptor {
-  static const _idKey = 'app_logging.id';
+  DioLoggingInterceptor({bool Function()? isOffline}) : _isOffline = isOffline;
+
   static const _startedAtKey = 'app_logging.startedAt';
   static const _stopwatchKey = 'app_logging.stopwatch';
 
+  final bool Function()? _isOffline;
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.extra[_idKey] = cuid();
+    options.extra[DioLoggingExtraKeys.requestId] = cuid();
     options.extra[_startedAtKey] = DateTime.now();
     options.extra[_stopwatchKey] = Stopwatch()..start();
 
@@ -78,14 +84,51 @@ class DioLoggingInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final options = err.requestOptions;
     final isGraphQl = options.extra[DioLoggingExtraKeys.graphQl] == true;
-    final isCancellation = err.type == DioExceptionType.cancel;
+    final failure = networkFailureFromDioException(
+      err,
+      offline:
+          options.extra[DioLoggingExtraKeys.skippedOffline] == true ||
+          (_isOffline?.call() ?? false),
+    );
+    final (level, status, errorMessage, isTimeout) = switch (failure) {
+      OfflineNetworkException(:final isTimeout) => (
+        LogLevel.warning,
+        NetworkLogStatus.skipped,
+        'offline',
+        isTimeout,
+      ),
+      NetworkTimeoutException() => (
+        LogLevel.error,
+        NetworkLogStatus.error,
+        err.message ?? err.toString(),
+        true,
+      ),
+      NetworkCancellationException() => (
+        LogLevel.info,
+        NetworkLogStatus.error,
+        'cancelled',
+        false,
+      ),
+      NetworkConnectionException() => (
+        LogLevel.error,
+        NetworkLogStatus.error,
+        err.message ?? err.toString(),
+        false,
+      ),
+      HttpNetworkException() => (
+        LogLevel.error,
+        NetworkLogStatus.error,
+        err.message ?? err.toString(),
+        false,
+      ),
+    };
     LogBus.instance.addNetwork(
       LogEntry.network(
         id: _id(options),
         timestamp: _startedAt(options),
-        level: isCancellation ? LogLevel.info : LogLevel.error,
+        level: level,
         protocol: isGraphQl ? NetworkProtocol.graphql : NetworkProtocol.rest,
-        status: NetworkLogStatus.error,
+        status: status,
         operation: _operation(options, isGraphQl),
         uri: options.uri.toString(),
         requestBody: _requestBody(options, isGraphQl),
@@ -93,16 +136,16 @@ class DioLoggingInterceptor extends Interceptor {
         requestBytes: _byteLength(options.data),
         responseBytes: _byteLength(err.response?.data),
         statusCode: err.response?.statusCode,
-        errorMessage: isCancellation
-            ? 'cancelled'
-            : (err.message ?? err.toString()),
+        errorMessage: errorMessage,
         duration: _elapsed(options),
+        isTimeout: isTimeout,
       ),
     );
     handler.next(err);
   }
 
-  String _id(RequestOptions options) => options.extra[_idKey] as String;
+  String _id(RequestOptions options) =>
+      options.extra[DioLoggingExtraKeys.requestId] as String;
 
   DateTime _startedAt(RequestOptions options) =>
       options.extra[_startedAtKey] as DateTime? ?? DateTime.now();

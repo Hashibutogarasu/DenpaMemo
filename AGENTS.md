@@ -133,11 +133,13 @@ tests directly from the repository root.
 ### Dart workspace packages
 
 ```sh
-melos run analyze
-melos run test
+dart run melos run --no-select analyze
+dart run melos run --no-select test
 ```
 
 These scripts cover Flutter workspace packages with the applicable filters.
+Use `--no-select` to skip Melos's interactive package-selection prompt and run
+the script's configured package filters non-interactively.
 `modules/DataPack` is pure Dart and must be checked separately:
 
 ```sh

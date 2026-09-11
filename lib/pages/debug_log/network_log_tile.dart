@@ -20,15 +20,19 @@ class NetworkLogTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = context.t;
     return ExpansionTile(
-      leading: NetworkStatusIndicator(status: entry.status),
+      leading: NetworkStatusIndicator(
+        status: entry.status,
+        isTimeout: entry.isTimeout,
+      ),
       title: Text(
         entry.operation ?? entry.id,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: entry.status == NetworkLogStatus.pending
-          ? null
-          : NetworkTransferBadge(entry: entry),
+      trailing: switch (entry.status) {
+        NetworkLogStatus.pending || NetworkLogStatus.skipped => null,
+        _ => NetworkTransferBadge(entry: entry),
+      },
       expandedAlignment: Alignment.centerLeft,
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
       children: [

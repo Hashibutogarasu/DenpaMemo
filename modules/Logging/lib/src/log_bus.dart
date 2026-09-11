@@ -28,6 +28,15 @@ class _ReplayChannel {
     }
     _controller.add(entry);
   }
+
+  Iterable<LogEntry> get history => List.unmodifiable(_history);
+
+  LogEntry? entryById(String id) {
+    for (final entry in _history.reversed) {
+      if (entry.id == id) return entry;
+    }
+    return null;
+  }
 }
 
 /// Process-wide sink for [LogEntry]s, independent of any provider
@@ -54,4 +63,35 @@ class LogBus {
   void addWidgetRebuild(LogEntry entry) => _widgetRebuild.add(entry);
 
   void addNetwork(LogEntry entry) => _network.add(entry);
+
+  /// Marks every in-flight network request as an offline timeout immediately.
+  void markPendingNetworkRequestsOffline() {
+    final now = DateTime.now();
+    final latestById = <String, NetworkLogEntry>{};
+    for (final entry in _network.history) {
+      if (entry is NetworkLogEntry) latestById[entry.id] = entry;
+    }
+    for (final entry in latestById.values) {
+      if (entry.status != NetworkLogStatus.pending) continue;
+      _network.add(
+        entry.copyWith(
+          level: LogLevel.warning,
+          status: NetworkLogStatus.skipped,
+          errorMessage: 'offline',
+          duration: now.difference(entry.timestamp),
+          isTimeout: true,
+        ),
+      );
+    }
+  }
+
+  /// Re-publishes the [NetworkLogEntry] with [id] with its [status]
+  /// replaced, for callers (e.g. `CachingMasterDataRepository`) that only
+  /// learn a request's final outcome after [DioLoggingInterceptor] already
+  /// logged its own resolution. No-op if [id] isn't in history.
+  void updateNetworkStatus(String id, NetworkLogStatus status) {
+    final existing = _network.entryById(id);
+    if (existing is! NetworkLogEntry) return;
+    _network.add(existing.copyWith(status: status));
+  }
 }

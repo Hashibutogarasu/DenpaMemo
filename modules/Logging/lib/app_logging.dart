@@ -6,5 +6,6 @@ export 'src/log_entry.dart';
 export 'src/log_file_writer.dart';
 export 'src/log_formatter.dart';
 export 'src/log_store.dart';
+export 'src/network_failure.dart';
 export 'src/print_interceptor.dart';
 export 'src/zone_print_interceptor.dart';

@@ -1,49 +1,42 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../dio_graphql_link.dart';
 import 'master_data_graphql_queries.dart';
+import '../graphql_network_extensions.dart';
 
 /// [MasterDataRepository] implementation backed by the `modules/server`
-/// GraphQL API, replacing the JSON-asset-bundled
-/// `JsonMasterDataRepository`. Every server type's `id` is the original
-/// semantic id the JSON assets used (e.g. `"beam_all"`, `"blue"`), so this
-/// repository maps it directly onto each Freezed model's `id` field.
-///
-/// Each model is built through its own `fromJson` (reusing
-/// `json_serializable`'s generated parsing) with the reshaped GraphQL map,
-/// then `copyWith` fills in fields `fromJson` intentionally excludes
-/// (`attributeResistanceBonuses`, `attackAttributes`, `resistantTo`,
-/// `weakTo`) with the already-resolved nested objects the server returned
-/// — mirroring how `JsonMasterDataRepository` resolves those from raw id
-/// lists today.
+/// GraphQL API. Every server type's `id` is the original semantic id the
+/// JSON assets used, so this repository maps it directly onto each Freezed
+/// model's `id` field; `copyWith` then fills in the fields `fromJson`
+/// intentionally excludes with the already-resolved nested objects.
 class GraphqlMasterDataRepository implements MasterDataRepository {
   GraphqlMasterDataRepository({required GraphQLClient client})
     : _client = client;
 
   final GraphQLClient _client;
 
-  /// Runs the `masterData` GraphQL query and returns its raw response map,
-  /// without mapping it to [MasterData] yet. Callers that need to cache the
-  /// server's response verbatim (see `CachingMasterDataRepository`) use this
-  /// instead of [load].
-  Future<Map<String, dynamic>> fetchRaw() async {
-    final result = await _client.query(
+  /// Runs the `masterData` GraphQL query, returning its raw response map
+  /// and the [DioLoggingInterceptor] request id that logged it (see
+  /// [DioRequestIdContext]), without mapping the data yet — used instead
+  /// of [load] by callers that need to cache the response verbatim.
+  Future<({Map<String, dynamic> data, String? requestId})> fetchRaw() async {
+    final result = await _client.networkQuery(
       QueryOptions(
         document: gql(masterDataQuery),
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
 
-    if (result.hasException) {
-      throw result.exception!;
-    }
-
-    return result.data!['masterData'] as Map<String, dynamic>;
+    return (
+      data: result.data!['masterData'] as Map<String, dynamic>,
+      requestId: result.context.entry<DioRequestIdContext>()?.requestId,
+    );
   }
 
   @override
   Future<MasterData> load() async {
-    return masterDataFromGraphqlJson(await fetchRaw());
+    return masterDataFromGraphqlJson((await fetchRaw()).data);
   }
 }
 
@@ -78,8 +71,7 @@ MasterData masterDataFromGraphqlJson(Map<String, dynamic> masterData) {
     ],
     bodyColorAbnormalityResistanceRules: [
       for (final json
-          in masterData['bodyColorAbnormalityResistanceRules']
-              as List<dynamic>)
+          in masterData['bodyColorAbnormalityResistanceRules'] as List<dynamic>)
         BodyColorAbnormalityResistanceRule.fromJson({
           'colorId': json['id'],
           'abnormalityResistanceBonuses': json['abnormalityResistanceBonuses'],
@@ -189,9 +181,7 @@ Anntena _anntenaFromGraphql(Map<String, dynamic> json) {
 BodyColorResistanceRule _bodyColorResistanceRuleFromGraphql(
   Map<String, dynamic> json,
 ) {
-  return BodyColorResistanceRule.fromJson({
-    'colorId': json['id'],
-  }).copyWith(
+  return BodyColorResistanceRule.fromJson({'colorId': json['id']}).copyWith(
     attributeResistanceBonuses: _attributeBonusesFromGraphql(
       json['attributeResistanceBonuses'] as List<dynamic>,
     ),
