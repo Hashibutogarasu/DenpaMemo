@@ -6,7 +6,10 @@ import 'package:denpa_memo/data/physique_table/objectbox_physique_table_cache_re
 import 'package:denpa_memo/data/physique_table/objectbox_physique_table_metadata_cache_repository.dart';
 import 'package:denpa_memo/services/physique_antenna_category_resolver.dart';
 import 'package:denpa_memo/services/physique_identification_service.dart';
+import 'package:denpamemo_logics/denpamemo_logics.dart' as rust;
 import 'package:flutter_test/flutter_test.dart';
+
+import '../support/fake_physique_matching_engine.dart';
 
 void main() {
   test(
@@ -73,6 +76,23 @@ void main() {
           metadataCacheRepository,
         ),
         awaitInitialSync: () async {},
+        engine: const FakePhysiqueMatchingEngine(
+          matches: [
+            rust.StatusMatch(
+              group: ['1', 'アンテナ無し'],
+              lineOffset: 0,
+              columnIndex: 3,
+            ),
+          ],
+          categories: [
+            rust.CategoryMatch(
+              categoryKey: 'largest',
+              tag: null,
+              rangeStart: 0,
+              rangeEnd: 0,
+            ),
+          ],
+        ),
       );
 
       final result = await service.search(

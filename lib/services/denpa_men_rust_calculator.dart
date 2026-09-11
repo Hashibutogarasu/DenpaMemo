@@ -1,11 +1,21 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:denpamemo_logics/denpamemo_logics.dart' as rust;
 
+/// Calculates derived DenpaMen values for the application layer.
+abstract interface class DenpaMenCalculationEngine {
+  /// Recalculates resistances and the compatibility hash for [denpaMen].
+  DenpaMen recalculateResistances(DenpaMen denpaMen, MasterData masterData);
+
+  /// Sums correction growth-stat bonuses for [denpaMen].
+  DenpaMenStatBonus correctionStatBonus(DenpaMen denpaMen);
+}
+
 /// Translates DataPack models to the shared Rust calculation boundary.
-class DenpaMenRustCalculator {
+class DenpaMenRustCalculator implements DenpaMenCalculationEngine {
   const DenpaMenRustCalculator();
 
   /// Recalculates resistances and the compatibility hash for [denpaMen].
+  @override
   DenpaMen recalculateResistances(DenpaMen denpaMen, MasterData masterData) {
     final result = rust.calculateDenpaMenResistances(
       selection: rust.BodyColorSelection(
@@ -51,6 +61,7 @@ class DenpaMenRustCalculator {
   }
 
   /// Sums correction growth-stat bonuses through the shared Rust engine.
+  @override
   DenpaMenStatBonus correctionStatBonus(DenpaMen denpaMen) {
     final result = rust.calculateCorrectionStatBonus(
       input: rust.ResistanceCorrectionInput(
@@ -131,4 +142,23 @@ class DenpaMenRustCalculator {
             ),
         ],
       );
+}
+
+/// Calculates derived values with DataPack for tests and pure Dart callers.
+class DartDenpaMenCalculationEngine implements DenpaMenCalculationEngine {
+  const DartDenpaMenCalculationEngine();
+
+  @override
+  DenpaMen recalculateResistances(DenpaMen denpaMen, MasterData masterData) {
+    final resistances = denpaMen.calculateResistances(masterData);
+    final recalculated = denpaMen.copyWith(
+      abnormalityResistances: resistances.abnormalityResistances,
+      attributeResistance: resistances.attributeResistance,
+    );
+    return recalculated.copyWith(hash: computeDenpaMenHash(recalculated));
+  }
+
+  @override
+  DenpaMenStatBonus correctionStatBonus(DenpaMen denpaMen) =>
+      denpaMen.correctionsStatBonus();
 }

@@ -25,6 +25,10 @@ final physiqueAntennaCategoryResolverProvider =
       ),
     );
 
+final physiqueMatchingEngineProvider = Provider<PhysiqueMatchingEngine>(
+  (ref) => const RustPhysiqueMatchingEngine(),
+);
+
 /// Identifies a physique from cached table rows via `denpamemo_logics`
 /// — see [PhysiqueIdentificationService].
 final physiqueIdentificationServiceProvider =
@@ -38,6 +42,7 @@ final physiqueIdentificationServiceProvider =
           physiqueAntennaCategoryResolverProvider,
         ),
         awaitInitialSync: () => ref.read(appInitializationProvider.future),
+        engine: ref.watch(physiqueMatchingEngineProvider),
       ),
     );
 

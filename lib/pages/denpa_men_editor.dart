@@ -14,6 +14,7 @@ import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_legend_grid_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
+import '../providers/denpa_men_calculation_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../providers/physiques_providers.dart';
@@ -66,12 +67,17 @@ class DenpaMenEditor extends ConsumerStatefulWidget {
 }
 
 class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
-  late DenpaMen _denpaMen =
-      widget.initial?.denpaMen ?? _createDefaultDenpaMen(widget.masterData);
+  late DenpaMen _denpaMen;
 
   @override
   void initState() {
     super.initState();
+    _denpaMen =
+        widget.initial?.denpaMen ??
+        _createDefaultDenpaMen(
+          widget.masterData,
+          ref.read(denpaMenCalculationEngineProvider),
+        );
     if (widget.initial == null && widget.sessionMode) {
       _denpaMen = _withSessionQrCode(_denpaMen);
     }
@@ -87,7 +93,10 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     );
   }
 
-  static DenpaMen _createDefaultDenpaMen(MasterData masterData) {
+  DenpaMen _createDefaultDenpaMen(
+    MasterData masterData,
+    DenpaMenCalculationEngine calculationEngine,
+  ) {
     final denpaMen = createDenpaMen(
       name: '',
       bodyColors: [masterData.bodyColorResistanceRules.first.colorId],
@@ -107,10 +116,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         attributeResistance: const [],
       ),
     );
-    return const DenpaMenRustCalculator().recalculateResistances(
-      denpaMen,
-      masterData,
-    );
+    return calculationEngine.recalculateResistances(denpaMen, masterData);
   }
 
   void _applyEdit(DenpaMen draft) {
@@ -154,10 +160,9 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
           attributeResistance: const [],
         ),
       );
-      _denpaMen = const DenpaMenRustCalculator().recalculateResistances(
-        denpaMen,
-        widget.masterData,
-      );
+      _denpaMen = ref
+          .read(denpaMenCalculationEngineProvider)
+          .recalculateResistances(denpaMen, widget.masterData);
     });
   }
 
@@ -293,7 +298,12 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         .read(denpaMenSessionProvider.notifier)
         .addDraft(_withCatchOrder(_denpaMen, session));
     setState(() {
-      _denpaMen = _withSessionQrCode(_createDefaultDenpaMen(widget.masterData));
+      _denpaMen = _withSessionQrCode(
+        _createDefaultDenpaMen(
+          widget.masterData,
+          ref.read(denpaMenCalculationEngineProvider),
+        ),
+      );
     });
   }
 

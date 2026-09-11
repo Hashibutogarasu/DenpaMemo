@@ -181,7 +181,7 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
           (abnormalityResistances: const [], attributeResistance: const []),
     );
     final withResistances = resistances == null
-        ? const DenpaMenRustCalculator().recalculateResistances(
+        ? const DartDenpaMenCalculationEngine().recalculateResistances(
             denpaMen,
             masterData,
           )

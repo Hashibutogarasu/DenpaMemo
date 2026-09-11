@@ -7,6 +7,45 @@ import '../data/server/physique_table_args.dart';
 import 'physique_antenna_category_resolver.dart';
 import 'physique_rust_mapping.dart';
 
+/// Calculates generic table matches and resolves table ranges.
+abstract interface class PhysiqueMatchingEngine {
+  List<rust.StatusMatch> findMatchingColumns({
+    required rust.StatusCriterion primary,
+    required List<rust.StatusCriterion> others,
+  });
+
+  List<rust.CategoryMatch> resolveCategories({
+    required List<rust.RangeCategory> categories,
+    required int value,
+    required int columnIndex,
+  });
+}
+
+/// Uses the native Rust implementation of the physique matching engine.
+class RustPhysiqueMatchingEngine implements PhysiqueMatchingEngine {
+  const RustPhysiqueMatchingEngine();
+
+  @override
+  List<rust.StatusMatch> findMatchingColumns({
+    required rust.StatusCriterion primary,
+    required List<rust.StatusCriterion> others,
+  }) => const rust.StatusMatchingEngine().findMatchingColumns(
+    primary: primary,
+    others: others,
+  );
+
+  @override
+  List<rust.CategoryMatch> resolveCategories({
+    required List<rust.RangeCategory> categories,
+    required int value,
+    required int columnIndex,
+  }) => const rust.StatusMatchingEngine().resolveCategories(
+    categories: categories,
+    value: value,
+    columnIndex: columnIndex,
+  );
+}
+
 /// Identifies a physique from [tableCacheRepository]/[categoryCacheRepository]
 /// via `denpamemo_logics`'s domain-agnostic Rust engine. Never talks to
 /// `modules/server` itself: `appInitializationProvider` is what keeps
@@ -22,7 +61,7 @@ class PhysiqueIdentificationService {
     required this.categoryCacheRepository,
     required this.antennaCategoryResolver,
     required this.awaitInitialSync,
-    this.engine = const rust.StatusMatchingEngine(),
+    this.engine = const RustPhysiqueMatchingEngine(),
   });
 
   static const defaultPrimaryType = 'evasionRate';
@@ -32,7 +71,7 @@ class PhysiqueIdentificationService {
   final EvasionRateCategoryCacheRepository categoryCacheRepository;
   final PhysiqueAntennaCategoryResolver antennaCategoryResolver;
   final Future<void> Function() awaitInitialSync;
-  final rust.StatusMatchingEngine engine;
+  final PhysiqueMatchingEngine engine;
 
   Future<PhysiqueSearchResult> search({
     String type = defaultPrimaryType,

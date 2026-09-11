@@ -6,7 +6,11 @@ import 'package:graphql_client/graphql_client.dart';
 
 import 'package:denpa_memo/app.dart';
 import 'package:denpa_memo/data/objectbox/objectbox.dart';
+import 'package:denpa_memo/providers/denpa_men_calculation_providers.dart';
+import 'package:denpa_memo/services/denpa_men_rust_calculator.dart';
+import 'package:denpa_memo/providers/physiques_providers.dart';
 import 'file_master_data_repository.dart';
+import 'fake_physique_matching_engine.dart';
 
 /// Shared override swapping the real GraphQL-backed
 /// `masterDataRepositoryProvider` for [FileMasterDataRepository], so
@@ -14,6 +18,13 @@ import 'file_master_data_repository.dart';
 /// migration without needing a running `modules/server` instance.
 final testMasterDataRepositoryOverride = masterDataRepositoryProvider
     .overrideWithValue(FileMasterDataRepository());
+
+/// Uses the pure-Dart calculation implementation for Flutter widget tests.
+final testDenpaMenCalculationEngineOverride = denpaMenCalculationEngineProvider
+    .overrideWithValue(const DartDenpaMenCalculationEngine());
+
+final testPhysiqueMatchingEngineOverride = physiqueMatchingEngineProvider
+    .overrideWithValue(const FakePhysiqueMatchingEngine());
 
 /// Drop-in replacement for [MyApp] in widget tests: identical except its
 /// master data comes from [testMasterDataRepositoryOverride] instead of a
@@ -34,7 +45,12 @@ class TestApp extends StatelessWidget {
     return MyApp(
       objectBox: objectBox,
       cacheIndexRepository: CacheIndexRepository.createInMemory(),
-      overrides: [testMasterDataRepositoryOverride, ...overrides],
+      overrides: [
+        testMasterDataRepositoryOverride,
+        testDenpaMenCalculationEngineOverride,
+        testPhysiqueMatchingEngineOverride,
+        ...overrides,
+      ],
     );
   }
 }
