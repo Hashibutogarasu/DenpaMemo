@@ -14,11 +14,13 @@ import 'package:denpa_memo/widgets.dart';
 import '../data/server/physique_legend_grid_args.dart';
 import '../i18n/gen/strings.g.dart';
 import '../providers/denpa_men_icon_providers.dart';
+import '../providers/denpa_men_calculation_providers.dart';
 import '../providers/denpa_men_providers.dart';
 import '../providers/denpa_men_session_providers.dart';
 import '../providers/physiques_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
+import '../services/denpa_men_rust_calculator.dart';
 import '../widgets/dialog/physique_search_debug_dialog.dart';
 import '../widgets/icon/editable_denpa_men_icon_swiper.dart';
 import '../widgets/icon/evasion_rate_sign_icon.dart';
@@ -65,12 +67,17 @@ class DenpaMenEditor extends ConsumerStatefulWidget {
 }
 
 class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
-  late DenpaMen _denpaMen =
-      widget.initial?.denpaMen ?? _createDefaultDenpaMen(widget.masterData);
+  late DenpaMen _denpaMen;
 
   @override
   void initState() {
     super.initState();
+    _denpaMen =
+        widget.initial?.denpaMen ??
+        _createDefaultDenpaMen(
+          widget.masterData,
+          ref.read(denpaMenCalculationEngineProvider),
+        );
     if (widget.initial == null && widget.sessionMode) {
       _denpaMen = _withSessionQrCode(_denpaMen);
     }
@@ -86,8 +93,11 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
     );
   }
 
-  static DenpaMen _createDefaultDenpaMen(MasterData masterData) {
-    return createDenpaMen(
+  DenpaMen _createDefaultDenpaMen(
+    MasterData masterData,
+    DenpaMenCalculationEngine calculationEngine,
+  ) {
+    final denpaMen = createDenpaMen(
       name: '',
       bodyColors: [masterData.bodyColorResistanceRules.first.colorId],
       isSpColor: false,
@@ -101,12 +111,17 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       level: 1,
       maxLevel: 20,
       corrections: const [],
+      resistances: (
+        abnormalityResistances: const [],
+        attributeResistance: const [],
+      ),
     );
+    return calculationEngine.recalculateResistances(denpaMen, masterData);
   }
 
   void _applyEdit(DenpaMen draft) {
     setState(() {
-      _denpaMen = createDenpaMen(
+      final denpaMen = createDenpaMen(
         id: draft.id,
         name: draft.name,
         bodyColors: draft.bodyColors,
@@ -140,7 +155,14 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         qrCodeId: draft.qrCodeId,
         memo: draft.memo,
         monsterExp: draft.monsterExp,
+        resistances: (
+          abnormalityResistances: const [],
+          attributeResistance: const [],
+        ),
       );
+      _denpaMen = ref
+          .read(denpaMenCalculationEngineProvider)
+          .recalculateResistances(denpaMen, widget.masterData);
     });
   }
 
@@ -276,7 +298,12 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         .read(denpaMenSessionProvider.notifier)
         .addDraft(_withCatchOrder(_denpaMen, session));
     setState(() {
-      _denpaMen = _withSessionQrCode(_createDefaultDenpaMen(widget.masterData));
+      _denpaMen = _withSessionQrCode(
+        _createDefaultDenpaMen(
+          widget.masterData,
+          ref.read(denpaMenCalculationEngineProvider),
+        ),
+      );
     });
   }
 
@@ -351,26 +378,30 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
             )
           : SaveButton(save: _save),
       body: AddDenpaMen(
-        denpaMen: _denpaMen,
-        masterData: widget.masterData,
-        qrCodeCandidates: qrCodeCandidates,
-        onChanged: _applyEdit,
-        qrCodeEditable: !widget.sessionMode,
-        icon: EditableDenpaMenIconSwiper(denpaMenId: _denpaMen.id, size: 56),
-        iconFile: ref.watch(denpaMenIconProvider(_denpaMen.id)).value,
-        parentCandidates:
-            ref.watch(denpaMenListProvider(widget.masterData)).value ?? [],
-        onPickParents: (context) => DenpaMenSelectionRoute(
-          $extra: DenpaMenSelectionArgs(
-            excludeId: _denpaMen.id,
-            initialSelectedIds: _denpaMen.parentIds,
-            maxSelectable: 2,
-          ),
-        ).push<List<DenpaMenRecord>>(context),
-        onPickMonsterExp: (context) => MonsterExpRoute(
-          $extra: _denpaMen.monsterExp,
-        ).push<MonsterExp>(context),
-        onIdentifyPhysique: _identifyPhysique,
+        data: DenpaMenEditorData(
+          denpaMen: _denpaMen,
+          masterData: widget.masterData,
+          qrCodeCandidates: qrCodeCandidates,
+          icon: EditableDenpaMenIconSwiper(denpaMenId: _denpaMen.id, size: 56),
+          iconFile: ref.watch(denpaMenIconProvider(_denpaMen.id)).value,
+          parentCandidates:
+              ref.watch(denpaMenListProvider(widget.masterData)).value ?? [],
+          qrCodeEditable: !widget.sessionMode,
+        ),
+        actions: DenpaMenEditorActions(
+          onChanged: _applyEdit,
+          onPickParents: (context) => DenpaMenSelectionRoute(
+            $extra: DenpaMenSelectionArgs(
+              excludeId: _denpaMen.id,
+              initialSelectedIds: _denpaMen.parentIds,
+              maxSelectable: 2,
+            ),
+          ).push<List<DenpaMenRecord>>(context),
+          onPickMonsterExp: (context) => MonsterExpRoute(
+            $extra: _denpaMen.monsterExp,
+          ).push<MonsterExp>(context),
+          onIdentifyPhysique: _identifyPhysique,
+        ),
       ),
     );
   }

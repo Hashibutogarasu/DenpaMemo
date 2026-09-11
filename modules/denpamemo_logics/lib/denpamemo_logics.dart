@@ -3,6 +3,7 @@ library;
 export 'src/rust/category_grid.dart';
 export 'src/rust/frb_generated.dart' show RustLib;
 export 'src/rust/range_category.dart';
+export 'src/rust/resistance.dart';
 export 'src/rust/status_match.dart';
 export 'src/rust/table_row.dart';
 
@@ -30,7 +31,11 @@ class StatusMatchingEngine {
     required List<RangeCategory> categories,
     required int value,
     required int columnIndex,
-  }) => range_category.resolveCategories(categories: categories, value: value, columnIndex: columnIndex);
+  }) => range_category.resolveCategories(
+    categories: categories,
+    value: value,
+    columnIndex: columnIndex,
+  );
 
   CategoryGrid buildCategoryGrid(CategoryGridRequest request) =>
       category_grid.buildCategoryGrid(request: request);
