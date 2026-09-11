@@ -368,26 +368,30 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
             )
           : SaveButton(save: _save),
       body: AddDenpaMen(
-        denpaMen: _denpaMen,
-        masterData: widget.masterData,
-        qrCodeCandidates: qrCodeCandidates,
-        onChanged: _applyEdit,
-        qrCodeEditable: !widget.sessionMode,
-        icon: EditableDenpaMenIconSwiper(denpaMenId: _denpaMen.id, size: 56),
-        iconFile: ref.watch(denpaMenIconProvider(_denpaMen.id)).value,
-        parentCandidates:
-            ref.watch(denpaMenListProvider(widget.masterData)).value ?? [],
-        onPickParents: (context) => DenpaMenSelectionRoute(
-          $extra: DenpaMenSelectionArgs(
-            excludeId: _denpaMen.id,
-            initialSelectedIds: _denpaMen.parentIds,
-            maxSelectable: 2,
-          ),
-        ).push<List<DenpaMenRecord>>(context),
-        onPickMonsterExp: (context) => MonsterExpRoute(
-          $extra: _denpaMen.monsterExp,
-        ).push<MonsterExp>(context),
-        onIdentifyPhysique: _identifyPhysique,
+        data: DenpaMenEditorData(
+          denpaMen: _denpaMen,
+          masterData: widget.masterData,
+          qrCodeCandidates: qrCodeCandidates,
+          icon: EditableDenpaMenIconSwiper(denpaMenId: _denpaMen.id, size: 56),
+          iconFile: ref.watch(denpaMenIconProvider(_denpaMen.id)).value,
+          parentCandidates:
+              ref.watch(denpaMenListProvider(widget.masterData)).value ?? [],
+          qrCodeEditable: !widget.sessionMode,
+        ),
+        actions: DenpaMenEditorActions(
+          onChanged: _applyEdit,
+          onPickParents: (context) => DenpaMenSelectionRoute(
+            $extra: DenpaMenSelectionArgs(
+              excludeId: _denpaMen.id,
+              initialSelectedIds: _denpaMen.parentIds,
+              maxSelectable: 2,
+            ),
+          ).push<List<DenpaMenRecord>>(context),
+          onPickMonsterExp: (context) => MonsterExpRoute(
+            $extra: _denpaMen.monsterExp,
+          ).push<MonsterExp>(context),
+          onIdentifyPhysique: _identifyPhysique,
+        ),
       ),
     );
   }

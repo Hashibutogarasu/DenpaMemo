@@ -12,46 +12,63 @@ import 'editable_denpa_men_status.dart';
 import 'icon/denpa_men_icon_builder.dart';
 import 'theme/denpa_men_container_theme.dart';
 
-/// Bundles the read-only preview ([DenpaMenStatus]) and the editable pane
-/// ([EditableDenpaMenStatus]) used to add or edit a [DenpaMen]. On a wide
-/// viewport the two panes sit side by side; on a narrow one they become
-/// swipeable pages. [denpaMen] is controlled by the caller: [onChanged]
-/// reports each edit as a new draft to re-derive and feed back in.
-class AddDenpaMen extends StatefulWidget {
-  const AddDenpaMen({
-    super.key,
+/// Data required to render and edit one DenpaMen.
+class DenpaMenEditorData {
+  const DenpaMenEditorData({
     required this.denpaMen,
     required this.masterData,
     required this.qrCodeCandidates,
-    required this.onChanged,
     required this.icon,
     required this.parentCandidates,
-    required this.onPickParents,
-    required this.onPickMonsterExp,
-    required this.onIdentifyPhysique,
     this.iconFile,
     this.qrCodeEditable = true,
-    this.minPaneWidth = 360,
-    this.paneGap = 16,
-    this.wheelPageChangeThreshold = 20,
   });
 
   final DenpaMen denpaMen;
   final MasterData masterData;
   final List<QrCodeRecord> qrCodeCandidates;
-  final ValueChanged<DenpaMen> onChanged;
-  final bool qrCodeEditable;
-  final double minPaneWidth;
-  final double paneGap;
-  final double wheelPageChangeThreshold;
-
   final Widget icon;
   final File? iconFile;
   final List<DenpaMenRecord> parentCandidates;
+  final bool qrCodeEditable;
+}
+
+/// Actions invoked by the DenpaMen editor.
+class DenpaMenEditorActions {
+  const DenpaMenEditorActions({
+    required this.onChanged,
+    required this.onPickParents,
+    required this.onPickMonsterExp,
+    required this.onIdentifyPhysique,
+  });
+
+  final ValueChanged<DenpaMen> onChanged;
   final Future<List<DenpaMenRecord>?> Function(BuildContext) onPickParents;
   final Future<MonsterExp?> Function(BuildContext) onPickMonsterExp;
   final Future<PhysiqueIdentification?> Function(BuildContext)
   onIdentifyPhysique;
+}
+
+/// Bundles the read-only preview ([DenpaMenStatus]) and the editable pane
+/// ([EditableDenpaMenStatus]) used to add or edit a [DenpaMen]. On a wide
+/// viewport the two panes sit side by side; on a narrow one they become
+/// swipeable pages. [data] is controlled by the caller and [actions] reports
+/// each edit as a new draft to re-derive and feed back in.
+class AddDenpaMen extends StatefulWidget {
+  const AddDenpaMen({
+    super.key,
+    required this.data,
+    required this.actions,
+    this.minPaneWidth = 360,
+    this.paneGap = 16,
+    this.wheelPageChangeThreshold = 20,
+  });
+
+  final DenpaMenEditorData data;
+  final DenpaMenEditorActions actions;
+  final double minPaneWidth;
+  final double paneGap;
+  final double wheelPageChangeThreshold;
 
   @override
   State<AddDenpaMen> createState() => _AddDenpaMenState();
@@ -101,32 +118,33 @@ class _AddDenpaMenState extends State<AddDenpaMen> {
     final containerTheme = Theme.of(
       context,
     ).extension<DenpaMenContainerThemeData>()!;
+    final data = widget.data;
+    final actions = widget.actions;
     final preview = DenpaMenStatus.fromDenpaMen(
-      widget.denpaMen,
-      totalAttributeCount: widget.masterData.attributes.length,
-      includeStatBonus: widget.denpaMen.considerCorrections,
+      data.denpaMen,
+      totalAttributeCount: data.masterData.attributes.length,
+      includeStatBonus: data.denpaMen.considerCorrections,
       showIcon: true,
-      iconBuilder: staticDenpaMenIconBuilder(widget.iconFile),
+      iconBuilder: staticDenpaMenIconBuilder(data.iconFile),
     );
     final editable = EditableDenpaMenStatus(
-      denpaMen: widget.denpaMen,
-      headShapes: widget.masterData.headShapes,
-      anntenas: widget.masterData.anntenas,
-      corrections: widget.masterData.corrections,
-      attributes: widget.masterData.attributes,
-      abnormalityTypes: widget.masterData.abnormalityTypes,
-      qrCodeCandidates: widget.qrCodeCandidates,
-      onChanged: widget.onChanged,
-      qrCodeEditable: widget.qrCodeEditable,
-      considerCorrections: widget.denpaMen.considerCorrections,
-      onConsiderCorrectionsChanged: (value) => widget.onChanged(
-        widget.denpaMen.copyWith(considerCorrections: value),
-      ),
-      icon: widget.icon,
-      parentCandidates: widget.parentCandidates,
-      onPickParents: widget.onPickParents,
-      onPickMonsterExp: widget.onPickMonsterExp,
-      onIdentifyPhysique: widget.onIdentifyPhysique,
+      denpaMen: data.denpaMen,
+      headShapes: data.masterData.headShapes,
+      anntenas: data.masterData.anntenas,
+      corrections: data.masterData.corrections,
+      attributes: data.masterData.attributes,
+      abnormalityTypes: data.masterData.abnormalityTypes,
+      qrCodeCandidates: data.qrCodeCandidates,
+      onChanged: actions.onChanged,
+      qrCodeEditable: data.qrCodeEditable,
+      considerCorrections: data.denpaMen.considerCorrections,
+      onConsiderCorrectionsChanged: (value) =>
+          actions.onChanged(data.denpaMen.copyWith(considerCorrections: value)),
+      icon: data.icon,
+      parentCandidates: data.parentCandidates,
+      onPickParents: actions.onPickParents,
+      onPickMonsterExp: actions.onPickMonsterExp,
+      onIdentifyPhysique: actions.onIdentifyPhysique,
     );
 
     return LayoutBuilder(
