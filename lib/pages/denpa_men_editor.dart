@@ -19,6 +19,7 @@ import '../providers/denpa_men_session_providers.dart';
 import '../providers/physiques_providers.dart';
 import '../providers/qr_code_providers.dart';
 import '../routing/app_router.dart';
+import '../services/denpa_men_rust_calculator.dart';
 import '../widgets/dialog/physique_search_debug_dialog.dart';
 import '../widgets/icon/editable_denpa_men_icon_swiper.dart';
 import '../widgets/icon/evasion_rate_sign_icon.dart';
@@ -87,7 +88,7 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
   }
 
   static DenpaMen _createDefaultDenpaMen(MasterData masterData) {
-    return createDenpaMen(
+    final denpaMen = createDenpaMen(
       name: '',
       bodyColors: [masterData.bodyColorResistanceRules.first.colorId],
       isSpColor: false,
@@ -101,12 +102,20 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
       level: 1,
       maxLevel: 20,
       corrections: const [],
+      resistances: (
+        abnormalityResistances: const [],
+        attributeResistance: const [],
+      ),
+    );
+    return const DenpaMenRustCalculator().recalculateResistances(
+      denpaMen,
+      masterData,
     );
   }
 
   void _applyEdit(DenpaMen draft) {
     setState(() {
-      _denpaMen = createDenpaMen(
+      final denpaMen = createDenpaMen(
         id: draft.id,
         name: draft.name,
         bodyColors: draft.bodyColors,
@@ -140,6 +149,14 @@ class _DenpaMenEditorState extends ConsumerState<DenpaMenEditor> {
         qrCodeId: draft.qrCodeId,
         memo: draft.memo,
         monsterExp: draft.monsterExp,
+        resistances: (
+          abnormalityResistances: const [],
+          attributeResistance: const [],
+        ),
+      );
+      _denpaMen = const DenpaMenRustCalculator().recalculateResistances(
+        denpaMen,
+        widget.masterData,
       );
     });
   }

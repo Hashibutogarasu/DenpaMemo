@@ -2,6 +2,7 @@ import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
 
 import '../master_data/legacy_antenna_id_migrations.dart';
+import '../../services/denpa_men_rust_calculator.dart';
 import 'denpa_men_entity.dart';
 
 /// Converts a domain [DenpaMen] to its persisted [DenpaMenEntity] form,
@@ -175,9 +176,17 @@ extension DenpaMenEntityToDomain on DenpaMenEntity {
         maxLevelTeammateCount: monsterExpMaxLevelTeammateCount,
         expRecipientCount: monsterExpRecipientCount,
       ),
-      resistances: resistances,
+      resistances:
+          resistances ??
+          (abnormalityResistances: const [], attributeResistance: const []),
     );
-    return denpaMen.copyWith(hash: hash);
+    final withResistances = resistances == null
+        ? const DenpaMenRustCalculator().recalculateResistances(
+            denpaMen,
+            masterData,
+          )
+        : denpaMen;
+    return withResistances.copyWith(hash: hash);
   }
 }
 
