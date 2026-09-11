@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:app_logging/app_logging.dart';
 
 /// Tracks the device's current connectivity, exposing the latest known
 /// state synchronously so [NetworkConnectivityGateInterceptor] can check
@@ -31,7 +32,11 @@ class NetworkConnectivityMonitor {
   bool get isOnline => _isOnline;
 
   void _updateFromResults(List<ConnectivityResult> results) {
+    final wasOnline = _isOnline;
     _isOnline = _isOnlineFrom(results);
+    if (wasOnline && !_isOnline) {
+      LogBus.instance.markPendingNetworkRequestsOffline();
+    }
   }
 
   static bool _isOnlineFrom(List<ConnectivityResult> results) =>

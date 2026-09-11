@@ -1,7 +1,6 @@
 import 'package:app_logging/app_logging.dart';
 import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'graphql_master_data_repository.dart';
 
@@ -37,19 +36,24 @@ class CachingMasterDataRepository implements MasterDataRepository {
         );
       }
       return masterDataFromGraphqlJson(result.data);
-    } on OperationException catch (exception) {
-      if (exception.linkException == null) {
-        rethrow;
-      }
-      final cached = await _cache.read<Map<String, dynamic>, MasterData>(
-        masterDataCacheKey,
-        inputFromJson: (json) => json,
-        outputFromJson: masterDataFromGraphqlJson,
-      );
-      if (cached == null) {
-        rethrow;
-      }
-      return cached.output;
+    } on OfflineNetworkException catch (exception) {
+      return _readCachedOrThrow(exception);
+    } on NetworkTimeoutException catch (exception) {
+      return _readCachedOrThrow(exception);
+    } on NetworkConnectionException catch (exception) {
+      return _readCachedOrThrow(exception);
     }
+  }
+
+  Future<MasterData> _readCachedOrThrow(NetworkFailure failure) async {
+    final cached = await _cache.read<Map<String, dynamic>, MasterData>(
+      masterDataCacheKey,
+      inputFromJson: (json) => json,
+      outputFromJson: masterDataFromGraphqlJson,
+    );
+    if (cached == null) {
+      throw failure;
+    }
+    return cached.output;
   }
 }

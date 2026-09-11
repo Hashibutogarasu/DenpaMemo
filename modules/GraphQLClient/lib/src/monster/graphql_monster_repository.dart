@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../dio_graphql_link.dart';
 import 'monster_graphql_queries.dart';
+import '../graphql_network_extensions.dart';
 
 /// [MonsterRepository] implementation backed by the `modules/server`
 /// GraphQL API's isolated `monsters` query (separate from `masterData`).
@@ -16,16 +17,12 @@ class GraphqlMonsterRepository implements MonsterRepository {
   /// [DioRequestIdContext]), without mapping the data yet — used instead
   /// of [load] by callers that need to cache the response verbatim.
   Future<({List<dynamic> data, String? requestId})> fetchRaw() async {
-    final result = await _client.query(
+    final result = await _client.networkQuery(
       QueryOptions(
         document: gql(monsterListQuery),
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
-
-    if (result.hasException) {
-      throw result.exception!;
-    }
 
     return (
       data: result.data!['monsters'] as List<dynamic>,

@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 
 import 'log_bus.dart';
 import 'log_entry.dart';
+import 'network_failure.dart';
 
 /// Keys a request handler (e.g. `graphql_client`'s `DioGraphQlLink`) sets
 /// under [RequestOptions.extra] to pass GraphQL metadata through to
@@ -83,25 +84,51 @@ class DioLoggingInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final options = err.requestOptions;
     final isGraphQl = options.extra[DioLoggingExtraKeys.graphQl] == true;
-    final isCancellation = err.type == DioExceptionType.cancel;
-    final isSkippedOffline =
-        options.extra[DioLoggingExtraKeys.skippedOffline] == true ||
-        (_isOffline?.call() ?? false);
-    final isTimeout =
-        err.type == DioExceptionType.connectionTimeout ||
-        err.type == DioExceptionType.sendTimeout ||
-        err.type == DioExceptionType.receiveTimeout;
+    final failure = networkFailureFromDioException(
+      err,
+      offline:
+          options.extra[DioLoggingExtraKeys.skippedOffline] == true ||
+          (_isOffline?.call() ?? false),
+    );
+    final (level, status, errorMessage, isTimeout) = switch (failure) {
+      OfflineNetworkException(:final isTimeout) => (
+        LogLevel.warning,
+        NetworkLogStatus.skipped,
+        'offline',
+        isTimeout,
+      ),
+      NetworkTimeoutException() => (
+        LogLevel.error,
+        NetworkLogStatus.error,
+        err.message ?? err.toString(),
+        true,
+      ),
+      NetworkCancellationException() => (
+        LogLevel.info,
+        NetworkLogStatus.error,
+        'cancelled',
+        false,
+      ),
+      NetworkConnectionException() => (
+        LogLevel.error,
+        NetworkLogStatus.error,
+        err.message ?? err.toString(),
+        false,
+      ),
+      HttpNetworkException() => (
+        LogLevel.error,
+        NetworkLogStatus.error,
+        err.message ?? err.toString(),
+        false,
+      ),
+    };
     LogBus.instance.addNetwork(
       LogEntry.network(
         id: _id(options),
         timestamp: _startedAt(options),
-        level: isSkippedOffline
-            ? LogLevel.warning
-            : (isCancellation ? LogLevel.info : LogLevel.error),
+        level: level,
         protocol: isGraphQl ? NetworkProtocol.graphql : NetworkProtocol.rest,
-        status: isSkippedOffline
-            ? NetworkLogStatus.skipped
-            : NetworkLogStatus.error,
+        status: status,
         operation: _operation(options, isGraphQl),
         uri: options.uri.toString(),
         requestBody: _requestBody(options, isGraphQl),
@@ -109,9 +136,7 @@ class DioLoggingInterceptor extends Interceptor {
         requestBytes: _byteLength(options.data),
         responseBytes: _byteLength(err.response?.data),
         statusCode: err.response?.statusCode,
-        errorMessage: isSkippedOffline
-            ? 'offline'
-            : (isCancellation ? 'cancelled' : (err.message ?? err.toString())),
+        errorMessage: errorMessage,
         duration: _elapsed(options),
         isTimeout: isTimeout,
       ),

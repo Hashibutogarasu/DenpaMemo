@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../dio_graphql_link.dart';
 import 'master_data_graphql_queries.dart';
+import '../graphql_network_extensions.dart';
 
 /// [MasterDataRepository] implementation backed by the `modules/server`
 /// GraphQL API. Every server type's `id` is the original semantic id the
@@ -20,16 +21,12 @@ class GraphqlMasterDataRepository implements MasterDataRepository {
   /// [DioRequestIdContext]), without mapping the data yet — used instead
   /// of [load] by callers that need to cache the response verbatim.
   Future<({Map<String, dynamic> data, String? requestId})> fetchRaw() async {
-    final result = await _client.query(
+    final result = await _client.networkQuery(
       QueryOptions(
         document: gql(masterDataQuery),
         fetchPolicy: FetchPolicy.networkOnly,
       ),
     );
-
-    if (result.hasException) {
-      throw result.exception!;
-    }
 
     return (
       data: result.data!['masterData'] as Map<String, dynamic>,

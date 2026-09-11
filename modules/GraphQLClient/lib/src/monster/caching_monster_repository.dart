@@ -1,7 +1,6 @@
 import 'package:app_logging/app_logging.dart';
 import 'package:data_cache/data_cache.dart';
 import 'package:data_pack/data_pack.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'graphql_monster_repository.dart';
 
@@ -37,20 +36,25 @@ class CachingMonsterRepository implements MonsterRepository {
         );
       }
       return monstersFromGraphqlJson(result.data);
-    } on OperationException catch (exception) {
-      if (exception.linkException == null) {
-        rethrow;
-      }
-      final cached = await _cache.read<Map<String, dynamic>, List<Monster>>(
-        monsterListCacheKey,
-        inputFromJson: (json) => json,
-        outputFromJson: (json) =>
-            monstersFromGraphqlJson(json['monsters'] as List<dynamic>),
-      );
-      if (cached == null) {
-        rethrow;
-      }
-      return cached.output;
+    } on OfflineNetworkException catch (exception) {
+      return _readCachedOrThrow(exception);
+    } on NetworkTimeoutException catch (exception) {
+      return _readCachedOrThrow(exception);
+    } on NetworkConnectionException catch (exception) {
+      return _readCachedOrThrow(exception);
     }
+  }
+
+  Future<List<Monster>> _readCachedOrThrow(NetworkFailure failure) async {
+    final cached = await _cache.read<Map<String, dynamic>, List<Monster>>(
+      monsterListCacheKey,
+      inputFromJson: (json) => json,
+      outputFromJson: (json) =>
+          monstersFromGraphqlJson(json['monsters'] as List<dynamic>),
+    );
+    if (cached == null) {
+      throw failure;
+    }
+    return cached.output;
   }
 }

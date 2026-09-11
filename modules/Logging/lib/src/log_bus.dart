@@ -29,6 +29,8 @@ class _ReplayChannel {
     _controller.add(entry);
   }
 
+  Iterable<LogEntry> get history => List.unmodifiable(_history);
+
   LogEntry? entryById(String id) {
     for (final entry in _history.reversed) {
       if (entry.id == id) return entry;
@@ -61,6 +63,26 @@ class LogBus {
   void addWidgetRebuild(LogEntry entry) => _widgetRebuild.add(entry);
 
   void addNetwork(LogEntry entry) => _network.add(entry);
+
+  /// Marks every in-flight network request as an offline timeout immediately.
+  void markPendingNetworkRequestsOffline() {
+    final now = DateTime.now();
+    for (final entry in _network.history) {
+      if (entry is! NetworkLogEntry ||
+          entry.status != NetworkLogStatus.pending) {
+        continue;
+      }
+      _network.add(
+        entry.copyWith(
+          level: LogLevel.warning,
+          status: NetworkLogStatus.skipped,
+          errorMessage: 'offline',
+          duration: now.difference(entry.timestamp),
+          isTimeout: true,
+        ),
+      );
+    }
+  }
 
   /// Re-publishes the [NetworkLogEntry] with [id] with its [status]
   /// replaced, for callers (e.g. `CachingMasterDataRepository`) that only

@@ -23,7 +23,7 @@ class NetworkConnectivityGateInterceptor extends Interceptor {
       DioException(
         requestOptions: options,
         type: DioExceptionType.connectionError,
-        error: 'The device is offline',
+        error: const OfflineNetworkException(),
       ),
     );
   }
