@@ -1,6 +1,7 @@
 import 'package:data_pack/data_pack.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../dio_graphql_link.dart';
 import 'monster_graphql_queries.dart';
 
 /// [MonsterRepository] implementation backed by the `modules/server`
@@ -10,11 +11,11 @@ class GraphqlMonsterRepository implements MonsterRepository {
 
   final GraphQLClient _client;
 
-  /// Runs the `monsters` GraphQL query and returns its raw response list,
-  /// without mapping it to [Monster]s yet. Callers that need to cache the
-  /// server's response verbatim (see `CachingMonsterRepository`) use this
-  /// instead of [load].
-  Future<List<dynamic>> fetchRaw() async {
+  /// Runs the `monsters` GraphQL query, returning its raw response list
+  /// and the [DioLoggingInterceptor] request id that logged it (see
+  /// [DioRequestIdContext]), without mapping the data yet — used instead
+  /// of [load] by callers that need to cache the response verbatim.
+  Future<({List<dynamic> data, String? requestId})> fetchRaw() async {
     final result = await _client.query(
       QueryOptions(
         document: gql(monsterListQuery),
@@ -26,12 +27,15 @@ class GraphqlMonsterRepository implements MonsterRepository {
       throw result.exception!;
     }
 
-    return result.data!['monsters'] as List<dynamic>;
+    return (
+      data: result.data!['monsters'] as List<dynamic>,
+      requestId: result.context.entry<DioRequestIdContext>()?.requestId,
+    );
   }
 
   @override
   Future<List<Monster>> load() async {
-    return monstersFromGraphqlJson(await fetchRaw());
+    return monstersFromGraphqlJson((await fetchRaw()).data);
   }
 }
 

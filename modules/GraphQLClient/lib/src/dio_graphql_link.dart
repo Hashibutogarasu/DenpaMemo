@@ -4,6 +4,19 @@ import 'package:app_logging/app_logging.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+/// Carries the [DioLoggingInterceptor]-assigned request id alongside a
+/// [Response], so callers (e.g. `CachingMasterDataRepository`) can update
+/// that same debug-log entry once they know whether the fetched data
+/// actually differs from what's cached.
+class DioRequestIdContext extends ContextEntry {
+  const DioRequestIdContext({required this.requestId});
+
+  final String requestId;
+
+  @override
+  List<Object?> get fieldsForEquality => [requestId];
+}
+
 /// A [Link] that performs its HTTP work through a shared [dio.Dio]
 /// instance instead of `graphql_flutter`'s own `HttpLink`, so GraphQL
 /// traffic is captured by the same debug-log interceptor as REST calls.
@@ -25,7 +38,7 @@ class DioGraphQlLink extends Link {
   Stream<Response> request(Request request, [NextLink? forward]) async* {
     final body = serializer.serializeRequest(request);
 
-    final Response parsed;
+    Response parsed;
     final int statusCode;
     try {
       final dioResponse = await _dio.postUri<String>(
@@ -47,6 +60,14 @@ class DioGraphQlLink extends Link {
       parsed = parser.parseResponse(
         json.decode(dioResponse.data!) as Map<String, dynamic>,
       );
+      final requestId =
+          dioResponse.requestOptions.extra[DioLoggingExtraKeys.requestId]
+              as String?;
+      if (requestId != null) {
+        parsed = parsed.withContextEntry(
+          DioRequestIdContext(requestId: requestId),
+        );
+      }
     } on dio.DioException catch (e, stackTrace) {
       throw ServerException(
         originalException: e,
