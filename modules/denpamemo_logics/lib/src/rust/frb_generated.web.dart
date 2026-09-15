@@ -12,6 +12,7 @@ import 'dart:convert';
 import 'frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated_web.dart';
 import 'range_category.dart';
+import 'resistance.dart';
 import 'status_match.dart';
 import 'table_row.dart';
 
@@ -27,13 +28,49 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String dco_decode_String(dynamic raw);
 
   @protected
+  AbnormalityResistance dco_decode_abnormality_resistance(dynamic raw);
+
+  @protected
+  AttributeResistance dco_decode_attribute_resistance(dynamic raw);
+
+  @protected
+  AttributeResistanceBonus dco_decode_attribute_resistance_bonus(dynamic raw);
+
+  @protected
+  BodyColorAbnormalityResistanceRule
+  dco_decode_body_color_abnormality_resistance_rule(dynamic raw);
+
+  @protected
+  BodyColorResistanceRule dco_decode_body_color_resistance_rule(dynamic raw);
+
+  @protected
+  BodyColorSelection dco_decode_body_color_selection(dynamic raw);
+
+  @protected
   bool dco_decode_bool(dynamic raw);
+
+  @protected
+  BodyColorSelection dco_decode_box_autoadd_body_color_selection(dynamic raw);
 
   @protected
   CategoryGridRequest dco_decode_box_autoadd_category_grid_request(dynamic raw);
 
   @protected
+  HeadShapeResistanceBonuses
+  dco_decode_box_autoadd_head_shape_resistance_bonuses(dynamic raw);
+
+  @protected
   int dco_decode_box_autoadd_i_32(dynamic raw);
+
+  @protected
+  ResistanceCorrectionInput dco_decode_box_autoadd_resistance_correction_input(
+    dynamic raw,
+  );
+
+  @protected
+  ResistanceMasterData dco_decode_box_autoadd_resistance_master_data(
+    dynamic raw,
+  );
 
   @protected
   StatusCriterion dco_decode_box_autoadd_status_criterion(dynamic raw);
@@ -54,10 +91,43 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ColumnEntry dco_decode_column_entry(dynamic raw);
 
   @protected
+  CorrectionBonuses dco_decode_correction_bonuses(dynamic raw);
+
+  @protected
+  DenpaMenResistances dco_decode_denpa_men_resistances(dynamic raw);
+
+  @protected
+  HeadShapeResistanceBonuses dco_decode_head_shape_resistance_bonuses(
+    dynamic raw,
+  );
+
+  @protected
   int dco_decode_i_32(dynamic raw);
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<AbnormalityResistance> dco_decode_list_abnormality_resistance(
+    dynamic raw,
+  );
+
+  @protected
+  List<AttributeResistance> dco_decode_list_attribute_resistance(dynamic raw);
+
+  @protected
+  List<AttributeResistanceBonus> dco_decode_list_attribute_resistance_bonus(
+    dynamic raw,
+  );
+
+  @protected
+  List<BodyColorAbnormalityResistanceRule>
+  dco_decode_list_body_color_abnormality_resistance_rule(dynamic raw);
+
+  @protected
+  List<BodyColorResistanceRule> dco_decode_list_body_color_resistance_rule(
+    dynamic raw,
+  );
 
   @protected
   List<CategoryCell> dco_decode_list_category_cell(dynamic raw);
@@ -67,6 +137,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<ColumnEntry> dco_decode_list_column_entry(dynamic raw);
+
+  @protected
+  List<CorrectionBonuses> dco_decode_list_correction_bonuses(dynamic raw);
 
   @protected
   List<List<ColumnEntry>> dco_decode_list_list_column_entry(dynamic raw);
@@ -84,6 +157,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<RangeCategory> dco_decode_list_range_category(dynamic raw);
 
   @protected
+  List<ResistanceAttribute> dco_decode_list_resistance_attribute(dynamic raw);
+
+  @protected
+  List<ResistanceBonus> dco_decode_list_resistance_bonus(dynamic raw);
+
+  @protected
   List<StatusCriterion> dco_decode_list_status_criterion(dynamic raw);
 
   @protected
@@ -99,10 +178,30 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
+  BodyColorSelection? dco_decode_opt_box_autoadd_body_color_selection(
+    dynamic raw,
+  );
+
+  @protected
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
 
   @protected
   RangeCategory dco_decode_range_category(dynamic raw);
+
+  @protected
+  ResistanceAttribute dco_decode_resistance_attribute(dynamic raw);
+
+  @protected
+  ResistanceBonus dco_decode_resistance_bonus(dynamic raw);
+
+  @protected
+  ResistanceCorrectionInput dco_decode_resistance_correction_input(dynamic raw);
+
+  @protected
+  ResistanceMasterData dco_decode_resistance_master_data(dynamic raw);
+
+  @protected
+  StatBonus dco_decode_stat_bonus(dynamic raw);
 
   @protected
   StatusCriterion dco_decode_status_criterion(dynamic raw);
@@ -126,7 +225,43 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  AbnormalityResistance sse_decode_abnormality_resistance(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  AttributeResistance sse_decode_attribute_resistance(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  AttributeResistanceBonus sse_decode_attribute_resistance_bonus(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BodyColorAbnormalityResistanceRule
+  sse_decode_body_color_abnormality_resistance_rule(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BodyColorResistanceRule sse_decode_body_color_resistance_rule(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  BodyColorSelection sse_decode_body_color_selection(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  BodyColorSelection sse_decode_box_autoadd_body_color_selection(
+    SseDeserializer deserializer,
+  );
 
   @protected
   CategoryGridRequest sse_decode_box_autoadd_category_grid_request(
@@ -134,7 +269,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  HeadShapeResistanceBonuses
+  sse_decode_box_autoadd_head_shape_resistance_bonuses(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
+
+  @protected
+  ResistanceCorrectionInput sse_decode_box_autoadd_resistance_correction_input(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  ResistanceMasterData sse_decode_box_autoadd_resistance_master_data(
+    SseDeserializer deserializer,
+  );
 
   @protected
   StatusCriterion sse_decode_box_autoadd_status_criterion(
@@ -159,10 +310,49 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ColumnEntry sse_decode_column_entry(SseDeserializer deserializer);
 
   @protected
+  CorrectionBonuses sse_decode_correction_bonuses(SseDeserializer deserializer);
+
+  @protected
+  DenpaMenResistances sse_decode_denpa_men_resistances(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  HeadShapeResistanceBonuses sse_decode_head_shape_resistance_bonuses(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<AbnormalityResistance> sse_decode_list_abnormality_resistance(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<AttributeResistance> sse_decode_list_attribute_resistance(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<AttributeResistanceBonus> sse_decode_list_attribute_resistance_bonus(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<BodyColorAbnormalityResistanceRule>
+  sse_decode_list_body_color_abnormality_resistance_rule(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<BodyColorResistanceRule> sse_decode_list_body_color_resistance_rule(
+    SseDeserializer deserializer,
+  );
 
   @protected
   List<CategoryCell> sse_decode_list_category_cell(
@@ -176,6 +366,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<ColumnEntry> sse_decode_list_column_entry(SseDeserializer deserializer);
+
+  @protected
+  List<CorrectionBonuses> sse_decode_list_correction_bonuses(
+    SseDeserializer deserializer,
+  );
 
   @protected
   List<List<ColumnEntry>> sse_decode_list_list_column_entry(
@@ -197,6 +392,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  List<ResistanceAttribute> sse_decode_list_resistance_attribute(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  List<ResistanceBonus> sse_decode_list_resistance_bonus(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   List<StatusCriterion> sse_decode_list_status_criterion(
     SseDeserializer deserializer,
   );
@@ -214,10 +419,36 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
+  BodyColorSelection? sse_decode_opt_box_autoadd_body_color_selection(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
   RangeCategory sse_decode_range_category(SseDeserializer deserializer);
+
+  @protected
+  ResistanceAttribute sse_decode_resistance_attribute(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  ResistanceBonus sse_decode_resistance_bonus(SseDeserializer deserializer);
+
+  @protected
+  ResistanceCorrectionInput sse_decode_resistance_correction_input(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  ResistanceMasterData sse_decode_resistance_master_data(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  StatBonus sse_decode_stat_bonus(SseDeserializer deserializer);
 
   @protected
   StatusCriterion sse_decode_status_criterion(SseDeserializer deserializer);
@@ -241,7 +472,49 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_abnormality_resistance(
+    AbnormalityResistance self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_attribute_resistance(
+    AttributeResistance self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_attribute_resistance_bonus(
+    AttributeResistanceBonus self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_body_color_abnormality_resistance_rule(
+    BodyColorAbnormalityResistanceRule self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_body_color_resistance_rule(
+    BodyColorResistanceRule self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_body_color_selection(
+    BodyColorSelection self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_body_color_selection(
+    BodyColorSelection self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_box_autoadd_category_grid_request(
@@ -250,7 +523,25 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_box_autoadd_head_shape_resistance_bonuses(
+    HeadShapeResistanceBonuses self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_resistance_correction_input(
+    ResistanceCorrectionInput self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_box_autoadd_resistance_master_data(
+    ResistanceMasterData self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_box_autoadd_status_criterion(
@@ -277,10 +568,58 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_column_entry(ColumnEntry self, SseSerializer serializer);
 
   @protected
+  void sse_encode_correction_bonuses(
+    CorrectionBonuses self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_denpa_men_resistances(
+    DenpaMenResistances self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_head_shape_resistance_bonuses(
+    HeadShapeResistanceBonuses self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_abnormality_resistance(
+    List<AbnormalityResistance> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_attribute_resistance(
+    List<AttributeResistance> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_attribute_resistance_bonus(
+    List<AttributeResistanceBonus> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_body_color_abnormality_resistance_rule(
+    List<BodyColorAbnormalityResistanceRule> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_body_color_resistance_rule(
+    List<BodyColorResistanceRule> self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_list_category_cell(
@@ -297,6 +636,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_column_entry(
     List<ColumnEntry> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_correction_bonuses(
+    List<CorrectionBonuses> self,
     SseSerializer serializer,
   );
 
@@ -331,6 +676,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_resistance_attribute(
+    List<ResistanceAttribute> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_resistance_bonus(
+    List<ResistanceBonus> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_status_criterion(
     List<StatusCriterion> self,
     SseSerializer serializer,
@@ -355,10 +712,43 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_String(String? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_body_color_selection(
+    BodyColorSelection? self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
 
   @protected
   void sse_encode_range_category(RangeCategory self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_resistance_attribute(
+    ResistanceAttribute self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_resistance_bonus(
+    ResistanceBonus self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_resistance_correction_input(
+    ResistanceCorrectionInput self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_resistance_master_data(
+    ResistanceMasterData self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_stat_bonus(StatBonus self, SseSerializer serializer);
 
   @protected
   void sse_encode_status_criterion(

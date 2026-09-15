@@ -11,6 +11,7 @@ import 'frb_generated.io.dart'
     if (dart.library.js_interop) 'frb_generated.web.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'range_category.dart';
+import 'resistance.dart';
 import 'status_match.dart';
 import 'table_row.dart';
 
@@ -67,7 +68,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.13.0';
 
   @override
-  int get rustContentHash => 911793770;
+  int get rustContentHash => 1391955981;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -83,12 +84,38 @@ abstract class RustLibApi extends BaseApi {
     required CategoryGridRequest request,
   });
 
+  List<AttributeResistance> crateResistanceCalculateAttributeResistance({
+    required BodyColorSelection selection,
+    required ResistanceMasterData masterData,
+  });
+
+  List<AbnormalityResistance>
+  crateResistanceCalculateColorAbnormalityResistance({
+    required BodyColorSelection selection,
+    required ResistanceMasterData masterData,
+  });
+
+  StatBonus crateResistanceCalculateCorrectionStatBonus({
+    required ResistanceCorrectionInput input,
+  });
+
+  DenpaMenResistances crateResistanceCalculateDenpaMenResistances({
+    required BodyColorSelection selection,
+    required HeadShapeResistanceBonuses headShape,
+    required ResistanceMasterData masterData,
+  });
+
   List<List<ColumnEntry>> crateTableRowCollectColumns({
     required List<TableRow> rows,
   });
 
   List<RangeCategory> crateCategoryGridCompactCategories({
     required List<RangeCategory> categories,
+  });
+
+  BodyColorSelection? crateResistanceFindColorCombination({
+    required List<AttributeResistance> target,
+    required ResistanceMasterData masterData,
   });
 
   List<StatusMatch> crateStatusMatchFindMatchingColumns({
@@ -140,6 +167,131 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  List<AttributeResistance> crateResistanceCalculateAttributeResistance({
+    required BodyColorSelection selection,
+    required ResistanceMasterData masterData,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_body_color_selection(selection, serializer);
+          sse_encode_box_autoadd_resistance_master_data(masterData, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_attribute_resistance,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateResistanceCalculateAttributeResistanceConstMeta,
+        argValues: [selection, masterData],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateResistanceCalculateAttributeResistanceConstMeta =>
+      const TaskConstMeta(
+        debugName: "calculate_attribute_resistance",
+        argNames: ["selection", "masterData"],
+      );
+
+  @override
+  List<AbnormalityResistance>
+  crateResistanceCalculateColorAbnormalityResistance({
+    required BodyColorSelection selection,
+    required ResistanceMasterData masterData,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_body_color_selection(selection, serializer);
+          sse_encode_box_autoadd_resistance_master_data(masterData, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_list_abnormality_resistance,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateResistanceCalculateColorAbnormalityResistanceConstMeta,
+        argValues: [selection, masterData],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateResistanceCalculateColorAbnormalityResistanceConstMeta =>
+      const TaskConstMeta(
+        debugName: "calculate_color_abnormality_resistance",
+        argNames: ["selection", "masterData"],
+      );
+
+  @override
+  StatBonus crateResistanceCalculateCorrectionStatBonus({
+    required ResistanceCorrectionInput input,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_resistance_correction_input(input, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_stat_bonus,
+          decodeErrorData: null,
+        ),
+        constMeta: kCrateResistanceCalculateCorrectionStatBonusConstMeta,
+        argValues: [input],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateResistanceCalculateCorrectionStatBonusConstMeta =>
+      const TaskConstMeta(
+        debugName: "calculate_correction_stat_bonus",
+        argNames: ["input"],
+      );
+
+  @override
+  DenpaMenResistances crateResistanceCalculateDenpaMenResistances({
+    required BodyColorSelection selection,
+    required HeadShapeResistanceBonuses headShape,
+    required ResistanceMasterData masterData,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_box_autoadd_body_color_selection(selection, serializer);
+          sse_encode_box_autoadd_head_shape_resistance_bonuses(
+            headShape,
+            serializer,
+          );
+          sse_encode_box_autoadd_resistance_master_data(masterData, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_denpa_men_resistances,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateResistanceCalculateDenpaMenResistancesConstMeta,
+        argValues: [selection, headShape, masterData],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateResistanceCalculateDenpaMenResistancesConstMeta =>
+      const TaskConstMeta(
+        debugName: "calculate_denpa_men_resistances",
+        argNames: ["selection", "headShape", "masterData"],
+      );
+
+  @override
   List<List<ColumnEntry>> crateTableRowCollectColumns({
     required List<TableRow> rows,
   }) {
@@ -148,7 +300,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_list_table_row(rows, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_list_column_entry,
@@ -173,7 +325,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_list_range_category(categories, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_range_category,
@@ -193,6 +345,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  BodyColorSelection? crateResistanceFindColorCombination({
+    required List<AttributeResistance> target,
+    required ResistanceMasterData masterData,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_list_attribute_resistance(target, serializer);
+          sse_encode_box_autoadd_resistance_master_data(masterData, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_opt_box_autoadd_body_color_selection,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateResistanceFindColorCombinationConstMeta,
+        argValues: [target, masterData],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateResistanceFindColorCombinationConstMeta =>
+      const TaskConstMeta(
+        debugName: "find_color_combination",
+        argNames: ["target", "masterData"],
+      );
+
+  @override
   List<StatusMatch> crateStatusMatchFindMatchingColumns({
     required StatusCriterion primary,
     required List<StatusCriterion> others,
@@ -203,7 +385,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_box_autoadd_status_criterion(primary, serializer);
           sse_encode_list_status_criterion(others, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_status_match,
@@ -235,7 +417,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_list_range_category(categories, serializer);
           sse_encode_i_32(value, serializer);
           sse_encode_i_32(columnIndex, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_list_category_match,
@@ -261,9 +443,90 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AbnormalityResistance dco_decode_abnormality_resistance(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return AbnormalityResistance(
+      abnormalityId: dco_decode_String(arr[0]),
+      value: dco_decode_i_32(arr[1]),
+    );
+  }
+
+  @protected
+  AttributeResistance dco_decode_attribute_resistance(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return AttributeResistance(
+      attributeId: dco_decode_String(arr[0]),
+      value: dco_decode_i_32(arr[1]),
+    );
+  }
+
+  @protected
+  AttributeResistanceBonus dco_decode_attribute_resistance_bonus(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return AttributeResistanceBonus(
+      attributeId: dco_decode_String(arr[0]),
+      bonus: dco_decode_i_32(arr[1]),
+    );
+  }
+
+  @protected
+  BodyColorAbnormalityResistanceRule
+  dco_decode_body_color_abnormality_resistance_rule(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return BodyColorAbnormalityResistanceRule(
+      colorId: dco_decode_String(arr[0]),
+      abnormalityResistanceBonuses: dco_decode_list_resistance_bonus(arr[1]),
+    );
+  }
+
+  @protected
+  BodyColorResistanceRule dco_decode_body_color_resistance_rule(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return BodyColorResistanceRule(
+      colorId: dco_decode_String(arr[0]),
+      attributeResistanceBonuses: dco_decode_list_attribute_resistance_bonus(
+        arr[1],
+      ),
+    );
+  }
+
+  @protected
+  BodyColorSelection dco_decode_body_color_selection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return BodyColorSelection(
+      bodyColors: dco_decode_list_String(arr[0]),
+      isSpColor: dco_decode_bool(arr[1]),
+    );
+  }
+
+  @protected
   bool dco_decode_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
+  }
+
+  @protected
+  BodyColorSelection dco_decode_box_autoadd_body_color_selection(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_body_color_selection(raw);
   }
 
   @protected
@@ -275,9 +538,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  HeadShapeResistanceBonuses
+  dco_decode_box_autoadd_head_shape_resistance_bonuses(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_head_shape_resistance_bonuses(raw);
+  }
+
+  @protected
   int dco_decode_box_autoadd_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
+  }
+
+  @protected
+  ResistanceCorrectionInput dco_decode_box_autoadd_resistance_correction_input(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_resistance_correction_input(raw);
+  }
+
+  @protected
+  ResistanceMasterData dco_decode_box_autoadd_resistance_master_data(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_resistance_master_data(raw);
   }
 
   @protected
@@ -359,6 +645,49 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CorrectionBonuses dco_decode_correction_bonuses(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return CorrectionBonuses(
+      statBonus: dco_decode_stat_bonus(arr[0]),
+      abnormalityResistanceBonuses: dco_decode_list_resistance_bonus(arr[1]),
+      attributeResistanceBonuses: dco_decode_list_attribute_resistance_bonus(
+        arr[2],
+      ),
+    );
+  }
+
+  @protected
+  DenpaMenResistances dco_decode_denpa_men_resistances(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return DenpaMenResistances(
+      abnormalityResistances: dco_decode_list_abnormality_resistance(arr[0]),
+      attributeResistance: dco_decode_list_attribute_resistance(arr[1]),
+    );
+  }
+
+  @protected
+  HeadShapeResistanceBonuses dco_decode_head_shape_resistance_bonuses(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return HeadShapeResistanceBonuses(
+      abnormalityResistanceBonuses: dco_decode_list_resistance_bonus(arr[0]),
+      attributeResistanceBonuses: dco_decode_list_attribute_resistance_bonus(
+        arr[1],
+      ),
+    );
+  }
+
+  @protected
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -368,6 +697,51 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<String> dco_decode_list_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_String).toList();
+  }
+
+  @protected
+  List<AbnormalityResistance> dco_decode_list_abnormality_resistance(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_abnormality_resistance)
+        .toList();
+  }
+
+  @protected
+  List<AttributeResistance> dco_decode_list_attribute_resistance(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_attribute_resistance).toList();
+  }
+
+  @protected
+  List<AttributeResistanceBonus> dco_decode_list_attribute_resistance_bonus(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_attribute_resistance_bonus)
+        .toList();
+  }
+
+  @protected
+  List<BodyColorAbnormalityResistanceRule>
+  dco_decode_list_body_color_abnormality_resistance_rule(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_body_color_abnormality_resistance_rule)
+        .toList();
+  }
+
+  @protected
+  List<BodyColorResistanceRule> dco_decode_list_body_color_resistance_rule(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_body_color_resistance_rule)
+        .toList();
   }
 
   @protected
@@ -386,6 +760,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<ColumnEntry> dco_decode_list_column_entry(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_column_entry).toList();
+  }
+
+  @protected
+  List<CorrectionBonuses> dco_decode_list_correction_bonuses(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_correction_bonuses).toList();
   }
 
   @protected
@@ -419,6 +799,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<ResistanceAttribute> dco_decode_list_resistance_attribute(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_resistance_attribute).toList();
+  }
+
+  @protected
+  List<ResistanceBonus> dco_decode_list_resistance_bonus(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_resistance_bonus).toList();
+  }
+
+  @protected
   List<StatusCriterion> dco_decode_list_status_criterion(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_status_criterion).toList();
@@ -449,6 +841,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BodyColorSelection? dco_decode_opt_box_autoadd_body_color_selection(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null
+        ? null
+        : dco_decode_box_autoadd_body_color_selection(raw);
+  }
+
+  @protected
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_i_32(raw);
@@ -467,6 +869,77 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       columnIndex: dco_decode_i_32(arr[3]),
       categoryKey: dco_decode_String(arr[4]),
       tag: dco_decode_opt_String(arr[5]),
+    );
+  }
+
+  @protected
+  ResistanceAttribute dco_decode_resistance_attribute(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return ResistanceAttribute(
+      id: dco_decode_String(arr[0]),
+      index: dco_decode_i_32(arr[1]),
+      isElemental: dco_decode_bool(arr[2]),
+    );
+  }
+
+  @protected
+  ResistanceBonus dco_decode_resistance_bonus(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return ResistanceBonus(
+      id: dco_decode_String(arr[0]),
+      bonus: dco_decode_i_32(arr[1]),
+    );
+  }
+
+  @protected
+  ResistanceCorrectionInput dco_decode_resistance_correction_input(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return ResistanceCorrectionInput(
+      corrections: dco_decode_list_correction_bonuses(arr[0]),
+      additionalCorrection: dco_decode_correction_bonuses(arr[1]),
+    );
+  }
+
+  @protected
+  ResistanceMasterData dco_decode_resistance_master_data(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return ResistanceMasterData(
+      attributes: dco_decode_list_resistance_attribute(arr[0]),
+      bodyColorResistanceRules: dco_decode_list_body_color_resistance_rule(
+        arr[1],
+      ),
+      bodyColorAbnormalityResistanceRules:
+          dco_decode_list_body_color_abnormality_resistance_rule(arr[2]),
+    );
+  }
+
+  @protected
+  StatBonus dco_decode_stat_bonus(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    return StatBonus(
+      hp: dco_decode_i_32(arr[0]),
+      ap: dco_decode_i_32(arr[1]),
+      attack: dco_decode_i_32(arr[2]),
+      defense: dco_decode_i_32(arr[3]),
+      speed: dco_decode_i_32(arr[4]),
+      evasionRate: dco_decode_i_32(arr[5]),
     );
   }
 
@@ -542,9 +1015,96 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  AbnormalityResistance sse_decode_abnormality_resistance(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_abnormalityId = sse_decode_String(deserializer);
+    var var_value = sse_decode_i_32(deserializer);
+    return AbnormalityResistance(
+      abnormalityId: var_abnormalityId,
+      value: var_value,
+    );
+  }
+
+  @protected
+  AttributeResistance sse_decode_attribute_resistance(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_attributeId = sse_decode_String(deserializer);
+    var var_value = sse_decode_i_32(deserializer);
+    return AttributeResistance(attributeId: var_attributeId, value: var_value);
+  }
+
+  @protected
+  AttributeResistanceBonus sse_decode_attribute_resistance_bonus(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_attributeId = sse_decode_String(deserializer);
+    var var_bonus = sse_decode_i_32(deserializer);
+    return AttributeResistanceBonus(
+      attributeId: var_attributeId,
+      bonus: var_bonus,
+    );
+  }
+
+  @protected
+  BodyColorAbnormalityResistanceRule
+  sse_decode_body_color_abnormality_resistance_rule(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_colorId = sse_decode_String(deserializer);
+    var var_abnormalityResistanceBonuses = sse_decode_list_resistance_bonus(
+      deserializer,
+    );
+    return BodyColorAbnormalityResistanceRule(
+      colorId: var_colorId,
+      abnormalityResistanceBonuses: var_abnormalityResistanceBonuses,
+    );
+  }
+
+  @protected
+  BodyColorResistanceRule sse_decode_body_color_resistance_rule(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_colorId = sse_decode_String(deserializer);
+    var var_attributeResistanceBonuses =
+        sse_decode_list_attribute_resistance_bonus(deserializer);
+    return BodyColorResistanceRule(
+      colorId: var_colorId,
+      attributeResistanceBonuses: var_attributeResistanceBonuses,
+    );
+  }
+
+  @protected
+  BodyColorSelection sse_decode_body_color_selection(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_bodyColors = sse_decode_list_String(deserializer);
+    var var_isSpColor = sse_decode_bool(deserializer);
+    return BodyColorSelection(
+      bodyColors: var_bodyColors,
+      isSpColor: var_isSpColor,
+    );
+  }
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
+  BodyColorSelection sse_decode_box_autoadd_body_color_selection(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_body_color_selection(deserializer));
   }
 
   @protected
@@ -556,9 +1116,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  HeadShapeResistanceBonuses
+  sse_decode_box_autoadd_head_shape_resistance_bonuses(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_head_shape_resistance_bonuses(deserializer));
+  }
+
+  @protected
   int sse_decode_box_autoadd_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  ResistanceCorrectionInput sse_decode_box_autoadd_resistance_correction_input(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_resistance_correction_input(deserializer));
+  }
+
+  @protected
+  ResistanceMasterData sse_decode_box_autoadd_resistance_master_data(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_resistance_master_data(deserializer));
   }
 
   @protected
@@ -648,6 +1233,57 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  CorrectionBonuses sse_decode_correction_bonuses(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_statBonus = sse_decode_stat_bonus(deserializer);
+    var var_abnormalityResistanceBonuses = sse_decode_list_resistance_bonus(
+      deserializer,
+    );
+    var var_attributeResistanceBonuses =
+        sse_decode_list_attribute_resistance_bonus(deserializer);
+    return CorrectionBonuses(
+      statBonus: var_statBonus,
+      abnormalityResistanceBonuses: var_abnormalityResistanceBonuses,
+      attributeResistanceBonuses: var_attributeResistanceBonuses,
+    );
+  }
+
+  @protected
+  DenpaMenResistances sse_decode_denpa_men_resistances(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_abnormalityResistances = sse_decode_list_abnormality_resistance(
+      deserializer,
+    );
+    var var_attributeResistance = sse_decode_list_attribute_resistance(
+      deserializer,
+    );
+    return DenpaMenResistances(
+      abnormalityResistances: var_abnormalityResistances,
+      attributeResistance: var_attributeResistance,
+    );
+  }
+
+  @protected
+  HeadShapeResistanceBonuses sse_decode_head_shape_resistance_bonuses(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_abnormalityResistanceBonuses = sse_decode_list_resistance_bonus(
+      deserializer,
+    );
+    var var_attributeResistanceBonuses =
+        sse_decode_list_attribute_resistance_bonus(deserializer);
+    return HeadShapeResistanceBonuses(
+      abnormalityResistanceBonuses: var_abnormalityResistanceBonuses,
+      attributeResistanceBonuses: var_attributeResistanceBonuses,
+    );
+  }
+
+  @protected
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
@@ -661,6 +1297,77 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <String>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_String(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<AbnormalityResistance> sse_decode_list_abnormality_resistance(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <AbnormalityResistance>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_abnormality_resistance(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<AttributeResistance> sse_decode_list_attribute_resistance(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <AttributeResistance>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_attribute_resistance(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<AttributeResistanceBonus> sse_decode_list_attribute_resistance_bonus(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <AttributeResistanceBonus>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_attribute_resistance_bonus(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<BodyColorAbnormalityResistanceRule>
+  sse_decode_list_body_color_abnormality_resistance_rule(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <BodyColorAbnormalityResistanceRule>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_body_color_abnormality_resistance_rule(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<BodyColorResistanceRule> sse_decode_list_body_color_resistance_rule(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <BodyColorResistanceRule>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_body_color_resistance_rule(deserializer));
     }
     return ans_;
   }
@@ -701,6 +1408,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <ColumnEntry>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_column_entry(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<CorrectionBonuses> sse_decode_list_correction_bonuses(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <CorrectionBonuses>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_correction_bonuses(deserializer));
     }
     return ans_;
   }
@@ -757,6 +1478,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <RangeCategory>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_range_category(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<ResistanceAttribute> sse_decode_list_resistance_attribute(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <ResistanceAttribute>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_resistance_attribute(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<ResistanceBonus> sse_decode_list_resistance_bonus(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <ResistanceBonus>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_resistance_bonus(deserializer));
     }
     return ans_;
   }
@@ -823,6 +1572,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BodyColorSelection? sse_decode_opt_box_autoadd_body_color_selection(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_box_autoadd_body_color_selection(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -849,6 +1611,79 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       columnIndex: var_columnIndex,
       categoryKey: var_categoryKey,
       tag: var_tag,
+    );
+  }
+
+  @protected
+  ResistanceAttribute sse_decode_resistance_attribute(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_index = sse_decode_i_32(deserializer);
+    var var_isElemental = sse_decode_bool(deserializer);
+    return ResistanceAttribute(
+      id: var_id,
+      index: var_index,
+      isElemental: var_isElemental,
+    );
+  }
+
+  @protected
+  ResistanceBonus sse_decode_resistance_bonus(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_id = sse_decode_String(deserializer);
+    var var_bonus = sse_decode_i_32(deserializer);
+    return ResistanceBonus(id: var_id, bonus: var_bonus);
+  }
+
+  @protected
+  ResistanceCorrectionInput sse_decode_resistance_correction_input(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_corrections = sse_decode_list_correction_bonuses(deserializer);
+    var var_additionalCorrection = sse_decode_correction_bonuses(deserializer);
+    return ResistanceCorrectionInput(
+      corrections: var_corrections,
+      additionalCorrection: var_additionalCorrection,
+    );
+  }
+
+  @protected
+  ResistanceMasterData sse_decode_resistance_master_data(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_attributes = sse_decode_list_resistance_attribute(deserializer);
+    var var_bodyColorResistanceRules =
+        sse_decode_list_body_color_resistance_rule(deserializer);
+    var var_bodyColorAbnormalityResistanceRules =
+        sse_decode_list_body_color_abnormality_resistance_rule(deserializer);
+    return ResistanceMasterData(
+      attributes: var_attributes,
+      bodyColorResistanceRules: var_bodyColorResistanceRules,
+      bodyColorAbnormalityResistanceRules:
+          var_bodyColorAbnormalityResistanceRules,
+    );
+  }
+
+  @protected
+  StatBonus sse_decode_stat_bonus(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_hp = sse_decode_i_32(deserializer);
+    var var_ap = sse_decode_i_32(deserializer);
+    var var_attack = sse_decode_i_32(deserializer);
+    var var_defense = sse_decode_i_32(deserializer);
+    var var_speed = sse_decode_i_32(deserializer);
+    var var_evasionRate = sse_decode_i_32(deserializer);
+    return StatBonus(
+      hp: var_hp,
+      ap: var_ap,
+      attack: var_attack,
+      defense: var_defense,
+      speed: var_speed,
+      evasionRate: var_evasionRate,
     );
   }
 
@@ -919,9 +1754,84 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_abnormality_resistance(
+    AbnormalityResistance self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.abnormalityId, serializer);
+    sse_encode_i_32(self.value, serializer);
+  }
+
+  @protected
+  void sse_encode_attribute_resistance(
+    AttributeResistance self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.attributeId, serializer);
+    sse_encode_i_32(self.value, serializer);
+  }
+
+  @protected
+  void sse_encode_attribute_resistance_bonus(
+    AttributeResistanceBonus self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.attributeId, serializer);
+    sse_encode_i_32(self.bonus, serializer);
+  }
+
+  @protected
+  void sse_encode_body_color_abnormality_resistance_rule(
+    BodyColorAbnormalityResistanceRule self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.colorId, serializer);
+    sse_encode_list_resistance_bonus(
+      self.abnormalityResistanceBonuses,
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_body_color_resistance_rule(
+    BodyColorResistanceRule self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.colorId, serializer);
+    sse_encode_list_attribute_resistance_bonus(
+      self.attributeResistanceBonuses,
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_body_color_selection(
+    BodyColorSelection self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_String(self.bodyColors, serializer);
+    sse_encode_bool(self.isSpColor, serializer);
+  }
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self ? 1 : 0);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_body_color_selection(
+    BodyColorSelection self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_body_color_selection(self, serializer);
   }
 
   @protected
@@ -934,9 +1844,36 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_head_shape_resistance_bonuses(
+    HeadShapeResistanceBonuses self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_head_shape_resistance_bonuses(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_resistance_correction_input(
+    ResistanceCorrectionInput self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_resistance_correction_input(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_resistance_master_data(
+    ResistanceMasterData self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_resistance_master_data(self, serializer);
   }
 
   @protected
@@ -999,6 +1936,52 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_correction_bonuses(
+    CorrectionBonuses self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_stat_bonus(self.statBonus, serializer);
+    sse_encode_list_resistance_bonus(
+      self.abnormalityResistanceBonuses,
+      serializer,
+    );
+    sse_encode_list_attribute_resistance_bonus(
+      self.attributeResistanceBonuses,
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_denpa_men_resistances(
+    DenpaMenResistances self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_abnormality_resistance(
+      self.abnormalityResistances,
+      serializer,
+    );
+    sse_encode_list_attribute_resistance(self.attributeResistance, serializer);
+  }
+
+  @protected
+  void sse_encode_head_shape_resistance_bonuses(
+    HeadShapeResistanceBonuses self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_resistance_bonus(
+      self.abnormalityResistanceBonuses,
+      serializer,
+    );
+    sse_encode_list_attribute_resistance_bonus(
+      self.attributeResistanceBonuses,
+      serializer,
+    );
+  }
+
+  @protected
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
@@ -1010,6 +1993,66 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_String(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_abnormality_resistance(
+    List<AbnormalityResistance> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_abnormality_resistance(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_attribute_resistance(
+    List<AttributeResistance> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_attribute_resistance(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_attribute_resistance_bonus(
+    List<AttributeResistanceBonus> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_attribute_resistance_bonus(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_body_color_abnormality_resistance_rule(
+    List<BodyColorAbnormalityResistanceRule> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_body_color_abnormality_resistance_rule(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_body_color_resistance_rule(
+    List<BodyColorResistanceRule> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_body_color_resistance_rule(item, serializer);
     }
   }
 
@@ -1046,6 +2089,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_column_entry(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_correction_bonuses(
+    List<CorrectionBonuses> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_correction_bonuses(item, serializer);
     }
   }
 
@@ -1102,6 +2157,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_range_category(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_resistance_attribute(
+    List<ResistanceAttribute> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_resistance_attribute(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_resistance_bonus(
+    List<ResistanceBonus> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_resistance_bonus(item, serializer);
     }
   }
 
@@ -1164,6 +2243,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_opt_box_autoadd_body_color_selection(
+    BodyColorSelection? self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_box_autoadd_body_color_selection(self, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -1182,6 +2274,65 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.columnIndex, serializer);
     sse_encode_String(self.categoryKey, serializer);
     sse_encode_opt_String(self.tag, serializer);
+  }
+
+  @protected
+  void sse_encode_resistance_attribute(
+    ResistanceAttribute self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_i_32(self.index, serializer);
+    sse_encode_bool(self.isElemental, serializer);
+  }
+
+  @protected
+  void sse_encode_resistance_bonus(
+    ResistanceBonus self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.id, serializer);
+    sse_encode_i_32(self.bonus, serializer);
+  }
+
+  @protected
+  void sse_encode_resistance_correction_input(
+    ResistanceCorrectionInput self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_correction_bonuses(self.corrections, serializer);
+    sse_encode_correction_bonuses(self.additionalCorrection, serializer);
+  }
+
+  @protected
+  void sse_encode_resistance_master_data(
+    ResistanceMasterData self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_resistance_attribute(self.attributes, serializer);
+    sse_encode_list_body_color_resistance_rule(
+      self.bodyColorResistanceRules,
+      serializer,
+    );
+    sse_encode_list_body_color_abnormality_resistance_rule(
+      self.bodyColorAbnormalityResistanceRules,
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_stat_bonus(StatBonus self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.hp, serializer);
+    sse_encode_i_32(self.ap, serializer);
+    sse_encode_i_32(self.attack, serializer);
+    sse_encode_i_32(self.defense, serializer);
+    sse_encode_i_32(self.speed, serializer);
+    sse_encode_i_32(self.evasionRate, serializer);
   }
 
   @protected

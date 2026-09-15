@@ -87,3 +87,37 @@ pub fn find_matching_columns(primary: &StatusCriterion, others: &[StatusCriterio
 fn owned(rows: &[&TableRow]) -> Vec<TableRow> {
     rows.iter().map(|row| (*row).clone()).collect()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn finds_a_column_matching_primary_and_companion_values() {
+        let primary = StatusCriterion {
+            rows: vec![TableRow {
+                group: vec!["1".to_owned(), "アンテナ無し".to_owned()],
+                line_offset: 0,
+                values: vec![Some(0), Some(0), Some(0), Some(0), Some(0)],
+            }],
+            target_value: 0,
+        };
+        let companion = StatusCriterion {
+            rows: vec![TableRow {
+                group: vec!["1".to_owned(), "アンテナ無し".to_owned()],
+                line_offset: 0,
+                values: vec![Some(40), Some(37), Some(34), Some(32), Some(29)],
+            }],
+            target_value: 32,
+        };
+
+        assert_eq!(
+            find_matching_columns(&primary, &[companion]),
+            vec![StatusMatch {
+                group: vec!["1".to_owned(), "アンテナ無し".to_owned()],
+                line_offset: 0,
+                column_index: 3,
+            }]
+        );
+    }
+}

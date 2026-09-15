@@ -56,3 +56,40 @@ pub fn resolve_categories(categories: &[RangeCategory], value: i32, column_index
 
     result
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn resolves_only_ranges_in_the_requested_column() {
+        let categories = vec![
+            RangeCategory {
+                id: "wrong-column".to_owned(),
+                range_start: 0,
+                range_end: 10,
+                column_index: 1,
+                category_key: "other".to_owned(),
+                tag: None,
+            },
+            RangeCategory {
+                id: "match".to_owned(),
+                range_start: 5,
+                range_end: 10,
+                column_index: 3,
+                category_key: "fast".to_owned(),
+                tag: None,
+            },
+        ];
+
+        assert_eq!(
+            resolve_categories(&categories, 7, 3),
+            vec![CategoryMatch {
+                category_key: "fast".to_owned(),
+                tag: None,
+                range_start: 5,
+                range_end: 10,
+            }]
+        );
+    }
+}

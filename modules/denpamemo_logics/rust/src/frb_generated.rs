@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.13.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 911793770;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1391955981;
 
 // Section: executor
 
@@ -74,6 +74,151 @@ fn wire__crate__category_grid__build_category_grid_impl(
             transform_result_sse::<_, ()>((move || {
                 let output_ok =
                     Ok::<_, ()>(crate::category_grid::build_category_grid(api_request))?;
+                std::result::Result::Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__resistance__calculate_attribute_resistance_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "calculate_attribute_resistance",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_selection =
+                <crate::resistance::BodyColorSelection>::sse_decode(&mut deserializer);
+            let api_master_data =
+                <crate::resistance::ResistanceMasterData>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, String>((move || {
+                let output_ok = crate::resistance::calculate_attribute_resistance(
+                    &api_selection,
+                    &api_master_data,
+                )?;
+                std::result::Result::Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__resistance__calculate_color_abnormality_resistance_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "calculate_color_abnormality_resistance",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_selection =
+                <crate::resistance::BodyColorSelection>::sse_decode(&mut deserializer);
+            let api_master_data =
+                <crate::resistance::ResistanceMasterData>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let output_ok =
+                    Ok::<_, ()>(crate::resistance::calculate_color_abnormality_resistance(
+                        &api_selection,
+                        &api_master_data,
+                    ))?;
+                std::result::Result::Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__resistance__calculate_correction_stat_bonus_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "calculate_correction_stat_bonus",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_input =
+                <crate::resistance::ResistanceCorrectionInput>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let output_ok = Ok::<_, ()>(crate::resistance::calculate_correction_stat_bonus(
+                    &api_input,
+                ))?;
+                std::result::Result::Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__resistance__calculate_denpa_men_resistances_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "calculate_denpa_men_resistances",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_selection =
+                <crate::resistance::BodyColorSelection>::sse_decode(&mut deserializer);
+            let api_head_shape =
+                <crate::resistance::HeadShapeResistanceBonuses>::sse_decode(&mut deserializer);
+            let api_master_data =
+                <crate::resistance::ResistanceMasterData>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, String>((move || {
+                let output_ok = crate::resistance::calculate_denpa_men_resistances(
+                    &api_selection,
+                    &api_head_shape,
+                    &api_master_data,
+                )?;
                 std::result::Result::Ok(output_ok)
             })())
         },
@@ -136,6 +281,40 @@ fn wire__crate__category_grid__compact_categories_impl(
             transform_result_sse::<_, ()>((move || {
                 let output_ok =
                     Ok::<_, ()>(crate::category_grid::compact_categories(&api_categories))?;
+                std::result::Result::Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__resistance__find_color_combination_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "find_color_combination",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_target =
+                <Vec<crate::resistance::AttributeResistance>>::sse_decode(&mut deserializer);
+            let api_master_data =
+                <crate::resistance::ResistanceMasterData>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, String>((move || {
+                let output_ok =
+                    crate::resistance::find_color_combination(&api_target, &api_master_data)?;
                 std::result::Result::Ok(output_ok)
             })())
         },
@@ -221,6 +400,80 @@ impl SseDecode for String {
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<u8>>::sse_decode(deserializer);
         return String::from_utf8(inner).unwrap();
+    }
+}
+
+impl SseDecode for crate::resistance::AbnormalityResistance {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_abnormalityId = <String>::sse_decode(deserializer);
+        let mut var_value = <i32>::sse_decode(deserializer);
+        return crate::resistance::AbnormalityResistance {
+            abnormality_id: var_abnormalityId,
+            value: var_value,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::AttributeResistance {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_attributeId = <String>::sse_decode(deserializer);
+        let mut var_value = <i32>::sse_decode(deserializer);
+        return crate::resistance::AttributeResistance {
+            attribute_id: var_attributeId,
+            value: var_value,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::AttributeResistanceBonus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_attributeId = <String>::sse_decode(deserializer);
+        let mut var_bonus = <i32>::sse_decode(deserializer);
+        return crate::resistance::AttributeResistanceBonus {
+            attribute_id: var_attributeId,
+            bonus: var_bonus,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::BodyColorAbnormalityResistanceRule {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_colorId = <String>::sse_decode(deserializer);
+        let mut var_abnormalityResistanceBonuses =
+            <Vec<crate::resistance::ResistanceBonus>>::sse_decode(deserializer);
+        return crate::resistance::BodyColorAbnormalityResistanceRule {
+            color_id: var_colorId,
+            abnormality_resistance_bonuses: var_abnormalityResistanceBonuses,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::BodyColorResistanceRule {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_colorId = <String>::sse_decode(deserializer);
+        let mut var_attributeResistanceBonuses =
+            <Vec<crate::resistance::AttributeResistanceBonus>>::sse_decode(deserializer);
+        return crate::resistance::BodyColorResistanceRule {
+            color_id: var_colorId,
+            attribute_resistance_bonuses: var_attributeResistanceBonuses,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::BodyColorSelection {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_bodyColors = <Vec<String>>::sse_decode(deserializer);
+        let mut var_isSpColor = <bool>::sse_decode(deserializer);
+        return crate::resistance::BodyColorSelection {
+            body_colors: var_bodyColors,
+            is_sp_color: var_isSpColor,
+        };
     }
 }
 
@@ -317,6 +570,50 @@ impl SseDecode for crate::table_row::ColumnEntry {
     }
 }
 
+impl SseDecode for crate::resistance::CorrectionBonuses {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_statBonus = <crate::resistance::StatBonus>::sse_decode(deserializer);
+        let mut var_abnormalityResistanceBonuses =
+            <Vec<crate::resistance::ResistanceBonus>>::sse_decode(deserializer);
+        let mut var_attributeResistanceBonuses =
+            <Vec<crate::resistance::AttributeResistanceBonus>>::sse_decode(deserializer);
+        return crate::resistance::CorrectionBonuses {
+            stat_bonus: var_statBonus,
+            abnormality_resistance_bonuses: var_abnormalityResistanceBonuses,
+            attribute_resistance_bonuses: var_attributeResistanceBonuses,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::DenpaMenResistances {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_abnormalityResistances =
+            <Vec<crate::resistance::AbnormalityResistance>>::sse_decode(deserializer);
+        let mut var_attributeResistance =
+            <Vec<crate::resistance::AttributeResistance>>::sse_decode(deserializer);
+        return crate::resistance::DenpaMenResistances {
+            abnormality_resistances: var_abnormalityResistances,
+            attribute_resistance: var_attributeResistance,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::HeadShapeResistanceBonuses {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_abnormalityResistanceBonuses =
+            <Vec<crate::resistance::ResistanceBonus>>::sse_decode(deserializer);
+        let mut var_attributeResistanceBonuses =
+            <Vec<crate::resistance::AttributeResistanceBonus>>::sse_decode(deserializer);
+        return crate::resistance::HeadShapeResistanceBonuses {
+            abnormality_resistance_bonuses: var_abnormalityResistanceBonuses,
+            attribute_resistance_bonuses: var_attributeResistanceBonuses,
+        };
+    }
+}
+
 impl SseDecode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -331,6 +628,76 @@ impl SseDecode for Vec<String> {
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<String>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::resistance::AbnormalityResistance> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::resistance::AbnormalityResistance>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::resistance::AttributeResistance> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::resistance::AttributeResistance>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::resistance::AttributeResistanceBonus> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::resistance::AttributeResistanceBonus>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::resistance::BodyColorAbnormalityResistanceRule> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(
+                <crate::resistance::BodyColorAbnormalityResistanceRule>::sse_decode(deserializer),
+            );
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::resistance::BodyColorResistanceRule> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::resistance::BodyColorResistanceRule>::sse_decode(
+                deserializer,
+            ));
         }
         return ans_;
     }
@@ -371,6 +738,20 @@ impl SseDecode for Vec<crate::table_row::ColumnEntry> {
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<crate::table_row::ColumnEntry>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::resistance::CorrectionBonuses> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::resistance::CorrectionBonuses>::sse_decode(
+                deserializer,
+            ));
         }
         return ans_;
     }
@@ -440,6 +821,34 @@ impl SseDecode for Vec<crate::range_category::RangeCategory> {
     }
 }
 
+impl SseDecode for Vec<crate::resistance::ResistanceAttribute> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::resistance::ResistanceAttribute>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::resistance::ResistanceBonus> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::resistance::ResistanceBonus>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::status_match::StatusCriterion> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -501,6 +910,19 @@ impl SseDecode for Option<String> {
     }
 }
 
+impl SseDecode for Option<crate::resistance::BodyColorSelection> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::resistance::BodyColorSelection>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<i32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -528,6 +950,83 @@ impl SseDecode for crate::range_category::RangeCategory {
             column_index: var_columnIndex,
             category_key: var_categoryKey,
             tag: var_tag,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::ResistanceAttribute {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_index = <i32>::sse_decode(deserializer);
+        let mut var_isElemental = <bool>::sse_decode(deserializer);
+        return crate::resistance::ResistanceAttribute {
+            id: var_id,
+            index: var_index,
+            is_elemental: var_isElemental,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::ResistanceBonus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_id = <String>::sse_decode(deserializer);
+        let mut var_bonus = <i32>::sse_decode(deserializer);
+        return crate::resistance::ResistanceBonus {
+            id: var_id,
+            bonus: var_bonus,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::ResistanceCorrectionInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_corrections =
+            <Vec<crate::resistance::CorrectionBonuses>>::sse_decode(deserializer);
+        let mut var_additionalCorrection =
+            <crate::resistance::CorrectionBonuses>::sse_decode(deserializer);
+        return crate::resistance::ResistanceCorrectionInput {
+            corrections: var_corrections,
+            additional_correction: var_additionalCorrection,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::ResistanceMasterData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_attributes =
+            <Vec<crate::resistance::ResistanceAttribute>>::sse_decode(deserializer);
+        let mut var_bodyColorResistanceRules =
+            <Vec<crate::resistance::BodyColorResistanceRule>>::sse_decode(deserializer);
+        let mut var_bodyColorAbnormalityResistanceRules =
+            <Vec<crate::resistance::BodyColorAbnormalityResistanceRule>>::sse_decode(deserializer);
+        return crate::resistance::ResistanceMasterData {
+            attributes: var_attributes,
+            body_color_resistance_rules: var_bodyColorResistanceRules,
+            body_color_abnormality_resistance_rules: var_bodyColorAbnormalityResistanceRules,
+        };
+    }
+}
+
+impl SseDecode for crate::resistance::StatBonus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_hp = <i32>::sse_decode(deserializer);
+        let mut var_ap = <i32>::sse_decode(deserializer);
+        let mut var_attack = <i32>::sse_decode(deserializer);
+        let mut var_defense = <i32>::sse_decode(deserializer);
+        let mut var_speed = <i32>::sse_decode(deserializer);
+        let mut var_evasionRate = <i32>::sse_decode(deserializer);
+        return crate::resistance::StatBonus {
+            hp: var_hp,
+            ap: var_ap,
+            attack: var_attack,
+            defense: var_defense,
+            speed: var_speed,
+            evasion_rate: var_evasionRate,
         };
     }
 }
@@ -622,16 +1121,167 @@ fn pde_ffi_dispatcher_sync_impl(
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
         1 => wire__crate__category_grid__build_category_grid_impl(ptr, rust_vec_len, data_len),
-        2 => wire__crate__table_row__collect_columns_impl(ptr, rust_vec_len, data_len),
-        3 => wire__crate__category_grid__compact_categories_impl(ptr, rust_vec_len, data_len),
-        4 => wire__crate__status_match__find_matching_columns_impl(ptr, rust_vec_len, data_len),
-        5 => wire__crate__range_category__resolve_categories_impl(ptr, rust_vec_len, data_len),
+        2 => wire__crate__resistance__calculate_attribute_resistance_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        3 => wire__crate__resistance__calculate_color_abnormality_resistance_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        4 => wire__crate__resistance__calculate_correction_stat_bonus_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        5 => wire__crate__resistance__calculate_denpa_men_resistances_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        6 => wire__crate__table_row__collect_columns_impl(ptr, rust_vec_len, data_len),
+        7 => wire__crate__category_grid__compact_categories_impl(ptr, rust_vec_len, data_len),
+        8 => wire__crate__resistance__find_color_combination_impl(ptr, rust_vec_len, data_len),
+        9 => wire__crate__status_match__find_matching_columns_impl(ptr, rust_vec_len, data_len),
+        10 => wire__crate__range_category__resolve_categories_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
 
 // Section: rust2dart
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::AbnormalityResistance {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.abnormality_id.into_into_dart().into_dart(),
+            self.value.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::AbnormalityResistance
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::AbnormalityResistance>
+    for crate::resistance::AbnormalityResistance
+{
+    fn into_into_dart(self) -> crate::resistance::AbnormalityResistance {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::AttributeResistance {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.attribute_id.into_into_dart().into_dart(),
+            self.value.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::AttributeResistance
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::AttributeResistance>
+    for crate::resistance::AttributeResistance
+{
+    fn into_into_dart(self) -> crate::resistance::AttributeResistance {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::AttributeResistanceBonus {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.attribute_id.into_into_dart().into_dart(),
+            self.bonus.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::AttributeResistanceBonus
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::AttributeResistanceBonus>
+    for crate::resistance::AttributeResistanceBonus
+{
+    fn into_into_dart(self) -> crate::resistance::AttributeResistanceBonus {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::BodyColorAbnormalityResistanceRule {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.color_id.into_into_dart().into_dart(),
+            self.abnormality_resistance_bonuses
+                .into_into_dart()
+                .into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::BodyColorAbnormalityResistanceRule
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::BodyColorAbnormalityResistanceRule>
+    for crate::resistance::BodyColorAbnormalityResistanceRule
+{
+    fn into_into_dart(self) -> crate::resistance::BodyColorAbnormalityResistanceRule {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::BodyColorResistanceRule {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.color_id.into_into_dart().into_dart(),
+            self.attribute_resistance_bonuses
+                .into_into_dart()
+                .into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::BodyColorResistanceRule
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::BodyColorResistanceRule>
+    for crate::resistance::BodyColorResistanceRule
+{
+    fn into_into_dart(self) -> crate::resistance::BodyColorResistanceRule {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::BodyColorSelection {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.body_colors.into_into_dart().into_dart(),
+            self.is_sp_color.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::BodyColorSelection
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::BodyColorSelection>
+    for crate::resistance::BodyColorSelection
+{
+    fn into_into_dart(self) -> crate::resistance::BodyColorSelection {
+        self
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::category_grid::CategoryCell {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -747,6 +1397,78 @@ impl flutter_rust_bridge::IntoIntoDart<crate::table_row::ColumnEntry>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::CorrectionBonuses {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.stat_bonus.into_into_dart().into_dart(),
+            self.abnormality_resistance_bonuses
+                .into_into_dart()
+                .into_dart(),
+            self.attribute_resistance_bonuses
+                .into_into_dart()
+                .into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::CorrectionBonuses
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::CorrectionBonuses>
+    for crate::resistance::CorrectionBonuses
+{
+    fn into_into_dart(self) -> crate::resistance::CorrectionBonuses {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::DenpaMenResistances {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.abnormality_resistances.into_into_dart().into_dart(),
+            self.attribute_resistance.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::DenpaMenResistances
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::DenpaMenResistances>
+    for crate::resistance::DenpaMenResistances
+{
+    fn into_into_dart(self) -> crate::resistance::DenpaMenResistances {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::HeadShapeResistanceBonuses {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.abnormality_resistance_bonuses
+                .into_into_dart()
+                .into_dart(),
+            self.attribute_resistance_bonuses
+                .into_into_dart()
+                .into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::HeadShapeResistanceBonuses
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::HeadShapeResistanceBonuses>
+    for crate::resistance::HeadShapeResistanceBonuses
+{
+    fn into_into_dart(self) -> crate::resistance::HeadShapeResistanceBonuses {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::range_category::RangeCategory {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -768,6 +1490,118 @@ impl flutter_rust_bridge::IntoIntoDart<crate::range_category::RangeCategory>
     for crate::range_category::RangeCategory
 {
     fn into_into_dart(self) -> crate::range_category::RangeCategory {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::ResistanceAttribute {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.id.into_into_dart().into_dart(),
+            self.index.into_into_dart().into_dart(),
+            self.is_elemental.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::ResistanceAttribute
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::ResistanceAttribute>
+    for crate::resistance::ResistanceAttribute
+{
+    fn into_into_dart(self) -> crate::resistance::ResistanceAttribute {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::ResistanceBonus {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.id.into_into_dart().into_dart(),
+            self.bonus.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::ResistanceBonus
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::ResistanceBonus>
+    for crate::resistance::ResistanceBonus
+{
+    fn into_into_dart(self) -> crate::resistance::ResistanceBonus {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::ResistanceCorrectionInput {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.corrections.into_into_dart().into_dart(),
+            self.additional_correction.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::ResistanceCorrectionInput
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::ResistanceCorrectionInput>
+    for crate::resistance::ResistanceCorrectionInput
+{
+    fn into_into_dart(self) -> crate::resistance::ResistanceCorrectionInput {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::ResistanceMasterData {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.attributes.into_into_dart().into_dart(),
+            self.body_color_resistance_rules
+                .into_into_dart()
+                .into_dart(),
+            self.body_color_abnormality_resistance_rules
+                .into_into_dart()
+                .into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::resistance::ResistanceMasterData
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::ResistanceMasterData>
+    for crate::resistance::ResistanceMasterData
+{
+    fn into_into_dart(self) -> crate::resistance::ResistanceMasterData {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::resistance::StatBonus {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.hp.into_into_dart().into_dart(),
+            self.ap.into_into_dart().into_dart(),
+            self.attack.into_into_dart().into_dart(),
+            self.defense.into_into_dart().into_dart(),
+            self.speed.into_into_dart().into_dart(),
+            self.evasion_rate.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::resistance::StatBonus {}
+impl flutter_rust_bridge::IntoIntoDart<crate::resistance::StatBonus>
+    for crate::resistance::StatBonus
+{
+    fn into_into_dart(self) -> crate::resistance::StatBonus {
         self
     }
 }
@@ -862,6 +1696,60 @@ impl SseEncode for String {
     }
 }
 
+impl SseEncode for crate::resistance::AbnormalityResistance {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.abnormality_id, serializer);
+        <i32>::sse_encode(self.value, serializer);
+    }
+}
+
+impl SseEncode for crate::resistance::AttributeResistance {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.attribute_id, serializer);
+        <i32>::sse_encode(self.value, serializer);
+    }
+}
+
+impl SseEncode for crate::resistance::AttributeResistanceBonus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.attribute_id, serializer);
+        <i32>::sse_encode(self.bonus, serializer);
+    }
+}
+
+impl SseEncode for crate::resistance::BodyColorAbnormalityResistanceRule {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.color_id, serializer);
+        <Vec<crate::resistance::ResistanceBonus>>::sse_encode(
+            self.abnormality_resistance_bonuses,
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::resistance::BodyColorResistanceRule {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.color_id, serializer);
+        <Vec<crate::resistance::AttributeResistanceBonus>>::sse_encode(
+            self.attribute_resistance_bonuses,
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::resistance::BodyColorSelection {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<String>>::sse_encode(self.body_colors, serializer);
+        <bool>::sse_encode(self.is_sp_color, serializer);
+    }
+}
+
 impl SseEncode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -921,6 +1809,49 @@ impl SseEncode for crate::table_row::ColumnEntry {
     }
 }
 
+impl SseEncode for crate::resistance::CorrectionBonuses {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::resistance::StatBonus>::sse_encode(self.stat_bonus, serializer);
+        <Vec<crate::resistance::ResistanceBonus>>::sse_encode(
+            self.abnormality_resistance_bonuses,
+            serializer,
+        );
+        <Vec<crate::resistance::AttributeResistanceBonus>>::sse_encode(
+            self.attribute_resistance_bonuses,
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::resistance::DenpaMenResistances {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::resistance::AbnormalityResistance>>::sse_encode(
+            self.abnormality_resistances,
+            serializer,
+        );
+        <Vec<crate::resistance::AttributeResistance>>::sse_encode(
+            self.attribute_resistance,
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::resistance::HeadShapeResistanceBonuses {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::resistance::ResistanceBonus>>::sse_encode(
+            self.abnormality_resistance_bonuses,
+            serializer,
+        );
+        <Vec<crate::resistance::AttributeResistanceBonus>>::sse_encode(
+            self.attribute_resistance_bonuses,
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -934,6 +1865,56 @@ impl SseEncode for Vec<String> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <String>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::resistance::AbnormalityResistance> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::AbnormalityResistance>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::resistance::AttributeResistance> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::AttributeResistance>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::resistance::AttributeResistanceBonus> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::AttributeResistanceBonus>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::resistance::BodyColorAbnormalityResistanceRule> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::BodyColorAbnormalityResistanceRule>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::resistance::BodyColorResistanceRule> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::BodyColorResistanceRule>::sse_encode(item, serializer);
         }
     }
 }
@@ -964,6 +1945,16 @@ impl SseEncode for Vec<crate::table_row::ColumnEntry> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <crate::table_row::ColumnEntry>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::resistance::CorrectionBonuses> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::CorrectionBonuses>::sse_encode(item, serializer);
         }
     }
 }
@@ -1018,6 +2009,26 @@ impl SseEncode for Vec<crate::range_category::RangeCategory> {
     }
 }
 
+impl SseEncode for Vec<crate::resistance::ResistanceAttribute> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::ResistanceAttribute>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::resistance::ResistanceBonus> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::resistance::ResistanceBonus>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::status_match::StatusCriterion> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1068,6 +2079,16 @@ impl SseEncode for Option<String> {
     }
 }
 
+impl SseEncode for Option<crate::resistance::BodyColorSelection> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::resistance::BodyColorSelection>::sse_encode(value, serializer);
+        }
+    }
+}
+
 impl SseEncode for Option<i32> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1087,6 +2108,58 @@ impl SseEncode for crate::range_category::RangeCategory {
         <i32>::sse_encode(self.column_index, serializer);
         <String>::sse_encode(self.category_key, serializer);
         <Option<String>>::sse_encode(self.tag, serializer);
+    }
+}
+
+impl SseEncode for crate::resistance::ResistanceAttribute {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <i32>::sse_encode(self.index, serializer);
+        <bool>::sse_encode(self.is_elemental, serializer);
+    }
+}
+
+impl SseEncode for crate::resistance::ResistanceBonus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.id, serializer);
+        <i32>::sse_encode(self.bonus, serializer);
+    }
+}
+
+impl SseEncode for crate::resistance::ResistanceCorrectionInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::resistance::CorrectionBonuses>>::sse_encode(self.corrections, serializer);
+        <crate::resistance::CorrectionBonuses>::sse_encode(self.additional_correction, serializer);
+    }
+}
+
+impl SseEncode for crate::resistance::ResistanceMasterData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::resistance::ResistanceAttribute>>::sse_encode(self.attributes, serializer);
+        <Vec<crate::resistance::BodyColorResistanceRule>>::sse_encode(
+            self.body_color_resistance_rules,
+            serializer,
+        );
+        <Vec<crate::resistance::BodyColorAbnormalityResistanceRule>>::sse_encode(
+            self.body_color_abnormality_resistance_rules,
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::resistance::StatBonus {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.hp, serializer);
+        <i32>::sse_encode(self.ap, serializer);
+        <i32>::sse_encode(self.attack, serializer);
+        <i32>::sse_encode(self.defense, serializer);
+        <i32>::sse_encode(self.speed, serializer);
+        <i32>::sse_encode(self.evasion_rate, serializer);
     }
 }
 
